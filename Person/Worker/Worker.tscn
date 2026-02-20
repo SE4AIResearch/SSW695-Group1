@@ -1,0 +1,5 @@
+[gd_scene format=3 uid="uid://u8bret2kckvv"]
+
+[node name="Worker" type="Node2D" unique_id=1876878133]
+
+[node name="Textures" type="Node2D" parent="." unique_id=371231209]

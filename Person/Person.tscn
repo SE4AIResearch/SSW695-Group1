@@ -1,0 +1,13 @@
+[gd_scene format=3 uid="uid://doy5ib16ee1oa"]
+
+[node name="Person" type="Node2D" unique_id=1533579046]
+
+[node name="headSprite" type="Sprite2D" parent="." unique_id=546239071]
+
+[node name="hairSprite" type="Sprite2D" parent="." unique_id=1649586401]
+
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=947152690]
+
+[node name="mouthSprite" type="Sprite2D" parent="." unique_id=599888584]
+
+[node name="noseSprite" type="Sprite2D" parent="." unique_id=850511957]
