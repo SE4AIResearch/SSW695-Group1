@@ -11,6 +11,7 @@ config_version=5
 [application]
 
 config/name="SSW656-CapstoneProject"
+run/main_scene="uid://bf1p7jmq78dfa"
 config/features=PackedStringArray("4.6", "Forward Plus")
 config/icon="res://icon.svg"
 

@@ -1,0 +1,21 @@
+[gd_scene format=3 uid="uid://bf1p7jmq78dfa"]
+
+[ext_resource type="PackedScene" uid="uid://cdg43iwue2amo" path="res://UI/MainMenu/Load/Load.tscn" id="1_430ii"]
+[ext_resource type="PackedScene" uid="uid://dmy60v7o6pvqw" path="res://UI/MainMenu/Main/Main.tscn" id="2_3p42x"]
+[ext_resource type="PackedScene" uid="uid://bvn5808vxkqc4" path="res://UI/MainMenu/Settings/Settings.tscn" id="3_3clmd"]
+[ext_resource type="PackedScene" uid="uid://d3fn48fjg2c7k" path="res://UI/MainMenu/Tutorial/Tutorial.tscn" id="4_bsanu"]
+[ext_resource type="PackedScene" uid="uid://ccmfo7vj6hbru" path="res://UI/Learning Center/LearningCenter.tscn" id="5_kftou"]
+
+[node name="MainMenu" type="Node2D" unique_id=1200224709]
+
+[node name="UI" type="CanvasLayer" parent="." unique_id=1074326306]
+
+[node name="Load" parent="UI" unique_id=228786290 instance=ExtResource("1_430ii")]
+
+[node name="Main" parent="UI" unique_id=403635816 instance=ExtResource("2_3p42x")]
+
+[node name="Settings" parent="UI" unique_id=302768763 instance=ExtResource("3_3clmd")]
+
+[node name="Tutorial" parent="UI" unique_id=1704739480 instance=ExtResource("4_bsanu")]
+
+[node name="LearningCenter" parent="UI" unique_id=1367531442 instance=ExtResource("5_kftou")]
