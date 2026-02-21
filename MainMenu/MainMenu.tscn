@@ -1,21 +1,79 @@
 [gd_scene format=3 uid="uid://bf1p7jmq78dfa"]
 
+[ext_resource type="Script" uid="uid://b2bvcd0mshq6g" path="res://MainMenu/main_menu.gd" id="1_3p42x"]
 [ext_resource type="PackedScene" uid="uid://cdg43iwue2amo" path="res://UI/MainMenu/Load/Load.tscn" id="1_430ii"]
-[ext_resource type="PackedScene" uid="uid://dmy60v7o6pvqw" path="res://UI/MainMenu/Main/Main.tscn" id="2_3p42x"]
 [ext_resource type="PackedScene" uid="uid://bvn5808vxkqc4" path="res://UI/MainMenu/Settings/Settings.tscn" id="3_3clmd"]
 [ext_resource type="PackedScene" uid="uid://d3fn48fjg2c7k" path="res://UI/MainMenu/Tutorial/Tutorial.tscn" id="4_bsanu"]
 [ext_resource type="PackedScene" uid="uid://ccmfo7vj6hbru" path="res://UI/Learning Center/LearningCenter.tscn" id="5_kftou"]
 
 [node name="MainMenu" type="Node2D" unique_id=1200224709]
+script = ExtResource("1_3p42x")
 
 [node name="UI" type="CanvasLayer" parent="." unique_id=1074326306]
 
 [node name="Load" parent="UI" unique_id=228786290 instance=ExtResource("1_430ii")]
-
-[node name="Main" parent="UI" unique_id=403635816 instance=ExtResource("2_3p42x")]
+visible = false
 
 [node name="Settings" parent="UI" unique_id=302768763 instance=ExtResource("3_3clmd")]
+visible = false
 
 [node name="Tutorial" parent="UI" unique_id=1704739480 instance=ExtResource("4_bsanu")]
+visible = false
 
 [node name="LearningCenter" parent="UI" unique_id=1367531442 instance=ExtResource("5_kftou")]
+visible = false
+
+[node name="MainButtons" type="Node2D" parent="UI" unique_id=1233538348]
+
+[node name="newGameButton" type="Button" parent="UI/MainButtons" unique_id=69548557]
+offset_left = 451.0
+offset_top = 135.0
+offset_right = 634.0
+offset_bottom = 186.0
+text = "Start New Game"
+
+[node name="loadDataButton" type="Button" parent="UI/MainButtons" unique_id=1885130127]
+offset_left = 453.0
+offset_top = 214.0
+offset_right = 636.0
+offset_bottom = 265.0
+text = "Load Game"
+
+[node name="settingsButton" type="Button" parent="UI/MainButtons" unique_id=337689050]
+offset_left = 453.0
+offset_top = 294.0
+offset_right = 636.0
+offset_bottom = 345.0
+text = "Settings"
+
+[node name="learningCenterButton" type="Button" parent="UI/MainButtons" unique_id=1959763467]
+offset_left = 455.0
+offset_top = 389.0
+offset_right = 638.0
+offset_bottom = 440.0
+text = "Learning Center"
+
+[node name="QuitButton" type="Button" parent="UI/MainButtons" unique_id=444549206]
+offset_left = 456.0
+offset_top = 470.0
+offset_right = 639.0
+offset_bottom = 521.0
+text = "Quit"
+
+[node name="Back" type="Button" parent="UI" unique_id=702969254]
+visible = false
+offset_left = 1045.0
+offset_top = 19.0
+offset_right = 1120.0
+offset_bottom = 84.0
+text = "Back"
+
+[node name="Camera2D" type="Camera2D" parent="." unique_id=1099083480]
+position = Vector2(576, 324)
+
+[connection signal="pressed" from="UI/MainButtons/newGameButton" to="." method="_on_new_game_button_pressed"]
+[connection signal="pressed" from="UI/MainButtons/loadDataButton" to="." method="_on_load_data_button_pressed"]
+[connection signal="pressed" from="UI/MainButtons/settingsButton" to="." method="_on_settings_button_pressed"]
+[connection signal="pressed" from="UI/MainButtons/learningCenterButton" to="." method="_on_learning_center_button_pressed"]
+[connection signal="pressed" from="UI/MainButtons/QuitButton" to="." method="_on_quit_button_pressed"]
+[connection signal="pressed" from="UI/Back" to="." method="_on_back_pressed"]

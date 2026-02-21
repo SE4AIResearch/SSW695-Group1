@@ -8,7 +8,6 @@
 [ext_resource type="PackedScene" uid="uid://dxn21lnj1tucq" path="res://UI/InGame/ProjectSetup/ProjectSetup.tscn" id="6_rudkk"]
 [ext_resource type="PackedScene" uid="uid://bt0pge4yh7l4p" path="res://UI/InGame/ProjectMetrics/ProjectMetrics.tscn" id="7_ct15o"]
 [ext_resource type="PackedScene" uid="uid://dptc4fldd8drk" path="res://UI/InGame/Pause/Pause.tscn" id="8_5ay6t"]
-[ext_resource type="PackedScene" uid="uid://ch5q3cbtusmrc" path="res://UI/InGame/HUD/HUD.tscn" id="9_o11ri"]
 [ext_resource type="PackedScene" uid="uid://d23gsp5gdmiq5" path="res://UI/InGame/Hiring/Hiring.tscn" id="10_khudx"]
 [ext_resource type="PackedScene" uid="uid://dl321u4e71m5q" path="res://UI/InGame/Backlog/Backlog.tscn" id="11_2q8k2"]
 [ext_resource type="PackedScene" uid="uid://ccmfo7vj6hbru" path="res://UI/Learning Center/LearningCenter.tscn" id="12_kl53g"]
@@ -18,25 +17,98 @@
 [node name="UI" type="CanvasLayer" parent="." unique_id=2109094166]
 
 [node name="WorkerDetails" parent="UI" unique_id=284419767 instance=ExtResource("1_mk20e")]
+visible = false
 
 [node name="Upgrades" parent="UI" unique_id=1081438699 instance=ExtResource("2_kl53g")]
+visible = false
 
 [node name="SprintAllocations" parent="UI" unique_id=1782884722 instance=ExtResource("3_3c0mk")]
+visible = false
 
 [node name="RandomEvent" parent="UI" unique_id=1422669053 instance=ExtResource("4_5o0fy")]
+visible = false
 
 [node name="ProjectSummary" parent="UI" unique_id=1785072258 instance=ExtResource("5_adavl")]
+visible = false
 
 [node name="ProjectSetup" parent="UI" unique_id=1270391857 instance=ExtResource("6_rudkk")]
+visible = false
 
 [node name="ProjectMetrics" parent="UI" unique_id=1826383789 instance=ExtResource("7_ct15o")]
+visible = false
 
 [node name="Pause" parent="UI" unique_id=1977347548 instance=ExtResource("8_5ay6t")]
-
-[node name="Hud" parent="UI" unique_id=758805526 instance=ExtResource("9_o11ri")]
+visible = false
 
 [node name="Hiring" parent="UI" unique_id=1716903600 instance=ExtResource("10_khudx")]
+visible = false
 
 [node name="Backlog" parent="UI" unique_id=1894012513 instance=ExtResource("11_2q8k2")]
+visible = false
 
 [node name="LearningCenter" parent="UI" unique_id=1367531442 instance=ExtResource("12_kl53g")]
+visible = false
+
+[node name="HUD" type="Node2D" parent="UI" unique_id=1641217276]
+
+[node name="Currency" type="RichTextLabel" parent="UI/HUD" unique_id=877430692]
+offset_left = 333.0
+offset_top = 34.0
+offset_right = 464.0
+offset_bottom = 73.0
+bbcode_enabled = true
+text = "Currency:"
+
+[node name="Score" type="RichTextLabel" parent="UI/HUD" unique_id=1758771665]
+offset_left = 624.0
+offset_top = 33.0
+offset_right = 710.0
+offset_bottom = 73.0
+bbcode_enabled = true
+text = "Score:"
+
+[node name="Label" type="Label" parent="UI/HUD" unique_id=984340097]
+offset_left = 217.0
+offset_top = 145.0
+offset_right = 292.0
+offset_bottom = 168.0
+text = "Front End"
+
+[node name="Label2" type="Label" parent="UI/HUD" unique_id=1747929288]
+offset_left = 385.0
+offset_top = 147.0
+offset_right = 490.0
+offset_bottom = 170.0
+text = "Back End"
+
+[node name="Label3" type="Label" parent="UI/HUD" unique_id=1211744277]
+offset_left = 545.0
+offset_top = 150.0
+offset_right = 650.0
+offset_bottom = 173.0
+text = "Reliability"
+
+[node name="Label4" type="Label" parent="UI/HUD" unique_id=1051588055]
+offset_left = 747.0
+offset_top = 150.0
+offset_right = 868.0
+offset_bottom = 173.0
+text = "Documentation"
+
+[node name="PauseButton" type="Button" parent="UI" unique_id=1348602957]
+offset_left = 1059.0
+offset_top = 2.0
+offset_right = 1151.0
+offset_bottom = 73.0
+text = "Pause"
+
+[node name="BackButton" type="Button" parent="UI" unique_id=1567251887]
+visible = false
+offset_left = 1059.0
+offset_top = 2.0
+offset_right = 1151.0
+offset_bottom = 73.0
+text = "Pause"
+
+[node name="Camera2D" type="Camera2D" parent="." unique_id=1819020716]
+position = Vector2(576, 324)
