@@ -7,3 +7,43 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+
+[node name="newGameButton" type="Button" parent="." unique_id=826264793]
+layout_mode = 0
+offset_left = 451.0
+offset_top = 135.0
+offset_right = 634.0
+offset_bottom = 186.0
+text = "Start New Game"
+
+[node name="loadDataButton" type="Button" parent="." unique_id=528349091]
+layout_mode = 0
+offset_left = 453.0
+offset_top = 214.0
+offset_right = 636.0
+offset_bottom = 265.0
+text = "Load Game"
+
+[node name="settingsButton" type="Button" parent="." unique_id=1282731233]
+layout_mode = 0
+offset_left = 453.0
+offset_top = 294.0
+offset_right = 636.0
+offset_bottom = 345.0
+text = "Settings"
+
+[node name="learningCenterButton" type="Button" parent="." unique_id=1582772320]
+layout_mode = 0
+offset_left = 455.0
+offset_top = 389.0
+offset_right = 638.0
+offset_bottom = 440.0
+text = "Learning Center"
+
+[node name="learningCenterButton2" type="Button" parent="." unique_id=323081112]
+layout_mode = 0
+offset_left = 456.0
+offset_top = 470.0
+offset_right = 639.0
+offset_bottom = 521.0
+text = "Quit"

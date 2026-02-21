@@ -1,9 +1,27 @@
 [gd_scene format=3 uid="uid://0ydf0fui5u4q"]
 
-[node name="Upgrades" type="Control" unique_id=1081438699]
-layout_mode = 3
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
+[ext_resource type="PackedScene" uid="uid://d1uebs0vqbym5" path="res://UI/InGame/Upgrades/UpgradeItem/UpgradeItem.tscn" id="1_4u6re"]
+
+[node name="Upgrades" type="Node2D" unique_id=644922682]
+
+[node name="VBoxContainer" type="VBoxContainer" parent="." unique_id=148330908]
+offset_left = 244.0
+offset_top = 151.0
+offset_right = 815.0
+offset_bottom = 554.0
+
+[node name="UpgradeItem" parent="VBoxContainer" unique_id=886813104 instance=ExtResource("1_4u6re")]
+layout_mode = 2
+
+[node name="UpgradeItem2" parent="VBoxContainer" unique_id=571065084 instance=ExtResource("1_4u6re")]
+layout_mode = 2
+
+[node name="UpgradeItem3" parent="VBoxContainer" unique_id=1984120105 instance=ExtResource("1_4u6re")]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="." unique_id=773230786]
+offset_left = 499.0
+offset_top = 24.0
+offset_right = 573.0
+offset_bottom = 47.0
+text = "Upgrades"

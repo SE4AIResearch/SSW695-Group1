@@ -1,9 +1,22 @@
 [gd_scene format=3 uid="uid://d23gsp5gdmiq5"]
 
-[node name="Hiring" type="Control" unique_id=1716903600]
-layout_mode = 3
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
+[ext_resource type="PackedScene" uid="uid://h0a8rxjcvi2" path="res://UI/InGame/Hiring/HireItem/HireItem.tscn" id="1_kiv20"]
+
+[node name="Hiring" type="Node2D" unique_id=628576152]
+position = Vector2(202, 243)
+
+[node name="Hires" type="HBoxContainer" parent="." unique_id=358697084]
+offset_right = 177.0
+offset_bottom = 169.0
+
+[node name="HireItem" parent="Hires" unique_id=1567480096 instance=ExtResource("1_kiv20")]
+layout_mode = 2
+
+[node name="HireItem2" parent="Hires" unique_id=1159809507 instance=ExtResource("1_kiv20")]
+layout_mode = 2
+
+[node name="HireItem3" parent="Hires" unique_id=1934795538 instance=ExtResource("1_kiv20")]
+layout_mode = 2
+
+[node name="HireItem4" parent="Hires" unique_id=333377757 instance=ExtResource("1_kiv20")]
+layout_mode = 2

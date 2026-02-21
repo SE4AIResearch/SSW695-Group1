@@ -1,9 +1,18 @@
 [gd_scene format=3 uid="uid://bpiowg6rfby2v"]
 
-[node name="WorkerDetails" type="Control" unique_id=284419767]
-layout_mode = 3
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
+[node name="WorkerDetails" type="Node2D" unique_id=311203519]
+
+[node name="Background" type="Sprite2D" parent="." unique_id=1644785332]
+
+[node name="RichTextLabel" type="RichTextLabel" parent="Background" unique_id=1097183476]
+anchors_preset = -1
+anchor_left = -88.00001
+anchor_top = -85.00001
+anchor_right = 89.00001
+anchor_bottom = 84.00001
+text = "Name Here
+Backend
+Frontend
+Documenting
+Speed
+Stamina"

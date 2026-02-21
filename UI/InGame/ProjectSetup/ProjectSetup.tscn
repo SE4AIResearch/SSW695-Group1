@@ -1,9 +1,29 @@
 [gd_scene format=3 uid="uid://dxn21lnj1tucq"]
 
-[node name="ProjectSetup" type="Control" unique_id=1270391857]
-layout_mode = 3
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
+[ext_resource type="PackedScene" uid="uid://bad3dg3pps7r7" path="res://UI/InGame/ProjectSetup/ProjectItem/ProjectItem.tscn" id="1_pc1he"]
+
+[node name="ProjectSetup" type="Node2D" unique_id=172000320]
+
+[node name="VBoxContainer" type="VBoxContainer" parent="." unique_id=708689776]
+offset_left = 266.0
+offset_top = 125.0
+offset_right = 834.0
+offset_bottom = 614.0
+
+[node name="ProjectItem" parent="VBoxContainer" unique_id=1964688718 instance=ExtResource("1_pc1he")]
+layout_mode = 2
+
+[node name="ProjectItem2" parent="VBoxContainer" unique_id=424048909 instance=ExtResource("1_pc1he")]
+layout_mode = 2
+
+[node name="ProjectItem3" parent="VBoxContainer" unique_id=151699358 instance=ExtResource("1_pc1he")]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="." unique_id=1897434829]
+offset_left = 477.0
+offset_top = 25.0
+offset_right = 601.0
+offset_bottom = 71.0
+text = "Projects"
+horizontal_alignment = 1
+vertical_alignment = 1

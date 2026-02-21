@@ -1,9 +1,54 @@
 [gd_scene format=3 uid="uid://ch5q3cbtusmrc"]
 
-[node name="Hud" type="Control" unique_id=758805526]
-layout_mode = 3
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
+[node name="Hud" type="Node2D" unique_id=312394052]
+
+[node name="Currency" type="RichTextLabel" parent="." unique_id=280474733]
+offset_left = 333.0
+offset_top = 34.0
+offset_right = 464.0
+offset_bottom = 73.0
+bbcode_enabled = true
+text = "Currency:"
+
+[node name="Score" type="RichTextLabel" parent="." unique_id=1475061889]
+offset_left = 624.0
+offset_top = 33.0
+offset_right = 710.0
+offset_bottom = 73.0
+bbcode_enabled = true
+text = "Score:"
+
+[node name="Label" type="Label" parent="." unique_id=64595465]
+offset_left = 217.0
+offset_top = 145.0
+offset_right = 292.0
+offset_bottom = 168.0
+text = "Front End"
+
+[node name="Label2" type="Label" parent="." unique_id=1455124126]
+offset_left = 385.0
+offset_top = 147.0
+offset_right = 490.0
+offset_bottom = 170.0
+text = "Back End"
+
+[node name="Label3" type="Label" parent="." unique_id=2113289077]
+offset_left = 545.0
+offset_top = 150.0
+offset_right = 650.0
+offset_bottom = 173.0
+text = "Reliability"
+
+[node name="Label4" type="Label" parent="." unique_id=1235188757]
+offset_left = 747.0
+offset_top = 150.0
+offset_right = 868.0
+offset_bottom = 173.0
+text = "Documentation"
+
+[node name="Button" type="Button" parent="." unique_id=1512308558]
+offset_left = 1059.0
+offset_top = 2.0
+offset_right = 1151.0
+offset_bottom = 73.0
+text = "Pause"

@@ -1,9 +1,38 @@
 [gd_scene format=3 uid="uid://dptc4fldd8drk"]
 
-[node name="Pause" type="Control" unique_id=1977347548]
-layout_mode = 3
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
+[node name="Pause" type="Node2D" unique_id=1814586971]
+
+[node name="Background" type="Sprite2D" parent="." unique_id=1084621080]
+
+[node name="Resume" type="Button" parent="." unique_id=801039505]
+offset_left = 471.0
+offset_top = 193.0
+offset_right = 662.0
+offset_bottom = 266.0
+
+[node name="Learning Center" type="Button" parent="." unique_id=1661286147]
+offset_left = 471.0
+offset_top = 273.0
+offset_right = 662.0
+offset_bottom = 346.0
+
+[node name="Settings" type="Button" parent="." unique_id=519392057]
+offset_left = 471.0
+offset_top = 353.0
+offset_right = 662.0
+offset_bottom = 426.0
+
+[node name="Quit" type="Button" parent="." unique_id=1788462913]
+offset_left = 471.0
+offset_top = 433.0
+offset_right = 662.0
+offset_bottom = 506.0
+
+[node name="Label" type="Label" parent="." unique_id=527402878]
+offset_left = 454.0
+offset_top = 27.0
+offset_right = 674.0
+offset_bottom = 126.0
+text = "Pause"
+horizontal_alignment = 1
+vertical_alignment = 1

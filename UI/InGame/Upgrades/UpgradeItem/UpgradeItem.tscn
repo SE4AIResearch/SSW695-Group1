@@ -1,0 +1,27 @@
+[gd_scene format=3 uid="uid://d1uebs0vqbym5"]
+
+[node name="UpgradeItem" type="Button" unique_id=886813104]
+custom_minimum_size = Vector2(571, 98)
+anchors_preset = -1
+anchor_right = 0.49600002
+anchor_bottom = 0.15100001
+offset_right = -0.3920288
+offset_bottom = 0.1519928
+
+[node name="UpgradeName" type="Label" parent="." unique_id=1943363255]
+layout_mode = 0
+offset_left = 10.0
+offset_right = 384.0
+offset_bottom = 98.0
+text = "Upgrade Name: Description"
+vertical_alignment = 1
+
+[node name="UpgradeName2" type="Label" parent="." unique_id=1806883558]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 419.0
+text = "Cost"
+horizontal_alignment = 1
+vertical_alignment = 1

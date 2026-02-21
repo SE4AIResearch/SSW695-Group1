@@ -15,6 +15,11 @@ run/main_scene="uid://bf1p7jmq78dfa"
 config/features=PackedStringArray("4.6", "Forward Plus")
 config/icon="res://icon.svg"
 
+[autoload]
+
+PersonConstructor="*uid://dda20vvlva31s"
+PlayerTool="*uid://b4ab01cuo5f4k"
+
 [dotnet]
 
 project/assembly_name="SSW656-CapstoneProject"

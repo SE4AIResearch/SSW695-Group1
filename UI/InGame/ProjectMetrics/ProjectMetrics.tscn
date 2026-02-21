@@ -1,9 +1,38 @@
 [gd_scene format=3 uid="uid://bt0pge4yh7l4p"]
 
-[node name="ProjectMetrics" type="Control" unique_id=1826383789]
-layout_mode = 3
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
+[node name="ProjectMetrics" type="Node2D" unique_id=65546387]
+
+[node name="Background" type="Sprite2D" parent="." unique_id=1195688917]
+
+[node name="Label" type="Label" parent="." unique_id=738700508]
+offset_left = 444.0
+offset_top = 22.0
+offset_right = 626.0
+offset_bottom = 105.0
+text = "Project Metrics"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="FrontEndBar" type="TextureProgressBar" parent="." unique_id=296849795]
+offset_left = 277.0
+offset_top = 121.0
+offset_right = 806.0
+offset_bottom = 163.9999
+
+[node name="BackEndBar" type="TextureProgressBar" parent="." unique_id=1412958544]
+offset_left = 277.0
+offset_top = 171.0
+offset_right = 806.0
+offset_bottom = 213.9999
+
+[node name="Reliability" type="TextureProgressBar" parent="." unique_id=662884275]
+offset_left = 277.0
+offset_top = 221.0
+offset_right = 806.0
+offset_bottom = 263.99988
+
+[node name="Documentation" type="TextureProgressBar" parent="." unique_id=802075270]
+offset_left = 277.0
+offset_top = 271.0
+offset_right = 806.0
+offset_bottom = 313.99988

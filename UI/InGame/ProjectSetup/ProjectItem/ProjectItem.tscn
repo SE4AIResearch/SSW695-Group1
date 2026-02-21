@@ -1,0 +1,26 @@
+[gd_scene format=3 uid="uid://bad3dg3pps7r7"]
+
+[node name="ProjectItem" type="Button" unique_id=1964688718]
+custom_minimum_size = Vector2(0, 153)
+anchors_preset = -1
+anchor_right = 0.183
+anchor_bottom = 0.27600002
+offset_right = 0.29595947
+offset_bottom = 0.15197754
+grow_horizontal = 2
+grow_vertical = 2
+flat = true
+
+[node name="ProjectDetails" type="Label" parent="." unique_id=2026093634]
+layout_mode = 1
+anchors_preset = -1
+anchor_right = 1.7860001
+anchor_bottom = 0.855
+offset_right = -0.04598999
+offset_bottom = -0.04499817
+text = "Project Name
+Client
+Budget
+Deadline
+Stakeholders
+Constraint"
