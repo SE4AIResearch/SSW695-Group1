@@ -1,34 +1,22 @@
 [gd_scene format=3 uid="uid://dptc4fldd8drk"]
 
+[ext_resource type="PackedScene" uid="uid://ccmfo7vj6hbru" path="res://UI/Learning Center/LearningCenter.tscn" id="1_avoc4"]
+[ext_resource type="Script" uid="uid://ci70001xy6kfv" path="res://UI/InGame/Pause/pause.gd" id="1_krpmk"]
+[ext_resource type="PackedScene" uid="uid://bvn5808vxkqc4" path="res://UI/MainMenu/Settings/Settings.tscn" id="2_kl4qd"]
+
 [node name="Pause" type="Node2D" unique_id=1814586971]
+process_mode = 2
+script = ExtResource("1_krpmk")
+
+[node name="Panel" type="Panel" parent="." unique_id=1969110642]
+offset_right = 1152.0
+offset_bottom = 648.0
 
 [node name="Background" type="Sprite2D" parent="." unique_id=1084621080]
 
-[node name="Resume" type="Button" parent="." unique_id=801039505]
-offset_left = 471.0
-offset_top = 193.0
-offset_right = 662.0
-offset_bottom = 266.0
+[node name="Menu" type="Node2D" parent="." unique_id=6922282]
 
-[node name="Learning Center" type="Button" parent="." unique_id=1661286147]
-offset_left = 471.0
-offset_top = 273.0
-offset_right = 662.0
-offset_bottom = 346.0
-
-[node name="Settings" type="Button" parent="." unique_id=519392057]
-offset_left = 471.0
-offset_top = 353.0
-offset_right = 662.0
-offset_bottom = 426.0
-
-[node name="Quit" type="Button" parent="." unique_id=1788462913]
-offset_left = 471.0
-offset_top = 433.0
-offset_right = 662.0
-offset_bottom = 506.0
-
-[node name="Label" type="Label" parent="." unique_id=527402878]
+[node name="Label" type="Label" parent="Menu" unique_id=527402878]
 offset_left = 454.0
 offset_top = 27.0
 offset_right = 674.0
@@ -36,3 +24,51 @@ offset_bottom = 126.0
 text = "Pause"
 horizontal_alignment = 1
 vertical_alignment = 1
+
+[node name="Resume" type="Button" parent="Menu" unique_id=801039505]
+offset_left = 471.0
+offset_top = 193.0
+offset_right = 662.0
+offset_bottom = 266.0
+text = "Resume"
+
+[node name="LearningCenterbutton" type="Button" parent="Menu" unique_id=1661286147]
+offset_left = 471.0
+offset_top = 273.0
+offset_right = 662.0
+offset_bottom = 346.0
+text = "Learning Center"
+
+[node name="SettingsButton" type="Button" parent="Menu" unique_id=519392057]
+offset_left = 471.0
+offset_top = 353.0
+offset_right = 662.0
+offset_bottom = 426.0
+text = "Settings"
+
+[node name="Quit" type="Button" parent="Menu" unique_id=1788462913]
+offset_left = 471.0
+offset_top = 433.0
+offset_right = 662.0
+offset_bottom = 506.0
+text = "Quit"
+
+[node name="LearningCenter" parent="." unique_id=2076332728 instance=ExtResource("1_avoc4")]
+visible = false
+
+[node name="Settings" parent="." unique_id=1348113033 instance=ExtResource("2_kl4qd")]
+visible = false
+
+[node name="Back" type="Button" parent="." unique_id=457136848]
+visible = false
+offset_left = 1044.0
+offset_top = 23.0
+offset_right = 1127.0
+offset_bottom = 98.0
+text = "Back"
+
+[connection signal="pressed" from="Menu/Resume" to="." method="_on_resume_pressed"]
+[connection signal="pressed" from="Menu/LearningCenterbutton" to="." method="_on_learning_centerbutton_pressed"]
+[connection signal="pressed" from="Menu/SettingsButton" to="." method="_on_settings_button_pressed"]
+[connection signal="pressed" from="Menu/Quit" to="." method="_on_quit_pressed"]
+[connection signal="pressed" from="Back" to="." method="_on_back_pressed"]

@@ -1,7 +1,5 @@
 [gd_scene format=3 uid="uid://dl321u4e71m5q"]
 
-[ext_resource type="PackedScene" uid="uid://lj5ewffwn1et" path="res://UI/InGame/WorkerSelect/WorkerSelect.tscn" id="1_n3tqd"]
-
 [node name="Backlog" type="Node2D" unique_id=671302833]
 
 [node name="WorkerLabel" type="Label" parent="." unique_id=995072112]
@@ -17,21 +15,6 @@ offset_left = 74.0
 offset_top = 129.0
 offset_right = 405.0
 offset_bottom = 637.0
-
-[node name="WorkerSelect" parent="Workers" unique_id=669589136 instance=ExtResource("1_n3tqd")]
-layout_mode = 2
-
-[node name="WorkerSelect4" parent="Workers" unique_id=791991634 instance=ExtResource("1_n3tqd")]
-layout_mode = 2
-
-[node name="WorkerSelect5" parent="Workers" unique_id=1944063470 instance=ExtResource("1_n3tqd")]
-layout_mode = 2
-
-[node name="WorkerSelect2" parent="Workers" unique_id=725511199 instance=ExtResource("1_n3tqd")]
-layout_mode = 2
-
-[node name="WorkerSelect3" parent="Workers" unique_id=1740929883 instance=ExtResource("1_n3tqd")]
-layout_mode = 2
 
 [node name="BacklogLabel" type="Label" parent="." unique_id=388305119]
 offset_left = 523.0
