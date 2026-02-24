@@ -11,7 +11,6 @@ position = Vector2(97, 71)
 [node name="RichTextLabel" type="RichTextLabel" parent="." unique_id=2061135645]
 layout_mode = 0
 offset_left = 213.0
-offset_top = 1.0
 offset_right = 388.0
 offset_bottom = 153.0
 text = "Name Here

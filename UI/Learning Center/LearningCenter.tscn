@@ -11,51 +11,83 @@ text = "Learning Center"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="SDLC Overview" type="Button" parent="." unique_id=3841594]
+[node name="Entry" type="RichTextLabel" parent="." unique_id=2033928089]
+offset_left = 148.0
+offset_top = 112.0
+offset_right = 984.0
+offset_bottom = 537.0
+
+[node name="Categories" type="Node2D" parent="." unique_id=1567571191]
+
+[node name="SDLC Overview" type="Button" parent="Categories" unique_id=3841594]
 offset_left = 478.0
 offset_top = 114.0
 offset_right = 651.0
 offset_bottom = 176.0
 text = "SDLC Overview"
 
-[node name="Agile" type="Button" parent="." unique_id=716144803]
+[node name="Agile" type="Button" parent="Categories" unique_id=716144803]
 offset_left = 480.0
 offset_top = 193.0
 offset_right = 653.0
 offset_bottom = 255.0
 text = "Agile"
 
-[node name="Waterfall" type="Button" parent="." unique_id=1040418353]
+[node name="Waterfall" type="Button" parent="Categories" unique_id=1040418353]
 offset_left = 481.0
 offset_top = 265.0
 offset_right = 654.0
 offset_bottom = 327.0
 text = "Waterfall"
 
-[node name="ProjectConstraints" type="Button" parent="." unique_id=1644543603]
+[node name="ProjectConstraints" type="Button" parent="Categories" unique_id=1644543603]
 offset_left = 479.0
 offset_top = 339.0
 offset_right = 652.0
 offset_bottom = 401.0
 text = "Project Constraints"
 
-[node name="StakeholderManagement" type="Button" parent="." unique_id=868400943]
+[node name="StakeholderManagement" type="Button" parent="Categories" unique_id=868400943]
 offset_left = 457.0
 offset_top = 406.0
 offset_right = 666.0
 offset_bottom = 468.0
 text = "Stakeholder Management"
 
-[node name="SprintPlanningBasics" type="Button" parent="." unique_id=2073076304]
+[node name="SprintPlanningBasics" type="Button" parent="Categories" unique_id=2073076304]
 offset_left = 473.0
 offset_top = 480.0
 offset_right = 652.0
 offset_bottom = 542.0
 text = "Sprint Planning Basics"
 
-[node name="RiskManagement" type="Button" parent="." unique_id=2113047792]
+[node name="RiskManagement" type="Button" parent="Categories" unique_id=2113047792]
 offset_left = 474.0
 offset_top = 554.0
 offset_right = 647.0
 offset_bottom = 616.0
 text = "Risk Management"
+
+[node name="PagingButtons" type="Node2D" parent="." unique_id=1727848660]
+
+[node name="previousButton" type="Button" parent="PagingButtons" unique_id=1786473143]
+offset_left = 22.0
+offset_top = 300.0
+offset_right = 97.0
+offset_bottom = 362.0
+text = "Previous"
+
+[node name="nextButton" type="Button" parent="PagingButtons" unique_id=794032662]
+offset_left = 1049.0
+offset_top = 309.0
+offset_right = 1124.0
+offset_bottom = 371.0
+text = "Next"
+
+[node name="ReturnToLCMenu" type="Button" parent="PagingButtons" unique_id=1762920913]
+offset_left = 1064.0
+offset_top = 571.0
+offset_right = 1140.0
+offset_bottom = 641.0
+text = "Back to
+LC Menu"

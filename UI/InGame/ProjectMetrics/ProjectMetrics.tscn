@@ -25,14 +25,20 @@ offset_top = 171.0
 offset_right = 806.0
 offset_bottom = 213.9999
 
+[node name="Documentation" type="TextureProgressBar" parent="." unique_id=802075270]
+offset_left = 277.0
+offset_top = 271.0
+offset_right = 806.0
+offset_bottom = 313.99988
+
 [node name="Reliability" type="TextureProgressBar" parent="." unique_id=662884275]
 offset_left = 277.0
 offset_top = 221.0
 offset_right = 806.0
 offset_bottom = 263.99988
 
-[node name="Documentation" type="TextureProgressBar" parent="." unique_id=802075270]
+[node name="StakeholderSatisfaction" type="TextureProgressBar" parent="." unique_id=242532042]
 offset_left = 277.0
-offset_top = 271.0
+offset_top = 289.0
 offset_right = 806.0
-offset_bottom = 313.99988
+offset_bottom = 331.99988

@@ -1,5 +1,7 @@
 [gd_scene format=3 uid="uid://h0a8rxjcvi2"]
 
+[ext_resource type="Script" uid="uid://bgmjmmfks434g" path="res://UI/InGame/Hiring/HireItem/hire_item.gd" id="1_n43g0"]
+
 [node name="HireItem" type="Button" unique_id=1567480096]
 custom_minimum_size = Vector2(177, 169)
 anchors_preset = -1
@@ -8,13 +10,12 @@ anchor_bottom = 0.25300002
 offset_right = 0.24798584
 offset_bottom = 0.055984497
 flat = true
+script = ExtResource("1_n43g0")
 
 [node name="RichTextLabel" type="RichTextLabel" parent="." unique_id=430627088]
 layout_mode = 0
-offset_left = 13.0
-offset_top = 10.0
-offset_right = 190.0
-offset_bottom = 179.0
+offset_right = 177.0
+offset_bottom = 138.0
 text = "Name Here
 Backend
 Frontend

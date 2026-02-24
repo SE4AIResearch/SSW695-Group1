@@ -3,10 +3,6 @@
 [ext_resource type="Script" uid="uid://n6vucbiu7cni" path="res://Level/main_level.gd" id="1_kl53g"]
 [ext_resource type="PackedScene" uid="uid://bpiowg6rfby2v" path="res://UI/InGame/WorkerDetails/WorkerDetails.tscn" id="1_mk20e"]
 [ext_resource type="Script" uid="uid://ba67mqx6erpk8" path="res://Level/ui.gd" id="2_3c0mk"]
-[ext_resource type="PackedScene" uid="uid://66yo7i3bp680" path="res://UI/InGame/SprintAllocations/SprintAllocations.tscn" id="3_3c0mk"]
-[ext_resource type="PackedScene" uid="uid://87v20wru1hrx" path="res://UI/InGame/RandomEvent/RandomEvent.tscn" id="4_5o0fy"]
-[ext_resource type="PackedScene" uid="uid://daomso2f86m2t" path="res://UI/InGame/ProjectSummary/ProjectSummary.tscn" id="5_adavl"]
-[ext_resource type="PackedScene" uid="uid://dxn21lnj1tucq" path="res://UI/InGame/ProjectSetup/ProjectSetup.tscn" id="6_rudkk"]
 [ext_resource type="PackedScene" uid="uid://dptc4fldd8drk" path="res://UI/InGame/Pause/Pause.tscn" id="8_5ay6t"]
 
 [node name="MainLevel" type="Node2D" unique_id=1895261646]
@@ -70,18 +66,6 @@ offset_top = 67.0
 offset_right = 530.0
 offset_bottom = 124.0
 text = "Upgrades"
-
-[node name="SprintAllocations" parent="UI" unique_id=1782884722 instance=ExtResource("3_3c0mk")]
-visible = false
-
-[node name="RandomEvent" parent="UI" unique_id=1422669053 instance=ExtResource("4_5o0fy")]
-visible = false
-
-[node name="ProjectSummary" parent="UI" unique_id=1785072258 instance=ExtResource("5_adavl")]
-visible = false
-
-[node name="ProjectSetup" parent="UI" unique_id=1270391857 instance=ExtResource("6_rudkk")]
-visible = false
 
 [node name="ProjectMetricsButton" type="Button" parent="UI" unique_id=1183087318]
 offset_left = 1007.0

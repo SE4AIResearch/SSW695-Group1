@@ -1,8 +1,38 @@
 [gd_scene format=3 uid="uid://d23gsp5gdmiq5"]
 
+[ext_resource type="Script" uid="uid://s8223fc5qud0" path="res://UI/InGame/Hiring/hiring.gd" id="1_kiv20"]
+
 [node name="Hiring" type="Node2D" unique_id=628576152]
+process_mode = 2
 position = Vector2(202, 243)
+script = ExtResource("1_kiv20")
 
 [node name="Hires" type="HBoxContainer" parent="." unique_id=358697084]
-offset_right = 177.0
-offset_bottom = 169.0
+offset_left = -90.0
+offset_top = -169.0
+offset_right = 895.0
+offset_bottom = 216.0
+
+[node name="SearchButton" type="Button" parent="." unique_id=148929133]
+offset_left = 549.0
+offset_top = 305.0
+offset_right = 713.0
+offset_bottom = 387.0
+text = "Search for hires"
+
+[node name="BudgetSlider" type="HSlider" parent="." unique_id=46284583]
+offset_left = -49.0
+offset_top = 367.0
+offset_right = 526.0
+offset_bottom = 383.0
+max_value = 1000.0
+ticks_position = 2
+
+[node name="BudgetLabel" type="Label" parent="." unique_id=2119190212]
+offset_left = 157.0
+offset_top = 324.0
+offset_right = 311.0
+offset_bottom = 347.0
+text = "Hiring Budget"
+horizontal_alignment = 1
+vertical_alignment = 1
