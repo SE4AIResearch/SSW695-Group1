@@ -3,6 +3,7 @@
 [ext_resource type="Script" uid="uid://n6vucbiu7cni" path="res://Level/main_level.gd" id="1_kl53g"]
 [ext_resource type="PackedScene" uid="uid://bpiowg6rfby2v" path="res://UI/InGame/WorkerDetails/WorkerDetails.tscn" id="1_mk20e"]
 [ext_resource type="Script" uid="uid://ba67mqx6erpk8" path="res://Level/ui.gd" id="2_3c0mk"]
+[ext_resource type="Script" uid="uid://bujgo4g4wuuud" path="res://Level/project_handler.gd" id="5_f8h88"]
 [ext_resource type="PackedScene" uid="uid://dptc4fldd8drk" path="res://UI/InGame/Pause/Pause.tscn" id="8_5ay6t"]
 
 [node name="MainLevel" type="Node2D" unique_id=1895261646]
@@ -111,6 +112,9 @@ visible = false
 
 [node name="Camera2D" type="Camera2D" parent="." unique_id=1819020716]
 position = Vector2(576, 324)
+
+[node name="projectHandler" type="Node" parent="." unique_id=1109642977]
+script = ExtResource("5_f8h88")
 
 [connection signal="pressed" from="UI/UpgradesButton" to="UI" method="_on_upgrades_button_pressed"]
 [connection signal="pressed" from="UI/ProjectMetricsButton" to="UI" method="_on_project_metrics_button_pressed"]

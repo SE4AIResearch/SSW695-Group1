@@ -1,5 +1,16 @@
 [gd_scene format=3 uid="uid://u8bret2kckvv"]
 
-[node name="Worker" type="Node2D" unique_id=1876878133]
+[ext_resource type="Script" uid="uid://cqag0vasl33gh" path="res://Person/Worker/worker.gd" id="1_l17xh"]
 
-[node name="Textures" type="Node2D" parent="." unique_id=371231209]
+[node name="Worker" type="Node2D" unique_id=1876878133]
+script = ExtResource("1_l17xh")
+
+[node name="headSprite" type="Sprite2D" parent="." unique_id=1710825731]
+
+[node name="hairSprite" type="Sprite2D" parent="." unique_id=2083482492]
+
+[node name="facialHairSprite" type="Sprite2D" parent="." unique_id=20765161]
+
+[node name="mouthSprite" type="Sprite2D" parent="." unique_id=1085375892]
+
+[node name="noseSprite" type="Sprite2D" parent="." unique_id=1654903927]

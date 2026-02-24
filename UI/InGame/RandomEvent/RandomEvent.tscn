@@ -3,31 +3,31 @@
 [node name="RandomEvent" type="Node2D" unique_id=1794697379]
 
 [node name="Button" type="Button" parent="." unique_id=1466148275]
-offset_left = 312.0
+offset_left = 258.0
 offset_top = 402.0
-offset_right = 510.0
+offset_right = 456.0
 offset_bottom = 495.0
 text = "1"
 
 [node name="Button2" type="Button" parent="." unique_id=1312835417]
-offset_left = 704.0
-offset_top = 401.0
-offset_right = 902.0
-offset_bottom = 494.0
+offset_left = 647.0
+offset_top = 404.0
+offset_right = 845.0
+offset_bottom = 497.0
 text = "2"
 
 [node name="Button3" type="Button" parent="." unique_id=901803467]
-offset_left = 314.0
+offset_left = 260.0
 offset_top = 517.0
-offset_right = 512.0
+offset_right = 458.0
 offset_bottom = 610.0
 text = "3"
 
 [node name="Button4" type="Button" parent="." unique_id=161336012]
-offset_left = 706.0
-offset_top = 520.0
-offset_right = 904.0
-offset_bottom = 613.0
+offset_left = 647.0
+offset_top = 518.0
+offset_right = 845.0
+offset_bottom = 611.0
 text = "4"
 
 [node name="Background" type="Sprite2D" parent="." unique_id=799934139]
@@ -40,8 +40,8 @@ offset_bottom = 359.0
 text = "Event Text"
 
 [node name="Label" type="Label" parent="." unique_id=677780507]
-offset_left = 545.0
+offset_left = 521.0
 offset_top = 36.0
-offset_right = 585.0
+offset_right = 634.0
 offset_bottom = 59.0
 text = "Random Event"

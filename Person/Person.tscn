@@ -1,6 +1,9 @@
 [gd_scene format=3 uid="uid://doy5ib16ee1oa"]
 
+[ext_resource type="Script" uid="uid://dh2uv4xlq8gft" path="res://Person/person.gd" id="1_beudb"]
+
 [node name="Person" type="Node2D" unique_id=1533579046]
+script = ExtResource("1_beudb")
 
 [node name="headSprite" type="Sprite2D" parent="." unique_id=546239071]
 
