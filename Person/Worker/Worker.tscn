@@ -1,16 +1,30 @@
 [gd_scene format=3 uid="uid://u8bret2kckvv"]
 
 [ext_resource type="Script" uid="uid://cqag0vasl33gh" path="res://Person/Worker/worker.gd" id="1_l17xh"]
+[ext_resource type="Texture2D" uid="uid://breqcy7jrm1kr" path="res://Person/Textures/Head/01.png" id="2_k1q1s"]
+[ext_resource type="Texture2D" uid="uid://b7dikmvar4jnb" path="res://Person/Textures/Hair/03.png" id="3_k1q1s"]
+[ext_resource type="Texture2D" uid="uid://cwaw43dvc7ejo" path="res://Person/Textures/Mouth/01.png" id="4_4ucnk"]
+[ext_resource type="Texture2D" uid="uid://bbvn8pwcea6ax" path="res://Person/Textures/Nose/02.png" id="5_pvhlq"]
+[ext_resource type="Texture2D" uid="uid://b1ov1ai8w2i85" path="res://Person/Textures/Eyes/01.png" id="6_msffv"]
 
 [node name="Worker" type="Node2D" unique_id=1876878133]
 script = ExtResource("1_l17xh")
 
 [node name="headSprite" type="Sprite2D" parent="." unique_id=1710825731]
+texture = ExtResource("2_k1q1s")
 
 [node name="hairSprite" type="Sprite2D" parent="." unique_id=2083482492]
-
-[node name="facialHairSprite" type="Sprite2D" parent="." unique_id=20765161]
+position = Vector2(1, -10)
+texture = ExtResource("3_k1q1s")
 
 [node name="mouthSprite" type="Sprite2D" parent="." unique_id=1085375892]
+position = Vector2(0, 7)
+texture = ExtResource("4_4ucnk")
 
 [node name="noseSprite" type="Sprite2D" parent="." unique_id=1654903927]
+position = Vector2(0, 1)
+texture = ExtResource("5_pvhlq")
+
+[node name="eyeSprite" type="Sprite2D" parent="." unique_id=1862072873]
+position = Vector2(0, -2)
+texture = ExtResource("6_msffv")

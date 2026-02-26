@@ -8,12 +8,13 @@ position = Vector2(202, 243)
 script = ExtResource("1_kiv20")
 
 [node name="Hires" type="HBoxContainer" parent="." unique_id=358697084]
-offset_left = -90.0
-offset_top = -169.0
-offset_right = 895.0
-offset_bottom = 216.0
+offset_left = -125.0
+offset_top = -16.0
+offset_right = 860.0
+offset_bottom = 153.0
 
 [node name="SearchButton" type="Button" parent="." unique_id=148929133]
+process_mode = 2
 offset_left = 549.0
 offset_top = 305.0
 offset_right = 713.0
@@ -36,3 +37,5 @@ offset_bottom = 347.0
 text = "Hiring Budget"
 horizontal_alignment = 1
 vertical_alignment = 1
+
+[connection signal="pressed" from="SearchButton" to="." method="_on_search_button_pressed"]
