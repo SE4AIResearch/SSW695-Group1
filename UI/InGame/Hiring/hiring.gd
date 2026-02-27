@@ -15,6 +15,7 @@ func _process(delta: float) -> void:
 
 
 func _on_search_button_pressed() -> void:
+	for child in $Hires.get_children(): child.queue_free()
 	for i in range(3):
 		var newHireUI = hireItem.instantiate()
 		var newHire = workerItem.instantiate()

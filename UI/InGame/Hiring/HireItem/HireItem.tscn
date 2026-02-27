@@ -3,20 +3,20 @@
 [ext_resource type="Script" uid="uid://bgmjmmfks434g" path="res://UI/InGame/Hiring/HireItem/hire_item.gd" id="1_n43g0"]
 
 [node name="HireItem" type="Button" unique_id=1567480096]
-custom_minimum_size = Vector2(312, 169)
+custom_minimum_size = Vector2(265, 169)
 anchors_preset = -1
-anchor_right = 0.27100003
-anchor_bottom = 0.261
-offset_right = -0.1920166
-offset_bottom = -0.12800598
+anchor_right = 0.23
+anchor_bottom = 0.254
+offset_right = 0.040008545
+offset_bottom = 4.4079895
 script = ExtResource("1_n43g0")
 
 [node name="workerInfo" type="RichTextLabel" parent="." unique_id=430627088]
 layout_mode = 0
-offset_left = 125.0
-offset_top = 7.0
-offset_right = 302.0
-offset_bottom = 162.0
+offset_left = 95.0
+offset_right = 265.0
+offset_bottom = 169.0
+mouse_filter = 1
 bbcode_enabled = true
 text = "Backend
 Frontend
@@ -25,5 +25,5 @@ Speed
 Stamina"
 
 [node name="spriteMarker" type="Marker2D" parent="." unique_id=913662329]
-position = Vector2(57, 80)
+position = Vector2(43, 80)
 scale = Vector2(2.5, 2.5)
