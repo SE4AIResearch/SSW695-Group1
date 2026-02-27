@@ -1,8 +1,10 @@
 [gd_scene format=3 uid="uid://dxn21lnj1tucq"]
 
+[ext_resource type="Script" uid="uid://xmimf63qhrhe" path="res://UI/InGame/ProjectSetup/project_setup.gd" id="1_4r33p"]
 [ext_resource type="PackedScene" uid="uid://bad3dg3pps7r7" path="res://UI/InGame/ProjectSetup/ProjectItem/ProjectItem.tscn" id="1_pc1he"]
 
 [node name="ProjectSetup" type="Node2D" unique_id=172000320]
+script = ExtResource("1_4r33p")
 
 [node name="VBoxContainer" type="VBoxContainer" parent="." unique_id=708689776]
 offset_left = 266.0
@@ -27,3 +29,12 @@ offset_bottom = 71.0
 text = "Projects"
 horizontal_alignment = 1
 vertical_alignment = 1
+
+[node name="Button" type="Button" parent="." unique_id=321960858]
+offset_left = 913.0
+offset_top = 499.0
+offset_right = 1116.0
+offset_bottom = 603.0
+text = "Generate Project Choices"
+
+[connection signal="pressed" from="Button" to="." method="_on_button_pressed"]

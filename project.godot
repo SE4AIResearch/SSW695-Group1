@@ -23,6 +23,7 @@ PlayerTool="*uid://b4ab01cuo5f4k"
 [display]
 
 window/stretch/mode="viewport"
+window/snap/snap_2d_transforms_to_pixel=true
 
 [dotnet]
 
@@ -36,3 +37,4 @@ project/assembly_name="SSW656-CapstoneProject"
 
 textures/canvas_textures/default_texture_filter=0
 rendering_device/driver.windows="d3d12"
+2d/snap/snap_2d_transforms_to_pixel=true
