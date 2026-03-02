@@ -7,11 +7,12 @@ var HiringMenu = load("res://UI/InGame/Hiring/Hiring.tscn")
 var BacklogMenu = load("res://UI/InGame/Backlog/Backlog.tscn")
 var ProjectSetupMenu = load("res://UI/InGame/ProjectSetup/ProjectSetup.tscn")
 
-func _ready() -> void:
+func _physics_process(delta: float) -> void:
+	getCurrentProjStats()
+
+func getCurrentProjStats():
+	
 	pass
-
-
-
 
 func _on_pause_button_pressed() -> void:
 	match get_tree().paused:
@@ -20,7 +21,6 @@ func _on_pause_button_pressed() -> void:
 	get_tree().paused = true
 	$Pause.visible = true
 	pass
-
 
 func _on_back_button_pressed() -> void:
 	currentMenu.queue_free()

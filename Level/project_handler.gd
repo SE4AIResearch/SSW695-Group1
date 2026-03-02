@@ -1,18 +1,15 @@
 extends Node
 
+var frontEndModifiers: float
+var backEndModifiers: float
+var documentingModifiers: float
+var speedModifiers: float
+var staminaModifiers: float
 var currentProject: Node
 
-var frontEndStat: int
-var backEndStat: int
-var documentingStat: int
-var reliabilityStat: int
-var stakeholderSatisfactionStat: int
 
-# Called when the node enters the scene tree for the first time.
 func _ready() -> void:
-	pass # Replace with function body.
+	pass
 
-
-# Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta: float) -> void:
 	pass

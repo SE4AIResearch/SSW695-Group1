@@ -4,20 +4,6 @@ var projectList = load("res://Projects/projectList.json")
 var projectItem = preload("res://Projects/projectBase.tscn")
 var projectChoiceItem = preload("res://UI/InGame/ProjectSetup/ProjectItem/ProjectItem.tscn")
 
-
-
-# Called when the node enters the scene tree for the first time.
-func _ready() -> void:
-	pass # Replace with function body.
-
-
-# Called every frame. 'delta' is the elapsed time since the previous frame.
-func _process(delta: float) -> void:
-	pass
-
-
-
-
 func _on_button_pressed() -> void:
 	generateProjectChoices()
 	pass
@@ -54,6 +40,7 @@ func projectSelected(project):
 	for child in $ProjectChoices.get_children(): 
 		if child.heldProject != project: child.heldProject.queue_free()
 		child.queue_free()
+	PlayerTool.newProject(project)
 	get_tree().paused = false
 	self.queue_free()
 	pass
