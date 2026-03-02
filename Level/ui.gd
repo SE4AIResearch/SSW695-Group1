@@ -5,7 +5,7 @@ var UpgradesMenu = load("res://UI/InGame/Upgrades/Upgrades.tscn")
 var ProjectMetricsMenu = load("res://UI/InGame/ProjectMetrics/ProjectMetrics.tscn")
 var HiringMenu = load("res://UI/InGame/Hiring/Hiring.tscn")
 var BacklogMenu = load("res://UI/InGame/Backlog/Backlog.tscn")
-
+var ProjectSetupMenu = load("res://UI/InGame/ProjectSetup/ProjectSetup.tscn")
 
 func _ready() -> void:
 	pass
@@ -36,6 +36,8 @@ func _on_hiring_button_pressed() -> void: createMenu(HiringMenu)
 
 func _on_backlog_button_pressed() -> void: createMenu(BacklogMenu)
 
+func _on_project_start_menu_pressed() -> void: createMenu(ProjectSetupMenu)
+
 func createMenu(NewMenu):
 	var menu = NewMenu.instantiate()
 	$NewMenu.add_child(menu)
@@ -43,3 +45,4 @@ func createMenu(NewMenu):
 	get_tree().paused = true
 	currentMenu.visible = true
 	$BackButton.visible = true
+

@@ -4,9 +4,9 @@ var personName: String
 
 var headSpritePath: String
 var hairSpritePath: String
-var facialHairSpritePath: String
 var mouthSpritePath: String
 var noseSpritePath: String
+var eyeSpritePath: String
 
 var frontEndWorkerStat: int
 var backEndWorkerStat: int

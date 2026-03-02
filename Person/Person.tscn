@@ -1,16 +1,23 @@
 [gd_scene format=3 uid="uid://doy5ib16ee1oa"]
 
 [ext_resource type="Script" uid="uid://dh2uv4xlq8gft" path="res://Person/person.gd" id="1_beudb"]
+[ext_resource type="Texture2D" uid="uid://breqcy7jrm1kr" path="res://Person/Textures/Head/01.png" id="2_hib4k"]
 
 [node name="Person" type="Node2D" unique_id=1533579046]
 script = ExtResource("1_beudb")
 
 [node name="headSprite" type="Sprite2D" parent="." unique_id=546239071]
+texture_filter = 1
+texture = ExtResource("2_hib4k")
 
 [node name="hairSprite" type="Sprite2D" parent="." unique_id=1649586401]
-
-[node name="facialHairSprite" type="Sprite2D" parent="." unique_id=947152690]
+texture_filter = 1
 
 [node name="mouthSprite" type="Sprite2D" parent="." unique_id=599888584]
+texture_filter = 1
 
 [node name="noseSprite" type="Sprite2D" parent="." unique_id=850511957]
+texture_filter = 1
+
+[node name="eyeSprite" type="Sprite2D" parent="." unique_id=754297076]
+texture_filter = 1
