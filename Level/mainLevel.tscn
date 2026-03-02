@@ -116,9 +116,17 @@ position = Vector2(576, 324)
 [node name="projectHandler" type="Node" parent="." unique_id=1109642977]
 script = ExtResource("5_f8h88")
 
+[node name="projectStartMenu" type="Button" parent="." unique_id=1227698512]
+offset_left = 45.0
+offset_top = 528.0
+offset_right = 202.0
+offset_bottom = 595.0
+text = "Show Project Start Menu"
+
 [connection signal="pressed" from="UI/UpgradesButton" to="UI" method="_on_upgrades_button_pressed"]
 [connection signal="pressed" from="UI/ProjectMetricsButton" to="UI" method="_on_project_metrics_button_pressed"]
 [connection signal="pressed" from="UI/HiringButton" to="UI" method="_on_hiring_button_pressed"]
 [connection signal="pressed" from="UI/BacklogButton" to="UI" method="_on_backlog_button_pressed"]
 [connection signal="pressed" from="UI/BackButton" to="UI" method="_on_back_button_pressed"]
 [connection signal="pressed" from="UI/PauseButton" to="UI" method="_on_pause_button_pressed"]
+[connection signal="pressed" from="projectStartMenu" to="UI" method="_on_project_start_menu_pressed"]

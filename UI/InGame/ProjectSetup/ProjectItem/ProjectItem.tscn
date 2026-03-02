@@ -1,21 +1,29 @@
 [gd_scene format=3 uid="uid://bad3dg3pps7r7"]
 
+[ext_resource type="Script" uid="uid://cg0pp8eny7p3r" path="res://UI/InGame/ProjectSetup/ProjectItem/project_item.gd" id="1_xmqj3"]
+
 [node name="ProjectItem" type="Button" unique_id=1964688718]
-custom_minimum_size = Vector2(0, 153)
+custom_minimum_size = Vector2(260, 245)
 anchors_preset = -1
-anchor_right = 0.183
-anchor_bottom = 0.27600002
-offset_right = 0.29595947
-offset_bottom = 0.15197754
+anchor_right = 0.19500001
+anchor_bottom = 0.335
+offset_left = 0.5
+offset_right = 35.859985
+offset_bottom = 27.919998
 grow_horizontal = 2
 grow_vertical = 2
+script = ExtResource("1_xmqj3")
 
 [node name="ProjectDetails" type="Label" parent="." unique_id=2026093634]
 layout_mode = 1
 anchors_preset = -1
-anchor_right = 1.0
-anchor_bottom = 1.0
-offset_right = -0.111953735
+anchor_right = 1.0020001
+anchor_bottom = 1.0040001
+offset_left = -1.5
+offset_top = 1.0
+offset_right = -0.020019531
+offset_bottom = 0.019989014
+mouse_filter = 1
 text = "Project Name
 Description
 Client
@@ -24,3 +32,5 @@ Sprint Amount
 Minimum FE
 Minimum BE
 Minimum D"
+
+[connection signal="pressed" from="." to="." method="_on_pressed"]

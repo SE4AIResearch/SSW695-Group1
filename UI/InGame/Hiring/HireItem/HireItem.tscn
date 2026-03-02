@@ -27,3 +27,5 @@ Stamina"
 [node name="spriteMarker" type="Marker2D" parent="." unique_id=913662329]
 position = Vector2(43, 80)
 scale = Vector2(2.5, 2.5)
+
+[connection signal="pressed" from="." to="." method="_on_pressed"]

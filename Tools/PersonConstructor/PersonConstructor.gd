@@ -5,12 +5,12 @@ var textureList = load("res://Person/Textures/textures.gd").new()
 
 var skinColors: Array[Color]
 
-func generateName(person):
+func generateName() -> String:
 	var fName: String
 	match randi_range(0,1):
 		0: fName = nameList.maleFirstNames[randi_range(0,nameList.maleFirstNames.size()-1)]
 		1: fName = nameList.femaleFirstNames[randi_range(0,nameList.femaleFirstNames.size()-1)]
-	person.personName = fName +" "+nameList.lastNames[randi_range(0,nameList.lastNames.size()-1)]
+	return (fName +" "+nameList.lastNames[randi_range(0,nameList.lastNames.size()-1)])
 	
 func generateVisuals(person):
 	person.headSpritePath = textureList.head[randi_range(0,textureList.head.size()-1)]

@@ -19,14 +19,17 @@ func _on_search_button_pressed() -> void:
 	for i in range(3):
 		var newHireUI = hireItem.instantiate()
 		var newHire = workerItem.instantiate()
-		PersonConstructor.generateName(newHire)
+		newHire.personName = PersonConstructor.generateName()
 		PersonConstructor.generateVisuals(newHire)
 		PersonConstructor.generateWorkerStats(newHire)
 		newHireUI.fillInfo(newHire)
-		newHireUI.connect("selectWorker",hireSelected)
+		newHireUI.connect("selected",hireSelected)
 		$Hires.add_child(newHireUI)
 	pass
 
 func hireSelected(worker):
-
-	pass
+	for child in $Hires.get_children(): 
+		if worker != child.heldWorker: child.heldWorker.queue_free()
+		child.queue_free()
+	get_tree().paused = false
+	self.queue_free()
