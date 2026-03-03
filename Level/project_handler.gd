@@ -5,11 +5,16 @@ var backEndModifiers: float
 var documentingModifiers: float
 var speedModifiers: float
 var staminaModifiers: float
-var currentProject: Node
+var reliabilityModifier: float
+var stakeholderSatisfactionModifier: float
 
-
-func _ready() -> void:
-	pass
+var currentMetrics={
+"frontEnd":0,
+"backEnd":0,
+"documenting":0,
+"reliability":0,
+"stakeholderSatisfaction":0
+}
 
 func _process(delta: float) -> void:
 	pass

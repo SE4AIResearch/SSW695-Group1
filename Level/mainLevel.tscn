@@ -74,6 +74,7 @@ offset_left = 1007.0
 offset_top = 224.0
 offset_right = 1132.0
 offset_bottom = 289.0
+disabled = true
 text = "Project Metrics"
 
 [node name="HiringButton" type="Button" parent="UI" unique_id=2094471871]
@@ -88,6 +89,7 @@ offset_left = 1004.0
 offset_top = 306.0
 offset_right = 1131.0
 offset_bottom = 368.0
+disabled = true
 text = "Project Backlog"
 
 [node name="NewMenu" type="Node2D" parent="UI" unique_id=1478451013]

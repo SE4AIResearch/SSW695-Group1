@@ -23,9 +23,9 @@ func generateProjectChoices() -> void:
 		newProject.frontEndScalar = 1
 		newProject.backEndScalar = 1
 		newProject.documentingScalar = 1
-		newProject.frontEndProjectMin = 1
-		newProject.backEndProjectMin = 1
-		newProject.documentingProjectMin = 1
+		newProject.frontEndProjectMin = 10
+		newProject.backEndProjectMin = 10
+		newProject.documentingProjectMin = 10
 		newProject.baseSprintAmount = 1
 		newProject.sprintAmount = 1
 		newProject.baseSprintLength = 1
