@@ -103,6 +103,8 @@ offset_right = 1152.0
 offset_bottom = 142.0
 text = "Back"
 
+[node name="Clock" parent="UI" unique_id=2109593085 instance=ExtResource("5_aa2nh")]
+
 [node name="PauseButton" type="Button" parent="UI" unique_id=1348602957]
 process_mode = 3
 offset_left = 1060.0
@@ -112,8 +114,6 @@ text = "Pause"
 
 [node name="Pause" parent="UI" unique_id=1977347548 instance=ExtResource("8_5ay6t")]
 visible = false
-
-[node name="Clock" parent="UI" unique_id=2109593085 instance=ExtResource("5_aa2nh")]
 
 [node name="Camera2D" type="Camera2D" parent="." unique_id=1819020716]
 position = Vector2(576, 324)

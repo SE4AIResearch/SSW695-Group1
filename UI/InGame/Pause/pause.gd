@@ -47,4 +47,5 @@ func _on_settings_button_pressed() -> void:
 func _on_back_pressed() -> void:
 	currentMenu.visible = false
 	$Menu.visible = true
+	$Back.visible = false
 	pass
