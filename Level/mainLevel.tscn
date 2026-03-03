@@ -3,6 +3,7 @@
 [ext_resource type="Script" uid="uid://n6vucbiu7cni" path="res://Level/main_level.gd" id="1_kl53g"]
 [ext_resource type="PackedScene" uid="uid://bpiowg6rfby2v" path="res://UI/InGame/WorkerDetails/WorkerDetails.tscn" id="1_mk20e"]
 [ext_resource type="Script" uid="uid://ba67mqx6erpk8" path="res://Level/ui.gd" id="2_3c0mk"]
+[ext_resource type="PackedScene" uid="uid://1pr2vj688p2r" path="res://UI/InGame/Clock/Clock.tscn" id="5_aa2nh"]
 [ext_resource type="Script" uid="uid://bujgo4g4wuuud" path="res://Level/project_handler.gd" id="5_f8h88"]
 [ext_resource type="PackedScene" uid="uid://dptc4fldd8drk" path="res://UI/InGame/Pause/Pause.tscn" id="8_5ay6t"]
 
@@ -73,6 +74,7 @@ offset_left = 1007.0
 offset_top = 224.0
 offset_right = 1132.0
 offset_bottom = 289.0
+disabled = true
 text = "Project Metrics"
 
 [node name="HiringButton" type="Button" parent="UI" unique_id=2094471871]
@@ -87,6 +89,7 @@ offset_left = 1004.0
 offset_top = 306.0
 offset_right = 1131.0
 offset_bottom = 368.0
+disabled = true
 text = "Project Backlog"
 
 [node name="NewMenu" type="Node2D" parent="UI" unique_id=1478451013]
@@ -99,6 +102,8 @@ offset_top = 71.0
 offset_right = 1152.0
 offset_bottom = 142.0
 text = "Back"
+
+[node name="Clock" parent="UI" unique_id=2109593085 instance=ExtResource("5_aa2nh")]
 
 [node name="PauseButton" type="Button" parent="UI" unique_id=1348602957]
 process_mode = 3

@@ -1,11 +1,30 @@
 extends Node
 
+signal projectSelected
+signal projectFinished
+signal hireSelected
 
-# Called when the node enters the scene tree for the first time.
-func _ready() -> void:
-	pass # Replace with function body.
+var currentProject: Node
+var currentMetrics={
+"frontEnd":5,
+"backEnd":5,
+"documenting":5,
+"reliability":5,
+"stakeholderSatisfaction":5
+}
+var workers: Array
+var upgrades: Array
 
 
-# Called every frame. 'delta' is the elapsed time since the previous frame.
-func _process(delta: float) -> void:
+func newProject(project) -> void:
+	currentProject = project
+	projectSelected.emit()
+	pass
+
+func newHire(worker) -> void:
+	workers.append(worker)
+	hireSelected.emit()
+	pass
+	
+func newUpgrade(upgrade) -> void:
 	pass
