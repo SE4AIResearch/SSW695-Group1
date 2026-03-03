@@ -1,0 +1,10 @@
+[gd_scene format=3 uid="uid://1pr2vj688p2r"]
+
+[ext_resource type="Script" uid="uid://2v0qtw1j20uc" path="res://UI/InGame/Clock/clock.gd" id="1_fh1nn"]
+
+[node name="Clock" type="Node2D" unique_id=2109593085]
+script = ExtResource("1_fh1nn")
+
+[node name="TimeLabel" type="RichTextLabel" parent="." unique_id=1976948806]
+offset_right = 130.0
+offset_bottom = 55.0
