@@ -10,6 +10,7 @@ var difficulty: int
 var frontEndScalar: float
 var backEndScalar: float
 var documentingScalar: float
+
 var frontEndProjectMin: int
 var backEndProjectMin: int
 var documentingProjectMin: int
@@ -19,5 +20,7 @@ var sprintAmount: int
 
 var baseSprintLength: int
 var sprintLength: int
+
+var methodology: String
 
 var metrics: Dictionary
