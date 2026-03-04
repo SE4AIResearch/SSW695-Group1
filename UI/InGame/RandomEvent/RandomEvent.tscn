@@ -1,6 +1,9 @@
 [gd_scene format=3 uid="uid://87v20wru1hrx"]
 
+[ext_resource type="Script" uid="uid://c12jclxyil7mu" path="res://UI/InGame/RandomEvent/random_event.gd" id="1_5dd7b"]
+
 [node name="RandomEvent" type="Node2D" unique_id=1794697379]
+script = ExtResource("1_5dd7b")
 
 [node name="Button" type="Button" parent="." unique_id=1466148275]
 offset_left = 258.0

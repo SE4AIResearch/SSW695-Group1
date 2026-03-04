@@ -16,77 +16,86 @@ text = "Project Metrics"
 horizontal_alignment = 1
 vertical_alignment = 1
 
+[node name="methodologyLabel" type="Label" parent="." unique_id=1524367975]
+offset_left = 444.0
+offset_top = 63.0
+offset_right = 626.0
+offset_bottom = 86.0
+text = "Methodology: "
+horizontal_alignment = 1
+vertical_alignment = 1
+
 [node name="frontEndLabel" type="Label" parent="." unique_id=772124594]
 offset_left = 444.0
-offset_top = 60.0
+offset_top = 101.0
 offset_right = 626.0
-offset_bottom = 90.0
+offset_bottom = 131.0
 text = "Front End"
 horizontal_alignment = 1
 vertical_alignment = 1
 
 [node name="frontEndBar" type="TextureProgressBar" parent="." unique_id=296849795]
 offset_left = 277.0
-offset_top = 90.0
+offset_top = 131.0
 offset_right = 806.0
-offset_bottom = 132.9999
+offset_bottom = 173.9999
 
 [node name="backEndLabel" type="Label" parent="." unique_id=1997384859]
 offset_left = 444.0
-offset_top = 131.0
+offset_top = 172.0
 offset_right = 626.0
-offset_bottom = 161.0
+offset_bottom = 202.0
 text = "Back End"
 horizontal_alignment = 1
 vertical_alignment = 1
 
 [node name="backEndBar" type="TextureProgressBar" parent="." unique_id=1412958544]
 offset_left = 277.0
-offset_top = 160.0
+offset_top = 201.0
 offset_right = 806.0
-offset_bottom = 202.9999
+offset_bottom = 243.99988
 
 [node name="documentingLabel" type="Label" parent="." unique_id=1977206397]
 offset_left = 444.0
-offset_top = 203.0
+offset_top = 244.0
 offset_right = 626.0
-offset_bottom = 233.0
+offset_bottom = 274.0
 text = "Documenting"
 horizontal_alignment = 1
 vertical_alignment = 1
 
 [node name="documentationBar" type="TextureProgressBar" parent="." unique_id=802075270]
 offset_left = 277.0
-offset_top = 230.0
+offset_top = 271.0
 offset_right = 806.0
-offset_bottom = 272.99988
+offset_bottom = 313.99988
 
 [node name="reliabilityLabel" type="Label" parent="." unique_id=683978752]
 offset_left = 444.0
-offset_top = 277.0
+offset_top = 318.0
 offset_right = 626.0
-offset_bottom = 307.0
+offset_bottom = 348.0
 text = "Reliability"
 horizontal_alignment = 1
 vertical_alignment = 1
 
 [node name="reliabilityBar" type="TextureProgressBar" parent="." unique_id=662884275]
 offset_left = 277.0
-offset_top = 316.0
+offset_top = 357.0
 offset_right = 806.0
-offset_bottom = 358.99988
+offset_bottom = 399.99988
 
 [node name="stakeholderSatisfactionLabel" type="Label" parent="." unique_id=1615798467]
 offset_left = 444.0
-offset_top = 364.0
+offset_top = 405.0
 offset_right = 632.0
-offset_bottom = 394.0
+offset_bottom = 435.0
 text = "Stakeholder Satisfaction"
 horizontal_alignment = 1
 vertical_alignment = 1
 
 [node name="stakeholderSatisfactionBar" type="TextureProgressBar" parent="." unique_id=242532042]
 offset_left = 277.0
-offset_top = 401.0
+offset_top = 442.0
 offset_right = 806.0
-offset_bottom = 443.99988
+offset_bottom = 484.99988

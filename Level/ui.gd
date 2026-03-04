@@ -6,6 +6,7 @@ var ProjectMetricsMenu = load("res://UI/InGame/ProjectMetrics/ProjectMetrics.tsc
 var HiringMenu = load("res://UI/InGame/Hiring/Hiring.tscn")
 var BacklogMenu = load("res://UI/InGame/Backlog/Backlog.tscn")
 var ProjectSetupMenu = load("res://UI/InGame/ProjectSetup/ProjectSetup.tscn")
+var randomEventMenu = load("res://UI/InGame/RandomEvent/RandomEvent.tscn")
 
 func _ready() -> void:
 	PlayerTool.connect("projectSelected",toggleProjectButtons)
@@ -45,6 +46,8 @@ func _on_hiring_button_pressed() -> void: createMenu(HiringMenu.instantiate())
 func _on_backlog_button_pressed() -> void: createMenu(BacklogMenu.instantiate())
 
 func _on_project_start_menu_pressed() -> void: createMenu(ProjectSetupMenu.instantiate())
+
+func _on_random_event_button_pressed() -> void: createMenu(randomEventMenu.instantiate())
 
 func createMenu(menu):
 	$NewMenu.add_child(menu)

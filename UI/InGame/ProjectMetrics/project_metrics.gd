@@ -11,6 +11,7 @@ func _process(delta: float) -> void:
 	pass
 
 func getCurrentMetrics(project,currentMetrics):
+	$methodologyLabel.text = "Methodology: " + project.methodology
 	$frontEndBar.max_value = project.frontEndProjectMin
 	$frontEndBar.value = currentMetrics.get("frontEnd")
 	$backEndBar.max_value = project.backEndProjectMin

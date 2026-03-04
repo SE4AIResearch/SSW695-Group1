@@ -115,6 +115,13 @@ text = "Pause"
 [node name="Pause" parent="UI" unique_id=1977347548 instance=ExtResource("8_5ay6t")]
 visible = false
 
+[node name="RandomEventButton" type="Button" parent="UI" unique_id=943257127]
+offset_left = 909.0
+offset_top = 541.0
+offset_right = 1085.0
+offset_bottom = 572.0
+text = "Create Random Event"
+
 [node name="Camera2D" type="Camera2D" parent="." unique_id=1819020716]
 position = Vector2(576, 324)
 
@@ -134,4 +141,5 @@ text = "Show Project Start Menu"
 [connection signal="pressed" from="UI/BacklogButton" to="UI" method="_on_backlog_button_pressed"]
 [connection signal="pressed" from="UI/BackButton" to="UI" method="_on_back_button_pressed"]
 [connection signal="pressed" from="UI/PauseButton" to="UI" method="_on_pause_button_pressed"]
+[connection signal="pressed" from="UI/RandomEventButton" to="UI" method="_on_random_event_button_pressed"]
 [connection signal="pressed" from="projectStartMenu" to="UI" method="_on_project_start_menu_pressed"]

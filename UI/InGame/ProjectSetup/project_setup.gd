@@ -30,6 +30,7 @@ func generateProjectChoices() -> void:
 		newProject.sprintAmount = 1
 		newProject.baseSprintLength = 1
 		newProject.sprintLength =1
+		newProject.methodology = "Waterfall"
 		newProject.metrics = {}
 		newChoice.prepProject(newProject)
 		newChoice.connect("selected",projectSelected)
@@ -37,6 +38,7 @@ func generateProjectChoices() -> void:
 		pass
 
 func projectSelected(project):
+	get_parent().get_parent().get_node("BackButton").visible = false
 	for child in $ProjectChoices.get_children(): 
 		if child.heldProject != project: child.heldProject.queue_free()
 		child.queue_free()

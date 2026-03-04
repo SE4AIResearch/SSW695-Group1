@@ -21,6 +21,7 @@ func _on_search_button_pressed() -> void:
 	pass
 
 func hireSelected(worker):
+	get_parent().get_parent().get_node("BackButton").visible = false
 	for child in $Hires.get_children(): 
 		if worker != child.heldWorker: child.heldWorker.queue_free()
 		child.queue_free()
