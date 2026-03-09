@@ -3,16 +3,9 @@ extends Node2D
 var hireItem = preload("res://UI/InGame/Hiring/HireItem/HireItem.tscn")
 var workerItem = preload("res://Person/Worker/Worker.tscn")
 
-# Called when the node enters the scene tree for the first time.
-func _ready() -> void:
-	pass # Replace with function body.
-
-
-# Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta: float) -> void:
 	$BudgetLabel.text = "Hiring Search Budget: $"+ str($BudgetSlider.value)
 	pass
-
 
 func _on_search_button_pressed() -> void:
 	for child in $Hires.get_children(): child.queue_free()
@@ -28,8 +21,10 @@ func _on_search_button_pressed() -> void:
 	pass
 
 func hireSelected(worker):
+	get_parent().get_parent().get_node("BackButton").visible = false
 	for child in $Hires.get_children(): 
 		if worker != child.heldWorker: child.heldWorker.queue_free()
 		child.queue_free()
+	PlayerTool.newHire(worker)
 	get_tree().paused = false
 	self.queue_free()

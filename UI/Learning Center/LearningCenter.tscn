@@ -1,6 +1,9 @@
 [gd_scene format=3 uid="uid://ccmfo7vj6hbru"]
 
+[ext_resource type="Script" uid="uid://x128cyvjfshb" path="res://UI/Learning Center/learning_center.gd" id="1_rl605"]
+
 [node name="LearningCenter" type="Node2D" unique_id=2076332728]
+script = ExtResource("1_rl605")
 
 [node name="Label" type="Label" parent="." unique_id=49849032]
 offset_left = 459.0
@@ -10,12 +13,6 @@ offset_bottom = 121.0
 text = "Learning Center"
 horizontal_alignment = 1
 vertical_alignment = 1
-
-[node name="Entry" type="RichTextLabel" parent="." unique_id=2033928089]
-offset_left = 148.0
-offset_top = 112.0
-offset_right = 984.0
-offset_bottom = 537.0
 
 [node name="Categories" type="Node2D" parent="." unique_id=1567571191]
 
@@ -68,26 +65,44 @@ offset_right = 647.0
 offset_bottom = 616.0
 text = "Risk Management"
 
-[node name="PagingButtons" type="Node2D" parent="." unique_id=1727848660]
+[node name="Page" type="Node2D" parent="." unique_id=1727848660]
+visible = false
 
-[node name="previousButton" type="Button" parent="PagingButtons" unique_id=1786473143]
+[node name="previousButton" type="Button" parent="Page" unique_id=1786473143]
 offset_left = 22.0
 offset_top = 300.0
 offset_right = 97.0
 offset_bottom = 362.0
 text = "Previous"
 
-[node name="nextButton" type="Button" parent="PagingButtons" unique_id=794032662]
+[node name="nextButton" type="Button" parent="Page" unique_id=794032662]
 offset_left = 1049.0
 offset_top = 309.0
 offset_right = 1124.0
 offset_bottom = 371.0
 text = "Next"
 
-[node name="ReturnToLCMenu" type="Button" parent="PagingButtons" unique_id=1762920913]
+[node name="ReturnToLCMenu" type="Button" parent="Page" unique_id=1762920913]
 offset_left = 1064.0
 offset_top = 571.0
 offset_right = 1140.0
 offset_bottom = 641.0
 text = "Back to
 LC Menu"
+
+[node name="Entry" type="RichTextLabel" parent="Page" unique_id=2033928089]
+offset_left = 148.0
+offset_top = 112.0
+offset_right = 984.0
+offset_bottom = 537.0
+
+[connection signal="pressed" from="Categories/SDLC Overview" to="." method="_on_sdlc_overview_pressed"]
+[connection signal="pressed" from="Categories/Agile" to="." method="_on_agile_pressed"]
+[connection signal="pressed" from="Categories/Waterfall" to="." method="_on_waterfall_pressed"]
+[connection signal="pressed" from="Categories/ProjectConstraints" to="." method="_on_project_constraints_pressed"]
+[connection signal="pressed" from="Categories/StakeholderManagement" to="." method="_on_stakeholder_management_pressed"]
+[connection signal="pressed" from="Categories/SprintPlanningBasics" to="." method="_on_sprint_planning_basics_pressed"]
+[connection signal="pressed" from="Categories/RiskManagement" to="." method="_on_risk_management_pressed"]
+[connection signal="pressed" from="Page/previousButton" to="." method="_on_previous_button_pressed"]
+[connection signal="pressed" from="Page/nextButton" to="." method="_on_next_button_pressed"]
+[connection signal="pressed" from="Page/ReturnToLCMenu" to="." method="_on_return_to_lc_menu_pressed"]

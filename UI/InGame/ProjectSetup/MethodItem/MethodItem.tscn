@@ -1,0 +1,18 @@
+[gd_scene format=3 uid="uid://do6p5ry0m1heg"]
+
+[ext_resource type="Script" uid="uid://btp6mdr8c8f5i" path="res://UI/InGame/ProjectSetup/MethodItem/method_item.gd" id="1_p7jhb"]
+
+[node name="MetricItem" type="Button" unique_id=964148526]
+custom_minimum_size = Vector2(190, 146)
+offset_right = 190.0
+offset_bottom = 146.0
+script = ExtResource("1_p7jhb")
+
+[node name="MetricInfo" type="RichTextLabel" parent="." unique_id=346441847]
+layout_mode = 0
+offset_right = 190.0
+offset_bottom = 146.0
+mouse_filter = 1
+bbcode_enabled = true
+
+[connection signal="pressed" from="." to="." method="_on_pressed"]
