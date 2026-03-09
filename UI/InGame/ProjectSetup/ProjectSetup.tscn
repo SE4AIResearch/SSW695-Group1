@@ -6,13 +6,24 @@
 process_mode = 2
 script = ExtResource("1_4r33p")
 
-[node name="ProjectChoices" type="HBoxContainer" parent="." unique_id=1820019803]
+[node name="MethodologyChoose" type="Node2D" parent="." unique_id=29692906]
+visible = false
+
+[node name="MethodologyChoices" type="VBoxContainer" parent="MethodologyChoose" unique_id=1386000230]
+offset_left = 430.0
+offset_top = 158.0
+offset_right = 639.0
+offset_bottom = 430.0
+
+[node name="ProjectChoose" type="Node2D" parent="." unique_id=819832813]
+
+[node name="ProjectChoices" type="HBoxContainer" parent="ProjectChoose" unique_id=1820019803]
 offset_left = 227.0
 offset_top = 193.0
 offset_right = 910.0
 offset_bottom = 410.0
 
-[node name="Label" type="Label" parent="." unique_id=1897434829]
+[node name="Label" type="Label" parent="ProjectChoose" unique_id=1897434829]
 offset_left = 477.0
 offset_top = 25.0
 offset_right = 601.0
@@ -21,11 +32,11 @@ text = "Projects"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="Button" type="Button" parent="." unique_id=321960858]
+[node name="Button" type="Button" parent="ProjectChoose" unique_id=321960858]
 offset_left = 466.0
 offset_top = 499.0
 offset_right = 669.0
 offset_bottom = 603.0
 text = "Generate Project Choices"
 
-[connection signal="pressed" from="Button" to="." method="_on_button_pressed"]
+[connection signal="pressed" from="ProjectChoose/Button" to="." method="_on_button_pressed"]
