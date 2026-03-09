@@ -35,11 +35,12 @@ text = "4"
 
 [node name="Background" type="Sprite2D" parent="." unique_id=799934139]
 
-[node name="eventText" type="Label" parent="." unique_id=1980415402]
+[node name="eventText" type="RichTextLabel" parent="." unique_id=545062466]
 offset_left = 306.0
 offset_top = 118.0
 offset_right = 860.0
 offset_bottom = 359.0
+bbcode_enabled = true
 text = "Event Text"
 
 [node name="Label" type="Label" parent="." unique_id=677780507]

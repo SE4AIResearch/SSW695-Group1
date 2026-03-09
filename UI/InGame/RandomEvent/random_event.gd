@@ -8,4 +8,5 @@ func _ready() -> void:
 
 
 func initializeEvent():
+	var chosenEvent = eventList.events.pick_random()
 	pass
