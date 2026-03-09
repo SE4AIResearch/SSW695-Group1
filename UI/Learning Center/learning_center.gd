@@ -1,6 +1,6 @@
 extends Node2D
 
-var entries = preload("res://UI/Learning Center/Entries.gd").new()
+var entries = load("res://UI/Learning Center/entries.gd").new()
 var currentEntry: Dictionary
 var currentPage: int = 0
 
