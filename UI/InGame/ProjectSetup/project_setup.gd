@@ -42,7 +42,6 @@ func generateProjectChoices() -> void:
 		pass
 
 func projectSelected(project):
-	get_parent().get_parent().get_node("BackButton").visible = false
 	for child in $ProjectChoose/ProjectChoices.get_children(): 
 		if child.heldProject != project: child.heldProject.queue_free()
 		child.queue_free()
@@ -62,6 +61,7 @@ func generateMetricsChoices():
 	pass
 
 func methodSelected(chosenMetric):
+	get_parent().get_parent().get_node("BackButton").visible = false
 	selectedProject.methodology = chosenMetric
 	PlayerTool.newProject(selectedProject)
 	for child in $MethodologyChoose/MethodologyChoices.get_children(): child.queue_free()

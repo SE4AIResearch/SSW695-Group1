@@ -9,5 +9,11 @@ var methods = [
 },
 {
 "name":"Hybrid"
+},
+{
+"name":"V-Model"
+},
+{
+"name":"Spiral"
 }
 ]
