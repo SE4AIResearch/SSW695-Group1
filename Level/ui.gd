@@ -8,6 +8,11 @@ var BacklogMenu = load("res://UI/InGame/Backlog/Backlog.tscn")
 var ProjectSetupMenu = load("res://UI/InGame/ProjectSetup/ProjectSetup.tscn")
 var randomEventMenu = load("res://UI/InGame/RandomEvent/RandomEvent.tscn")
 
+var basePCScreenSize = Vector2(1.312,1.208)
+var basePCScreenPos = Vector2(958,466)
+var inUsePCScreenSize = Vector2(4.5,4.5)
+var inUsePCScreenPos = Vector2(576,324)
+
 func _ready() -> void:
 	PlayerTool.connect("projectSelected",toggleProjectButtons)
 	PlayerTool.connect("projectFinished",toggleProjectButtons)
@@ -55,6 +60,12 @@ func createMenu(menu):
 	get_tree().paused = true
 	currentMenu.visible = true
 	$BackButton.visible = true
+
+func _on_pc_pressed() -> void:
+	#Insert code of screen lerping in size and position to the middle of the screen
+	#and showing the PC Buttons when completed
+	
+	pass
 
 func toggleProjectButtons():
 	match PlayerTool.currentProject == null:
