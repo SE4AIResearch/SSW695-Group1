@@ -59,8 +59,8 @@ func createMenu(menu):
 func toggleProjectButtons():
 	match PlayerTool.currentProject == null:
 		false:
-			$ProjectMetricsButton.disabled = false
+			$PCButtons/ProjectMetricsButton.disabled = false
 			$BacklogButton.disabled = false
 		true:
-			$ProjectMetricsButton.disabled = true
+			$PCButtons/ProjectMetricsButton.disabled = true
 			$BacklogButton.disabled = true

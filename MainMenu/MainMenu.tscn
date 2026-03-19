@@ -5,6 +5,18 @@
 [ext_resource type="PackedScene" uid="uid://bvn5808vxkqc4" path="res://UI/MainMenu/Settings/Settings.tscn" id="3_3clmd"]
 [ext_resource type="PackedScene" uid="uid://d3fn48fjg2c7k" path="res://UI/MainMenu/Tutorial/Tutorial.tscn" id="4_bsanu"]
 [ext_resource type="PackedScene" uid="uid://ccmfo7vj6hbru" path="res://UI/Learning Center/LearningCenter.tscn" id="5_kftou"]
+[ext_resource type="Texture2D" uid="uid://ylm38omrsiv4" path="res://UI/Theme/Back/back.png" id="6_bsanu"]
+[ext_resource type="Texture2D" uid="uid://bv1wdylubep72" path="res://UI/Theme/Back/backPressed.png" id="7_kftou"]
+[ext_resource type="Texture2D" uid="uid://b8mmjep4nbkf4" path="res://UI/Theme/Back/backHover.png" id="8_nre7b"]
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_nxm3p"]
+texture = ExtResource("6_bsanu")
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_g1826"]
+texture = ExtResource("7_kftou")
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_npjie"]
+texture = ExtResource("8_nre7b")
 
 [node name="MainMenu" type="Node2D" unique_id=1200224709]
 script = ExtResource("1_3p42x")
@@ -64,9 +76,11 @@ text = "Quit"
 visible = false
 offset_left = 1045.0
 offset_top = 19.0
-offset_right = 1120.0
-offset_bottom = 84.0
-text = "Back"
+offset_right = 1109.0
+offset_bottom = 83.0
+theme_override_styles/normal = SubResource("StyleBoxTexture_nxm3p")
+theme_override_styles/pressed = SubResource("StyleBoxTexture_g1826")
+theme_override_styles/hover = SubResource("StyleBoxTexture_npjie")
 
 [node name="Camera2D" type="Camera2D" parent="." unique_id=1099083480]
 position = Vector2(576, 324)

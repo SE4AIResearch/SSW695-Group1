@@ -39,4 +39,3 @@ func calculateOutcome(eventChoice):
 	get_tree().paused = false
 	self.queue_free()
 	pass
-
