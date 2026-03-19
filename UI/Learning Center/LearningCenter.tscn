@@ -1,6 +1,47 @@
 [gd_scene format=3 uid="uid://ccmfo7vj6hbru"]
 
 [ext_resource type="Script" uid="uid://x128cyvjfshb" path="res://UI/Learning Center/learning_center.gd" id="1_rl605"]
+[ext_resource type="Texture2D" uid="uid://ylm38omrsiv4" path="res://UI/Theme/Back/back.png" id="2_mrgcg"]
+[ext_resource type="Texture2D" uid="uid://bv1wdylubep72" path="res://UI/Theme/Back/backPressed.png" id="3_bfegd"]
+[ext_resource type="Texture2D" uid="uid://b8mmjep4nbkf4" path="res://UI/Theme/Back/backHover.png" id="4_mx6fs"]
+[ext_resource type="Texture2D" uid="uid://be3qkx4golcyk" path="res://UI/Theme/Back/backDisabled.png" id="5_k5c6i"]
+[ext_resource type="Texture2D" uid="uid://wxpipi3cqg55" path="res://UI/Theme/next/next.png" id="5_va0p5"]
+[ext_resource type="Texture2D" uid="uid://ci7edtym4xjan" path="res://UI/Theme/next/nextPressed.png" id="6_k5c6i"]
+[ext_resource type="Texture2D" uid="uid://bn7hpclr6boqv" path="res://UI/Theme/next/nextHover.png" id="7_urb25"]
+[ext_resource type="Texture2D" uid="uid://dg5eqk23cx7i7" path="res://UI/Theme/next/nextDisabled.png" id="9_urb25"]
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_va0p5"]
+texture = ExtResource("2_mrgcg")
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_k5c6i"]
+texture = ExtResource("3_bfegd")
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_urb25"]
+texture = ExtResource("4_mx6fs")
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_112x7"]
+texture = ExtResource("5_k5c6i")
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_iymme"]
+texture = ExtResource("5_va0p5")
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_3gx42"]
+texture = ExtResource("6_k5c6i")
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_ubbqy"]
+texture = ExtResource("7_urb25")
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_uydi5"]
+texture = ExtResource("9_urb25")
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_pehpa"]
+texture = ExtResource("2_mrgcg")
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_vw6wv"]
+texture = ExtResource("3_bfegd")
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_fvbx8"]
+texture = ExtResource("4_mx6fs")
 
 [node name="LearningCenter" type="Node2D" unique_id=2076332728]
 script = ExtResource("1_rl605")
@@ -71,24 +112,31 @@ visible = false
 [node name="previousButton" type="Button" parent="Page" unique_id=1786473143]
 offset_left = 22.0
 offset_top = 300.0
-offset_right = 97.0
-offset_bottom = 362.0
-text = "Previous"
+offset_right = 86.0
+offset_bottom = 364.0
+theme_override_styles/normal = SubResource("StyleBoxTexture_va0p5")
+theme_override_styles/pressed = SubResource("StyleBoxTexture_k5c6i")
+theme_override_styles/hover = SubResource("StyleBoxTexture_urb25")
+theme_override_styles/disabled = SubResource("StyleBoxTexture_112x7")
 
 [node name="nextButton" type="Button" parent="Page" unique_id=794032662]
 offset_left = 1049.0
 offset_top = 309.0
-offset_right = 1124.0
-offset_bottom = 371.0
-text = "Next"
+offset_right = 1113.0
+offset_bottom = 373.0
+theme_override_styles/normal = SubResource("StyleBoxTexture_iymme")
+theme_override_styles/pressed = SubResource("StyleBoxTexture_3gx42")
+theme_override_styles/hover = SubResource("StyleBoxTexture_ubbqy")
+theme_override_styles/disabled = SubResource("StyleBoxTexture_uydi5")
 
 [node name="ReturnToLCMenu" type="Button" parent="Page" unique_id=1762920913]
 offset_left = 1064.0
 offset_top = 571.0
-offset_right = 1140.0
-offset_bottom = 641.0
-text = "Back to
-LC Menu"
+offset_right = 1128.0
+offset_bottom = 635.0
+theme_override_styles/normal = SubResource("StyleBoxTexture_pehpa")
+theme_override_styles/pressed = SubResource("StyleBoxTexture_vw6wv")
+theme_override_styles/hover = SubResource("StyleBoxTexture_fvbx8")
 
 [node name="Entry" type="RichTextLabel" parent="Page" unique_id=2033928089]
 offset_left = 148.0

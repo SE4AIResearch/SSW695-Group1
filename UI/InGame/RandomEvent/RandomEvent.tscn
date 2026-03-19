@@ -3,30 +3,31 @@
 [ext_resource type="Script" uid="uid://c12jclxyil7mu" path="res://UI/InGame/RandomEvent/random_event.gd" id="1_5dd7b"]
 
 [node name="RandomEvent" type="Node2D" unique_id=1794697379]
+process_mode = 2
 script = ExtResource("1_5dd7b")
 
-[node name="Button" type="Button" parent="." unique_id=1466148275]
+[node name="choice1" type="Button" parent="." unique_id=1466148275]
 offset_left = 258.0
 offset_top = 402.0
 offset_right = 456.0
 offset_bottom = 495.0
 text = "1"
 
-[node name="Button2" type="Button" parent="." unique_id=1312835417]
+[node name="choice2" type="Button" parent="." unique_id=1312835417]
 offset_left = 647.0
 offset_top = 404.0
 offset_right = 845.0
 offset_bottom = 497.0
 text = "2"
 
-[node name="Button3" type="Button" parent="." unique_id=901803467]
+[node name="choice3" type="Button" parent="." unique_id=901803467]
 offset_left = 260.0
 offset_top = 517.0
 offset_right = 458.0
 offset_bottom = 610.0
 text = "3"
 
-[node name="Button4" type="Button" parent="." unique_id=161336012]
+[node name="choice4" type="Button" parent="." unique_id=161336012]
 offset_left = 647.0
 offset_top = 518.0
 offset_right = 845.0
@@ -35,11 +36,12 @@ text = "4"
 
 [node name="Background" type="Sprite2D" parent="." unique_id=799934139]
 
-[node name="eventText" type="Label" parent="." unique_id=1980415402]
+[node name="eventText" type="RichTextLabel" parent="." unique_id=545062466]
 offset_left = 306.0
 offset_top = 118.0
 offset_right = 860.0
 offset_bottom = 359.0
+bbcode_enabled = true
 text = "Event Text"
 
 [node name="Label" type="Label" parent="." unique_id=677780507]
@@ -48,3 +50,8 @@ offset_top = 36.0
 offset_right = 634.0
 offset_bottom = 59.0
 text = "Random Event"
+
+[connection signal="pressed" from="choice1" to="." method="_on_choice_1_pressed"]
+[connection signal="pressed" from="choice2" to="." method="_on_choice_2_pressed"]
+[connection signal="pressed" from="choice3" to="." method="_on_choice_3_pressed"]
+[connection signal="pressed" from="choice4" to="." method="_on_choice_4_pressed"]

@@ -1,11 +1,19 @@
 extends Node
 
-
-# Called when the node enters the scene tree for the first time.
-func _ready() -> void:
-	pass # Replace with function body.
-
-
-# Called every frame. 'delta' is the elapsed time since the previous frame.
-func _process(delta: float) -> void:
-	pass
+#Types: BackEnd, FrontEnd, Documenting, Stakeholder, Backlog
+var events = [
+{
+"name":"CodeReviewBE1",
+"type":"BackEnd",
+"Description":"Review this code and find the error.\n [img = ]",
+"choices":["","","",""],
+"outcomes":["","","",""]
+},
+{
+"name":"CodeReviewFE1",
+"type":"FrontEnd",
+"Description":"Review this code and find the error.\n [img = ]",
+"choices":["","","",""],
+"outcomes":["","","",""]
+}
+]

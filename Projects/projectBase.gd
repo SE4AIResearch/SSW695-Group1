@@ -21,6 +21,6 @@ var sprintAmount: int
 var baseSprintLength: int
 var sprintLength: int
 
-var methodology: String
+var methodology: Dictionary
 
-var metrics: Dictionary
+var metric: Dictionary
