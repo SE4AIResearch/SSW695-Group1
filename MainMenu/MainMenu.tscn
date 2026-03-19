@@ -38,40 +38,40 @@ visible = false
 [node name="MainButtons" type="Node2D" parent="UI" unique_id=1233538348]
 
 [node name="newGameButton" type="Button" parent="UI/MainButtons" unique_id=69548557]
-offset_left = 108.0
-offset_top = 407.0
-offset_right = 300.0
-offset_bottom = 599.0
+offset_left = 117.0
+offset_top = 368.0
+offset_right = 309.0
+offset_bottom = 560.0
 theme_override_colors/font_color = Color(0, 0, 0, 1)
 theme_override_colors/font_pressed_color = Color(0, 0, 0, 1)
 theme_override_colors/font_hover_color = Color(0, 0, 0, 1)
 text = "Start New Game"
 
 [node name="loadDataButton" type="Button" parent="UI/MainButtons" unique_id=1885130127]
-offset_left = 376.0
-offset_top = 409.0
-offset_right = 568.0
-offset_bottom = 601.0
+offset_left = 377.0
+offset_top = 368.0
+offset_right = 569.0
+offset_bottom = 560.0
 theme_override_colors/font_color = Color(0, 0, 0, 1)
 theme_override_colors/font_pressed_color = Color(0, 0, 0, 1)
 theme_override_colors/font_hover_color = Color(0, 0, 0, 1)
 text = "Load Game"
 
 [node name="settingsButton" type="Button" parent="UI/MainButtons" unique_id=337689050]
-offset_left = 877.0
-offset_top = 420.0
-offset_right = 1069.0
-offset_bottom = 612.0
+offset_left = 889.0
+offset_top = 367.0
+offset_right = 1081.0
+offset_bottom = 559.0
 theme_override_colors/font_color = Color(0, 0, 0, 1)
 theme_override_colors/font_pressed_color = Color(0, 0, 0, 1)
 theme_override_colors/font_hover_color = Color(0, 0, 0, 1)
 text = "Settings"
 
 [node name="learningCenterButton" type="Button" parent="UI/MainButtons" unique_id=1959763467]
-offset_left = 636.0
-offset_top = 412.0
-offset_right = 828.0
-offset_bottom = 604.0
+offset_left = 641.0
+offset_top = 366.0
+offset_right = 833.0
+offset_bottom = 558.0
 theme_override_colors/font_color = Color(0, 0, 0, 1)
 theme_override_colors/font_pressed_color = Color(0, 0, 0, 1)
 theme_override_colors/font_hover_color = Color(0, 0, 0, 1)
@@ -79,10 +79,10 @@ theme_override_colors/font_disabled_color = Color(0.8745098, 0.8745098, 0.874509
 text = "Learning Center"
 
 [node name="QuitButton" type="Button" parent="UI/MainButtons" unique_id=444549206]
-offset_left = 929.0
-offset_top = 33.0
-offset_right = 1121.0
-offset_bottom = 225.0
+offset_left = 898.0
+offset_top = 56.0
+offset_right = 1090.0
+offset_bottom = 248.0
 theme_override_colors/font_color = Color(0, 0, 0, 1)
 theme_override_colors/font_pressed_color = Color(0, 0, 0, 1)
 theme_override_colors/font_hover_color = Color(0, 0, 0, 1)
