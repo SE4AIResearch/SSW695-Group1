@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://cv00wm5mq2tn8"
-path="res://.godot/imported/buttonPressedDisabled.png-aab35ce92ada9098378a6d5848959cfd.ctex"
+uid="uid://c2it0w0k17wgn"
+path="res://.godot/imported/slimButton.png-872b7a2412e41104a9a209d6d07d1d6a.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://UI/Theme/PCTheme/button/buttonPressedDisabled.png"
-dest_files=["res://.godot/imported/buttonPressedDisabled.png-aab35ce92ada9098378a6d5848959cfd.ctex"]
+source_file="res://UI/Theme/PCTheme/button/slimButton.png"
+dest_files=["res://.godot/imported/slimButton.png-872b7a2412e41104a9a209d6d07d1d6a.ctex"]
 
 [params]
 

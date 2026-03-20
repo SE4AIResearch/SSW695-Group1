@@ -38,6 +38,14 @@ func endMenu():
 	match pcMode:
 		true:
 			$PCButtons/PCBack.disabled = true
+			$PCButtons/UpgradesButton.disabled = false
+			$PCButtons/HiringButton.disabled = false
+			$PCButtons/projectStartMenu.disabled = false
+			match PlayerTool.currentProject == null:
+				false:
+					$PCButtons/ProjectMetricsButton.disabled = false
+				true:
+					$PCButtons/ProjectMetricsButton.disabled = true
 		false:
 			$BackButton.visible = false
 			get_tree().paused = false
@@ -64,7 +72,12 @@ func createMenu(menu):
 	get_tree().paused = true
 	currentMenu.visible = true
 	match pcMode:
-		true: $PCButtons/PCBack.disabled = false
+		true: 
+			$PCButtons/PCBack.disabled = false
+			$PCButtons/UpgradesButton.disabled = true
+			$PCButtons/ProjectMetricsButton.disabled = true
+			$PCButtons/HiringButton.disabled = true
+			$PCButtons/projectStartMenu.disabled = true
 		false: $BackButton.visible = true
 
 func _on_pc_pressed() -> void:
@@ -86,6 +99,16 @@ func _on_pc_power_pressed() -> void:
 	$PCScreen.visible = false
 	$PCScreenPanel.visible = false
 	$PCButtons.visible = false
+	$PCButtons/PCBack.disabled = true
+	$PCButtons/UpgradesButton.disabled = false
+	$PCButtons/HiringButton.disabled = false
+	$PCButtons/projectStartMenu.disabled = false
+	match PlayerTool.currentProject == null:
+		false:
+			$PCButtons/ProjectMetricsButton.disabled = false
+		true:
+			$PCButtons/ProjectMetricsButton.disabled = true
+	if $NewMenu.get_children().size() > 0: $NewMenu.get_child(0).queue_free()
 	pass
 
 func toggleProjectButtons():
