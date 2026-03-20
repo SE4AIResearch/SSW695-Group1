@@ -8,10 +8,7 @@ var BacklogMenu = load("res://UI/InGame/Backlog/Backlog.tscn")
 var ProjectSetupMenu = load("res://UI/InGame/ProjectSetup/ProjectSetup.tscn")
 var randomEventMenu = load("res://UI/InGame/RandomEvent/RandomEvent.tscn")
 
-var basePCScreenSize = Vector2(1.312,1.208)
-var basePCScreenPos = Vector2(958,466)
-var inUsePCScreenSize = Vector2(4.5,4.5)
-var inUsePCScreenPos = Vector2(576,324)
+var pcMode = false
 
 func _ready() -> void:
 	PlayerTool.connect("projectSelected",toggleProjectButtons)
@@ -33,11 +30,18 @@ func _on_pause_button_pressed() -> void:
 	$Pause.visible = true
 	pass
 
-func _on_back_button_pressed() -> void:
+func _on_back_button_pressed() -> void: endMenu()
+func _on_pc_back_pressed() -> void: endMenu()
+
+func endMenu():
 	currentMenu.queue_free()
-	$BackButton.visible = false
-	get_tree().paused = false
-	pass
+	match pcMode:
+		true:
+			$PCButtons/PCBack.disabled = true
+		false:
+			$BackButton.visible = false
+			get_tree().paused = false
+	
 
 func _on_upgrades_button_pressed() -> void: createMenu(UpgradesMenu.instantiate())
 
@@ -59,12 +63,29 @@ func createMenu(menu):
 	currentMenu = menu
 	get_tree().paused = true
 	currentMenu.visible = true
-	$BackButton.visible = true
+	match pcMode:
+		true: $PCButtons/PCBack.disabled = false
+		false: $BackButton.visible = true
 
 func _on_pc_pressed() -> void:
 	#Insert code of screen lerping in size and position to the middle of the screen
 	#and showing the PC Buttons when completed
+	pcMode = true
+	$PCButtons/PCBack.disabled = true
+	get_tree().paused = true
+	$Stats.visible = false
+	$PCScreen.visible = true
+	$PCScreenPanel.visible = true	
+	$PCButtons.visible = true
 	
+func _on_pc_power_pressed() -> void:
+	#Insert code of screen lerping in size and position to the original PC location and render buttons invisible
+	pcMode = false
+	get_tree().paused = false
+	$Stats.visible = true
+	$PCScreen.visible = false
+	$PCScreenPanel.visible = false
+	$PCButtons.visible = false
 	pass
 
 func toggleProjectButtons():

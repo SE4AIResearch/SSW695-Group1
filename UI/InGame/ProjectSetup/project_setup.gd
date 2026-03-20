@@ -61,12 +61,10 @@ func generateMetricsChoices():
 	pass
 
 func methodSelected(chosenMetric):
-	get_parent().get_parent().get_node("BackButton").visible = false
 	selectedProject.methodology = chosenMetric
 	PlayerTool.newProject(selectedProject)
 	for child in $MethodologyChoose/MethodologyChoices.get_children(): child.queue_free()
-	get_tree().paused = false
-	self.queue_free()
+	get_parent().get_parent().endMenu()
 	pass
 
 func finishProjectChoosing():

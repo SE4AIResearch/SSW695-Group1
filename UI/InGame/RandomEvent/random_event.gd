@@ -24,6 +24,8 @@ func initializeEvent():
 			pass
 		"Stakeholder":
 			pass
+		"Backlog":
+			pass
 	pass
 
 func _on_choice_1_pressed() -> void: calculateOutcome(choice1OBJ)
@@ -34,8 +36,5 @@ func _on_choice_4_pressed() -> void: calculateOutcome(choice4OBJ)
 func calculateOutcome(eventChoice):
 	#Insert code here which determines whether the outcome of the event is a project stat change, or a backlog item.
 	var outcome = eventChoice[1]
-
-	get_parent().get_parent().get_node("BackButton").visible = false
-	get_tree().paused = false
-	self.queue_free()
+	get_parent().get_parent().endMenu()
 	pass

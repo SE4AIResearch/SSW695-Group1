@@ -25,12 +25,18 @@
 [ext_resource type="Texture2D" uid="uid://b4bvhgbsonl82" path="res://UI/Theme/pause/payseHover.png" id="14_5ay6t"]
 [ext_resource type="Texture2D" uid="uid://bpmqerq7t6ow8" path="res://UI/Theme/PCTheme/Overlay.png" id="15_khv2s"]
 [ext_resource type="Texture2D" uid="uid://cebiwghdhkfft" path="res://UI/Theme/PCTheme/powerButton/pcPower.png" id="16_fy2ok"]
+[ext_resource type="Texture2D" uid="uid://cqjra4hvo67jb" path="res://UI/Theme/PCTheme/TextureBar/BG.png" id="16_lkgwe"]
 [ext_resource type="Texture2D" uid="uid://c2it0w0k17wgn" path="res://UI/Theme/PCTheme/button/button.png" id="16_simky"]
 [ext_resource type="Texture2D" uid="uid://bnulbxemxoryo" path="res://UI/Theme/PCTheme/button/buttonPressed.png" id="17_k25hm"]
+[ext_resource type="Texture2D" uid="uid://cy7ghvk8gm6ef" path="res://UI/Theme/PCTheme/TextureBar/Progress.png" id="17_uibgn"]
 [ext_resource type="Texture2D" uid="uid://b2d03va5d08g6" path="res://UI/Theme/PCTheme/powerButton/pcPowerPressed.png" id="17_uy1d4"]
 [ext_resource type="Texture2D" uid="uid://di1kn3fa7np7c" path="res://UI/Theme/PCTheme/button/buttonHeld.png" id="18_6ypmx"]
 [ext_resource type="Texture2D" uid="uid://b3yb8bcjykj7m" path="res://UI/Theme/PCTheme/powerButton/pcPowerHeld.png" id="18_tmx83"]
 [ext_resource type="Texture2D" uid="uid://cv00wm5mq2tn8" path="res://UI/Theme/PCTheme/button/buttonPressedDisabled.png" id="19_ejxy1"]
+[ext_resource type="Texture2D" uid="uid://d00apn0evacqg" path="res://UI/Theme/PCTheme/Back/pcBack.png" id="23_ejxy1"]
+[ext_resource type="Texture2D" uid="uid://dkqvr0lf6ytje" path="res://UI/Theme/PCTheme/Back/pcBackPressed.png" id="24_ktvj5"]
+[ext_resource type="Texture2D" uid="uid://crruuadiafv87" path="res://UI/Theme/PCTheme/Back/pcBackHeld.png" id="25_x2ak7"]
+[ext_resource type="Texture2D" uid="uid://o4k321o7djhb" path="res://UI/Theme/PCTheme/Back/pcBackDisabled.png" id="26_ktvj5"]
 
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_7drem"]
 texture = ExtResource("5_o11ri")
@@ -62,6 +68,8 @@ texture = ExtResource("6_kl53g")
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_adavl"]
 texture = ExtResource("7_3c0mk")
 
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_simky"]
+
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_ktvj5"]
 texture = ExtResource("16_simky")
 
@@ -82,6 +90,18 @@ texture = ExtResource("17_uy1d4")
 
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_k25hm"]
 texture = ExtResource("18_tmx83")
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_unvvn"]
+texture = ExtResource("23_ejxy1")
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_ern18"]
+texture = ExtResource("24_ktvj5")
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_a5dl5"]
+texture = ExtResource("25_x2ak7")
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_xwmsp"]
+texture = ExtResource("26_ktvj5")
 
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_s1qlg"]
 texture = ExtResource("8_3c0mk")
@@ -146,57 +166,117 @@ theme_override_styles/normal = SubResource("StyleBoxTexture_mk20e")
 theme_override_styles/pressed = SubResource("StyleBoxTexture_5o0fy")
 theme_override_styles/hover = SubResource("StyleBoxTexture_adavl")
 
+[node name="PCScreenPanel" type="Panel" parent="UI" unique_id=268579011]
+visible = false
+offset_right = 1152.0
+offset_bottom = 648.0
+theme_override_styles/panel = SubResource("StyleBoxEmpty_simky")
+
 [node name="PCScreen" type="Sprite2D" parent="UI" unique_id=942624979]
 visible = false
-position = Vector2(958, 466)
-scale = Vector2(1.312, 1.208)
+position = Vector2(575.5, 323.5)
+scale = Vector2(4.4726563, 4.451389)
 texture = ExtResource("15_khv2s")
 
-[node name="Currency" type="RichTextLabel" parent="UI" unique_id=877430692]
-offset_left = 971.0
-offset_top = 395.0
-offset_right = 1102.0
-offset_bottom = 434.0
+[node name="Stats" type="Node2D" parent="UI" unique_id=1817401256]
+
+[node name="Currency" type="RichTextLabel" parent="UI/Stats" unique_id=877430692]
+offset_left = 975.0
+offset_top = 390.0
+offset_right = 1106.0
+offset_bottom = 417.0
+mouse_filter = 2
 bbcode_enabled = true
 text = "Currency:"
 
-[node name="Score" type="RichTextLabel" parent="UI" unique_id=1758771665]
-offset_left = 808.0
-offset_top = 407.0
-offset_right = 894.0
-offset_bottom = 447.0
+[node name="Score" type="RichTextLabel" parent="UI/Stats" unique_id=1758771665]
+offset_left = 821.0
+offset_top = 391.0
+offset_right = 941.0
+offset_bottom = 417.0
+mouse_filter = 2
 bbcode_enabled = true
 text = "Score:"
 
-[node name="Label" type="Label" parent="UI" unique_id=984340097]
+[node name="frontEndLabel" type="Label" parent="UI/Stats" unique_id=984340097]
 offset_left = 813.0
-offset_top = 453.0
+offset_top = 415.0
 offset_right = 888.0
-offset_bottom = 476.0
+offset_bottom = 438.0
 text = "Front End"
 
-[node name="Label2" type="Label" parent="UI" unique_id=1747929288]
-offset_left = 992.0
-offset_top = 454.0
-offset_right = 1097.0
-offset_bottom = 477.0
+[node name="backEndLabel" type="Label" parent="UI/Stats" unique_id=1747929288]
+offset_left = 980.0
+offset_top = 412.0
+offset_right = 1085.0
+offset_bottom = 435.0
 text = "Back End"
 
-[node name="Label3" type="Label" parent="UI" unique_id=1211744277]
+[node name="reliabilityLabel" type="Label" parent="UI/Stats" unique_id=1211744277]
 offset_left = 809.0
-offset_top = 490.0
+offset_top = 469.0
 offset_right = 914.0
-offset_bottom = 513.0
+offset_bottom = 492.0
 text = "Reliability"
 
-[node name="Label4" type="Label" parent="UI" unique_id=1051588055]
-offset_left = 983.0
-offset_top = 491.0
-offset_right = 1104.0
-offset_bottom = 514.0
+[node name="documentationLabel" type="Label" parent="UI/Stats" unique_id=1051588055]
+offset_left = 979.0
+offset_top = 468.0
+offset_right = 1100.0
+offset_bottom = 491.0
 text = "Documentation"
 
+[node name="FrontEndBar" type="TextureProgressBar" parent="UI/Stats" unique_id=1262734460]
+offset_left = 811.0
+offset_top = 436.0
+offset_right = 875.0
+offset_bottom = 452.0
+scale = Vector2(2, 2)
+mouse_filter = 2
+value = 55.0
+texture_under = ExtResource("16_lkgwe")
+texture_progress = ExtResource("17_uibgn")
+tint_progress = Color(0.82258534, 0.14166427, 0, 1)
+
+[node name="ReliabilityBar" type="TextureProgressBar" parent="UI/Stats" unique_id=1756465928]
+offset_left = 811.0
+offset_top = 490.0
+offset_right = 875.0
+offset_bottom = 506.0
+scale = Vector2(2, 2)
+mouse_filter = 2
+value = 55.0
+texture_under = ExtResource("16_lkgwe")
+texture_progress = ExtResource("17_uibgn")
+tint_progress = Color(2.117753e-06, 0.7839653, 0.19948468, 1)
+
+[node name="backEndBar" type="TextureProgressBar" parent="UI/Stats" unique_id=203904639]
+offset_left = 980.0
+offset_top = 435.0
+offset_right = 1044.0
+offset_bottom = 451.0
+scale = Vector2(2, 2)
+mouse_filter = 2
+value = 55.0
+texture_under = ExtResource("16_lkgwe")
+texture_progress = ExtResource("17_uibgn")
+tint_progress = Color(1.0588765e-06, 0.59539217, 0.76481044, 1)
+
+[node name="documentationBar" type="TextureProgressBar" parent="UI/Stats" unique_id=1088868260]
+offset_left = 980.0
+offset_top = 489.0
+offset_right = 1044.0
+offset_bottom = 505.0
+scale = Vector2(2, 2)
+mouse_filter = 2
+value = 55.0
+texture_under = ExtResource("16_lkgwe")
+texture_progress = ExtResource("17_uibgn")
+tint_progress = Color(1, 1, 0.17254902, 1)
+
 [node name="PCButtons" type="Node2D" parent="UI" unique_id=1868044307]
+process_mode = 2
+visible = false
 
 [node name="UpgradesButton" type="Button" parent="UI/PCButtons" unique_id=1272067768]
 offset_left = 822.0
@@ -252,6 +332,16 @@ theme_override_styles/normal = SubResource("StyleBoxTexture_u051x")
 theme_override_styles/pressed = SubResource("StyleBoxTexture_simky")
 theme_override_styles/hover = SubResource("StyleBoxTexture_k25hm")
 
+[node name="PCBack" type="Button" parent="UI/PCButtons" unique_id=752686175]
+offset_left = 1024.0
+offset_top = 136.0
+offset_right = 1088.0
+offset_bottom = 200.0
+theme_override_styles/normal = SubResource("StyleBoxTexture_unvvn")
+theme_override_styles/pressed = SubResource("StyleBoxTexture_ern18")
+theme_override_styles/hover = SubResource("StyleBoxTexture_a5dl5")
+theme_override_styles/disabled = SubResource("StyleBoxTexture_xwmsp")
+
 [node name="NewMenu" type="Node2D" parent="UI" unique_id=1478451013]
 
 [node name="BackButton" type="Button" parent="UI" unique_id=1567251887]
@@ -292,5 +382,7 @@ script = ExtResource("5_f8h88")
 [connection signal="pressed" from="UI/PCButtons/ProjectMetricsButton" to="UI" method="_on_project_metrics_button_pressed"]
 [connection signal="pressed" from="UI/PCButtons/HiringButton" to="UI" method="_on_hiring_button_pressed"]
 [connection signal="pressed" from="UI/PCButtons/projectStartMenu" to="UI" method="_on_project_start_menu_pressed"]
+[connection signal="pressed" from="UI/PCButtons/PCPower" to="UI" method="_on_pc_power_pressed"]
+[connection signal="pressed" from="UI/PCButtons/PCBack" to="UI" method="_on_pc_back_pressed"]
 [connection signal="pressed" from="UI/BackButton" to="UI" method="_on_back_button_pressed"]
 [connection signal="pressed" from="UI/PauseButton" to="UI" method="_on_pause_button_pressed"]
