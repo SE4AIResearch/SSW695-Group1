@@ -5,7 +5,6 @@ var currentMenu: Node
 var postIt1Sprites = ["res://UI/Theme/MainMenu/postIt.png","res://UI/Theme/MainMenu/postItHover.png","res://UI/Theme/MainMenu/postItSelect.png"]
 var postIt2Sprites = ["res://UI/Theme/MainMenu/postIt2.png","res://UI/Theme/MainMenu/postIt2Hover.png","res://UI/Theme/MainMenu/postIt2Select.png"]
 
-# Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta: float) -> void: pass
 
 func _enter_tree() -> void:
@@ -24,6 +23,7 @@ func _on_new_game_button_pressed() -> void:
 func setupMenu(menu):
 	$UI/Back.visible = true
 	currentMenu = menu
+	menu.visible = true
 	$UI/MainButtons.visible = false
 	$UI/Settings.visible = true
 	$Logo.visible = false
@@ -32,10 +32,7 @@ func setupMenu(menu):
 func _on_load_data_button_pressed() -> void:setupMenu($UI/Load)
 func _on_settings_button_pressed() -> void:setupMenu($UI/Settings)
 func _on_learning_center_button_pressed() -> void:setupMenu($UI/LearningCenter)
-
-func _on_quit_button_pressed() -> void:
-	get_tree().quit()
-	pass
+func _on_quit_button_pressed() -> void: get_tree().quit()
 	
 func _on_back_pressed() -> void:
 	currentMenu.visible = false

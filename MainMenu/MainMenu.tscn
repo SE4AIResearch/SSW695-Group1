@@ -24,8 +24,8 @@ texture = ExtResource("8_nre7b")
 script = ExtResource("1_3p42x")
 
 [node name="BG" type="Sprite2D" parent="." unique_id=1730409946]
-position = Vector2(575.5, 323)
-scale = Vector2(4.4960938, 4.486111)
+position = Vector2(575.5, 324)
+scale = Vector2(4.5039063, 4.5)
 texture = ExtResource("2_kftou")
 
 [node name="Logo" type="Sprite2D" parent="." unique_id=239939704]
@@ -102,10 +102,10 @@ text = "Quit"
 
 [node name="Back" type="Button" parent="UI" unique_id=702969254]
 visible = false
-offset_left = 1045.0
-offset_top = 19.0
-offset_right = 1109.0
-offset_bottom = 83.0
+offset_left = 1033.0
+offset_top = 529.0
+offset_right = 1097.0
+offset_bottom = 593.0
 theme_override_styles/normal = SubResource("StyleBoxTexture_nxm3p")
 theme_override_styles/pressed = SubResource("StyleBoxTexture_g1826")
 theme_override_styles/hover = SubResource("StyleBoxTexture_npjie")

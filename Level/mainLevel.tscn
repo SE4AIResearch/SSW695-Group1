@@ -124,6 +124,8 @@ texture = ExtResource("14_5ay6t")
 [node name="MainLevel" type="Node2D" unique_id=1895261646]
 script = ExtResource("1_kl53g")
 
+[node name="Level" type="Node2D" parent="." unique_id=1824383856]
+
 [node name="UI" type="CanvasLayer" parent="." unique_id=2109094166]
 script = ExtResource("2_3c0mk")
 
@@ -147,6 +149,7 @@ theme_override_styles/pressed = SubResource("StyleBoxTexture_qbsll")
 theme_override_styles/hover = SubResource("StyleBoxTexture_khv2s")
 theme_override_styles/disabled = SubResource("StyleBoxTexture_tmx83")
 disabled = true
+metadata/_edit_use_anchors_ = true
 
 [node name="RandomEventButton" type="Button" parent="UI" unique_id=943257127]
 offset_left = 166.0
@@ -156,6 +159,7 @@ offset_bottom = 630.0
 theme_override_styles/normal = SubResource("StyleBoxTexture_w8aag")
 theme_override_styles/pressed = SubResource("StyleBoxTexture_fy2ok")
 theme_override_styles/hover = SubResource("StyleBoxTexture_uy1d4")
+metadata/_edit_use_anchors_ = true
 
 [node name="PC" type="Button" parent="UI" unique_id=1894238861]
 offset_left = 732.0
@@ -165,6 +169,7 @@ offset_bottom = 640.0
 theme_override_styles/normal = SubResource("StyleBoxTexture_mk20e")
 theme_override_styles/pressed = SubResource("StyleBoxTexture_5o0fy")
 theme_override_styles/hover = SubResource("StyleBoxTexture_adavl")
+metadata/_edit_use_anchors_ = true
 
 [node name="PCScreenPanel" type="Panel" parent="UI" unique_id=268579011]
 visible = false
@@ -188,6 +193,7 @@ offset_bottom = 417.0
 mouse_filter = 2
 bbcode_enabled = true
 text = "Currency:"
+metadata/_edit_use_anchors_ = true
 
 [node name="Score" type="RichTextLabel" parent="UI/Stats" unique_id=1758771665]
 offset_left = 821.0
@@ -197,6 +203,7 @@ offset_bottom = 417.0
 mouse_filter = 2
 bbcode_enabled = true
 text = "Score:"
+metadata/_edit_use_anchors_ = true
 
 [node name="frontEndLabel" type="Label" parent="UI/Stats" unique_id=984340097]
 offset_left = 813.0
@@ -204,6 +211,7 @@ offset_top = 415.0
 offset_right = 888.0
 offset_bottom = 438.0
 text = "Front End"
+metadata/_edit_use_anchors_ = true
 
 [node name="backEndLabel" type="Label" parent="UI/Stats" unique_id=1747929288]
 offset_left = 980.0
@@ -211,6 +219,7 @@ offset_top = 412.0
 offset_right = 1085.0
 offset_bottom = 435.0
 text = "Back End"
+metadata/_edit_use_anchors_ = true
 
 [node name="reliabilityLabel" type="Label" parent="UI/Stats" unique_id=1211744277]
 offset_left = 809.0
@@ -218,6 +227,7 @@ offset_top = 469.0
 offset_right = 914.0
 offset_bottom = 492.0
 text = "Reliability"
+metadata/_edit_use_anchors_ = true
 
 [node name="documentationLabel" type="Label" parent="UI/Stats" unique_id=1051588055]
 offset_left = 979.0
@@ -225,6 +235,7 @@ offset_top = 468.0
 offset_right = 1100.0
 offset_bottom = 491.0
 text = "Documentation"
+metadata/_edit_use_anchors_ = true
 
 [node name="FrontEndBar" type="TextureProgressBar" parent="UI/Stats" unique_id=1262734460]
 offset_left = 811.0
@@ -233,10 +244,11 @@ offset_right = 875.0
 offset_bottom = 452.0
 scale = Vector2(2, 2)
 mouse_filter = 2
-value = 55.0
+value = 54.0
 texture_under = ExtResource("16_lkgwe")
 texture_progress = ExtResource("17_uibgn")
 tint_progress = Color(0.82258534, 0.14166427, 0, 1)
+metadata/_edit_use_anchors_ = true
 
 [node name="ReliabilityBar" type="TextureProgressBar" parent="UI/Stats" unique_id=1756465928]
 offset_left = 811.0
@@ -249,6 +261,7 @@ value = 55.0
 texture_under = ExtResource("16_lkgwe")
 texture_progress = ExtResource("17_uibgn")
 tint_progress = Color(2.117753e-06, 0.7839653, 0.19948468, 1)
+metadata/_edit_use_anchors_ = true
 
 [node name="backEndBar" type="TextureProgressBar" parent="UI/Stats" unique_id=203904639]
 offset_left = 980.0
@@ -261,6 +274,7 @@ value = 55.0
 texture_under = ExtResource("16_lkgwe")
 texture_progress = ExtResource("17_uibgn")
 tint_progress = Color(1.0588765e-06, 0.59539217, 0.76481044, 1)
+metadata/_edit_use_anchors_ = true
 
 [node name="documentationBar" type="TextureProgressBar" parent="UI/Stats" unique_id=1088868260]
 offset_left = 980.0
@@ -273,9 +287,11 @@ value = 55.0
 texture_under = ExtResource("16_lkgwe")
 texture_progress = ExtResource("17_uibgn")
 tint_progress = Color(1, 1, 0.17254902, 1)
+metadata/_edit_use_anchors_ = true
 
 [node name="PCButtons" type="Node2D" parent="UI" unique_id=1868044307]
 process_mode = 2
+visible = false
 
 [node name="UpgradesButton" type="Button" parent="UI/PCButtons" unique_id=1272067768]
 offset_left = 822.0
@@ -364,6 +380,7 @@ offset_bottom = 64.0
 theme_override_styles/normal = SubResource("StyleBoxTexture_vvxbn")
 theme_override_styles/pressed = SubResource("StyleBoxTexture_o11ri")
 theme_override_styles/hover = SubResource("StyleBoxTexture_khudx")
+metadata/_edit_use_anchors_ = true
 
 [node name="Pause" parent="UI" unique_id=1977347548 instance=ExtResource("8_5ay6t")]
 visible = false
