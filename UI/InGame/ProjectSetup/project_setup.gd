@@ -56,14 +56,14 @@ func generateMetricsChoices():
 		var newMethod = methodItem.instantiate()
 		newMethod.setupMetric(metric)
 		newMethod.connect("MethodChosen",methodSelected)
-		$MethodologyChoose/MethodologyChoices.add_child(newMethod)
+		$MethodologyChoose/ScrollContainer/MethodologyChoices.add_child(newMethod)
 		pass
 	pass
 
 func methodSelected(chosenMetric):
 	selectedProject.methodology = chosenMetric
 	PlayerTool.newProject(selectedProject)
-	for child in $MethodologyChoose/MethodologyChoices.get_children(): child.queue_free()
+	for child in $MethodologyChoose/ScrollContainer/MethodologyChoices.get_children(): child.queue_free()
 	get_parent().get_parent().endMenu()
 	pass
 
