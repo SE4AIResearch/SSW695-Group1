@@ -7,6 +7,11 @@ var choice2OBJ = ["ChoiceText","ChoiceOutcome"]
 var choice3OBJ = ["ChoiceText","ChoiceOutcome"]
 var choice4OBJ = ["ChoiceText","ChoiceOutcome"]
 
+@onready var button1 = $choice1
+@onready var button2 = $choice2
+@onready var button3 = $choice3
+@onready var button4 = $choice4
+
 func _ready() -> void:
 	initializeEvent()
 	pass
@@ -14,26 +19,39 @@ func _ready() -> void:
 
 func initializeEvent():
 	var chosenEvent = eventList.events.pick_random()
-	#Set sticky note position here!
+	$eventText.text = chosenEvent.get("description")
 	match chosenEvent.get("choices").size():
-		1:pass
-		2:pass
-		3:pass
-		4:pass
-	var associatedWorker
-	match chosenEvent.get("type"):
-		"FrontEnd":
-			pass
-		"BackEnd":
-			pass
-		"Documentation":
-			pass
-		"Stakeholder":
-			pass
-		"Backlog":
-			pass
-	pass
-
+		1:
+			button1.visible = true
+			button2.visible = false
+			button3.visible = false
+			button4.visible = false
+			button1.position = $single/Marker2D.position
+		2:
+			button1.visible = true
+			button2.visible = true
+			button3.visible = false
+			button4.visible = false		
+			button1.position = $double/Marker2D.position
+			button2.position = $double/Marker2D2.position
+		3:
+			button1.visible = true
+			button3.visible = true
+			button2.visible = true
+			button4.visible = false
+			button1.position = $tripple/Marker2D.position
+			button2.position = $tripple/Marker2D2.position
+			button3.position = $tripple/Marker2D3.position
+		4:
+			button1.visible = true
+			button2.visible = true
+			button3.visible = true
+			button4.visible = true
+			button1.position = $quad/Marker2D.position
+			button2.position = $quad/Marker2D2.position
+			button3.position = $quad/Marker2D3.position
+			button4.position = $quad/Marker2D4.position
+			
 func _on_choice_1_pressed() -> void: calculateOutcome(choice1OBJ)
 func _on_choice_2_pressed() -> void: calculateOutcome(choice2OBJ)
 func _on_choice_3_pressed() -> void: calculateOutcome(choice3OBJ)
