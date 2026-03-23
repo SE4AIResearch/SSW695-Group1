@@ -1,55 +1,136 @@
 [gd_scene format=3 uid="uid://87v20wru1hrx"]
 
 [ext_resource type="Script" uid="uid://c12jclxyil7mu" path="res://UI/InGame/RandomEvent/random_event.gd" id="1_5dd7b"]
+[ext_resource type="Texture2D" uid="uid://wu85ujm6qvdv" path="res://UI/Theme/Random Event/BG.png" id="2_2kxk3"]
+[ext_resource type="Texture2D" uid="uid://c7y8067tc7g0c" path="res://UI/Theme/MainMenu/postIt2.png" id="3_s3784"]
+[ext_resource type="Texture2D" uid="uid://ckmuyspbg5gn" path="res://UI/Theme/MainMenu/postIt2Select.png" id="4_4adyh"]
+[ext_resource type="Texture2D" uid="uid://duuify0i2x8xh" path="res://UI/Theme/MainMenu/postIt2Hover.png" id="5_x6wny"]
+[ext_resource type="FontFile" uid="uid://b0lji18tmt8ua" path="res://UI/Theme/Fonts/jakes-writing-font/Jakeswriting-P2Zr.ttf" id="6_hvv1w"]
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_hkd3a"]
+texture = ExtResource("3_s3784")
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_rdymx"]
+texture = ExtResource("4_4adyh")
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_w4sfo"]
+texture = ExtResource("5_x6wny")
 
 [node name="RandomEvent" type="Node2D" unique_id=1794697379]
 process_mode = 2
 script = ExtResource("1_5dd7b")
 
+[node name="BG" type="Sprite2D" parent="." unique_id=1159867900]
+position = Vector2(576, 324)
+scale = Vector2(4.5, 4.4999995)
+texture = ExtResource("2_2kxk3")
+
 [node name="choice1" type="Button" parent="." unique_id=1466148275]
-offset_left = 258.0
-offset_top = 402.0
-offset_right = 456.0
-offset_bottom = 495.0
+modulate = Color(0.44313726, 0.3764706, 1, 1)
+offset_left = 107.0
+offset_top = 375.0
+offset_right = 267.0
+offset_bottom = 535.0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_styles/normal = SubResource("StyleBoxTexture_hkd3a")
+theme_override_styles/pressed = SubResource("StyleBoxTexture_rdymx")
+theme_override_styles/hover = SubResource("StyleBoxTexture_w4sfo")
 text = "1"
 
 [node name="choice2" type="Button" parent="." unique_id=1312835417]
-offset_left = 647.0
-offset_top = 404.0
-offset_right = 845.0
-offset_bottom = 497.0
+modulate = Color(0.44313726, 0.3764706, 1, 1)
+offset_left = 354.0
+offset_top = 415.0
+offset_right = 514.0
+offset_bottom = 575.0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_styles/normal = SubResource("StyleBoxTexture_hkd3a")
+theme_override_styles/pressed = SubResource("StyleBoxTexture_rdymx")
+theme_override_styles/hover = SubResource("StyleBoxTexture_w4sfo")
 text = "2"
 
 [node name="choice3" type="Button" parent="." unique_id=901803467]
-offset_left = 260.0
-offset_top = 517.0
-offset_right = 458.0
-offset_bottom = 610.0
+modulate = Color(0.44313726, 0.3764706, 1, 1)
+offset_left = 637.0
+offset_top = 428.0
+offset_right = 797.0
+offset_bottom = 588.0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_styles/normal = SubResource("StyleBoxTexture_hkd3a")
+theme_override_styles/pressed = SubResource("StyleBoxTexture_rdymx")
+theme_override_styles/hover = SubResource("StyleBoxTexture_w4sfo")
 text = "3"
 
 [node name="choice4" type="Button" parent="." unique_id=161336012]
-offset_left = 647.0
-offset_top = 518.0
-offset_right = 845.0
-offset_bottom = 611.0
+modulate = Color(0.44313726, 0.3764706, 1, 1)
+offset_left = 888.0
+offset_top = 341.0
+offset_right = 1048.0
+offset_bottom = 501.0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_styles/normal = SubResource("StyleBoxTexture_hkd3a")
+theme_override_styles/pressed = SubResource("StyleBoxTexture_rdymx")
+theme_override_styles/hover = SubResource("StyleBoxTexture_w4sfo")
 text = "4"
 
 [node name="Background" type="Sprite2D" parent="." unique_id=799934139]
 
 [node name="eventText" type="RichTextLabel" parent="." unique_id=545062466]
-offset_left = 306.0
-offset_top = 118.0
-offset_right = 860.0
-offset_bottom = 359.0
+offset_left = 297.0
+offset_top = 94.0
+offset_right = 851.0
+offset_bottom = 335.0
+theme_override_colors/default_color = Color(0, 0, 0, 1)
+theme_override_fonts/normal_font = ExtResource("6_hvv1w")
+theme_override_font_sizes/normal_font_size = 51
 bbcode_enabled = true
 text = "Event Text"
 
 [node name="Label" type="Label" parent="." unique_id=677780507]
-offset_left = 521.0
-offset_top = 36.0
-offset_right = 634.0
-offset_bottom = 59.0
+offset_left = 64.0
+offset_top = 22.0
+offset_right = 177.0
+offset_bottom = 45.0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
 text = "Random Event"
+
+[node name="single" type="Node2D" parent="." unique_id=1318166059]
+
+[node name="Marker2D" type="Marker2D" parent="single" unique_id=13103065]
+position = Vector2(586, 470)
+
+[node name="double" type="Node2D" parent="." unique_id=1558193844]
+
+[node name="Marker2D" type="Marker2D" parent="double" unique_id=1687170375]
+position = Vector2(483, 467)
+
+[node name="Marker2D2" type="Marker2D" parent="double" unique_id=509498454]
+position = Vector2(684, 464)
+
+[node name="tripple" type="Node2D" parent="." unique_id=1461543867]
+
+[node name="Marker2D" type="Marker2D" parent="tripple" unique_id=2024111251]
+position = Vector2(370, 468)
+
+[node name="Marker2D2" type="Marker2D" parent="tripple" unique_id=1657775020]
+position = Vector2(586, 464)
+
+[node name="Marker2D3" type="Marker2D" parent="tripple" unique_id=2036042069]
+position = Vector2(816, 469)
+
+[node name="quad" type="Node2D" parent="." unique_id=1353321865]
+
+[node name="Marker2D" type="Marker2D" parent="quad" unique_id=2028550639]
+position = Vector2(376, 414)
+
+[node name="Marker2D2" type="Marker2D" parent="quad" unique_id=1211935323]
+position = Vector2(796, 401)
+
+[node name="Marker2D3" type="Marker2D" parent="quad" unique_id=35460692]
+position = Vector2(366, 537)
+
+[node name="Marker2D4" type="Marker2D" parent="quad" unique_id=171330231]
+position = Vector2(802, 540)
 
 [connection signal="pressed" from="choice1" to="." method="_on_choice_1_pressed"]
 [connection signal="pressed" from="choice2" to="." method="_on_choice_2_pressed"]

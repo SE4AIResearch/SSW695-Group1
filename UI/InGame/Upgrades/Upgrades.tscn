@@ -1,16 +1,50 @@
 [gd_scene format=3 uid="uid://0ydf0fui5u4q"]
 
-[node name="Upgrades" type="Node2D" unique_id=644922682]
+[ext_resource type="PackedScene" uid="uid://d1uebs0vqbym5" path="res://UI/InGame/Upgrades/UpgradeItem/UpgradeItem.tscn" id="1_eohcs"]
+[ext_resource type="Texture2D" uid="uid://cfrb47hgtaapp" path="res://UI/Theme/PCTheme/PanelTallerWider.png" id="1_vmit0"]
 
-[node name="VBoxContainer" type="VBoxContainer" parent="." unique_id=148330908]
-offset_left = 244.0
-offset_top = 151.0
-offset_right = 815.0
-offset_bottom = 554.0
+[node name="Upgrades" type="Node2D" unique_id=644922682]
+process_mode = 2
+position = Vector2(0, 4)
+
+[node name="Panel" type="Sprite2D" parent="." unique_id=1917269237]
+position = Vector2(574.00006, 320)
+scale = Vector2(5, 5)
+texture = ExtResource("1_vmit0")
 
 [node name="Label" type="Label" parent="." unique_id=773230786]
-offset_left = 499.0
-offset_top = 24.0
-offset_right = 573.0
-offset_bottom = 47.0
+offset_left = 462.0
+offset_top = 48.0
+offset_right = 536.0
+offset_bottom = 71.0
 text = "Upgrades"
+
+[node name="ScrollContainer" type="ScrollContainer" parent="." unique_id=747577774]
+offset_left = 454.0
+offset_top = 80.0
+offset_right = 699.0
+offset_bottom = 595.0
+
+[node name="VBoxContainer" type="VBoxContainer" parent="ScrollContainer" unique_id=148330908]
+layout_mode = 2
+
+[node name="UpgradeItem" parent="ScrollContainer/VBoxContainer" unique_id=886813104 instance=ExtResource("1_eohcs")]
+layout_mode = 2
+
+[node name="UpgradeItem2" parent="ScrollContainer/VBoxContainer" unique_id=1411720202 instance=ExtResource("1_eohcs")]
+layout_mode = 2
+
+[node name="UpgradeItem3" parent="ScrollContainer/VBoxContainer" unique_id=918703791 instance=ExtResource("1_eohcs")]
+layout_mode = 2
+
+[node name="UpgradeItem4" parent="ScrollContainer/VBoxContainer" unique_id=1642871935 instance=ExtResource("1_eohcs")]
+layout_mode = 2
+
+[node name="UpgradeItem5" parent="ScrollContainer/VBoxContainer" unique_id=370307807 instance=ExtResource("1_eohcs")]
+layout_mode = 2
+
+[node name="UpgradeItem6" parent="ScrollContainer/VBoxContainer" unique_id=479027567 instance=ExtResource("1_eohcs")]
+layout_mode = 2
+
+[node name="UpgradeItem7" parent="ScrollContainer/VBoxContainer" unique_id=220980892 instance=ExtResource("1_eohcs")]
+layout_mode = 2

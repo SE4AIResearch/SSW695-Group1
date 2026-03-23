@@ -14,6 +14,12 @@ func _ready() -> void:
 
 func initializeEvent():
 	var chosenEvent = eventList.events.pick_random()
+	#Set sticky note position here!
+	match chosenEvent.get("choices").size():
+		1:pass
+		2:pass
+		3:pass
+		4:pass
 	var associatedWorker
 	match chosenEvent.get("type"):
 		"FrontEnd":

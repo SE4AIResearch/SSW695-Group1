@@ -1,101 +1,118 @@
 [gd_scene format=3 uid="uid://bt0pge4yh7l4p"]
 
 [ext_resource type="Script" uid="uid://pnxblaa25in8" path="res://UI/InGame/ProjectMetrics/project_metrics.gd" id="1_2ftwu"]
+[ext_resource type="Texture2D" uid="uid://bial1tt4lpoow" path="res://UI/Theme/PCTheme/Panel.png" id="2_h6qok"]
+[ext_resource type="Texture2D" uid="uid://cqjra4hvo67jb" path="res://UI/Theme/PCTheme/TextureBar/BG.png" id="3_vear5"]
+[ext_resource type="Texture2D" uid="uid://cy7ghvk8gm6ef" path="res://UI/Theme/PCTheme/TextureBar/Progress.png" id="4_5q15i"]
 
 [node name="ProjectMetrics" type="Node2D" unique_id=65546387]
+process_mode = 3
 script = ExtResource("1_2ftwu")
 
-[node name="Background" type="Sprite2D" parent="." unique_id=1195688917]
+[node name="BG" type="Sprite2D" parent="." unique_id=1633652757]
+position = Vector2(401, 387)
+scale = Vector2(5, 5)
+texture = ExtResource("2_h6qok")
 
 [node name="Label" type="Label" parent="." unique_id=738700508]
-offset_left = 444.0
-offset_top = -6.0
-offset_right = 626.0
-offset_bottom = 77.0
+offset_left = 109.0
+offset_top = 183.0
+offset_right = 226.0
+offset_bottom = 229.0
 text = "Project Metrics"
 horizontal_alignment = 1
 vertical_alignment = 1
 
 [node name="methodologyLabel" type="Label" parent="." unique_id=1524367975]
-offset_left = 444.0
-offset_top = 63.0
-offset_right = 626.0
-offset_bottom = 86.0
+offset_left = 223.0
+offset_top = 233.0
+offset_right = 405.0
+offset_bottom = 256.0
 text = "Methodology: "
 horizontal_alignment = 1
 vertical_alignment = 1
 
 [node name="frontEndLabel" type="Label" parent="." unique_id=772124594]
-offset_left = 444.0
-offset_top = 101.0
-offset_right = 626.0
-offset_bottom = 131.0
+offset_left = 98.0
+offset_top = 273.0
+offset_right = 280.0
+offset_bottom = 303.0
 text = "Front End"
 horizontal_alignment = 1
 vertical_alignment = 1
 
 [node name="frontEndBar" type="TextureProgressBar" parent="." unique_id=296849795]
-offset_left = 277.0
-offset_top = 131.0
-offset_right = 806.0
-offset_bottom = 173.9999
+offset_left = 104.0
+offset_top = 317.0
+offset_right = 168.0
+offset_bottom = 333.0
+scale = Vector2(4, 4)
+texture_under = ExtResource("3_vear5")
+texture_progress = ExtResource("4_5q15i")
+tint_progress = Color(0.82258534, 0.14166427, 0, 1)
 
 [node name="backEndLabel" type="Label" parent="." unique_id=1997384859]
-offset_left = 444.0
-offset_top = 172.0
-offset_right = 626.0
-offset_bottom = 202.0
+offset_left = 475.0
+offset_top = 268.0
+offset_right = 657.0
+offset_bottom = 298.0
 text = "Back End"
 horizontal_alignment = 1
 vertical_alignment = 1
 
 [node name="backEndBar" type="TextureProgressBar" parent="." unique_id=1412958544]
-offset_left = 277.0
-offset_top = 201.0
-offset_right = 806.0
-offset_bottom = 243.99988
+offset_left = 444.0
+offset_top = 314.0
+offset_right = 508.0
+offset_bottom = 330.0
+scale = Vector2(4, 4)
+texture_under = ExtResource("3_vear5")
+texture_progress = ExtResource("4_5q15i")
+tint_progress = Color(1.0588765e-06, 0.59539217, 0.76481044, 1)
 
 [node name="documentingLabel" type="Label" parent="." unique_id=1977206397]
-offset_left = 444.0
-offset_top = 244.0
-offset_right = 626.0
-offset_bottom = 274.0
+offset_left = 475.0
+offset_top = 407.0
+offset_right = 657.0
+offset_bottom = 437.0
 text = "Documenting"
 horizontal_alignment = 1
 vertical_alignment = 1
 
 [node name="documentationBar" type="TextureProgressBar" parent="." unique_id=802075270]
-offset_left = 277.0
-offset_top = 271.0
-offset_right = 806.0
-offset_bottom = 313.99988
+offset_left = 436.0
+offset_top = 442.0
+offset_right = 500.0
+offset_bottom = 458.0
+scale = Vector2(4, 4)
+texture_under = ExtResource("3_vear5")
+texture_progress = ExtResource("4_5q15i")
+tint_progress = Color(1, 1, 0.17254902, 1)
 
 [node name="reliabilityLabel" type="Label" parent="." unique_id=683978752]
-offset_left = 444.0
-offset_top = 318.0
-offset_right = 626.0
-offset_bottom = 348.0
+offset_left = 133.0
+offset_top = 401.0
+offset_right = 315.0
+offset_bottom = 431.0
 text = "Reliability"
 horizontal_alignment = 1
 vertical_alignment = 1
 
 [node name="reliabilityBar" type="TextureProgressBar" parent="." unique_id=662884275]
-offset_left = 277.0
-offset_top = 357.0
-offset_right = 806.0
-offset_bottom = 399.99988
+offset_left = 101.0
+offset_top = 440.0
+offset_right = 165.0
+offset_bottom = 456.0
+scale = Vector2(4, 4)
+texture_under = ExtResource("3_vear5")
+texture_progress = ExtResource("4_5q15i")
+tint_progress = Color(2.117753e-06, 0.7839653, 0.19948468, 1)
 
 [node name="stakeholderSatisfactionLabel" type="Label" parent="." unique_id=1615798467]
-offset_left = 444.0
-offset_top = 405.0
-offset_right = 632.0
-offset_bottom = 435.0
-text = "Stakeholder Satisfaction"
+offset_left = 298.0
+offset_top = 530.0
+offset_right = 495.0
+offset_bottom = 560.0
+text = "Stakeholder Satisfaction: "
 horizontal_alignment = 1
 vertical_alignment = 1
-
-[node name="stakeholderSatisfactionBar" type="TextureProgressBar" parent="." unique_id=242532042]
-offset_left = 277.0
-offset_top = 442.0
-offset_right = 806.0
-offset_bottom = 484.99988

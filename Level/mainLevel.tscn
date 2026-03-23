@@ -37,6 +37,7 @@
 [ext_resource type="Texture2D" uid="uid://dkqvr0lf6ytje" path="res://UI/Theme/PCTheme/Back/pcBackPressed.png" id="24_ktvj5"]
 [ext_resource type="Texture2D" uid="uid://crruuadiafv87" path="res://UI/Theme/PCTheme/Back/pcBackHeld.png" id="25_x2ak7"]
 [ext_resource type="Texture2D" uid="uid://o4k321o7djhb" path="res://UI/Theme/PCTheme/Back/pcBackDisabled.png" id="26_ktvj5"]
+[ext_resource type="PackedScene" uid="uid://bt0pge4yh7l4p" path="res://UI/InGame/ProjectMetrics/ProjectMetrics.tscn" id="29_uibgn"]
 
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_7drem"]
 texture = ExtResource("5_o11ri")
@@ -294,33 +295,21 @@ process_mode = 2
 visible = false
 
 [node name="UpgradesButton" type="Button" parent="UI/PCButtons" unique_id=1272067768]
-offset_left = 822.0
-offset_top = 67.0
-offset_right = 918.0
-offset_bottom = 99.0
+offset_left = 498.0
+offset_top = 109.0
+offset_right = 594.0
+offset_bottom = 141.0
 theme_override_styles/normal = SubResource("StyleBoxTexture_ktvj5")
 theme_override_styles/pressed = SubResource("StyleBoxTexture_x2ak7")
 theme_override_styles/hover = SubResource("StyleBoxTexture_lkgwe")
 theme_override_styles/disabled = SubResource("StyleBoxTexture_uibgn")
 text = "Upgrades"
 
-[node name="ProjectMetricsButton" type="Button" parent="UI/PCButtons" unique_id=1183087318]
-offset_left = 323.0
-offset_top = 71.0
-offset_right = 515.0
-offset_bottom = 135.0
-theme_override_styles/normal = SubResource("StyleBoxTexture_ktvj5")
-theme_override_styles/pressed = SubResource("StyleBoxTexture_x2ak7")
-theme_override_styles/hover = SubResource("StyleBoxTexture_lkgwe")
-theme_override_styles/disabled = SubResource("StyleBoxTexture_uibgn")
-disabled = true
-text = "Project Metrics"
-
 [node name="HiringButton" type="Button" parent="UI/PCButtons" unique_id=2094471871]
-offset_left = 803.0
-offset_top = 116.0
-offset_right = 947.0
-offset_bottom = 164.0
+offset_left = 332.0
+offset_top = 93.0
+offset_right = 476.0
+offset_bottom = 141.0
 theme_override_styles/normal = SubResource("StyleBoxTexture_ktvj5")
 theme_override_styles/pressed = SubResource("StyleBoxTexture_x2ak7")
 theme_override_styles/hover = SubResource("StyleBoxTexture_lkgwe")
@@ -356,6 +345,8 @@ theme_override_styles/normal = SubResource("StyleBoxTexture_unvvn")
 theme_override_styles/pressed = SubResource("StyleBoxTexture_ern18")
 theme_override_styles/hover = SubResource("StyleBoxTexture_a5dl5")
 theme_override_styles/disabled = SubResource("StyleBoxTexture_xwmsp")
+
+[node name="ProjectMetrics" parent="UI/PCButtons" unique_id=65546387 instance=ExtResource("29_uibgn")]
 
 [node name="NewMenu" type="Node2D" parent="UI" unique_id=1478451013]
 
@@ -395,7 +386,6 @@ script = ExtResource("5_f8h88")
 [connection signal="pressed" from="UI/RandomEventButton" to="UI" method="_on_random_event_button_pressed"]
 [connection signal="pressed" from="UI/PC" to="UI" method="_on_pc_pressed"]
 [connection signal="pressed" from="UI/PCButtons/UpgradesButton" to="UI" method="_on_upgrades_button_pressed"]
-[connection signal="pressed" from="UI/PCButtons/ProjectMetricsButton" to="UI" method="_on_project_metrics_button_pressed"]
 [connection signal="pressed" from="UI/PCButtons/HiringButton" to="UI" method="_on_hiring_button_pressed"]
 [connection signal="pressed" from="UI/PCButtons/projectStartMenu" to="UI" method="_on_project_start_menu_pressed"]
 [connection signal="pressed" from="UI/PCButtons/PCPower" to="UI" method="_on_pc_power_pressed"]
