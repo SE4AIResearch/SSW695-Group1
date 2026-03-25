@@ -41,6 +41,7 @@ theme_override_styles/normal = SubResource("StyleBoxTexture_hkd3a")
 theme_override_styles/pressed = SubResource("StyleBoxTexture_rdymx")
 theme_override_styles/hover = SubResource("StyleBoxTexture_w4sfo")
 text = "1"
+autowrap_mode = 3
 
 [node name="choice2" type="Button" parent="." unique_id=1312835417]
 modulate = Color(0.44313726, 0.3764706, 1, 1)
@@ -58,6 +59,7 @@ theme_override_styles/normal = SubResource("StyleBoxTexture_hkd3a")
 theme_override_styles/pressed = SubResource("StyleBoxTexture_rdymx")
 theme_override_styles/hover = SubResource("StyleBoxTexture_w4sfo")
 text = "2"
+autowrap_mode = 3
 
 [node name="choice3" type="Button" parent="." unique_id=901803467]
 modulate = Color(0.44313726, 0.3764706, 1, 1)
@@ -75,13 +77,14 @@ theme_override_styles/normal = SubResource("StyleBoxTexture_hkd3a")
 theme_override_styles/pressed = SubResource("StyleBoxTexture_rdymx")
 theme_override_styles/hover = SubResource("StyleBoxTexture_w4sfo")
 text = "3"
+autowrap_mode = 3
 
 [node name="choice4" type="Button" parent="." unique_id=161336012]
 modulate = Color(0.44313726, 0.3764706, 1, 1)
-offset_left = 888.0
-offset_top = 341.0
-offset_right = 1048.0
-offset_bottom = 501.0
+offset_left = 861.0
+offset_top = 419.0
+offset_right = 1021.0
+offset_bottom = 579.0
 theme_override_colors/font_color = Color(0, 0, 0, 1)
 theme_override_colors/font_focus_color = Color(0, 0, 0, 1)
 theme_override_colors/font_pressed_color = Color(0, 0, 0, 1)
@@ -92,14 +95,15 @@ theme_override_styles/normal = SubResource("StyleBoxTexture_hkd3a")
 theme_override_styles/pressed = SubResource("StyleBoxTexture_rdymx")
 theme_override_styles/hover = SubResource("StyleBoxTexture_w4sfo")
 text = "4"
+autowrap_mode = 3
 
 [node name="Background" type="Sprite2D" parent="." unique_id=799934139]
 
 [node name="eventText" type="RichTextLabel" parent="." unique_id=545062466]
-offset_left = 236.0
-offset_top = 62.0
-offset_right = 887.0
-offset_bottom = 348.0
+offset_left = 198.0
+offset_top = 53.0
+offset_right = 958.0
+offset_bottom = 369.0
 theme_override_colors/default_color = Color(0, 0, 0, 1)
 theme_override_fonts/normal_font = ExtResource("6_hvv1w")
 theme_override_font_sizes/normal_font_size = 51
@@ -150,7 +154,7 @@ position = Vector2(347, 433)
 position = Vector2(617, 426)
 
 [node name="Marker2D4" type="Marker2D" parent="quad" unique_id=171330231]
-position = Vector2(866, 382)
+position = Vector2(876, 428)
 
 [connection signal="pressed" from="choice1" to="." method="_on_choice_1_pressed"]
 [connection signal="pressed" from="choice2" to="." method="_on_choice_2_pressed"]

@@ -27,6 +27,7 @@ func initializeEvent():
 			button3.visible = false
 			button4.visible = false
 			button1.position = $single/Marker2D.position
+			button1.text = chosenEvent.choices[0]
 		2:
 			button1.visible = true
 			button2.visible = true
@@ -34,6 +35,8 @@ func initializeEvent():
 			button4.visible = false		
 			button1.position = $double/Marker2D.position
 			button2.position = $double/Marker2D2.position
+			button1.text = chosenEvent.choices[0]
+			button2.text = chosenEvent.choices[1]
 		3:
 			button1.visible = true
 			button3.visible = true
@@ -42,6 +45,9 @@ func initializeEvent():
 			button1.position = $tripple/Marker2D.position
 			button2.position = $tripple/Marker2D2.position
 			button3.position = $tripple/Marker2D3.position
+			button1.text = chosenEvent.choices[0]
+			button2.text = chosenEvent.choices[1]
+			button3.text = chosenEvent.choices[2]
 		4:
 			button1.visible = true
 			button2.visible = true
@@ -51,6 +57,10 @@ func initializeEvent():
 			button2.position = $quad/Marker2D2.position
 			button3.position = $quad/Marker2D3.position
 			button4.position = $quad/Marker2D4.position
+			button1.text = chosenEvent.choices[0]
+			button2.text = chosenEvent.choices[1]
+			button3.text = chosenEvent.choices[2]
+			button4.text = chosenEvent.choices[3]
 			
 func _on_choice_1_pressed() -> void: calculateOutcome(choice1OBJ)
 func _on_choice_2_pressed() -> void: calculateOutcome(choice2OBJ)
