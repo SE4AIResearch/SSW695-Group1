@@ -20,7 +20,7 @@ var events = [
 "name":"forgotToSave",
 "type":"Documenting",
 "description":"The document's autosave feature is not working! Some progress is lost!",
-"choices":["Suffer the consequences."],
+"choices":["Lose Documentation."],
 "outcomes":[-.15]
 },
 {
