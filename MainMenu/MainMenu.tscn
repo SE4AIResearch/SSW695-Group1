@@ -10,6 +10,7 @@
 [ext_resource type="Texture2D" uid="uid://ylm38omrsiv4" path="res://UI/Theme/Back/back.png" id="6_bsanu"]
 [ext_resource type="Texture2D" uid="uid://bv1wdylubep72" path="res://UI/Theme/Back/backPressed.png" id="7_kftou"]
 [ext_resource type="Texture2D" uid="uid://b8mmjep4nbkf4" path="res://UI/Theme/Back/backHover.png" id="8_nre7b"]
+[ext_resource type="FontFile" uid="uid://b0lji18tmt8ua" path="res://UI/Theme/Fonts/jakes-writing-font/Jakeswriting-P2Zr.ttf" id="8_nxm3p"]
 
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_nxm3p"]
 texture = ExtResource("6_bsanu")
@@ -57,7 +58,9 @@ offset_bottom = 567.0
 theme_override_colors/font_color = Color(0, 0, 0, 1)
 theme_override_colors/font_pressed_color = Color(0, 0, 0, 1)
 theme_override_colors/font_hover_color = Color(0, 0, 0, 1)
-text = "Start New Game"
+theme_override_fonts/font = ExtResource("8_nxm3p")
+theme_override_font_sizes/font_size = 20
+text = "New Game"
 
 [node name="loadDataButton" type="Button" parent="UI/MainButtons" unique_id=1885130127]
 offset_left = 341.0
@@ -67,6 +70,8 @@ offset_bottom = 570.0
 theme_override_colors/font_color = Color(0, 0, 0, 1)
 theme_override_colors/font_pressed_color = Color(0, 0, 0, 1)
 theme_override_colors/font_hover_color = Color(0, 0, 0, 1)
+theme_override_fonts/font = ExtResource("8_nxm3p")
+theme_override_font_sizes/font_size = 20
 text = "Load Game"
 
 [node name="settingsButton" type="Button" parent="UI/MainButtons" unique_id=337689050]
@@ -77,6 +82,8 @@ offset_bottom = 574.0
 theme_override_colors/font_color = Color(0, 0, 0, 1)
 theme_override_colors/font_pressed_color = Color(0, 0, 0, 1)
 theme_override_colors/font_hover_color = Color(0, 0, 0, 1)
+theme_override_fonts/font = ExtResource("8_nxm3p")
+theme_override_font_sizes/font_size = 20
 text = "Settings"
 
 [node name="learningCenterButton" type="Button" parent="UI/MainButtons" unique_id=1959763467]
@@ -88,6 +95,8 @@ theme_override_colors/font_color = Color(0, 0, 0, 1)
 theme_override_colors/font_pressed_color = Color(0, 0, 0, 1)
 theme_override_colors/font_hover_color = Color(0, 0, 0, 1)
 theme_override_colors/font_disabled_color = Color(0.8745098, 0.8745098, 0.8745098, 0.5019608)
+theme_override_fonts/font = ExtResource("8_nxm3p")
+theme_override_font_sizes/font_size = 20
 text = "Learning Center"
 
 [node name="QuitButton" type="Button" parent="UI/MainButtons" unique_id=444549206]
@@ -98,6 +107,8 @@ offset_bottom = 117.0
 theme_override_colors/font_color = Color(0, 0, 0, 1)
 theme_override_colors/font_pressed_color = Color(0, 0, 0, 1)
 theme_override_colors/font_hover_color = Color(0, 0, 0, 1)
+theme_override_fonts/font = ExtResource("8_nxm3p")
+theme_override_font_sizes/font_size = 20
 text = "Quit"
 
 [node name="Back" type="Button" parent="UI" unique_id=702969254]

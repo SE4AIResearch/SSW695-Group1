@@ -57,5 +57,5 @@ func setButtonVisual(menuButton: Button):
 	menuButton.add_theme_stylebox_override("normal",normalStylebox)
 	menuButton.add_theme_stylebox_override("hover",hoverStylebox)
 	menuButton.add_theme_stylebox_override("pressed",pressedStylebox)
-	menuButton.modulate = Color(randf_range(.5,1),randf_range(.5,1),randf_range(.5,1))
+	menuButton.self_modulate = Color(randf_range(.5,1),randf_range(.5,1),randf_range(.5,1))
 	pass
