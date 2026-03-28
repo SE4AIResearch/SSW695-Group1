@@ -23,7 +23,6 @@ func generateProjectChoices() -> void:
 		newProject.projectName = "Project Name"
 		newProject.projectDescription = "Project Description"
 		newProject.clientName = PersonConstructor.generateName()
-		newProject.difficulty = 1
 		newProject.frontEndScalar = 1
 		newProject.backEndScalar = 1
 		newProject.documentingScalar = 1

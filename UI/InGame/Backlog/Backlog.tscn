@@ -1,43 +1,76 @@
 [gd_scene format=3 uid="uid://dl321u4e71m5q"]
 
+[ext_resource type="Texture2D" uid="uid://k7xby2l5gc5f" path="res://UI/Theme/MainLevel/backlog/BG.png" id="1_gwqqw"]
+[ext_resource type="FontFile" uid="uid://b0lji18tmt8ua" path="res://UI/Theme/Fonts/jakes-writing-font/Jakeswriting-P2Zr.ttf" id="2_qp40g"]
+
 [node name="Backlog" type="Node2D" unique_id=671302833]
 
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=254106440]
+position = Vector2(576, 323.99997)
+scale = Vector2(4.5, 4.4999995)
+texture = ExtResource("1_gwqqw")
+
 [node name="WorkerLabel" type="Label" parent="." unique_id=995072112]
-offset_left = 159.0
-offset_top = 82.0
-offset_right = 311.0
-offset_bottom = 105.0
+offset_left = 99.0
+offset_top = 77.0
+offset_right = 280.0
+offset_bottom = 100.0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_fonts/font = ExtResource("2_qp40g")
+theme_override_font_sizes/font_size = 24
 text = "Assignable Workers"
 
 [node name="Workers" type="VBoxContainer" parent="." unique_id=260048008]
 clip_contents = true
 offset_left = 74.0
 offset_top = 129.0
-offset_right = 405.0
-offset_bottom = 637.0
+offset_right = 285.0
+offset_bottom = 524.0
 
 [node name="BacklogLabel" type="Label" parent="." unique_id=388305119]
-offset_left = 523.0
-offset_top = 89.0
-offset_right = 584.0
-offset_bottom = 112.0
+offset_left = 400.0
+offset_top = 87.0
+offset_right = 469.0
+offset_bottom = 110.0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_fonts/font = ExtResource("2_qp40g")
+theme_override_font_sizes/font_size = 24
 text = "Backlog"
 
 [node name="Backlog" type="VBoxContainer" parent="." unique_id=1388620830]
-offset_left = 446.0
-offset_top = 146.0
-offset_right = 663.0
-offset_bottom = 591.0
+offset_left = 320.0
+offset_top = 131.0
+offset_right = 537.0
+offset_bottom = 576.0
 
-[node name="In Progress Label" type="Label" parent="." unique_id=1904665504]
-offset_left = 892.0
-offset_top = 88.0
-offset_right = 979.0
-offset_bottom = 111.0
+[node name="InProgressLabel" type="Label" parent="." unique_id=1904665504]
+offset_left = 671.0
+offset_top = 85.0
+offset_right = 767.0
+offset_bottom = 108.0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_fonts/font = ExtResource("2_qp40g")
+theme_override_font_sizes/font_size = 24
 text = "In Progress"
 
 [node name="InProgress" type="VBoxContainer" parent="." unique_id=1546489709]
-offset_left = 819.0
-offset_top = 155.0
-offset_right = 1053.0
-offset_bottom = 623.0
+offset_left = 629.0
+offset_top = 126.0
+offset_right = 811.0
+offset_bottom = 594.0
+
+[node name="CompletedLabel" type="Label" parent="." unique_id=1919838751]
+offset_left = 920.0
+offset_top = 78.0
+offset_right = 1016.0
+offset_bottom = 101.0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_fonts/font = ExtResource("2_qp40g")
+theme_override_font_sizes/font_size = 24
+text = "In Progress"
+
+[node name="Completed" type="VBoxContainer" parent="." unique_id=432847845]
+offset_left = 846.0
+offset_top = 119.0
+offset_right = 1080.0
+offset_bottom = 587.0
