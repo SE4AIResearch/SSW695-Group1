@@ -48,4 +48,8 @@ func _on_back_pressed() -> void:
 	currentMenu.visible = false
 	$Menu.visible = true
 	$Back.visible = false
+	if currentMenu == $LearningCenter:
+		$LearningCenter.get_node("Categories").visible = true
+		$LearningCenter.get_node("Page/Entry").text = ""
+		$LearningCenter.get_node("Page").visible = false
 	pass

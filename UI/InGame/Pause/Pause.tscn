@@ -2,7 +2,34 @@
 
 [ext_resource type="PackedScene" uid="uid://ccmfo7vj6hbru" path="res://UI/Learning Center/LearningCenter.tscn" id="1_avoc4"]
 [ext_resource type="Script" uid="uid://ci70001xy6kfv" path="res://UI/InGame/Pause/pause.gd" id="1_krpmk"]
+[ext_resource type="Texture2D" uid="uid://bpmqerq7t6ow8" path="res://UI/Theme/PCTheme/Overlay.png" id="2_g7hvy"]
 [ext_resource type="PackedScene" uid="uid://bvn5808vxkqc4" path="res://UI/MainMenu/Settings/Settings.tscn" id="2_kl4qd"]
+[ext_resource type="Texture2D" uid="uid://c2it0w0k17wgn" path="res://UI/Theme/PCTheme/button/slimButton.png" id="3_1txv3"]
+[ext_resource type="Texture2D" uid="uid://bnulbxemxoryo" path="res://UI/Theme/PCTheme/button/slimButtonPressed.png" id="4_1eg5f"]
+[ext_resource type="Texture2D" uid="uid://di1kn3fa7np7c" path="res://UI/Theme/PCTheme/button/slimButtonHeld.png" id="5_ue8lb"]
+[ext_resource type="Texture2D" uid="uid://d00apn0evacqg" path="res://UI/Theme/PCTheme/Back/pcBack.png" id="8_ue8lb"]
+[ext_resource type="Texture2D" uid="uid://dkqvr0lf6ytje" path="res://UI/Theme/PCTheme/Back/pcBackPressed.png" id="9_xo5on"]
+[ext_resource type="Texture2D" uid="uid://crruuadiafv87" path="res://UI/Theme/PCTheme/Back/pcBackHeld.png" id="10_g56pf"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_xo5on"]
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_g56pf"]
+texture = ExtResource("3_1txv3")
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_6s35v"]
+texture = ExtResource("4_1eg5f")
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_00l08"]
+texture = ExtResource("5_ue8lb")
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_defd4"]
+texture = ExtResource("8_ue8lb")
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_ewn82"]
+texture = ExtResource("9_xo5on")
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_eihmq"]
+texture = ExtResource("10_g56pf")
 
 [node name="Pause" type="Node2D" unique_id=1814586971]
 process_mode = 2
@@ -11,46 +38,64 @@ script = ExtResource("1_krpmk")
 [node name="Panel" type="Panel" parent="." unique_id=1969110642]
 offset_right = 1152.0
 offset_bottom = 648.0
+theme_override_styles/panel = SubResource("StyleBoxEmpty_xo5on")
+
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=1943969304]
+position = Vector2(576, 323.99997)
+scale = Vector2(4.5, 4.4999995)
+texture = ExtResource("2_g7hvy")
 
 [node name="Background" type="Sprite2D" parent="." unique_id=1084621080]
 
 [node name="Menu" type="Node2D" parent="." unique_id=6922282]
 
 [node name="Label" type="Label" parent="Menu" unique_id=527402878]
-offset_left = 454.0
-offset_top = 27.0
-offset_right = 674.0
-offset_bottom = 126.0
+offset_left = 466.0
+offset_top = 36.0
+offset_right = 686.0
+offset_bottom = 135.0
 text = "Pause"
 horizontal_alignment = 1
 vertical_alignment = 1
 
 [node name="Resume" type="Button" parent="Menu" unique_id=801039505]
-offset_left = 471.0
-offset_top = 193.0
-offset_right = 662.0
-offset_bottom = 266.0
+offset_left = 453.0
+offset_top = 168.0
+offset_right = 693.0
+offset_bottom = 248.0
+theme_override_styles/normal = SubResource("StyleBoxTexture_g56pf")
+theme_override_styles/pressed = SubResource("StyleBoxTexture_6s35v")
+theme_override_styles/hover = SubResource("StyleBoxTexture_00l08")
 text = "Resume"
 
 [node name="LearningCenterbutton" type="Button" parent="Menu" unique_id=1661286147]
-offset_left = 471.0
-offset_top = 273.0
-offset_right = 662.0
-offset_bottom = 346.0
+offset_left = 453.0
+offset_top = 252.0
+offset_right = 693.0
+offset_bottom = 332.0
+theme_override_styles/normal = SubResource("StyleBoxTexture_g56pf")
+theme_override_styles/pressed = SubResource("StyleBoxTexture_6s35v")
+theme_override_styles/hover = SubResource("StyleBoxTexture_00l08")
 text = "Learning Center"
 
 [node name="SettingsButton" type="Button" parent="Menu" unique_id=519392057]
-offset_left = 471.0
-offset_top = 353.0
-offset_right = 662.0
-offset_bottom = 426.0
+offset_left = 453.0
+offset_top = 336.0
+offset_right = 693.0
+offset_bottom = 416.0
+theme_override_styles/normal = SubResource("StyleBoxTexture_g56pf")
+theme_override_styles/pressed = SubResource("StyleBoxTexture_6s35v")
+theme_override_styles/hover = SubResource("StyleBoxTexture_00l08")
 text = "Settings"
 
 [node name="Quit" type="Button" parent="Menu" unique_id=1788462913]
-offset_left = 471.0
-offset_top = 433.0
-offset_right = 662.0
-offset_bottom = 506.0
+offset_left = 453.0
+offset_top = 420.0
+offset_right = 693.0
+offset_bottom = 500.0
+theme_override_styles/normal = SubResource("StyleBoxTexture_g56pf")
+theme_override_styles/pressed = SubResource("StyleBoxTexture_6s35v")
+theme_override_styles/hover = SubResource("StyleBoxTexture_00l08")
 text = "Quit"
 
 [node name="LearningCenter" parent="." unique_id=2076332728 instance=ExtResource("1_avoc4")]
@@ -61,11 +106,13 @@ visible = false
 
 [node name="Back" type="Button" parent="." unique_id=457136848]
 visible = false
-offset_left = 1044.0
-offset_top = 23.0
-offset_right = 1127.0
-offset_bottom = 98.0
-text = "Back"
+offset_left = 1014.0
+offset_top = 59.0
+offset_right = 1094.0
+offset_bottom = 139.0
+theme_override_styles/normal = SubResource("StyleBoxTexture_defd4")
+theme_override_styles/pressed = SubResource("StyleBoxTexture_ewn82")
+theme_override_styles/hover = SubResource("StyleBoxTexture_eihmq")
 
 [connection signal="pressed" from="Menu/Resume" to="." method="_on_resume_pressed"]
 [connection signal="pressed" from="Menu/LearningCenterbutton" to="." method="_on_learning_centerbutton_pressed"]
