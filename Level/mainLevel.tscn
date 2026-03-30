@@ -7,7 +7,6 @@
 [ext_resource type="Texture2D" uid="uid://bjvn35r3l38gf" path="res://UI/Theme/MainLevel/Overlay.png" id="3_s1qlg"]
 [ext_resource type="Texture2D" uid="uid://ddu3qhhie4xtl" path="res://UI/Theme/MainLevel/desk/desk.png" id="3_xwmsp"]
 [ext_resource type="Texture2D" uid="uid://rfnmryyitua7" path="res://UI/Theme/MainLevel/computer/laptop/off.png" id="4_ce85j"]
-[ext_resource type="PackedScene" uid="uid://1pr2vj688p2r" path="res://UI/InGame/Clock/Clock.tscn" id="5_aa2nh"]
 [ext_resource type="Script" uid="uid://bujgo4g4wuuud" path="res://Level/project_handler.gd" id="5_f8h88"]
 [ext_resource type="Texture2D" uid="uid://bvkt8uu876hip" path="res://UI/Theme/MainLevel/PC/PCButton.png" id="5_mk20e"]
 [ext_resource type="Texture2D" uid="uid://bpwhqrmy6of2k" path="res://UI/Theme/MainLevel/backlog/backlog.png" id="5_o11ri"]
@@ -166,7 +165,7 @@ scale = Vector2(4, 4)
 texture = ExtResource("3_xwmsp")
 
 [node name="worker" type="Marker2D" parent="Level/workers/4" unique_id=982291886]
-position = Vector2(0, -88)
+position = Vector2(0, -94)
 
 [node name="computer" type="AnimatedSprite2D" parent="Level/workers/4" unique_id=806723527]
 position = Vector2(0, -48)
@@ -182,7 +181,7 @@ scale = Vector2(4, 4)
 texture = ExtResource("3_xwmsp")
 
 [node name="worker" type="Marker2D" parent="Level/workers/5" unique_id=1298061436]
-position = Vector2(0, -88)
+position = Vector2(0, -94)
 
 [node name="computer" type="AnimatedSprite2D" parent="Level/workers/5" unique_id=1315540609]
 position = Vector2(0, -48)
@@ -198,7 +197,7 @@ scale = Vector2(4, 4)
 texture = ExtResource("3_xwmsp")
 
 [node name="worker" type="Marker2D" parent="Level/workers/6" unique_id=602986777]
-position = Vector2(0, -88)
+position = Vector2(0, -94)
 
 [node name="computer" type="AnimatedSprite2D" parent="Level/workers/6" unique_id=1532994404]
 position = Vector2(0, -48)
@@ -214,7 +213,7 @@ scale = Vector2(4, 4)
 texture = ExtResource("3_xwmsp")
 
 [node name="worker" type="Marker2D" parent="Level/workers/1" unique_id=1556939787]
-position = Vector2(0, -88)
+position = Vector2(0, -94)
 
 [node name="computer" type="AnimatedSprite2D" parent="Level/workers/1" unique_id=392353229]
 position = Vector2(0, -48)
@@ -230,7 +229,7 @@ scale = Vector2(4, 4)
 texture = ExtResource("3_xwmsp")
 
 [node name="worker" type="Marker2D" parent="Level/workers/2" unique_id=529563381]
-position = Vector2(0, -88)
+position = Vector2(0, -94)
 
 [node name="computer" type="AnimatedSprite2D" parent="Level/workers/2" unique_id=203853546]
 position = Vector2(0, -48)
@@ -246,7 +245,7 @@ scale = Vector2(4, 4)
 texture = ExtResource("3_xwmsp")
 
 [node name="worker" type="Marker2D" parent="Level/workers/3" unique_id=140762755]
-position = Vector2(0, -88)
+position = Vector2(0, -94)
 
 [node name="computer" type="AnimatedSprite2D" parent="Level/workers/3" unique_id=603160389]
 position = Vector2(0, -48)
@@ -261,6 +260,29 @@ script = ExtResource("2_3c0mk")
 position = Vector2(576, 324)
 scale = Vector2(4.5, 4.5)
 texture = ExtResource("3_s1qlg")
+
+[node name="Calendar" type="Sprite2D" parent="UI" unique_id=1608500558]
+position = Vector2(884, 187.00002)
+scale = Vector2(5, 5)
+texture = ExtResource("42_ce85j")
+
+[node name="weekBar" type="TextureProgressBar" parent="UI/Calendar" unique_id=1335137699]
+offset_left = -21.0
+offset_top = 6.999996
+offset_right = 21.0
+offset_bottom = 19.999996
+
+[node name="Sprint Info" type="RichTextLabel" parent="UI/Calendar" unique_id=1052199359]
+offset_left = -21.000008
+offset_top = -19.000002
+offset_right = 20.999992
+offset_bottom = -8.000004
+
+[node name="Week Info" type="RichTextLabel" parent="UI/Calendar" unique_id=314886438]
+offset_left = -20.999992
+offset_top = -8.000004
+offset_right = 20.999992
+offset_bottom = 4.999996
 
 [node name="HUD" type="Node2D" parent="UI" unique_id=1641217276]
 
@@ -488,9 +510,6 @@ theme_override_styles/normal = SubResource("StyleBoxTexture_s1qlg")
 theme_override_styles/pressed = SubResource("StyleBoxTexture_rudkk")
 theme_override_styles/hover = SubResource("StyleBoxTexture_ct15o")
 
-[node name="Clock" parent="UI" unique_id=2109593085 instance=ExtResource("5_aa2nh")]
-visible = false
-
 [node name="PauseButton" type="Button" parent="UI" unique_id=1348602957]
 process_mode = 3
 offset_left = 1088.0
@@ -503,11 +522,6 @@ metadata/_edit_use_anchors_ = true
 
 [node name="Pause" parent="UI" unique_id=1977347548 instance=ExtResource("8_5ay6t")]
 visible = false
-
-[node name="Sprite2D" type="Sprite2D" parent="UI" unique_id=1608500558]
-position = Vector2(884, 187.00002)
-scale = Vector2(5, 5)
-texture = ExtResource("42_ce85j")
 
 [node name="Camera2D" type="Camera2D" parent="." unique_id=1819020716]
 position = Vector2(576, 324)

@@ -1,6 +1,6 @@
 extends Button
 
-signal selected(worker)
+signal selected(heldWorker)
 var heldWorker = Node2D
 
 func fillInfo(worker):
@@ -11,5 +11,6 @@ func fillInfo(worker):
 
 
 func _on_pressed() -> void:
+	PlayerTool.newHire(heldWorker)
 	selected.emit(heldWorker)
 	pass
