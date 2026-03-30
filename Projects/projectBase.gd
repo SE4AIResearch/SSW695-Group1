@@ -5,8 +5,6 @@ var projectDescription: String
 
 var clientName: String
 
-var difficulty: int
-
 var frontEndScalar: float
 var backEndScalar: float
 var documentingScalar: float
@@ -22,5 +20,6 @@ var baseSprintLength: int
 var sprintLength: int
 
 var methodology: Dictionary
+var constraints: Dictionary
 
 var metric: Dictionary

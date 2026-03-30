@@ -23,7 +23,6 @@ func generateProjectChoices() -> void:
 		newProject.projectName = "Project Name"
 		newProject.projectDescription = "Project Description"
 		newProject.clientName = PersonConstructor.generateName()
-		newProject.difficulty = 1
 		newProject.frontEndScalar = 1
 		newProject.backEndScalar = 1
 		newProject.documentingScalar = 1
@@ -42,7 +41,6 @@ func generateProjectChoices() -> void:
 		pass
 
 func projectSelected(project):
-	get_parent().get_parent().get_node("BackButton").visible = false
 	for child in $ProjectChoose/ProjectChoices.get_children(): 
 		if child.heldProject != project: child.heldProject.queue_free()
 		child.queue_free()
@@ -57,16 +55,15 @@ func generateMetricsChoices():
 		var newMethod = methodItem.instantiate()
 		newMethod.setupMetric(metric)
 		newMethod.connect("MethodChosen",methodSelected)
-		$MethodologyChoose/MethodologyChoices.add_child(newMethod)
+		$MethodologyChoose/ScrollContainer/MethodologyChoices.add_child(newMethod)
 		pass
 	pass
 
 func methodSelected(chosenMetric):
 	selectedProject.methodology = chosenMetric
 	PlayerTool.newProject(selectedProject)
-	for child in $MethodologyChoose/MethodologyChoices.get_children(): child.queue_free()
-	get_tree().paused = false
-	self.queue_free()
+	for child in $MethodologyChoose/ScrollContainer/MethodologyChoices.get_children(): child.queue_free()
+	get_parent().get_parent().endMenu()
 	pass
 
 func finishProjectChoosing():

@@ -1,17 +1,42 @@
 [gd_scene format=3 uid="uid://do6p5ry0m1heg"]
 
+[ext_resource type="Texture2D" uid="uid://jpedmdobgans" path="res://UI/Theme/PCTheme/button/button.png" id="1_3mg2v"]
 [ext_resource type="Script" uid="uid://btp6mdr8c8f5i" path="res://UI/InGame/ProjectSetup/MethodItem/method_item.gd" id="1_p7jhb"]
+[ext_resource type="Texture2D" uid="uid://c44j5fdrdkpuw" path="res://UI/Theme/PCTheme/button/buttonPressed.png" id="2_n78y1"]
+[ext_resource type="Texture2D" uid="uid://cmdgsum31psqr" path="res://UI/Theme/PCTheme/button/buttonHeld.png" id="3_lhns7"]
+[ext_resource type="Texture2D" uid="uid://du30etnm0gfaa" path="res://UI/Theme/PCTheme/button/buttonDisabled.png" id="4_d6deq"]
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_7ag1o"]
+texture = ExtResource("1_3mg2v")
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_6na4a"]
+texture = ExtResource("2_n78y1")
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_bcjrb"]
+texture = ExtResource("3_lhns7")
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_uryh1"]
+texture = ExtResource("4_d6deq")
 
 [node name="MetricItem" type="Button" unique_id=964148526]
-custom_minimum_size = Vector2(190, 146)
-offset_right = 190.0
-offset_bottom = 146.0
+custom_minimum_size = Vector2(192, 192)
+anchors_preset = -1
+anchor_right = 0.16700001
+anchor_bottom = 0.296
+offset_right = -0.38401794
+offset_bottom = 0.19200134
+theme_override_styles/normal = SubResource("StyleBoxTexture_7ag1o")
+theme_override_styles/pressed = SubResource("StyleBoxTexture_6na4a")
+theme_override_styles/hover = SubResource("StyleBoxTexture_bcjrb")
+theme_override_styles/disabled = SubResource("StyleBoxTexture_uryh1")
 script = ExtResource("1_p7jhb")
 
 [node name="MetricInfo" type="RichTextLabel" parent="." unique_id=346441847]
 layout_mode = 0
-offset_right = 190.0
-offset_bottom = 146.0
+offset_left = 8.0
+offset_top = 16.0
+offset_right = 184.0
+offset_bottom = 184.0
 mouse_filter = 1
 bbcode_enabled = true
 
