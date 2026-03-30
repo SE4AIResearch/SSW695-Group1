@@ -4,6 +4,7 @@
 [ext_resource type="PackedScene" uid="uid://bpiowg6rfby2v" path="res://UI/InGame/WorkerDetails/WorkerDetails.tscn" id="1_mk20e"]
 [ext_resource type="Script" uid="uid://ba67mqx6erpk8" path="res://Level/ui.gd" id="2_3c0mk"]
 [ext_resource type="Texture2D" uid="uid://du61eb4exal1w" path="res://UI/Theme/MainLevel/mock_v3.png" id="3_s1qlg"]
+[ext_resource type="Texture2D" uid="uid://cgiqobq4x3fpe" path="res://UI/Theme/MainLevel/desk/desk_laptop_open.png" id="4_7n3my"]
 [ext_resource type="PackedScene" uid="uid://1pr2vj688p2r" path="res://UI/InGame/Clock/Clock.tscn" id="5_aa2nh"]
 [ext_resource type="Script" uid="uid://bujgo4g4wuuud" path="res://Level/project_handler.gd" id="5_f8h88"]
 [ext_resource type="Texture2D" uid="uid://bvkt8uu876hip" path="res://UI/Theme/MainLevel/PC/PCButton.png" id="5_mk20e"]
@@ -134,6 +135,12 @@ script = ExtResource("2_3c0mk")
 position = Vector2(576, 324)
 scale = Vector2(4.5, 4.5)
 texture = ExtResource("3_s1qlg")
+
+[node name="DeskLaptopOpen" type="Sprite2D" parent="UI" unique_id=713871824]
+visible = false
+position = Vector2(220.5, 445.5)
+scale = Vector2(4.5, 4.5)
+texture = ExtResource("4_7n3my")
 
 [node name="HUD" type="Node2D" parent="UI" unique_id=1641217276]
 

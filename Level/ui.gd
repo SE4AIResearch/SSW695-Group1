@@ -7,13 +7,20 @@ var HiringMenu = load("res://UI/InGame/Hiring/Hiring.tscn")
 var BacklogMenu = load("res://UI/InGame/Backlog/Backlog.tscn")
 var ProjectSetupMenu = load("res://UI/InGame/ProjectSetup/ProjectSetup.tscn")
 var randomEventMenu = load("res://UI/InGame/RandomEvent/RandomEvent.tscn")
+var workerScene = preload("res://Person/Worker/Worker.tscn")
 
 var pcMode = false
+var deskWorker: Node2D
+
+const DESK_WORKER_POSITION := Vector2(225, 375)
+const DESK_WORKER_SCALE := Vector2(4.5, 4.5)
+const DESK_WORKER_Z_INDEX := 0
 
 func _ready() -> void:
 	PlayerTool.connect("projectSelected",toggleProjectButtons)
 	PlayerTool.connect("projectFinished",toggleProjectButtons)
-	pass
+	createDeskWorker()
+	toggleProjectButtons()
 
 func _physics_process(delta: float) -> void:
 	getCurrentProjStats()
@@ -100,7 +107,21 @@ func _on_pc_power_pressed() -> void:
 	if $NewMenu.get_children().size() > 0: $NewMenu.get_child(0).queue_free()
 	pass
 
+func createDeskWorker() -> void:
+	deskWorker = workerScene.instantiate()
+	deskWorker.personName = PersonConstructor.generateName()
+	PersonConstructor.generateVisuals(deskWorker)
+	PersonConstructor.generateWorkerStats(deskWorker)
+	deskWorker.position = DESK_WORKER_POSITION
+	deskWorker.scale = DESK_WORKER_SCALE
+	deskWorker.z_index = DESK_WORKER_Z_INDEX
+	deskWorker.visible = false
+	add_child(deskWorker)
+	move_child(deskWorker, $DeskLaptopOpen.get_index())
+
 func toggleProjectButtons():
-	match PlayerTool.currentProject == null:
-		false: $BacklogButton.disabled = false
-		true: $BacklogButton.disabled = true
+	var hasProject = PlayerTool.currentProject != null
+	$BacklogButton.disabled = !hasProject
+	$DeskLaptopOpen.visible = hasProject
+	if deskWorker != null:
+		deskWorker.visible = hasProject
