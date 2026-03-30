@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://cmscf7t0d8fp4"
-path="res://.godot/imported/middle_Desk.png-6cb6d52fbe9794703ecb642eccc8f0ce.ctex"
+uid="uid://cpuoihltkwl44"
+path="res://.godot/imported/on.png-cd4f9842563df03681b9acae192eff4c.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://UI/Theme/MainLevel/desk/middle_Desk.png"
-dest_files=["res://.godot/imported/middle_Desk.png-6cb6d52fbe9794703ecb642eccc8f0ce.ctex"]
+source_file="res://UI/Theme/MainLevel/computer/laptop/on.png"
+dest_files=["res://.godot/imported/on.png-cd4f9842563df03681b9acae192eff4c.ctex"]
 
 [params]
 

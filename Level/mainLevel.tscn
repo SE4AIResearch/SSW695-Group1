@@ -3,12 +3,15 @@
 [ext_resource type="Script" uid="uid://n6vucbiu7cni" path="res://Level/main_level.gd" id="1_kl53g"]
 [ext_resource type="PackedScene" uid="uid://bpiowg6rfby2v" path="res://UI/InGame/WorkerDetails/WorkerDetails.tscn" id="1_mk20e"]
 [ext_resource type="Script" uid="uid://ba67mqx6erpk8" path="res://Level/ui.gd" id="2_3c0mk"]
-[ext_resource type="Texture2D" uid="uid://du61eb4exal1w" path="res://UI/Theme/MainLevel/mock_v3.png" id="3_s1qlg"]
-[ext_resource type="Texture2D" uid="uid://cgiqobq4x3fpe" path="res://UI/Theme/MainLevel/desk/desk_laptop_open.png" id="4_7n3my"]
+[ext_resource type="Texture2D" uid="uid://bu85cb8l3ao7q" path="res://UI/Theme/MainLevel/bg.png" id="2_ern18"]
+[ext_resource type="Texture2D" uid="uid://bjvn35r3l38gf" path="res://UI/Theme/MainLevel/Overlay.png" id="3_s1qlg"]
+[ext_resource type="Texture2D" uid="uid://ddu3qhhie4xtl" path="res://UI/Theme/MainLevel/desk/desk.png" id="3_xwmsp"]
+[ext_resource type="Texture2D" uid="uid://rfnmryyitua7" path="res://UI/Theme/MainLevel/computer/laptop/off.png" id="4_ce85j"]
 [ext_resource type="PackedScene" uid="uid://1pr2vj688p2r" path="res://UI/InGame/Clock/Clock.tscn" id="5_aa2nh"]
 [ext_resource type="Script" uid="uid://bujgo4g4wuuud" path="res://Level/project_handler.gd" id="5_f8h88"]
 [ext_resource type="Texture2D" uid="uid://bvkt8uu876hip" path="res://UI/Theme/MainLevel/PC/PCButton.png" id="5_mk20e"]
 [ext_resource type="Texture2D" uid="uid://bpwhqrmy6of2k" path="res://UI/Theme/MainLevel/backlog/backlog.png" id="5_o11ri"]
+[ext_resource type="Texture2D" uid="uid://cpuoihltkwl44" path="res://UI/Theme/MainLevel/computer/laptop/on.png" id="5_skrj4"]
 [ext_resource type="Texture2D" uid="uid://dupn30ydcuc3r" path="res://UI/Theme/MainLevel/backlog/backlogPressed.png" id="6_khudx"]
 [ext_resource type="Texture2D" uid="uid://d4i0340g5qya4" path="res://UI/Theme/MainLevel/PC/PCButtonPressed.png" id="6_kl53g"]
 [ext_resource type="Texture2D" uid="uid://bjphafv0gsmox" path="res://UI/Theme/MainLevel/backlog/backlogHover.png" id="7_2q8k2"]
@@ -39,6 +42,26 @@
 [ext_resource type="Texture2D" uid="uid://crruuadiafv87" path="res://UI/Theme/PCTheme/Back/pcBackHeld.png" id="25_x2ak7"]
 [ext_resource type="Texture2D" uid="uid://o4k321o7djhb" path="res://UI/Theme/PCTheme/Back/pcBackDisabled.png" id="26_ktvj5"]
 [ext_resource type="PackedScene" uid="uid://bt0pge4yh7l4p" path="res://UI/InGame/ProjectMetrics/ProjectMetrics.tscn" id="29_uibgn"]
+[ext_resource type="Texture2D" uid="uid://dhthtk5swgjkl" path="res://UI/Theme/MainLevel/calendar.png" id="42_ce85j"]
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_62x8c"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("4_ce85j")
+}],
+"loop": true,
+"name": &"off",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("5_skrj4")
+}],
+"loop": false,
+"name": &"on",
+"speed": 5.0
+}]
 
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_7drem"]
 texture = ExtResource("5_o11ri")
@@ -128,6 +151,109 @@ script = ExtResource("1_kl53g")
 
 [node name="Level" type="Node2D" parent="." unique_id=1824383856]
 
+[node name="background" type="Sprite2D" parent="Level" unique_id=1279202580]
+position = Vector2(576, 324)
+scale = Vector2(4.5, 4.5)
+texture = ExtResource("2_ern18")
+
+[node name="workers" type="Node2D" parent="Level" unique_id=2134483133]
+
+[node name="4" type="Node2D" parent="Level/workers" unique_id=737562267]
+position = Vector2(266, 373)
+
+[node name="desk" type="Sprite2D" parent="Level/workers/4" unique_id=1184600810]
+scale = Vector2(4, 4)
+texture = ExtResource("3_xwmsp")
+
+[node name="worker" type="Marker2D" parent="Level/workers/4" unique_id=982291886]
+position = Vector2(0, -88)
+
+[node name="computer" type="AnimatedSprite2D" parent="Level/workers/4" unique_id=806723527]
+position = Vector2(0, -48)
+scale = Vector2(4, 4)
+sprite_frames = SubResource("SpriteFrames_62x8c")
+animation = &"off"
+
+[node name="5" type="Node2D" parent="Level/workers" unique_id=1476873494]
+position = Vector2(487, 373)
+
+[node name="desk" type="Sprite2D" parent="Level/workers/5" unique_id=1160056970]
+scale = Vector2(4, 4)
+texture = ExtResource("3_xwmsp")
+
+[node name="worker" type="Marker2D" parent="Level/workers/5" unique_id=1298061436]
+position = Vector2(0, -88)
+
+[node name="computer" type="AnimatedSprite2D" parent="Level/workers/5" unique_id=1315540609]
+position = Vector2(0, -48)
+scale = Vector2(4, 4)
+sprite_frames = SubResource("SpriteFrames_62x8c")
+animation = &"off"
+
+[node name="6" type="Node2D" parent="Level/workers" unique_id=1986267460]
+position = Vector2(708, 373)
+
+[node name="desk" type="Sprite2D" parent="Level/workers/6" unique_id=1329984892]
+scale = Vector2(4, 4)
+texture = ExtResource("3_xwmsp")
+
+[node name="worker" type="Marker2D" parent="Level/workers/6" unique_id=602986777]
+position = Vector2(0, -88)
+
+[node name="computer" type="AnimatedSprite2D" parent="Level/workers/6" unique_id=1532994404]
+position = Vector2(0, -48)
+scale = Vector2(4, 4)
+sprite_frames = SubResource("SpriteFrames_62x8c")
+animation = &"off"
+
+[node name="1" type="Node2D" parent="Level/workers" unique_id=590322847]
+position = Vector2(231, 503)
+
+[node name="desk" type="Sprite2D" parent="Level/workers/1" unique_id=846610667]
+scale = Vector2(4, 4)
+texture = ExtResource("3_xwmsp")
+
+[node name="worker" type="Marker2D" parent="Level/workers/1" unique_id=1556939787]
+position = Vector2(0, -88)
+
+[node name="computer" type="AnimatedSprite2D" parent="Level/workers/1" unique_id=392353229]
+position = Vector2(0, -48)
+scale = Vector2(4, 4)
+sprite_frames = SubResource("SpriteFrames_62x8c")
+animation = &"off"
+
+[node name="2" type="Node2D" parent="Level/workers" unique_id=1956814939]
+position = Vector2(452, 503)
+
+[node name="desk" type="Sprite2D" parent="Level/workers/2" unique_id=1227589511]
+scale = Vector2(4, 4)
+texture = ExtResource("3_xwmsp")
+
+[node name="worker" type="Marker2D" parent="Level/workers/2" unique_id=529563381]
+position = Vector2(0, -88)
+
+[node name="computer" type="AnimatedSprite2D" parent="Level/workers/2" unique_id=203853546]
+position = Vector2(0, -48)
+scale = Vector2(4, 4)
+sprite_frames = SubResource("SpriteFrames_62x8c")
+animation = &"off"
+
+[node name="3" type="Node2D" parent="Level/workers" unique_id=962275848]
+position = Vector2(673, 503)
+
+[node name="desk" type="Sprite2D" parent="Level/workers/3" unique_id=1719899547]
+scale = Vector2(4, 4)
+texture = ExtResource("3_xwmsp")
+
+[node name="worker" type="Marker2D" parent="Level/workers/3" unique_id=140762755]
+position = Vector2(0, -88)
+
+[node name="computer" type="AnimatedSprite2D" parent="Level/workers/3" unique_id=603160389]
+position = Vector2(0, -48)
+scale = Vector2(4, 4)
+sprite_frames = SubResource("SpriteFrames_62x8c")
+animation = &"off"
+
 [node name="UI" type="CanvasLayer" parent="." unique_id=2109094166]
 script = ExtResource("2_3c0mk")
 
@@ -135,12 +261,6 @@ script = ExtResource("2_3c0mk")
 position = Vector2(576, 324)
 scale = Vector2(4.5, 4.5)
 texture = ExtResource("3_s1qlg")
-
-[node name="DeskLaptopOpen" type="Sprite2D" parent="UI" unique_id=713871824]
-visible = false
-position = Vector2(220.5, 445.5)
-scale = Vector2(4.5, 4.5)
-texture = ExtResource("4_7n3my")
 
 [node name="HUD" type="Node2D" parent="UI" unique_id=1641217276]
 
@@ -369,6 +489,7 @@ theme_override_styles/pressed = SubResource("StyleBoxTexture_rudkk")
 theme_override_styles/hover = SubResource("StyleBoxTexture_ct15o")
 
 [node name="Clock" parent="UI" unique_id=2109593085 instance=ExtResource("5_aa2nh")]
+visible = false
 
 [node name="PauseButton" type="Button" parent="UI" unique_id=1348602957]
 process_mode = 3
@@ -382,6 +503,11 @@ metadata/_edit_use_anchors_ = true
 
 [node name="Pause" parent="UI" unique_id=1977347548 instance=ExtResource("8_5ay6t")]
 visible = false
+
+[node name="Sprite2D" type="Sprite2D" parent="UI" unique_id=1608500558]
+position = Vector2(884, 187.00002)
+scale = Vector2(5, 5)
+texture = ExtResource("42_ce85j")
 
 [node name="Camera2D" type="Camera2D" parent="." unique_id=1819020716]
 position = Vector2(576, 324)

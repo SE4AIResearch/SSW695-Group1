@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://b6jroqc5rv4e0"
-path="res://.godot/imported/desk_laptop_closed.png-93fe3c39fe1662b5e9490f992223bcc7.ctex"
+uid="uid://rfnmryyitua7"
+path="res://.godot/imported/off.png-e35cbf3277905330c9379cf092acdde0.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://UI/Theme/MainLevel/desk/desk_laptop_closed.png"
-dest_files=["res://.godot/imported/desk_laptop_closed.png-93fe3c39fe1662b5e9490f992223bcc7.ctex"]
+source_file="res://UI/Theme/MainLevel/computer/laptop/off.png"
+dest_files=["res://.godot/imported/off.png-e35cbf3277905330c9379cf092acdde0.ctex"]
 
 [params]
 

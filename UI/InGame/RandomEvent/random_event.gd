@@ -2,10 +2,12 @@ extends Node2D
 
 var eventList = load("res://UI/InGame/RandomEvent/events.gd").new()
 
-var choice1OBJ = ["ChoiceText","ChoiceOutcome"]
-var choice2OBJ = ["ChoiceText","ChoiceOutcome"]
-var choice3OBJ = ["ChoiceText","ChoiceOutcome"]
-var choice4OBJ = ["ChoiceText","ChoiceOutcome"]
+var chosenEvent: Dictionary
+
+var choice1OBJ = "ChoiceOutcome"
+var choice2OBJ = "ChoiceOutcome"
+var choice3OBJ = "ChoiceOutcome"
+var choice4OBJ = "ChoiceOutcome"
 
 @onready var button1 = $choice1
 @onready var button2 = $choice2
@@ -39,7 +41,7 @@ func setButtonVisual(menuButton: Button):
 	pass
 
 func initializeEvent():
-	var chosenEvent = eventList.events.pick_random()
+	chosenEvent = eventList.events.pick_random()
 	$eventText.text = chosenEvent.get("description")
 	setButtonVisual(button1)
 	setButtonVisual(button2)
@@ -53,6 +55,7 @@ func initializeEvent():
 			button4.visible = false
 			button1.position = $single/Marker2D.position
 			button1.get_child(0).text = chosenEvent.choices[0]
+			choice1OBJ = chosenEvent.outcomes[0]
 		2:
 			button1.visible = true
 			button2.visible = true
@@ -62,6 +65,8 @@ func initializeEvent():
 			button2.position = $double/Marker2D2.position
 			button1.get_child(0).text = chosenEvent.choices[0]
 			button2.get_child(0).text = chosenEvent.choices[1]
+			choice1OBJ = chosenEvent.outcomes[0]
+			choice2OBJ = chosenEvent.outcomes[1]
 		3:
 			button1.visible = true
 			button3.visible = true
@@ -73,6 +78,9 @@ func initializeEvent():
 			button1.get_child(0).text = chosenEvent.choices[0]
 			button2.get_child(0).text = chosenEvent.choices[1]
 			button3.get_child(0).text = chosenEvent.choices[2]
+			choice1OBJ = chosenEvent.outcomes[0]
+			choice2OBJ = chosenEvent.outcomes[1]
+			choice3OBJ = chosenEvent.outcomes[2]
 		4:
 			button1.visible = true
 			button2.visible = true
@@ -86,6 +94,10 @@ func initializeEvent():
 			button2.get_child(0).text = chosenEvent.choices[1]
 			button3.get_child(0).text = chosenEvent.choices[2]
 			button4.get_child(0).text = chosenEvent.choices[3]
+			choice1OBJ = chosenEvent.outcomes[0]
+			choice2OBJ = chosenEvent.outcomes[1]
+			choice3OBJ = chosenEvent.outcomes[2]
+			choice4OBJ = chosenEvent.outcomes[3]
 			
 func _on_choice_1_pressed() -> void: calculateOutcome(choice1OBJ)
 func _on_choice_2_pressed() -> void: calculateOutcome(choice2OBJ)
@@ -94,6 +106,12 @@ func _on_choice_4_pressed() -> void: calculateOutcome(choice4OBJ)
 
 func calculateOutcome(eventChoice):
 	#Insert code here which determines whether the outcome of the event is a project stat change, or a backlog item.
-	var outcome = eventChoice[1]
+	match chosenEvent.type:
+		"FrontEnd": PlayerTool.currentMetrics.set("frontEnd",PlayerTool.currentMetrics.get("frontEnd") * eventChoice)
+		"BackEnd": PlayerTool.currentMetrics.set("backEnd",PlayerTool.currentMetrics.get("backEnd") * eventChoice)
+		"Documenting": PlayerTool.currentMetrics.set("documenting",PlayerTool.currentMetrics.get("documenting") * eventChoice)
+		"Stakeholder": pass
+		"Backlog": pass
+		
 	get_parent().get_parent().endMenu()
 	pass
