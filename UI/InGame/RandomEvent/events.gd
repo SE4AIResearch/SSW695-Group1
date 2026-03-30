@@ -14,7 +14,7 @@ var events = [
 "name":"CodeReviewFE1",
 "type":"FrontEnd",
 "description":"Review this code and find the error.\n [img = ]",
-"choices":[0,0,0,0],
+"choices":["","","",""],
 "outcomes":[0,0,0,0],
 "reliabilityInfluence":[-1,-1,1,1]
 },
