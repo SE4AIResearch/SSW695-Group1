@@ -24,5 +24,5 @@ func hireSelected(worker):
 	for child in $Hires.get_children(): 
 		if worker != child.heldWorker: child.heldWorker.queue_free()
 		child.queue_free()
-	PlayerTool.newHire(worker)
 	get_parent().get_parent().endMenu()
+	pass
