@@ -2,6 +2,7 @@ extends Node
 
 var nameList = load("res://Person/names.gd").new()
 var textureList = load("res://Person/Textures/textures.gd").new()
+var workerItem = preload("res://Person/Worker/Worker.tscn")
 
 var skinColors: Array[Color]
 
@@ -30,10 +31,26 @@ func generateVisuals(person):
 	person.get_node("hairSprite").modulate = Color(randf_range(0,1),randf_range(0,1),randf_range(0,1))
 	pass
 
-func generateWorkerStats(worker):
-	worker.frontEndWorkerStat = 1
-	worker.backEndWorkerStat = 1
-	worker.documentingWorkerStat = 1
-	worker.speedWorkerStat = 1
-	worker.staminaWorkerStat = 1
+func generateWorkerStats(worker): #CREATE SCALING FOR THIS!
+	worker.frontEndStat = 3
+	worker.backEndStat = 3
+	worker.documentingStat = 3
+	worker.speedStat = 100
+	worker.staminaStat = 100
+	pass
+
+func generateWorker():
+	var newHire = workerItem.instantiate()
+	newHire.personName = generateName()
+	generateVisuals(newHire)
+	generateWorkerStats(newHire)
+	return newHire
+	pass
+
+func setBasicStats(worker):
+	worker.frontEndStat = 3
+	worker.backEndStat = 3
+	worker.documentingStat = 3
+	worker.speedStat = 100
+	worker.staminaStat = 100
 	pass

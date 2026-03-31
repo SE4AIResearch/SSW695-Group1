@@ -1,18 +1,40 @@
 [gd_scene format=3 uid="uid://d1uebs0vqbym5"]
 
+[ext_resource type="Texture2D" uid="uid://c2it0w0k17wgn" path="res://UI/Theme/PCTheme/button/slimButton.png" id="1_nokiw"]
+[ext_resource type="Texture2D" uid="uid://bnulbxemxoryo" path="res://UI/Theme/PCTheme/button/slimButtonPressed.png" id="2_5v52h"]
+[ext_resource type="Texture2D" uid="uid://di1kn3fa7np7c" path="res://UI/Theme/PCTheme/button/slimButtonHeld.png" id="3_tcbf8"]
+[ext_resource type="Texture2D" uid="uid://2jvaulftw7b6" path="res://UI/Theme/PCTheme/button/slimButtonDisabled.png" id="4_2q807"]
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_c147e"]
+texture = ExtResource("1_nokiw")
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_wpb2e"]
+texture = ExtResource("2_5v52h")
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_b8xyh"]
+texture = ExtResource("3_tcbf8")
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_js4j5"]
+texture = ExtResource("4_2q807")
+
 [node name="UpgradeItem" type="Button" unique_id=886813104]
-custom_minimum_size = Vector2(571, 98)
+custom_minimum_size = Vector2(240, 80)
 anchors_preset = -1
-anchor_right = 0.49600002
-anchor_bottom = 0.15100001
-offset_right = -0.3920288
-offset_bottom = 0.1519928
+anchor_right = 0.29200003
+anchor_bottom = 0.17300001
+offset_right = -96.38403
+offset_bottom = -32.104004
+theme_override_styles/normal = SubResource("StyleBoxTexture_c147e")
+theme_override_styles/pressed = SubResource("StyleBoxTexture_wpb2e")
+theme_override_styles/hover = SubResource("StyleBoxTexture_b8xyh")
+theme_override_styles/disabled = SubResource("StyleBoxTexture_js4j5")
 
 [node name="UpgradeName" type="Label" parent="." unique_id=1943363255]
 layout_mode = 0
-offset_left = 10.0
-offset_right = 384.0
-offset_bottom = 98.0
+offset_left = 13.0
+offset_top = 13.0
+offset_right = 227.0
+offset_bottom = 50.0
 text = "Upgrade Name: Description"
 vertical_alignment = 1
 
@@ -21,7 +43,12 @@ layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_left = 419.0
+offset_left = 104.0
+offset_top = 49.0
+offset_right = -101.0
+offset_bottom = -8.0
+grow_horizontal = 2
+grow_vertical = 2
 text = "Cost"
 horizontal_alignment = 1
 vertical_alignment = 1

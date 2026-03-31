@@ -3,11 +3,14 @@
 [ext_resource type="Script" uid="uid://n6vucbiu7cni" path="res://Level/main_level.gd" id="1_kl53g"]
 [ext_resource type="PackedScene" uid="uid://bpiowg6rfby2v" path="res://UI/InGame/WorkerDetails/WorkerDetails.tscn" id="1_mk20e"]
 [ext_resource type="Script" uid="uid://ba67mqx6erpk8" path="res://Level/ui.gd" id="2_3c0mk"]
+[ext_resource type="Texture2D" uid="uid://bu85cb8l3ao7q" path="res://UI/Theme/MainLevel/bg.png" id="2_ern18"]
 [ext_resource type="Texture2D" uid="uid://bjvn35r3l38gf" path="res://UI/Theme/MainLevel/Overlay.png" id="3_s1qlg"]
-[ext_resource type="PackedScene" uid="uid://1pr2vj688p2r" path="res://UI/InGame/Clock/Clock.tscn" id="5_aa2nh"]
+[ext_resource type="Texture2D" uid="uid://ddu3qhhie4xtl" path="res://UI/Theme/MainLevel/desk/desk.png" id="3_xwmsp"]
+[ext_resource type="Texture2D" uid="uid://rfnmryyitua7" path="res://UI/Theme/MainLevel/computer/laptop/off.png" id="4_ce85j"]
 [ext_resource type="Script" uid="uid://bujgo4g4wuuud" path="res://Level/project_handler.gd" id="5_f8h88"]
 [ext_resource type="Texture2D" uid="uid://bvkt8uu876hip" path="res://UI/Theme/MainLevel/PC/PCButton.png" id="5_mk20e"]
 [ext_resource type="Texture2D" uid="uid://bpwhqrmy6of2k" path="res://UI/Theme/MainLevel/backlog/backlog.png" id="5_o11ri"]
+[ext_resource type="Texture2D" uid="uid://cpuoihltkwl44" path="res://UI/Theme/MainLevel/computer/laptop/on.png" id="5_skrj4"]
 [ext_resource type="Texture2D" uid="uid://dupn30ydcuc3r" path="res://UI/Theme/MainLevel/backlog/backlogPressed.png" id="6_khudx"]
 [ext_resource type="Texture2D" uid="uid://d4i0340g5qya4" path="res://UI/Theme/MainLevel/PC/PCButtonPressed.png" id="6_kl53g"]
 [ext_resource type="Texture2D" uid="uid://bjphafv0gsmox" path="res://UI/Theme/MainLevel/backlog/backlogHover.png" id="7_2q8k2"]
@@ -17,20 +20,50 @@
 [ext_resource type="Texture2D" uid="uid://bjcxbnw1lx0qg" path="res://UI/Theme/MainLevel/RandomEvent/RandomEvent.png" id="8_chqqn"]
 [ext_resource type="Texture2D" uid="uid://dx1jihl0vksqy" path="res://UI/Theme/MainLevel/backlog/backlogDisabled.png" id="8_qbsll"]
 [ext_resource type="Texture2D" uid="uid://bv1wdylubep72" path="res://UI/Theme/Back/backPressed.png" id="9_5o0fy"]
+[ext_resource type="Script" uid="uid://cl6r473skkxqf" path="res://Level/calendar.gd" id="9_ce85j"]
 [ext_resource type="Texture2D" uid="uid://df0nfm3f5alcg" path="res://UI/Theme/MainLevel/RandomEvent/RandomEventPressed.png" id="9_qbsll"]
 [ext_resource type="Texture2D" uid="uid://b8mmjep4nbkf4" path="res://UI/Theme/Back/backHover.png" id="10_adavl"]
 [ext_resource type="Texture2D" uid="uid://bljlfsy1s2b6v" path="res://UI/Theme/MainLevel/RandomEvent/RandomEventHover.png" id="10_khv2s"]
+[ext_resource type="Texture2D" uid="uid://du1kpy7dje0d8" path="res://UI/Theme/MainLevel/date/progressBar.png" id="10_skrj4"]
 [ext_resource type="Texture2D" uid="uid://k7ruc7jhb2cb" path="res://UI/Theme/pause/pause.png" id="12_rudkk"]
 [ext_resource type="Texture2D" uid="uid://djaxs4b63o5yq" path="res://UI/Theme/pause/pausePressed.png" id="13_ct15o"]
 [ext_resource type="Texture2D" uid="uid://b4bvhgbsonl82" path="res://UI/Theme/pause/payseHover.png" id="14_5ay6t"]
 [ext_resource type="Texture2D" uid="uid://bpmqerq7t6ow8" path="res://UI/Theme/PCTheme/Overlay.png" id="15_khv2s"]
 [ext_resource type="Texture2D" uid="uid://cebiwghdhkfft" path="res://UI/Theme/PCTheme/powerButton/pcPower.png" id="16_fy2ok"]
-[ext_resource type="Texture2D" uid="uid://c2it0w0k17wgn" path="res://UI/Theme/PCTheme/button/button.png" id="16_simky"]
-[ext_resource type="Texture2D" uid="uid://bnulbxemxoryo" path="res://UI/Theme/PCTheme/button/buttonPressed.png" id="17_k25hm"]
+[ext_resource type="Texture2D" uid="uid://cqjra4hvo67jb" path="res://UI/Theme/PCTheme/TextureBar/BG.png" id="16_lkgwe"]
+[ext_resource type="Texture2D" uid="uid://c2it0w0k17wgn" path="res://UI/Theme/PCTheme/button/slimButton.png" id="16_simky"]
+[ext_resource type="Texture2D" uid="uid://bnulbxemxoryo" path="res://UI/Theme/PCTheme/button/slimButtonPressed.png" id="17_k25hm"]
+[ext_resource type="Texture2D" uid="uid://cy7ghvk8gm6ef" path="res://UI/Theme/PCTheme/TextureBar/Progress.png" id="17_uibgn"]
 [ext_resource type="Texture2D" uid="uid://b2d03va5d08g6" path="res://UI/Theme/PCTheme/powerButton/pcPowerPressed.png" id="17_uy1d4"]
-[ext_resource type="Texture2D" uid="uid://di1kn3fa7np7c" path="res://UI/Theme/PCTheme/button/buttonHeld.png" id="18_6ypmx"]
+[ext_resource type="Texture2D" uid="uid://di1kn3fa7np7c" path="res://UI/Theme/PCTheme/button/slimButtonHeld.png" id="18_6ypmx"]
 [ext_resource type="Texture2D" uid="uid://b3yb8bcjykj7m" path="res://UI/Theme/PCTheme/powerButton/pcPowerHeld.png" id="18_tmx83"]
-[ext_resource type="Texture2D" uid="uid://cv00wm5mq2tn8" path="res://UI/Theme/PCTheme/button/buttonPressedDisabled.png" id="19_ejxy1"]
+[ext_resource type="Texture2D" uid="uid://2jvaulftw7b6" path="res://UI/Theme/PCTheme/button/slimButtonDisabled.png" id="21_lkgwe"]
+[ext_resource type="Script" uid="uid://cmvfif4wbkq60" path="res://Level/pc_stats.gd" id="23_62x8c"]
+[ext_resource type="Texture2D" uid="uid://d00apn0evacqg" path="res://UI/Theme/PCTheme/Back/pcBack.png" id="23_ejxy1"]
+[ext_resource type="Texture2D" uid="uid://dkqvr0lf6ytje" path="res://UI/Theme/PCTheme/Back/pcBackPressed.png" id="24_ktvj5"]
+[ext_resource type="Texture2D" uid="uid://crruuadiafv87" path="res://UI/Theme/PCTheme/Back/pcBackHeld.png" id="25_x2ak7"]
+[ext_resource type="Texture2D" uid="uid://o4k321o7djhb" path="res://UI/Theme/PCTheme/Back/pcBackDisabled.png" id="26_ktvj5"]
+[ext_resource type="PackedScene" uid="uid://bt0pge4yh7l4p" path="res://UI/InGame/ProjectMetrics/ProjectMetrics.tscn" id="29_uibgn"]
+[ext_resource type="Texture2D" uid="uid://dhthtk5swgjkl" path="res://UI/Theme/MainLevel/calendar.png" id="42_ce85j"]
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_62x8c"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("4_ce85j")
+}],
+"loop": false,
+"name": &"off",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("5_skrj4")
+}],
+"loop": false,
+"name": &"on",
+"speed": 5.0
+}]
 
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_7drem"]
 texture = ExtResource("5_o11ri")
@@ -62,6 +95,8 @@ texture = ExtResource("6_kl53g")
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_adavl"]
 texture = ExtResource("7_3c0mk")
 
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_simky"]
+
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_ktvj5"]
 texture = ExtResource("16_simky")
 
@@ -72,7 +107,7 @@ texture = ExtResource("17_k25hm")
 texture = ExtResource("18_6ypmx")
 
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_uibgn"]
-texture = ExtResource("19_ejxy1")
+texture = ExtResource("21_lkgwe")
 
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_u051x"]
 texture = ExtResource("16_fy2ok")
@@ -82,6 +117,18 @@ texture = ExtResource("17_uy1d4")
 
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_k25hm"]
 texture = ExtResource("18_tmx83")
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_unvvn"]
+texture = ExtResource("23_ejxy1")
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_ern18"]
+texture = ExtResource("24_ktvj5")
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_a5dl5"]
+texture = ExtResource("25_x2ak7")
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_xwmsp"]
+texture = ExtResource("26_ktvj5")
 
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_s1qlg"]
 texture = ExtResource("8_3c0mk")
@@ -104,6 +151,111 @@ texture = ExtResource("14_5ay6t")
 [node name="MainLevel" type="Node2D" unique_id=1895261646]
 script = ExtResource("1_kl53g")
 
+[node name="Level" type="Node2D" parent="." unique_id=1824383856]
+
+[node name="background" type="Sprite2D" parent="Level" unique_id=1279202580]
+position = Vector2(576, 324)
+scale = Vector2(4.5, 4.5)
+texture = ExtResource("2_ern18")
+
+[node name="workers" type="Node2D" parent="Level" unique_id=2134483133]
+
+[node name="4" type="Node2D" parent="Level/workers" unique_id=737562267]
+position = Vector2(266, 373)
+
+[node name="desk" type="Sprite2D" parent="Level/workers/4" unique_id=1184600810]
+scale = Vector2(4, 4)
+texture = ExtResource("3_xwmsp")
+
+[node name="worker" type="Marker2D" parent="Level/workers/4" unique_id=982291886]
+position = Vector2(0, -94)
+
+[node name="computer" type="AnimatedSprite2D" parent="Level/workers/4" unique_id=806723527]
+position = Vector2(0, -48)
+scale = Vector2(4, 4)
+sprite_frames = SubResource("SpriteFrames_62x8c")
+animation = &"off"
+
+[node name="5" type="Node2D" parent="Level/workers" unique_id=1476873494]
+position = Vector2(487, 373)
+
+[node name="desk" type="Sprite2D" parent="Level/workers/5" unique_id=1160056970]
+scale = Vector2(4, 4)
+texture = ExtResource("3_xwmsp")
+
+[node name="worker" type="Marker2D" parent="Level/workers/5" unique_id=1298061436]
+position = Vector2(0, -94)
+
+[node name="computer" type="AnimatedSprite2D" parent="Level/workers/5" unique_id=1315540609]
+position = Vector2(0, -48)
+scale = Vector2(4, 4)
+sprite_frames = SubResource("SpriteFrames_62x8c")
+animation = &"off"
+
+[node name="6" type="Node2D" parent="Level/workers" unique_id=1986267460]
+position = Vector2(708, 373)
+
+[node name="desk" type="Sprite2D" parent="Level/workers/6" unique_id=1329984892]
+scale = Vector2(4, 4)
+texture = ExtResource("3_xwmsp")
+
+[node name="worker" type="Marker2D" parent="Level/workers/6" unique_id=602986777]
+position = Vector2(0, -94)
+
+[node name="computer" type="AnimatedSprite2D" parent="Level/workers/6" unique_id=1532994404]
+position = Vector2(0, -48)
+scale = Vector2(4, 4)
+sprite_frames = SubResource("SpriteFrames_62x8c")
+animation = &"off"
+
+[node name="1" type="Node2D" parent="Level/workers" unique_id=590322847]
+position = Vector2(231, 503)
+
+[node name="desk" type="Sprite2D" parent="Level/workers/1" unique_id=846610667]
+scale = Vector2(4, 4)
+texture = ExtResource("3_xwmsp")
+
+[node name="worker" type="Marker2D" parent="Level/workers/1" unique_id=1556939787]
+position = Vector2(0, -94)
+
+[node name="computer" type="AnimatedSprite2D" parent="Level/workers/1" unique_id=392353229]
+position = Vector2(0, -48)
+scale = Vector2(4, 4)
+sprite_frames = SubResource("SpriteFrames_62x8c")
+animation = &"off"
+
+[node name="2" type="Node2D" parent="Level/workers" unique_id=1956814939]
+position = Vector2(452, 503)
+
+[node name="desk" type="Sprite2D" parent="Level/workers/2" unique_id=1227589511]
+scale = Vector2(4, 4)
+texture = ExtResource("3_xwmsp")
+
+[node name="worker" type="Marker2D" parent="Level/workers/2" unique_id=529563381]
+position = Vector2(0, -94)
+
+[node name="computer" type="AnimatedSprite2D" parent="Level/workers/2" unique_id=203853546]
+position = Vector2(0, -48)
+scale = Vector2(4, 4)
+sprite_frames = SubResource("SpriteFrames_62x8c")
+animation = &"off"
+
+[node name="3" type="Node2D" parent="Level/workers" unique_id=962275848]
+position = Vector2(673, 503)
+
+[node name="desk" type="Sprite2D" parent="Level/workers/3" unique_id=1719899547]
+scale = Vector2(4, 4)
+texture = ExtResource("3_xwmsp")
+
+[node name="worker" type="Marker2D" parent="Level/workers/3" unique_id=140762755]
+position = Vector2(0, -94)
+
+[node name="computer" type="AnimatedSprite2D" parent="Level/workers/3" unique_id=603160389]
+position = Vector2(0, -48)
+scale = Vector2(4, 4)
+sprite_frames = SubResource("SpriteFrames_62x8c")
+animation = &"off"
+
 [node name="UI" type="CanvasLayer" parent="." unique_id=2109094166]
 script = ExtResource("2_3c0mk")
 
@@ -111,6 +263,63 @@ script = ExtResource("2_3c0mk")
 position = Vector2(576, 324)
 scale = Vector2(4.5, 4.5)
 texture = ExtResource("3_s1qlg")
+
+[node name="Calendar" type="Sprite2D" parent="UI" unique_id=1608500558]
+position = Vector2(884, 187.00002)
+scale = Vector2(5, 5)
+texture = ExtResource("42_ce85j")
+script = ExtResource("9_ce85j")
+
+[node name="TextParent" type="Node2D" parent="UI/Calendar" unique_id=1619162444]
+scale = Vector2(0.38, 0.38)
+
+[node name="sprintLabel" type="RichTextLabel" parent="UI/Calendar/TextParent" unique_id=1052199359]
+offset_left = -53.157883
+offset_top = -50.000008
+offset_right = -1.0526276
+offset_bottom = -21.052639
+bbcode_enabled = true
+text = "Sprint:"
+vertical_alignment = 1
+
+[node name="sprintData" type="RichTextLabel" parent="UI/Calendar/TextParent" unique_id=1130532827]
+offset_left = -1.0526333
+offset_top = -50.000008
+offset_right = 53.157906
+offset_bottom = -21.052639
+bbcode_enabled = true
+text = "0/0"
+horizontal_alignment = 2
+vertical_alignment = 1
+
+[node name="weekLabel" type="RichTextLabel" parent="UI/Calendar/TextParent" unique_id=314886438]
+offset_left = -53.157898
+offset_top = -21.052643
+offset_right = -4.736847
+offset_bottom = 13.157883
+theme_override_colors/default_color = Color(0, 0, 0, 1)
+bbcode_enabled = true
+text = "Week:"
+vertical_alignment = 1
+
+[node name="weekData" type="RichTextLabel" parent="UI/Calendar/TextParent" unique_id=1966119321]
+offset_left = -4.7368317
+offset_top = -21.052643
+offset_right = 53.157913
+offset_bottom = 13.157883
+theme_override_colors/default_color = Color(0, 0, 0, 1)
+bbcode_enabled = true
+text = "0/0"
+horizontal_alignment = 2
+vertical_alignment = 1
+
+[node name="weekBar" type="TextureProgressBar" parent="UI/Calendar" unique_id=1335137699]
+offset_left = -21.000015
+offset_top = 6.999996
+offset_right = 20.999985
+offset_bottom = 19.999996
+max_value = 10.0
+texture_progress = ExtResource("10_skrj4")
 
 [node name="HUD" type="Node2D" parent="UI" unique_id=1641217276]
 
@@ -127,6 +336,7 @@ theme_override_styles/pressed = SubResource("StyleBoxTexture_qbsll")
 theme_override_styles/hover = SubResource("StyleBoxTexture_khv2s")
 theme_override_styles/disabled = SubResource("StyleBoxTexture_tmx83")
 disabled = true
+metadata/_edit_use_anchors_ = true
 
 [node name="RandomEventButton" type="Button" parent="UI" unique_id=943257127]
 offset_left = 166.0
@@ -136,6 +346,7 @@ offset_bottom = 630.0
 theme_override_styles/normal = SubResource("StyleBoxTexture_w8aag")
 theme_override_styles/pressed = SubResource("StyleBoxTexture_fy2ok")
 theme_override_styles/hover = SubResource("StyleBoxTexture_uy1d4")
+metadata/_edit_use_anchors_ = true
 
 [node name="PC" type="Button" parent="UI" unique_id=1894238861]
 offset_left = 732.0
@@ -145,87 +356,143 @@ offset_bottom = 640.0
 theme_override_styles/normal = SubResource("StyleBoxTexture_mk20e")
 theme_override_styles/pressed = SubResource("StyleBoxTexture_5o0fy")
 theme_override_styles/hover = SubResource("StyleBoxTexture_adavl")
+metadata/_edit_use_anchors_ = true
+
+[node name="PCScreenPanel" type="Panel" parent="UI" unique_id=268579011]
+visible = false
+offset_right = 1152.0
+offset_bottom = 648.0
+theme_override_styles/panel = SubResource("StyleBoxEmpty_simky")
 
 [node name="PCScreen" type="Sprite2D" parent="UI" unique_id=942624979]
 visible = false
-position = Vector2(958, 466)
-scale = Vector2(1.312, 1.208)
+position = Vector2(575.5, 323.5)
+scale = Vector2(4.4726563, 4.451389)
 texture = ExtResource("15_khv2s")
 
-[node name="Currency" type="RichTextLabel" parent="UI" unique_id=877430692]
-offset_left = 971.0
-offset_top = 395.0
-offset_right = 1102.0
-offset_bottom = 434.0
+[node name="PCStats" type="Node2D" parent="UI" unique_id=1817401256]
+script = ExtResource("23_62x8c")
+
+[node name="Currency" type="RichTextLabel" parent="UI/PCStats" unique_id=877430692]
+offset_left = 975.0
+offset_top = 390.0
+offset_right = 1106.0
+offset_bottom = 417.0
+mouse_filter = 2
 bbcode_enabled = true
 text = "Currency:"
+metadata/_edit_use_anchors_ = true
 
-[node name="Score" type="RichTextLabel" parent="UI" unique_id=1758771665]
-offset_left = 808.0
-offset_top = 407.0
-offset_right = 894.0
-offset_bottom = 447.0
+[node name="Score" type="RichTextLabel" parent="UI/PCStats" unique_id=1758771665]
+offset_left = 821.0
+offset_top = 391.0
+offset_right = 941.0
+offset_bottom = 417.0
+mouse_filter = 2
 bbcode_enabled = true
 text = "Score:"
+metadata/_edit_use_anchors_ = true
 
-[node name="Label" type="Label" parent="UI" unique_id=984340097]
+[node name="frontEndLabel" type="Label" parent="UI/PCStats" unique_id=984340097]
 offset_left = 813.0
-offset_top = 453.0
+offset_top = 415.0
 offset_right = 888.0
-offset_bottom = 476.0
+offset_bottom = 438.0
 text = "Front End"
+metadata/_edit_use_anchors_ = true
 
-[node name="Label2" type="Label" parent="UI" unique_id=1747929288]
-offset_left = 992.0
-offset_top = 454.0
-offset_right = 1097.0
-offset_bottom = 477.0
+[node name="backEndLabel" type="Label" parent="UI/PCStats" unique_id=1747929288]
+offset_left = 980.0
+offset_top = 412.0
+offset_right = 1085.0
+offset_bottom = 435.0
 text = "Back End"
+metadata/_edit_use_anchors_ = true
 
-[node name="Label3" type="Label" parent="UI" unique_id=1211744277]
+[node name="reliabilityLabel" type="Label" parent="UI/PCStats" unique_id=1211744277]
 offset_left = 809.0
-offset_top = 490.0
+offset_top = 469.0
 offset_right = 914.0
-offset_bottom = 513.0
+offset_bottom = 492.0
 text = "Reliability"
+metadata/_edit_use_anchors_ = true
 
-[node name="Label4" type="Label" parent="UI" unique_id=1051588055]
-offset_left = 983.0
-offset_top = 491.0
-offset_right = 1104.0
-offset_bottom = 514.0
+[node name="documentationLabel" type="Label" parent="UI/PCStats" unique_id=1051588055]
+offset_left = 979.0
+offset_top = 468.0
+offset_right = 1100.0
+offset_bottom = 491.0
 text = "Documentation"
+metadata/_edit_use_anchors_ = true
+
+[node name="frontEndBar" type="TextureProgressBar" parent="UI/PCStats" unique_id=1262734460]
+offset_left = 811.0
+offset_top = 436.0
+offset_right = 875.0
+offset_bottom = 452.0
+scale = Vector2(2, 2)
+mouse_filter = 2
+texture_under = ExtResource("16_lkgwe")
+texture_progress = ExtResource("17_uibgn")
+tint_progress = Color(0.82258534, 0.14166427, 0, 1)
+metadata/_edit_use_anchors_ = true
+
+[node name="reliabilityBar" type="TextureProgressBar" parent="UI/PCStats" unique_id=1756465928]
+offset_left = 811.0
+offset_top = 490.0
+offset_right = 875.0
+offset_bottom = 506.0
+scale = Vector2(2, 2)
+mouse_filter = 2
+texture_under = ExtResource("16_lkgwe")
+texture_progress = ExtResource("17_uibgn")
+tint_progress = Color(2.117753e-06, 0.7839653, 0.19948468, 1)
+metadata/_edit_use_anchors_ = true
+
+[node name="backEndBar" type="TextureProgressBar" parent="UI/PCStats" unique_id=203904639]
+offset_left = 980.0
+offset_top = 435.0
+offset_right = 1044.0
+offset_bottom = 451.0
+scale = Vector2(2, 2)
+mouse_filter = 2
+texture_under = ExtResource("16_lkgwe")
+texture_progress = ExtResource("17_uibgn")
+tint_progress = Color(1.0588765e-06, 0.59539217, 0.76481044, 1)
+metadata/_edit_use_anchors_ = true
+
+[node name="documentationBar" type="TextureProgressBar" parent="UI/PCStats" unique_id=1088868260]
+offset_left = 980.0
+offset_top = 489.0
+offset_right = 1044.0
+offset_bottom = 505.0
+scale = Vector2(2, 2)
+mouse_filter = 2
+texture_under = ExtResource("16_lkgwe")
+texture_progress = ExtResource("17_uibgn")
+tint_progress = Color(1, 1, 0.17254902, 1)
+metadata/_edit_use_anchors_ = true
 
 [node name="PCButtons" type="Node2D" parent="UI" unique_id=1868044307]
+process_mode = 2
+visible = false
 
 [node name="UpgradesButton" type="Button" parent="UI/PCButtons" unique_id=1272067768]
-offset_left = 822.0
-offset_top = 67.0
-offset_right = 918.0
-offset_bottom = 99.0
+offset_left = 498.0
+offset_top = 109.0
+offset_right = 594.0
+offset_bottom = 141.0
 theme_override_styles/normal = SubResource("StyleBoxTexture_ktvj5")
 theme_override_styles/pressed = SubResource("StyleBoxTexture_x2ak7")
 theme_override_styles/hover = SubResource("StyleBoxTexture_lkgwe")
 theme_override_styles/disabled = SubResource("StyleBoxTexture_uibgn")
 text = "Upgrades"
 
-[node name="ProjectMetricsButton" type="Button" parent="UI/PCButtons" unique_id=1183087318]
-offset_left = 323.0
-offset_top = 71.0
-offset_right = 515.0
-offset_bottom = 135.0
-theme_override_styles/normal = SubResource("StyleBoxTexture_ktvj5")
-theme_override_styles/pressed = SubResource("StyleBoxTexture_x2ak7")
-theme_override_styles/hover = SubResource("StyleBoxTexture_lkgwe")
-theme_override_styles/disabled = SubResource("StyleBoxTexture_uibgn")
-disabled = true
-text = "Project Metrics"
-
 [node name="HiringButton" type="Button" parent="UI/PCButtons" unique_id=2094471871]
-offset_left = 803.0
-offset_top = 116.0
-offset_right = 947.0
-offset_bottom = 164.0
+offset_left = 332.0
+offset_top = 93.0
+offset_right = 476.0
+offset_bottom = 141.0
 theme_override_styles/normal = SubResource("StyleBoxTexture_ktvj5")
 theme_override_styles/pressed = SubResource("StyleBoxTexture_x2ak7")
 theme_override_styles/hover = SubResource("StyleBoxTexture_lkgwe")
@@ -252,6 +519,18 @@ theme_override_styles/normal = SubResource("StyleBoxTexture_u051x")
 theme_override_styles/pressed = SubResource("StyleBoxTexture_simky")
 theme_override_styles/hover = SubResource("StyleBoxTexture_k25hm")
 
+[node name="PCBack" type="Button" parent="UI/PCButtons" unique_id=752686175]
+offset_left = 1024.0
+offset_top = 136.0
+offset_right = 1088.0
+offset_bottom = 200.0
+theme_override_styles/normal = SubResource("StyleBoxTexture_unvvn")
+theme_override_styles/pressed = SubResource("StyleBoxTexture_ern18")
+theme_override_styles/hover = SubResource("StyleBoxTexture_a5dl5")
+theme_override_styles/disabled = SubResource("StyleBoxTexture_xwmsp")
+
+[node name="ProjectMetrics" parent="UI/PCButtons" unique_id=65546387 instance=ExtResource("29_uibgn")]
+
 [node name="NewMenu" type="Node2D" parent="UI" unique_id=1478451013]
 
 [node name="BackButton" type="Button" parent="UI" unique_id=1567251887]
@@ -265,8 +544,6 @@ theme_override_styles/normal = SubResource("StyleBoxTexture_s1qlg")
 theme_override_styles/pressed = SubResource("StyleBoxTexture_rudkk")
 theme_override_styles/hover = SubResource("StyleBoxTexture_ct15o")
 
-[node name="Clock" parent="UI" unique_id=2109593085 instance=ExtResource("5_aa2nh")]
-
 [node name="PauseButton" type="Button" parent="UI" unique_id=1348602957]
 process_mode = 3
 offset_left = 1088.0
@@ -275,6 +552,7 @@ offset_bottom = 64.0
 theme_override_styles/normal = SubResource("StyleBoxTexture_vvxbn")
 theme_override_styles/pressed = SubResource("StyleBoxTexture_o11ri")
 theme_override_styles/hover = SubResource("StyleBoxTexture_khudx")
+metadata/_edit_use_anchors_ = true
 
 [node name="Pause" parent="UI" unique_id=1977347548 instance=ExtResource("8_5ay6t")]
 visible = false
@@ -289,8 +567,9 @@ script = ExtResource("5_f8h88")
 [connection signal="pressed" from="UI/RandomEventButton" to="UI" method="_on_random_event_button_pressed"]
 [connection signal="pressed" from="UI/PC" to="UI" method="_on_pc_pressed"]
 [connection signal="pressed" from="UI/PCButtons/UpgradesButton" to="UI" method="_on_upgrades_button_pressed"]
-[connection signal="pressed" from="UI/PCButtons/ProjectMetricsButton" to="UI" method="_on_project_metrics_button_pressed"]
 [connection signal="pressed" from="UI/PCButtons/HiringButton" to="UI" method="_on_hiring_button_pressed"]
 [connection signal="pressed" from="UI/PCButtons/projectStartMenu" to="UI" method="_on_project_start_menu_pressed"]
+[connection signal="pressed" from="UI/PCButtons/PCPower" to="UI" method="_on_pc_power_pressed"]
+[connection signal="pressed" from="UI/PCButtons/PCBack" to="UI" method="_on_pc_back_pressed"]
 [connection signal="pressed" from="UI/BackButton" to="UI" method="_on_back_button_pressed"]
 [connection signal="pressed" from="UI/PauseButton" to="UI" method="_on_pause_button_pressed"]

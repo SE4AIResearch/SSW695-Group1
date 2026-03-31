@@ -1,0 +1,42 @@
+[remap]
+
+importer="font_data_dynamic"
+type="FontFile"
+uid="uid://b0lji18tmt8ua"
+path="res://.godot/imported/Jakeswriting-P2Zr.ttf-6cbe4c0ed6e2166171db5eea7a9bcd13.fontdata"
+
+[deps]
+
+source_file="res://UI/Theme/Fonts/jakes-writing-font/Jakeswriting-P2Zr.ttf"
+dest_files=["res://.godot/imported/Jakeswriting-P2Zr.ttf-6cbe4c0ed6e2166171db5eea7a9bcd13.fontdata"]
+
+[params]
+
+Rendering=null
+antialiasing=1
+generate_mipmaps=false
+disable_embedded_bitmaps=true
+multichannel_signed_distance_field=false
+msdf_pixel_range=8
+msdf_size=48
+allow_system_fallback=true
+force_autohinter=false
+modulate_color_glyphs=false
+hinting=1
+subpixel_positioning=4
+keep_rounding_remainders=true
+oversampling=0.0
+Fallbacks=null
+fallbacks=[]
+Compress=null
+compress=true
+preload=[{
+"chars": [],
+"glyphs": [],
+"name": "New Configuration",
+"size": Vector2i(16, 0),
+&"variation_embolden": 0.0
+}]
+language_support={}
+script_support={}
+opentype_features={}

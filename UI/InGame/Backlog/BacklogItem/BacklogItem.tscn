@@ -1,0 +1,6 @@
+[gd_scene format=3 uid="uid://dj1mtm8v5pks8"]
+
+[ext_resource type="Script" uid="uid://dhp4mf17p8qyy" path="res://UI/InGame/Backlog/BacklogItem/backlog_item.gd" id="1_nmmrt"]
+
+[node name="BacklogItem" type="Node2D" unique_id=1537826055]
+script = ExtResource("1_nmmrt")

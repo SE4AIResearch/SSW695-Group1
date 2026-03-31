@@ -1,22 +1,44 @@
 [gd_scene format=3 uid="uid://h0a8rxjcvi2"]
 
+[ext_resource type="Texture2D" uid="uid://jpedmdobgans" path="res://UI/Theme/PCTheme/button/button.png" id="1_6rom8"]
 [ext_resource type="Script" uid="uid://bgmjmmfks434g" path="res://UI/InGame/Hiring/HireItem/hire_item.gd" id="1_n43g0"]
+[ext_resource type="Texture2D" uid="uid://c44j5fdrdkpuw" path="res://UI/Theme/PCTheme/button/buttonPressed.png" id="2_kgd8x"]
+[ext_resource type="Texture2D" uid="uid://cmdgsum31psqr" path="res://UI/Theme/PCTheme/button/buttonHeld.png" id="3_wmixv"]
+[ext_resource type="Texture2D" uid="uid://du30etnm0gfaa" path="res://UI/Theme/PCTheme/button/buttonDisabled.png" id="4_blv5g"]
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_mkoon"]
+texture = ExtResource("1_6rom8")
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_xymxj"]
+texture = ExtResource("2_kgd8x")
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_3g3fd"]
+texture = ExtResource("3_wmixv")
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_52l6a"]
+texture = ExtResource("4_blv5g")
 
 [node name="HireItem" type="Button" unique_id=1567480096]
-custom_minimum_size = Vector2(265, 169)
+custom_minimum_size = Vector2(172, 172)
 anchors_preset = -1
 anchor_right = 0.23
 anchor_bottom = 0.254
-offset_right = 0.040008545
-offset_bottom = 4.4079895
+offset_right = -168.95999
+offset_bottom = -68.59201
+theme_override_styles/normal = SubResource("StyleBoxTexture_mkoon")
+theme_override_styles/pressed = SubResource("StyleBoxTexture_xymxj")
+theme_override_styles/hover = SubResource("StyleBoxTexture_3g3fd")
+theme_override_styles/disabled = SubResource("StyleBoxTexture_52l6a")
 script = ExtResource("1_n43g0")
 
 [node name="workerInfo" type="RichTextLabel" parent="." unique_id=430627088]
 layout_mode = 0
-offset_left = 95.0
-offset_right = 265.0
-offset_bottom = 169.0
+offset_left = 7.0
+offset_top = 14.0
+offset_right = 165.0
+offset_bottom = 165.0
 mouse_filter = 1
+theme_override_font_sizes/normal_font_size = 14
 bbcode_enabled = true
 text = "Backend
 Frontend
@@ -25,7 +47,7 @@ Speed
 Stamina"
 
 [node name="spriteMarker" type="Marker2D" parent="." unique_id=913662329]
-position = Vector2(43, 80)
+position = Vector2(131, 132)
 scale = Vector2(2.5, 2.5)
 
 [connection signal="pressed" from="." to="." method="_on_pressed"]
