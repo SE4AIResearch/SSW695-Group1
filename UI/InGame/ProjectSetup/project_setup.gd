@@ -73,10 +73,18 @@ func generateMetricsChoices():
 
 func methodSelected(chosenMetric):
 	selectedProject.methodology = chosenMetric
-	PlayerTool.newProject(selectedProject)
 	for child in $MethodologyChoose/ScrollContainer/MethodologyChoices.get_children(): child.queue_free()
-	get_parent().get_parent().endMenu()
+	calculateConstraintAndMethodology()
 	pass
+
+#Calculate effects of chosen methodology and generated constraints onto the project
+func calculateConstraintAndMethodology():
+	selectedProject.sprintAmount = selectedProject.baseSprintAmount
+	selectedProject.sprintLength = selectedProject.baseSprintLength
+	selectedProject.sprintMetricAmount = selectedProject.baseSprintMetricAmount
+	#Return calculated Project
+	PlayerTool.newProject(selectedProject)
+	get_parent().get_parent().endMenu()
 
 func finishProjectChoosing():
 	get_tree().paused = false

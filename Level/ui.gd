@@ -14,7 +14,7 @@ var pcMode = false
 
 func _ready() -> void:
 	PlayerTool.connect("projectSelected",toggleProjectButtons)
-	PlayerTool.connect("projectFinished",toggleProjectButtons)
+	PlayerTool.connect("deadlineReached",toggleProjectButtons)
 	toggleProjectButtons()
 
 func _physics_process(delta: float) -> void: pass

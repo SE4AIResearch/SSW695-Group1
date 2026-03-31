@@ -1,7 +1,8 @@
 extends Node
 
 signal projectSelected
-signal projectFinished
+signal deadlineReached
+signal sprintComplete
 signal hireSelected
 signal levelLoaded
 
@@ -15,6 +16,9 @@ var currentMetrics={
 "reliability":0,
 "stakeholderSatisfaction":0
 }
+var currentWeekTime: int = 0
+var currentProjWeek: int = 0
+var currentProjSprint: int = 0
 var workers: Array
 var upgrades: Array
 var passiveStats = {
@@ -50,9 +54,6 @@ func _ready() -> void:
 
 func newProject(project) -> void:
 	currentProject = project
-	#Insert Methodology chosen Manipulation here
-	
-	
 	projectSelected.emit()
 	pass
 

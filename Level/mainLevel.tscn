@@ -273,7 +273,7 @@ script = ExtResource("9_ce85j")
 [node name="TextParent" type="Node2D" parent="UI/Calendar" unique_id=1619162444]
 scale = Vector2(0.38, 0.38)
 
-[node name="Sprint Label" type="RichTextLabel" parent="UI/Calendar/TextParent" unique_id=1052199359]
+[node name="sprintLabel" type="RichTextLabel" parent="UI/Calendar/TextParent" unique_id=1052199359]
 offset_left = -53.157883
 offset_top = -50.000008
 offset_right = -1.0526276
@@ -282,17 +282,17 @@ bbcode_enabled = true
 text = "Sprint:"
 vertical_alignment = 1
 
-[node name="Sprint Data" type="RichTextLabel" parent="UI/Calendar/TextParent" unique_id=1130532827]
+[node name="sprintData" type="RichTextLabel" parent="UI/Calendar/TextParent" unique_id=1130532827]
 offset_left = -1.0526333
 offset_top = -50.000008
 offset_right = 53.157906
 offset_bottom = -21.052639
 bbcode_enabled = true
-text = "10/10"
+text = "0/0"
 horizontal_alignment = 2
 vertical_alignment = 1
 
-[node name="Week Label" type="RichTextLabel" parent="UI/Calendar/TextParent" unique_id=314886438]
+[node name="weekLabel" type="RichTextLabel" parent="UI/Calendar/TextParent" unique_id=314886438]
 offset_left = -53.157898
 offset_top = -21.052643
 offset_right = -4.736847
@@ -302,14 +302,14 @@ bbcode_enabled = true
 text = "Week:"
 vertical_alignment = 1
 
-[node name="Week Data" type="RichTextLabel" parent="UI/Calendar/TextParent" unique_id=1966119321]
+[node name="weekData" type="RichTextLabel" parent="UI/Calendar/TextParent" unique_id=1966119321]
 offset_left = -4.7368317
 offset_top = -21.052643
 offset_right = 53.157913
 offset_bottom = 13.157883
 theme_override_colors/default_color = Color(0, 0, 0, 1)
 bbcode_enabled = true
-text = "10/10"
+text = "0/0"
 horizontal_alignment = 2
 vertical_alignment = 1
 
@@ -318,8 +318,7 @@ offset_left = -21.000015
 offset_top = 6.999996
 offset_right = 20.999985
 offset_bottom = 19.999996
-max_value = 14.0
-value = 14.0
+max_value = 10.0
 texture_progress = ExtResource("10_skrj4")
 
 [node name="HUD" type="Node2D" parent="UI" unique_id=1641217276]
