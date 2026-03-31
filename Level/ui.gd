@@ -17,12 +17,7 @@ func _ready() -> void:
 	PlayerTool.connect("projectFinished",toggleProjectButtons)
 	toggleProjectButtons()
 
-func _physics_process(delta: float) -> void:
-	getCurrentProjStats()
-
-func getCurrentProjStats():
-	
-	pass
+func _physics_process(delta: float) -> void: pass
 
 func _on_pause_button_pressed() -> void:
 	match get_tree().paused:
@@ -82,7 +77,7 @@ func _on_pc_pressed() -> void:
 	pcMode = true
 	$PCButtons/PCBack.disabled = true
 	get_tree().paused = true
-	$Stats.visible = false
+	$PCStats.visible = false
 	$PCScreen.visible = true
 	$PCScreenPanel.visible = true	
 	$PCButtons.visible = true
@@ -91,7 +86,7 @@ func _on_pc_power_pressed() -> void:
 	#Insert code of screen lerping in size and position to the original PC location and render buttons invisible
 	pcMode = false
 	get_tree().paused = false
-	$Stats.visible = true
+	$PCStats.visible = true
 	$PCScreen.visible = false
 	$PCScreenPanel.visible = false
 	$PCButtons.visible = false

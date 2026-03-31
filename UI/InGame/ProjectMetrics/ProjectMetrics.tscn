@@ -15,19 +15,27 @@ scale = Vector2(5, 5)
 texture = ExtResource("2_h6qok")
 
 [node name="Label" type="Label" parent="." unique_id=738700508]
-offset_left = 109.0
-offset_top = 183.0
-offset_right = 226.0
-offset_bottom = 229.0
+offset_left = 101.0
+offset_top = 187.0
+offset_right = 218.0
+offset_bottom = 227.0
 text = "Project Metrics"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="methodologyLabel" type="Label" parent="." unique_id=1524367975]
-offset_left = 223.0
-offset_top = 233.0
-offset_right = 405.0
-offset_bottom = 256.0
+[node name="projectNameLabel" type="Label" parent="." unique_id=1524367975]
+offset_left = 100.0
+offset_top = 227.0
+offset_right = 701.0
+offset_bottom = 250.0
+text = "Project: "
+vertical_alignment = 1
+
+[node name="methodologyLabel" type="Label" parent="." unique_id=1012099979]
+offset_left = 248.0
+offset_top = 262.0
+offset_right = 430.0
+offset_bottom = 285.0
 text = "Methodology: "
 horizontal_alignment = 1
 vertical_alignment = 1
@@ -109,10 +117,20 @@ texture_progress = ExtResource("4_5q15i")
 tint_progress = Color(2.117753e-06, 0.7839653, 0.19948468, 1)
 
 [node name="stakeholderSatisfactionLabel" type="Label" parent="." unique_id=1615798467]
-offset_left = 298.0
-offset_top = 530.0
-offset_right = 495.0
-offset_bottom = 560.0
+offset_left = 159.0
+offset_top = 528.0
+offset_right = 356.0
+offset_bottom = 558.0
 text = "Stakeholder Satisfaction: "
 horizontal_alignment = 1
 vertical_alignment = 1
+
+[node name="stakeholderSatisfactionBar" type="TextureProgressBar" parent="." unique_id=1833654546]
+offset_left = 366.0
+offset_top = 514.0
+offset_right = 430.0
+offset_bottom = 530.0
+scale = Vector2(4, 4)
+texture_under = ExtResource("3_vear5")
+texture_progress = ExtResource("4_5q15i")
+tint_progress = Color(2.117753e-06, 0.7839653, 0.19948468, 1)
