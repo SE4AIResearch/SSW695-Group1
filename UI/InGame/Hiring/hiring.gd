@@ -3,9 +3,17 @@ extends Node2D
 var hireItem = preload("res://UI/InGame/Hiring/HireItem/HireItem.tscn")
 var workerItem = preload("res://Person/Worker/Worker.tscn")
 
+func _ready() -> void:
+	checkIfMaxHire()
+
 func _process(delta: float) -> void:
 	$BudgetLabel.text = "Hiring Search Budget: $"+ str($BudgetSlider.value)
 	pass
+
+func checkIfMaxHire(): if PlayerTool.workers.size() >= 6:
+		$SearchButton.disabled = true
+		$SearchButton.text = "Max Hired"
+
 
 func _on_search_button_pressed() -> void:
 	for child in $Hires.get_children(): child.queue_free()

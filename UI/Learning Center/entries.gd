@@ -6,7 +6,7 @@ var test = {
 2:"Testing the next page button again I see!"
 }
 
-var sdlc_overview = {
+var sdlcOverview = {
 0:"Software Development Life Cycle (SDLC)\n\nThe Software Development Life Cycle is a structured framework that defines the stages involved in developing a software application from start to finish. These stages typically include Planning, Requirements Analysis, Design, Implementation, Testing, Deployment, and Maintenance.",
 1:"SDLC Phases\n\nPlanning: Define the project scope, goals, and feasibility.\n\nRequirements Analysis: Gather and document what the software must do.\n\nDesign: Create the architecture and technical blueprint.\n\nImplementation: Write the actual code.\n\nTesting: Verify the software works as intended.\n\nDeployment: Release the software to end users.\n\nMaintenance: Fix bugs and add improvements over time.",
 2:"How It Affects the Game\n\nIn Software Development Tycoon, you manage a project through the full SDLC. Your decisions during each phase directly impact your project's Key Performance Indicators (KPIs): Front End, Back End, Documentation, Reliability, and Stakeholder Satisfaction. Understanding the SDLC helps you plan sprints, allocate workers, and respond to events more effectively."
@@ -24,25 +24,25 @@ var waterfall = {
 2:"How It Affects the Game\n\nChoosing Waterfall means longer sprints with more structured planning. Changes mid-project are costly and harder to manage. Documentation metrics tend to be stronger since Waterfall emphasizes thorough upfront planning, but Reliability may suffer if defects are discovered late. You must plan carefully from the start since backtracking is expensive."
 }
 
-var project_constraints = {
+var projectConstraints = {
 0:"Project Constraints\n\nProject constraints refer to the limitations that affect how a project can be executed. The most common framework is the Triple Constraint, also known as the Iron Triangle: Scope, Time, and Cost. Changing one constraint inevitably impacts the others.",
 1:"The Triple Constraint\n\nScope: The features and functionality the project must deliver.\n\nTime: The schedule or deadline for project completion.\n\nCost: The budget and resources available, including team size.\n\nBalancing these three factors is one of the most critical skills in project management. Expanding scope without adjusting time or cost leads to overworked teams and lower quality.",
 2:"How It Affects the Game\n\nIn Software Development Tycoon, project constraints directly shape your gameplay experience. Each project comes with predefined constraints that affect sprint length, the number of sprints, and the difficulty of meeting your KPI targets. Choosing to hire more workers increases cost but can improve speed. Reducing scope may hurt Stakeholder Satisfaction but improve Reliability."
 }
 
-var stakeholder_management = {
+var stakeholderManagement = {
 0:"Stakeholder Management\n\nStakeholder management is the process of identifying, analyzing, and strategically engaging with individuals or groups who have an interest in or influence over a project. Stakeholders can include clients, end users, team members, and management.",
 1:"Key Practices\n\nIdentification: Know who your stakeholders are and what they care about.\n\nCommunication: Keep stakeholders informed with regular updates.\n\nExpectation Management: Set realistic expectations about deliverables and timelines.\n\nFeedback Integration: Incorporate stakeholder feedback into project decisions.\n\nPoor stakeholder management is one of the leading causes of project failure.",
 2:"How It Affects the Game\n\nStakeholder Satisfaction is one of your five KPIs. Random events such as clients requesting feature changes or project scope reductions require you to balance stakeholder needs against project constraints. Ignoring stakeholder concerns lowers satisfaction, while proactively addressing their requests can boost it. Your methodology choice also influences how often you interact with stakeholders."
 }
 
-var sprint_planning = {
+var sprintPlanning = {
 0:"Sprint Planning Basics\n\nSprint planning is a key ceremony in Agile development where the team decides what work to accomplish during the upcoming sprint. A sprint is a fixed time period (usually 1 to 4 weeks) during which a set of tasks must be completed.",
 1:"Sprint Planning Process\n\nDefine Sprint Goal: What do we want to achieve this sprint?\n\nSelect Backlog Items: Choose tasks from the product backlog that align with the goal.\n\nEstimate Effort: Assess how much work each task requires.\n\nAssign Resources: Allocate team members to tasks based on skills and availability.\n\nCapacity Planning: Ensure the team is not overloaded.\n\nEffective sprint planning leads to predictable delivery and better team morale.",
 2:"How It Affects the Game\n\nIn Software Development Tycoon, each sprint gives you a fixed window to allocate your workers to tasks. Assigning workers based on their strengths (Front End, Back End, Documentation skills) improves your KPI metrics more efficiently. Overloading workers reduces their stamina and effectiveness. Good sprint planning means balancing workload across your team to maximize output each sprint."
 }
 
-var risk_management = {
+var riskManagement = {
 0:"Risk Management\n\nRisk management is the process of identifying, assessing, and controlling threats to a project. Risks can come from many sources: technical challenges, resource shortages, requirement changes, or external factors like market shifts.",
 1:"Risk Management Process\n\nIdentify: List potential risks that could affect the project.\n\nAssess: Evaluate the probability and impact of each risk.\n\nPrioritize: Focus on high-probability, high-impact risks first.\n\nMitigate: Develop strategies to reduce risk likelihood or impact.\n\nMonitor: Continuously track risks throughout the project lifecycle.\n\nCommon strategies include risk avoidance, risk transfer, risk reduction, and risk acceptance.",
 2:"How It Affects the Game\n\nRandom events in Software Development Tycoon represent real-world project risks. Events like code review failures, lost documentation, scope changes, and new feature requests all test your risk management skills. Your methodology choice and passive upgrades can influence the frequency and severity of random events. Making informed decisions when events occur is key to keeping your project on track."
