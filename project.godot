@@ -21,6 +21,7 @@ PersonConstructor="*uid://dda20vvlva31s"
 PlayerTool="*uid://b4ab01cuo5f4k"
 SaveTool="*uid://ceqm1ltehlafn"
 TimeTool="*uid://ch3prtp0hjnxa"
+NumberVisualizer="*uid://cvghhtgb17hcm"
 
 [display]
 
@@ -40,3 +41,4 @@ project/assembly_name="SSW656-CapstoneProject"
 textures/canvas_textures/default_texture_filter=0
 rendering_device/driver.windows="d3d12"
 2d/snap/snap_2d_transforms_to_pixel=true
+2d/snap/snap_2d_vertices_to_pixel=true
