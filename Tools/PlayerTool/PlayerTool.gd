@@ -3,6 +3,7 @@ extends Node
 signal projectSelected
 signal projectFinished
 signal hireSelected
+signal levelLoaded
 
 var level
 
