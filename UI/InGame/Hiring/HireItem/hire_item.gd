@@ -5,7 +5,7 @@ var heldWorker = Node2D
 
 func fillInfo(worker):
 	heldWorker = worker
-	$workerInfo.text = worker.personName + '\nFront End: ' + str(worker.frontEndWorkerStat) + "\nBack End: " + str(worker.backEndWorkerStat) + '\nDocumenting: ' + str(worker.documentingWorkerStat) + '\nSpeed: ' + str(worker.speedWorkerStat) + '\nStamina: ' + str(worker.staminaWorkerStat)
+	$workerInfo.text = worker.personName + '\nFront End: ' + str(worker.frontEndStat) + "\nBack End: " + str(worker.backEndStat) + '\nDocumenting: ' + str(worker.documentingStat) + '\nSpeed: ' + str(worker.speedStat) + '\nStamina: ' + str(worker.staminaStat)
 	$spriteMarker.add_child(heldWorker)
 	pass
 

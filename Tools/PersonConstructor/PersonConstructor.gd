@@ -32,11 +32,11 @@ func generateVisuals(person):
 	pass
 
 func generateWorkerStats(worker): #CREATE SCALING FOR THIS!
-	worker.frontEndWorkerStat = 3
-	worker.backEndWorkerStat = 3
-	worker.documentingWorkerStat = 3
-	worker.speedWorkerStat = 100
-	worker.staminaWorkerStat = 100
+	worker.frontEndStat = 3
+	worker.backEndStat = 3
+	worker.documentingStat = 3
+	worker.speedStat = 100
+	worker.staminaStat = 100
 	pass
 
 func generateWorker():
@@ -48,9 +48,9 @@ func generateWorker():
 	pass
 
 func setBasicStats(worker):
-	worker.frontEndWorkerStat = 3
-	worker.backEndWorkerStat = 3
-	worker.documentingWorkerStat = 3
-	worker.speedWorkerStat = 100
-	worker.staminaWorkerStat = 100
+	worker.frontEndStat = 3
+	worker.backEndStat = 3
+	worker.documentingStat = 3
+	worker.speedStat = 100
+	worker.staminaStat = 100
 	pass
