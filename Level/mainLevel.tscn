@@ -20,9 +20,11 @@
 [ext_resource type="Texture2D" uid="uid://bjcxbnw1lx0qg" path="res://UI/Theme/MainLevel/RandomEvent/RandomEvent.png" id="8_chqqn"]
 [ext_resource type="Texture2D" uid="uid://dx1jihl0vksqy" path="res://UI/Theme/MainLevel/backlog/backlogDisabled.png" id="8_qbsll"]
 [ext_resource type="Texture2D" uid="uid://bv1wdylubep72" path="res://UI/Theme/Back/backPressed.png" id="9_5o0fy"]
+[ext_resource type="Script" uid="uid://cl6r473skkxqf" path="res://Level/calendar.gd" id="9_ce85j"]
 [ext_resource type="Texture2D" uid="uid://df0nfm3f5alcg" path="res://UI/Theme/MainLevel/RandomEvent/RandomEventPressed.png" id="9_qbsll"]
 [ext_resource type="Texture2D" uid="uid://b8mmjep4nbkf4" path="res://UI/Theme/Back/backHover.png" id="10_adavl"]
 [ext_resource type="Texture2D" uid="uid://bljlfsy1s2b6v" path="res://UI/Theme/MainLevel/RandomEvent/RandomEventHover.png" id="10_khv2s"]
+[ext_resource type="Texture2D" uid="uid://du1kpy7dje0d8" path="res://UI/Theme/MainLevel/date/progressBar.png" id="10_skrj4"]
 [ext_resource type="Texture2D" uid="uid://k7ruc7jhb2cb" path="res://UI/Theme/pause/pause.png" id="12_rudkk"]
 [ext_resource type="Texture2D" uid="uid://djaxs4b63o5yq" path="res://UI/Theme/pause/pausePressed.png" id="13_ct15o"]
 [ext_resource type="Texture2D" uid="uid://b4bvhgbsonl82" path="res://UI/Theme/pause/payseHover.png" id="14_5ay6t"]
@@ -36,6 +38,7 @@
 [ext_resource type="Texture2D" uid="uid://di1kn3fa7np7c" path="res://UI/Theme/PCTheme/button/slimButtonHeld.png" id="18_6ypmx"]
 [ext_resource type="Texture2D" uid="uid://b3yb8bcjykj7m" path="res://UI/Theme/PCTheme/powerButton/pcPowerHeld.png" id="18_tmx83"]
 [ext_resource type="Texture2D" uid="uid://2jvaulftw7b6" path="res://UI/Theme/PCTheme/button/slimButtonDisabled.png" id="21_lkgwe"]
+[ext_resource type="Script" uid="uid://cmvfif4wbkq60" path="res://Level/pc_stats.gd" id="23_62x8c"]
 [ext_resource type="Texture2D" uid="uid://d00apn0evacqg" path="res://UI/Theme/PCTheme/Back/pcBack.png" id="23_ejxy1"]
 [ext_resource type="Texture2D" uid="uid://dkqvr0lf6ytje" path="res://UI/Theme/PCTheme/Back/pcBackPressed.png" id="24_ktvj5"]
 [ext_resource type="Texture2D" uid="uid://crruuadiafv87" path="res://UI/Theme/PCTheme/Back/pcBackHeld.png" id="25_x2ak7"]
@@ -265,24 +268,59 @@ texture = ExtResource("3_s1qlg")
 position = Vector2(884, 187.00002)
 scale = Vector2(5, 5)
 texture = ExtResource("42_ce85j")
+script = ExtResource("9_ce85j")
+
+[node name="TextParent" type="Node2D" parent="UI/Calendar" unique_id=1619162444]
+scale = Vector2(0.38, 0.38)
+
+[node name="Sprint Label" type="RichTextLabel" parent="UI/Calendar/TextParent" unique_id=1052199359]
+offset_left = -53.157883
+offset_top = -50.000008
+offset_right = -1.0526276
+offset_bottom = -21.052639
+bbcode_enabled = true
+text = "Sprint:"
+vertical_alignment = 1
+
+[node name="Sprint Data" type="RichTextLabel" parent="UI/Calendar/TextParent" unique_id=1130532827]
+offset_left = -1.0526333
+offset_top = -50.000008
+offset_right = 53.157906
+offset_bottom = -21.052639
+bbcode_enabled = true
+text = "10/10"
+horizontal_alignment = 2
+vertical_alignment = 1
+
+[node name="Week Label" type="RichTextLabel" parent="UI/Calendar/TextParent" unique_id=314886438]
+offset_left = -53.157898
+offset_top = -21.052643
+offset_right = -4.736847
+offset_bottom = 13.157883
+theme_override_colors/default_color = Color(0, 0, 0, 1)
+bbcode_enabled = true
+text = "Week:"
+vertical_alignment = 1
+
+[node name="Week Data" type="RichTextLabel" parent="UI/Calendar/TextParent" unique_id=1966119321]
+offset_left = -4.7368317
+offset_top = -21.052643
+offset_right = 53.157913
+offset_bottom = 13.157883
+theme_override_colors/default_color = Color(0, 0, 0, 1)
+bbcode_enabled = true
+text = "10/10"
+horizontal_alignment = 2
+vertical_alignment = 1
 
 [node name="weekBar" type="TextureProgressBar" parent="UI/Calendar" unique_id=1335137699]
-offset_left = -21.0
+offset_left = -21.000015
 offset_top = 6.999996
-offset_right = 21.0
+offset_right = 20.999985
 offset_bottom = 19.999996
-
-[node name="Sprint Info" type="RichTextLabel" parent="UI/Calendar" unique_id=1052199359]
-offset_left = -21.000008
-offset_top = -19.000002
-offset_right = 20.999992
-offset_bottom = -8.000004
-
-[node name="Week Info" type="RichTextLabel" parent="UI/Calendar" unique_id=314886438]
-offset_left = -20.999992
-offset_top = -8.000004
-offset_right = 20.999992
-offset_bottom = 4.999996
+max_value = 14.0
+value = 14.0
+texture_progress = ExtResource("10_skrj4")
 
 [node name="HUD" type="Node2D" parent="UI" unique_id=1641217276]
 
@@ -333,9 +371,10 @@ position = Vector2(575.5, 323.5)
 scale = Vector2(4.4726563, 4.451389)
 texture = ExtResource("15_khv2s")
 
-[node name="Stats" type="Node2D" parent="UI" unique_id=1817401256]
+[node name="PCStats" type="Node2D" parent="UI" unique_id=1817401256]
+script = ExtResource("23_62x8c")
 
-[node name="Currency" type="RichTextLabel" parent="UI/Stats" unique_id=877430692]
+[node name="Currency" type="RichTextLabel" parent="UI/PCStats" unique_id=877430692]
 offset_left = 975.0
 offset_top = 390.0
 offset_right = 1106.0
@@ -345,7 +384,7 @@ bbcode_enabled = true
 text = "Currency:"
 metadata/_edit_use_anchors_ = true
 
-[node name="Score" type="RichTextLabel" parent="UI/Stats" unique_id=1758771665]
+[node name="Score" type="RichTextLabel" parent="UI/PCStats" unique_id=1758771665]
 offset_left = 821.0
 offset_top = 391.0
 offset_right = 941.0
@@ -355,7 +394,7 @@ bbcode_enabled = true
 text = "Score:"
 metadata/_edit_use_anchors_ = true
 
-[node name="frontEndLabel" type="Label" parent="UI/Stats" unique_id=984340097]
+[node name="frontEndLabel" type="Label" parent="UI/PCStats" unique_id=984340097]
 offset_left = 813.0
 offset_top = 415.0
 offset_right = 888.0
@@ -363,7 +402,7 @@ offset_bottom = 438.0
 text = "Front End"
 metadata/_edit_use_anchors_ = true
 
-[node name="backEndLabel" type="Label" parent="UI/Stats" unique_id=1747929288]
+[node name="backEndLabel" type="Label" parent="UI/PCStats" unique_id=1747929288]
 offset_left = 980.0
 offset_top = 412.0
 offset_right = 1085.0
@@ -371,7 +410,7 @@ offset_bottom = 435.0
 text = "Back End"
 metadata/_edit_use_anchors_ = true
 
-[node name="reliabilityLabel" type="Label" parent="UI/Stats" unique_id=1211744277]
+[node name="reliabilityLabel" type="Label" parent="UI/PCStats" unique_id=1211744277]
 offset_left = 809.0
 offset_top = 469.0
 offset_right = 914.0
@@ -379,7 +418,7 @@ offset_bottom = 492.0
 text = "Reliability"
 metadata/_edit_use_anchors_ = true
 
-[node name="documentationLabel" type="Label" parent="UI/Stats" unique_id=1051588055]
+[node name="documentationLabel" type="Label" parent="UI/PCStats" unique_id=1051588055]
 offset_left = 979.0
 offset_top = 468.0
 offset_right = 1100.0
@@ -387,53 +426,49 @@ offset_bottom = 491.0
 text = "Documentation"
 metadata/_edit_use_anchors_ = true
 
-[node name="FrontEndBar" type="TextureProgressBar" parent="UI/Stats" unique_id=1262734460]
+[node name="frontEndBar" type="TextureProgressBar" parent="UI/PCStats" unique_id=1262734460]
 offset_left = 811.0
 offset_top = 436.0
 offset_right = 875.0
 offset_bottom = 452.0
 scale = Vector2(2, 2)
 mouse_filter = 2
-value = 54.0
 texture_under = ExtResource("16_lkgwe")
 texture_progress = ExtResource("17_uibgn")
 tint_progress = Color(0.82258534, 0.14166427, 0, 1)
 metadata/_edit_use_anchors_ = true
 
-[node name="ReliabilityBar" type="TextureProgressBar" parent="UI/Stats" unique_id=1756465928]
+[node name="reliabilityBar" type="TextureProgressBar" parent="UI/PCStats" unique_id=1756465928]
 offset_left = 811.0
 offset_top = 490.0
 offset_right = 875.0
 offset_bottom = 506.0
 scale = Vector2(2, 2)
 mouse_filter = 2
-value = 55.0
 texture_under = ExtResource("16_lkgwe")
 texture_progress = ExtResource("17_uibgn")
 tint_progress = Color(2.117753e-06, 0.7839653, 0.19948468, 1)
 metadata/_edit_use_anchors_ = true
 
-[node name="backEndBar" type="TextureProgressBar" parent="UI/Stats" unique_id=203904639]
+[node name="backEndBar" type="TextureProgressBar" parent="UI/PCStats" unique_id=203904639]
 offset_left = 980.0
 offset_top = 435.0
 offset_right = 1044.0
 offset_bottom = 451.0
 scale = Vector2(2, 2)
 mouse_filter = 2
-value = 55.0
 texture_under = ExtResource("16_lkgwe")
 texture_progress = ExtResource("17_uibgn")
 tint_progress = Color(1.0588765e-06, 0.59539217, 0.76481044, 1)
 metadata/_edit_use_anchors_ = true
 
-[node name="documentationBar" type="TextureProgressBar" parent="UI/Stats" unique_id=1088868260]
+[node name="documentationBar" type="TextureProgressBar" parent="UI/PCStats" unique_id=1088868260]
 offset_left = 980.0
 offset_top = 489.0
 offset_right = 1044.0
 offset_bottom = 505.0
 scale = Vector2(2, 2)
 mouse_filter = 2
-value = 55.0
 texture_under = ExtResource("16_lkgwe")
 texture_progress = ExtResource("17_uibgn")
 tint_progress = Color(1, 1, 0.17254902, 1)

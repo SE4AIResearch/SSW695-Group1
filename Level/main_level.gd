@@ -1,11 +1,12 @@
 extends Node2D
 
+
 func _ready() -> void:
 	PlayerTool.hireSelected.connect(setupDeskVisuals)
 	initializeSave()
 	PlayerTool.level = self
 	setupDeskVisuals()
-	pass
+	PlayerTool.levelLoaded.emit()
 
 func _process(delta: float) -> void:
 	pass
