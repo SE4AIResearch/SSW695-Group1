@@ -1,6 +1,6 @@
 extends Node2D
 
-var projectList = load("res://Projects/projectList.json")
+var projectList = load("res://Projects/projectList.gd").new()
 var projectItem = preload("res://Projects/projectBase.tscn")
 var methodItem = preload("res://UI/InGame/ProjectSetup/MethodItem/MethodItem.tscn")
 var methodList = load("res://Projects/MethodologyList.gd").new()
@@ -12,29 +12,41 @@ func _on_button_pressed() -> void:
 	generateProjectChoices()
 	pass
 
+func _ready():
+	if PlayerTool.workers.size() == 0:
+		$ProjectChoose/Button.text = "Hire a Worker!"
+		$ProjectChoose/Button.disabled = true
+	pass
+
 func generateProjectChoices() -> void:
+	#Insert below code to pool together total worker skills
+	var totalFE: int = 0
+	var totalBE: int = 0
+	var totalD: int = 0
+	for worker in PlayerTool.workers:
+		totalFE += worker.frontEndStat
+		totalBE += worker.backEndStat
+		totalD += worker.documentingStat
+	#Read above comment
 	for child in $ProjectChoose/ProjectChoices.get_children():
 		child.queue_free()
 	for i in range(3):
 		var newProject = projectItem.instantiate()
 		var newChoice = projectChoiceItem.instantiate()
-		var randomProject = null
+		var randomProject = projectList.projects.pick_random()
 		
-		newProject.projectName = "Project Name"
-		newProject.projectDescription = "Project Description"
+		newProject.projectName = randomProject.name
+		newProject.projectDescription = randomProject.name
 		newProject.clientName = PersonConstructor.generateName()
-		newProject.frontEndScalar = 1
-		newProject.backEndScalar = 1
-		newProject.documentingScalar = 1
-		newProject.frontEndProjectMin = 10
-		newProject.backEndProjectMin = 10
-		newProject.documentingProjectMin = 10
-		newProject.baseSprintAmount = 1
-		newProject.sprintAmount = 1
-		newProject.baseSprintLength = 1
-		newProject.sprintLength =1
-		newProject.methodology = {}
-		newProject.metric = {}
+		newProject.frontEndProjectMin = totalFE*randomProject.frontEndScalar
+		newProject.backEndProjectMin = totalBE*randomProject.backEndScalar
+		newProject.documentingProjectMin = totalD*randomProject.documentingScalar
+		newProject.baseSprintAmount = randomProject.baseSprintAmount
+		newProject.baseSprintLength = randomProject.baseSprintLength
+		newProject.baseSprintMetricAmount = randomProject.baseSprintMetricAmount
+		newProject.frontEndMetrics = randomProject.frontEndMetrics
+		newProject.backEndMetrics = randomProject.backEndMetrics
+		newProject.documentingMetrics = randomProject.documentingMetrics
 		newChoice.prepProject(newProject)
 		newChoice.connect("selected",projectSelected)
 		$ProjectChoose/ProjectChoices.add_child(newChoice)
