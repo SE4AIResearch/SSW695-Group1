@@ -5,6 +5,7 @@ signal deadlineReached
 signal sprintComplete
 signal hireSelected
 signal levelLoaded
+signal weekPassed
 
 var level
 
@@ -54,6 +55,8 @@ func _ready() -> void:
 
 func newProject(project) -> void:
 	currentProject = project
+	currentProjWeek = 1
+	currentProjSprint = 1
 	projectSelected.emit()
 	pass
 
