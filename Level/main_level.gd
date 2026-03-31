@@ -4,6 +4,7 @@ func _ready() -> void:
 	PlayerTool.hireSelected.connect(setupDeskVisuals)
 	initializeSave()
 	PlayerTool.level = self
+	setupDeskVisuals()
 	pass
 
 func _process(delta: float) -> void:
@@ -13,12 +14,12 @@ func initializeSave():
 	pass
 
 func setupDeskVisuals():
+	var workerCount = 1
 	for worker in PlayerTool.workers:
-		if worker.get_parent().name == "workerHoldover":
-			for i in range(1,7):
-				var desk = $Level/workers.get_node(str(i)).get_node("worker")
-				if desk.get_child_count() == 0:
-					worker.reparent(desk)
-					worker.position = Vector2(0,0)
+		var desk = $Level/workers.get_node(str(workerCount)).get_node("worker")
+		$Level/workers.get_node(str(workerCount)).get_node("computer").animation = "on"
+		if desk.get_child_count() == 0:
+			worker.reparent(desk)
+			worker.position = Vector2(0,0)
+		workerCount += 1
 		pass
-	

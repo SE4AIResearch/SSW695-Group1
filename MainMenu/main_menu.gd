@@ -18,6 +18,7 @@ func _enter_tree() -> void:
 func _on_new_game_button_pressed() -> void:
 	TimeTool.inGame = true
 	get_tree().change_scene_to_file("res://Level/mainLevel.tscn")
+	PlayerTool.initializeNewSave()
 	pass
 
 func setupMenu(menu):

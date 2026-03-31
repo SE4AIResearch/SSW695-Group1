@@ -46,6 +46,7 @@ var constraints = [
 "sprintLength":2,
 "sprintMetricAmount":0,
 "randomEventChance":.3
-}
+},
+
 }
 ]

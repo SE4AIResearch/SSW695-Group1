@@ -11,6 +11,5 @@ func fillInfo(worker):
 
 
 func _on_pressed() -> void:
-	PlayerTool.newHire(heldWorker)
 	selected.emit(heldWorker)
 	pass
