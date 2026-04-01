@@ -6,6 +6,7 @@ signal sprintComplete
 signal hireSelected
 signal levelLoaded
 signal weekPassed
+signal statsChanged
 
 var level
 
@@ -41,6 +42,16 @@ func initializeNewSave():
 	newHire(freeWorker1)
 	newHire(freeWorker2)
 	pass
+
+#Type : 0 = Front End | 1 = Back End | 2 = Documenting | 3 = Reliability | 4 = Stakeholder Satisfaction
+func changeProjectStats(type,amount):
+	match type:
+		0: currentMetrics.set("frontEnd",currentMetrics.get("frontEnd")+amount)
+		1: currentMetrics.set("backEnd",currentMetrics.get("backEnd",)+amount)
+		2: currentMetrics.set("documenting",currentMetrics.get("documenting")+amount)
+		3: currentMetrics.set("reliability",currentMetrics.get("reliability")+amount)
+		4: currentMetrics.set("stakeholderSatisfaction",currentMetrics.get("stakeholderSatisfaction")+amount)
+	statsChanged.emit()
 
 func resetData():
 	#resets Project stats to default values

@@ -95,7 +95,7 @@ offset_bottom = 458.0
 scale = Vector2(4, 4)
 texture_under = ExtResource("3_vear5")
 texture_progress = ExtResource("4_5q15i")
-tint_progress = Color(1, 1, 0.17254902, 1)
+tint_progress = Color(2.117753e-06, 0.7839653, 0.19948468, 1)
 
 [node name="reliabilityLabel" type="Label" parent="." unique_id=683978752]
 offset_left = 133.0
@@ -114,7 +114,7 @@ offset_bottom = 456.0
 scale = Vector2(4, 4)
 texture_under = ExtResource("3_vear5")
 texture_progress = ExtResource("4_5q15i")
-tint_progress = Color(2.117753e-06, 0.7839653, 0.19948468, 1)
+tint_progress = Color(1, 1, 0.17254902, 1)
 
 [node name="stakeholderSatisfactionLabel" type="Label" parent="." unique_id=1615798467]
 offset_left = 159.0

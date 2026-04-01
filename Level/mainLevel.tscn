@@ -31,11 +31,11 @@
 [ext_resource type="Texture2D" uid="uid://bpmqerq7t6ow8" path="res://UI/Theme/PCTheme/Overlay.png" id="15_khv2s"]
 [ext_resource type="Texture2D" uid="uid://cebiwghdhkfft" path="res://UI/Theme/PCTheme/powerButton/pcPower.png" id="16_fy2ok"]
 [ext_resource type="Texture2D" uid="uid://cqjra4hvo67jb" path="res://UI/Theme/PCTheme/TextureBar/BG.png" id="16_lkgwe"]
-[ext_resource type="Texture2D" uid="uid://c2it0w0k17wgn" path="res://UI/Theme/PCTheme/button/slimButton.png" id="16_simky"]
-[ext_resource type="Texture2D" uid="uid://bnulbxemxoryo" path="res://UI/Theme/PCTheme/button/slimButtonPressed.png" id="17_k25hm"]
+[ext_resource type="Texture2D" uid="uid://drwt4l4mwiboc" path="res://UI/Theme/PCTheme/button/slimButton.png" id="16_simky"]
+[ext_resource type="Texture2D" uid="uid://cuyr4sv3sto4b" path="res://UI/Theme/PCTheme/button/slimButtonPressed.png" id="17_k25hm"]
 [ext_resource type="Texture2D" uid="uid://cy7ghvk8gm6ef" path="res://UI/Theme/PCTheme/TextureBar/Progress.png" id="17_uibgn"]
 [ext_resource type="Texture2D" uid="uid://b2d03va5d08g6" path="res://UI/Theme/PCTheme/powerButton/pcPowerPressed.png" id="17_uy1d4"]
-[ext_resource type="Texture2D" uid="uid://di1kn3fa7np7c" path="res://UI/Theme/PCTheme/button/slimButtonHeld.png" id="18_6ypmx"]
+[ext_resource type="Texture2D" uid="uid://b8snwl2q3qflg" path="res://UI/Theme/PCTheme/button/slimButtonHeld.png" id="18_6ypmx"]
 [ext_resource type="Texture2D" uid="uid://b3yb8bcjykj7m" path="res://UI/Theme/PCTheme/powerButton/pcPowerHeld.png" id="18_tmx83"]
 [ext_resource type="Texture2D" uid="uid://2jvaulftw7b6" path="res://UI/Theme/PCTheme/button/slimButtonDisabled.png" id="21_lkgwe"]
 [ext_resource type="Script" uid="uid://cmvfif4wbkq60" path="res://Level/pc_stats.gd" id="23_62x8c"]
@@ -450,7 +450,7 @@ scale = Vector2(2, 2)
 mouse_filter = 2
 texture_under = ExtResource("16_lkgwe")
 texture_progress = ExtResource("17_uibgn")
-tint_progress = Color(2.117753e-06, 0.7839653, 0.19948468, 1)
+tint_progress = Color(1, 1, 0.17254902, 1)
 metadata/_edit_use_anchors_ = true
 
 [node name="backEndBar" type="TextureProgressBar" parent="UI/PCStats" unique_id=203904639]
@@ -474,7 +474,7 @@ scale = Vector2(2, 2)
 mouse_filter = 2
 texture_under = ExtResource("16_lkgwe")
 texture_progress = ExtResource("17_uibgn")
-tint_progress = Color(1, 1, 0.17254902, 1)
+tint_progress = Color(2.117753e-06, 0.7839653, 0.19948468, 1)
 metadata/_edit_use_anchors_ = true
 
 [node name="PCButtons" type="Node2D" parent="UI" unique_id=1868044307]
