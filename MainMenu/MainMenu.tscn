@@ -2,12 +2,15 @@
 
 [ext_resource type="Script" uid="uid://b2bvcd0mshq6g" path="res://MainMenu/main_menu.gd" id="1_3p42x"]
 [ext_resource type="PackedScene" uid="uid://cdg43iwue2amo" path="res://UI/MainMenu/Load/Load.tscn" id="1_430ii"]
+[ext_resource type="Texture2D" uid="uid://cmurrvu4wd560" path="res://UI/Theme/MainMenu/BG.png" id="2_kftou"]
 [ext_resource type="PackedScene" uid="uid://bvn5808vxkqc4" path="res://UI/MainMenu/Settings/Settings.tscn" id="3_3clmd"]
+[ext_resource type="Texture2D" uid="uid://bker3kugp8etn" path="res://UI/Theme/MainMenu/Logo.png" id="3_nre7b"]
 [ext_resource type="PackedScene" uid="uid://d3fn48fjg2c7k" path="res://UI/MainMenu/Tutorial/Tutorial.tscn" id="4_bsanu"]
 [ext_resource type="PackedScene" uid="uid://ccmfo7vj6hbru" path="res://UI/Learning Center/LearningCenter.tscn" id="5_kftou"]
 [ext_resource type="Texture2D" uid="uid://ylm38omrsiv4" path="res://UI/Theme/Back/back.png" id="6_bsanu"]
 [ext_resource type="Texture2D" uid="uid://bv1wdylubep72" path="res://UI/Theme/Back/backPressed.png" id="7_kftou"]
 [ext_resource type="Texture2D" uid="uid://b8mmjep4nbkf4" path="res://UI/Theme/Back/backHover.png" id="8_nre7b"]
+[ext_resource type="FontFile" uid="uid://b0lji18tmt8ua" path="res://UI/Theme/Fonts/jakes-writing-font/Jakeswriting-P2Zr.ttf" id="8_nxm3p"]
 
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_nxm3p"]
 texture = ExtResource("6_bsanu")
@@ -20,6 +23,16 @@ texture = ExtResource("8_nre7b")
 
 [node name="MainMenu" type="Node2D" unique_id=1200224709]
 script = ExtResource("1_3p42x")
+
+[node name="BG" type="Sprite2D" parent="." unique_id=1730409946]
+position = Vector2(575.5, 324)
+scale = Vector2(4.5039063, 4.5)
+texture = ExtResource("2_kftou")
+
+[node name="Logo" type="Sprite2D" parent="." unique_id=239939704]
+position = Vector2(570, 211.99998)
+scale = Vector2(3.9941528, 4.240531)
+texture = ExtResource("3_nre7b")
 
 [node name="UI" type="CanvasLayer" parent="." unique_id=1074326306]
 
@@ -38,62 +51,72 @@ visible = false
 [node name="MainButtons" type="Node2D" parent="UI" unique_id=1233538348]
 
 [node name="newGameButton" type="Button" parent="UI/MainButtons" unique_id=69548557]
-offset_left = 117.0
-offset_top = 368.0
-offset_right = 309.0
-offset_bottom = 560.0
+offset_left = 92.0
+offset_top = 375.0
+offset_right = 284.0
+offset_bottom = 567.0
 theme_override_colors/font_color = Color(0, 0, 0, 1)
 theme_override_colors/font_pressed_color = Color(0, 0, 0, 1)
 theme_override_colors/font_hover_color = Color(0, 0, 0, 1)
-text = "Start New Game"
+theme_override_fonts/font = ExtResource("8_nxm3p")
+theme_override_font_sizes/font_size = 20
+text = "New Game"
 
 [node name="loadDataButton" type="Button" parent="UI/MainButtons" unique_id=1885130127]
-offset_left = 377.0
-offset_top = 368.0
-offset_right = 569.0
-offset_bottom = 560.0
+offset_left = 341.0
+offset_top = 378.0
+offset_right = 533.0
+offset_bottom = 570.0
 theme_override_colors/font_color = Color(0, 0, 0, 1)
 theme_override_colors/font_pressed_color = Color(0, 0, 0, 1)
 theme_override_colors/font_hover_color = Color(0, 0, 0, 1)
+theme_override_fonts/font = ExtResource("8_nxm3p")
+theme_override_font_sizes/font_size = 20
 text = "Load Game"
 
 [node name="settingsButton" type="Button" parent="UI/MainButtons" unique_id=337689050]
-offset_left = 889.0
-offset_top = 367.0
-offset_right = 1081.0
-offset_bottom = 559.0
+offset_left = 860.0
+offset_top = 382.0
+offset_right = 1052.0
+offset_bottom = 574.0
 theme_override_colors/font_color = Color(0, 0, 0, 1)
 theme_override_colors/font_pressed_color = Color(0, 0, 0, 1)
 theme_override_colors/font_hover_color = Color(0, 0, 0, 1)
+theme_override_fonts/font = ExtResource("8_nxm3p")
+theme_override_font_sizes/font_size = 20
 text = "Settings"
 
 [node name="learningCenterButton" type="Button" parent="UI/MainButtons" unique_id=1959763467]
-offset_left = 641.0
-offset_top = 366.0
-offset_right = 833.0
-offset_bottom = 558.0
+offset_left = 602.0
+offset_top = 383.0
+offset_right = 794.0
+offset_bottom = 575.0
 theme_override_colors/font_color = Color(0, 0, 0, 1)
 theme_override_colors/font_pressed_color = Color(0, 0, 0, 1)
 theme_override_colors/font_hover_color = Color(0, 0, 0, 1)
 theme_override_colors/font_disabled_color = Color(0.8745098, 0.8745098, 0.8745098, 0.5019608)
+theme_override_fonts/font = ExtResource("8_nxm3p")
+theme_override_font_sizes/font_size = 20
 text = "Learning Center"
 
 [node name="QuitButton" type="Button" parent="UI/MainButtons" unique_id=444549206]
-offset_left = 898.0
-offset_top = 56.0
-offset_right = 1090.0
-offset_bottom = 248.0
+offset_left = 1032.0
+offset_top = 53.0
+offset_right = 1096.0
+offset_bottom = 117.0
 theme_override_colors/font_color = Color(0, 0, 0, 1)
 theme_override_colors/font_pressed_color = Color(0, 0, 0, 1)
 theme_override_colors/font_hover_color = Color(0, 0, 0, 1)
+theme_override_fonts/font = ExtResource("8_nxm3p")
+theme_override_font_sizes/font_size = 20
 text = "Quit"
 
 [node name="Back" type="Button" parent="UI" unique_id=702969254]
 visible = false
-offset_left = 1045.0
-offset_top = 19.0
-offset_right = 1109.0
-offset_bottom = 83.0
+offset_left = 1033.0
+offset_top = 529.0
+offset_right = 1097.0
+offset_bottom = 593.0
 theme_override_styles/normal = SubResource("StyleBoxTexture_nxm3p")
 theme_override_styles/pressed = SubResource("StyleBoxTexture_g1826")
 theme_override_styles/hover = SubResource("StyleBoxTexture_npjie")

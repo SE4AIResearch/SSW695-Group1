@@ -1,19 +1,18 @@
 extends Node
 
-signal secondPassed
+var timer = Timer.new()
+var totalSeconds: int = 0
 
-var elapsedTime: float = 0.0
-var second: int
-
-var inGame: bool = false
-
-func _physics_process(delta: float) -> void:
-	if inGame:
-		passTime()
+func _ready() -> void:
+	add_child(timer)
+	timer.autostart = true
+	timer.one_shot = false
+	timer.timeout.connect(trackSeconds)
+	PlayerTool.levelLoaded.connect(addTimer)
 	
-func passTime() -> void:
-	elapsedTime += get_physics_process_delta_time()
-	second = int(elapsedTime) % 60
-	if int(elapsedTime) % 60 == 0:
-		secondPassed.emit()
+func trackSeconds(): totalSeconds += 1
+
+func addTimer():
+	timer.reparent(PlayerTool.level)
+	timer.start(1)
 	

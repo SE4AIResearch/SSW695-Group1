@@ -1,156 +1,205 @@
 [gd_scene format=3 uid="uid://ccmfo7vj6hbru"]
 
 [ext_resource type="Script" uid="uid://x128cyvjfshb" path="res://UI/Learning Center/learning_center.gd" id="1_rl605"]
-[ext_resource type="Texture2D" uid="uid://ylm38omrsiv4" path="res://UI/Theme/Back/back.png" id="2_mrgcg"]
-[ext_resource type="Texture2D" uid="uid://bv1wdylubep72" path="res://UI/Theme/Back/backPressed.png" id="3_bfegd"]
-[ext_resource type="Texture2D" uid="uid://b8mmjep4nbkf4" path="res://UI/Theme/Back/backHover.png" id="4_mx6fs"]
-[ext_resource type="Texture2D" uid="uid://be3qkx4golcyk" path="res://UI/Theme/Back/backDisabled.png" id="5_k5c6i"]
-[ext_resource type="Texture2D" uid="uid://wxpipi3cqg55" path="res://UI/Theme/next/next.png" id="5_va0p5"]
-[ext_resource type="Texture2D" uid="uid://ci7edtym4xjan" path="res://UI/Theme/next/nextPressed.png" id="6_k5c6i"]
-[ext_resource type="Texture2D" uid="uid://bn7hpclr6boqv" path="res://UI/Theme/next/nextHover.png" id="7_urb25"]
-[ext_resource type="Texture2D" uid="uid://dg5eqk23cx7i7" path="res://UI/Theme/next/nextDisabled.png" id="9_urb25"]
+[ext_resource type="Texture2D" uid="uid://bpmqerq7t6ow8" path="res://UI/Theme/PCTheme/Overlay.png" id="2_iymme"]
+[ext_resource type="Texture2D" uid="uid://b7u6qa3yoijgc" path="res://UI/Theme/PCTheme/PanelSlim.png" id="3_iymme"]
+[ext_resource type="Texture2D" uid="uid://d00apn0evacqg" path="res://UI/Theme/PCTheme/Back/pcBack.png" id="3_k5c6i"]
+[ext_resource type="Texture2D" uid="uid://c2it0w0k17wgn" path="res://UI/Theme/PCTheme/button/slimButton.png" id="3_urb25"]
+[ext_resource type="Texture2D" uid="uid://bnulbxemxoryo" path="res://UI/Theme/PCTheme/button/slimButtonPressed.png" id="4_iymme"]
+[ext_resource type="Texture2D" uid="uid://dkqvr0lf6ytje" path="res://UI/Theme/PCTheme/Back/pcBackPressed.png" id="4_urb25"]
+[ext_resource type="Texture2D" uid="uid://di1kn3fa7np7c" path="res://UI/Theme/PCTheme/button/slimButtonHeld.png" id="5_3gx42"]
+[ext_resource type="Texture2D" uid="uid://crruuadiafv87" path="res://UI/Theme/PCTheme/Back/pcBackHeld.png" id="5_iymme"]
+[ext_resource type="Texture2D" uid="uid://o4k321o7djhb" path="res://UI/Theme/PCTheme/Back/pcBackDisabled.png" id="7_3gx42"]
+[ext_resource type="Texture2D" uid="uid://bial1tt4lpoow" path="res://UI/Theme/PCTheme/Panel.png" id="7_ubbqy"]
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_40kxx"]
+texture = ExtResource("3_urb25")
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_s0rqm"]
+texture = ExtResource("4_iymme")
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_dlx5r"]
+texture = ExtResource("5_3gx42")
 
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_va0p5"]
-texture = ExtResource("2_mrgcg")
+texture = ExtResource("3_k5c6i")
 
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_k5c6i"]
-texture = ExtResource("3_bfegd")
+texture = ExtResource("4_urb25")
 
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_urb25"]
-texture = ExtResource("4_mx6fs")
+texture = ExtResource("5_iymme")
 
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_112x7"]
-texture = ExtResource("5_k5c6i")
+texture = ExtResource("7_3gx42")
 
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_iymme"]
-texture = ExtResource("5_va0p5")
+texture = ExtResource("3_k5c6i")
 
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_3gx42"]
-texture = ExtResource("6_k5c6i")
+texture = ExtResource("4_urb25")
 
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_ubbqy"]
-texture = ExtResource("7_urb25")
+texture = ExtResource("5_iymme")
 
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_uydi5"]
-texture = ExtResource("9_urb25")
+texture = ExtResource("7_3gx42")
 
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_pehpa"]
-texture = ExtResource("2_mrgcg")
+texture = ExtResource("3_k5c6i")
 
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_vw6wv"]
-texture = ExtResource("3_bfegd")
+texture = ExtResource("4_urb25")
 
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_fvbx8"]
-texture = ExtResource("4_mx6fs")
+texture = ExtResource("5_iymme")
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_3ddvu"]
+texture = ExtResource("7_3gx42")
 
 [node name="LearningCenter" type="Node2D" unique_id=2076332728]
 script = ExtResource("1_rl605")
 
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=978463937]
+position = Vector2(576, 324)
+scale = Vector2(4.5, 4.5)
+texture = ExtResource("2_iymme")
+
 [node name="Label" type="Label" parent="." unique_id=49849032]
-offset_left = 459.0
-offset_top = 29.0
-offset_right = 650.0
-offset_bottom = 121.0
+offset_left = 465.0
+offset_top = 34.0
+offset_right = 656.0
+offset_bottom = 96.0
 text = "Learning Center"
 horizontal_alignment = 1
 vertical_alignment = 1
 
 [node name="Categories" type="Node2D" parent="." unique_id=1567571191]
 
-[node name="SDLC Overview" type="Button" parent="Categories" unique_id=3841594]
-offset_left = 478.0
-offset_top = 114.0
-offset_right = 651.0
-offset_bottom = 176.0
+[node name="Sprite2D" type="Sprite2D" parent="Categories" unique_id=617280156]
+position = Vector2(565, 329.3333)
+scale = Vector2(6, 6)
+texture = ExtResource("3_iymme")
+
+[node name="ScrollContainer" type="ScrollContainer" parent="Categories" unique_id=334154243]
+offset_left = 439.0
+offset_top = 137.0
+offset_right = 691.0
+offset_bottom = 563.0
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Categories/ScrollContainer" unique_id=2146877093]
+clip_contents = true
+layout_mode = 2
+alignment = 1
+
+[node name="SDLC Overview" type="Button" parent="Categories/ScrollContainer/VBoxContainer" unique_id=3841594]
+custom_minimum_size = Vector2(240, 80)
+layout_mode = 2
+theme_override_styles/normal = SubResource("StyleBoxTexture_40kxx")
+theme_override_styles/pressed = SubResource("StyleBoxTexture_s0rqm")
+theme_override_styles/hover = SubResource("StyleBoxTexture_dlx5r")
 text = "SDLC Overview"
 
-[node name="Agile" type="Button" parent="Categories" unique_id=716144803]
-offset_left = 480.0
-offset_top = 193.0
-offset_right = 653.0
-offset_bottom = 255.0
+[node name="Agile" type="Button" parent="Categories/ScrollContainer/VBoxContainer" unique_id=716144803]
+custom_minimum_size = Vector2(240, 80)
+layout_mode = 2
+theme_override_styles/normal = SubResource("StyleBoxTexture_40kxx")
+theme_override_styles/pressed = SubResource("StyleBoxTexture_s0rqm")
+theme_override_styles/hover = SubResource("StyleBoxTexture_dlx5r")
 text = "Agile"
 
-[node name="Waterfall" type="Button" parent="Categories" unique_id=1040418353]
-offset_left = 481.0
-offset_top = 265.0
-offset_right = 654.0
-offset_bottom = 327.0
+[node name="Waterfall" type="Button" parent="Categories/ScrollContainer/VBoxContainer" unique_id=1040418353]
+custom_minimum_size = Vector2(240, 80)
+layout_mode = 2
+theme_override_styles/normal = SubResource("StyleBoxTexture_40kxx")
+theme_override_styles/pressed = SubResource("StyleBoxTexture_s0rqm")
+theme_override_styles/hover = SubResource("StyleBoxTexture_dlx5r")
 text = "Waterfall"
 
-[node name="ProjectConstraints" type="Button" parent="Categories" unique_id=1644543603]
-offset_left = 479.0
-offset_top = 339.0
-offset_right = 652.0
-offset_bottom = 401.0
+[node name="ProjectConstraints" type="Button" parent="Categories/ScrollContainer/VBoxContainer" unique_id=1644543603]
+custom_minimum_size = Vector2(240, 80)
+layout_mode = 2
+theme_override_styles/normal = SubResource("StyleBoxTexture_40kxx")
+theme_override_styles/pressed = SubResource("StyleBoxTexture_s0rqm")
+theme_override_styles/hover = SubResource("StyleBoxTexture_dlx5r")
 text = "Project Constraints"
 
-[node name="StakeholderManagement" type="Button" parent="Categories" unique_id=868400943]
-offset_left = 457.0
-offset_top = 406.0
-offset_right = 666.0
-offset_bottom = 468.0
+[node name="StakeholderManagement" type="Button" parent="Categories/ScrollContainer/VBoxContainer" unique_id=868400943]
+custom_minimum_size = Vector2(240, 80)
+layout_mode = 2
+theme_override_styles/normal = SubResource("StyleBoxTexture_40kxx")
+theme_override_styles/pressed = SubResource("StyleBoxTexture_s0rqm")
+theme_override_styles/hover = SubResource("StyleBoxTexture_dlx5r")
 text = "Stakeholder Management"
 
-[node name="SprintPlanningBasics" type="Button" parent="Categories" unique_id=2073076304]
-offset_left = 473.0
-offset_top = 480.0
-offset_right = 652.0
-offset_bottom = 542.0
+[node name="SprintPlanningBasics" type="Button" parent="Categories/ScrollContainer/VBoxContainer" unique_id=2073076304]
+custom_minimum_size = Vector2(240, 80)
+layout_mode = 2
+theme_override_styles/normal = SubResource("StyleBoxTexture_40kxx")
+theme_override_styles/pressed = SubResource("StyleBoxTexture_s0rqm")
+theme_override_styles/hover = SubResource("StyleBoxTexture_dlx5r")
 text = "Sprint Planning Basics"
 
-[node name="RiskManagement" type="Button" parent="Categories" unique_id=2113047792]
-offset_left = 474.0
-offset_top = 554.0
-offset_right = 647.0
-offset_bottom = 616.0
+[node name="RiskManagement" type="Button" parent="Categories/ScrollContainer/VBoxContainer" unique_id=2113047792]
+custom_minimum_size = Vector2(240, 80)
+layout_mode = 2
+theme_override_styles/normal = SubResource("StyleBoxTexture_40kxx")
+theme_override_styles/pressed = SubResource("StyleBoxTexture_s0rqm")
+theme_override_styles/hover = SubResource("StyleBoxTexture_dlx5r")
 text = "Risk Management"
 
 [node name="Page" type="Node2D" parent="." unique_id=1727848660]
 visible = false
 
+[node name="Sprite2D" type="Sprite2D" parent="Page" unique_id=1200452470]
+position = Vector2(587, 338)
+scale = Vector2(6, 6)
+texture = ExtResource("7_ubbqy")
+
 [node name="previousButton" type="Button" parent="Page" unique_id=1786473143]
-offset_left = 22.0
-offset_top = 300.0
-offset_right = 86.0
-offset_bottom = 364.0
+offset_left = 43.0
+offset_top = 299.0
+offset_right = 107.0
+offset_bottom = 363.0
 theme_override_styles/normal = SubResource("StyleBoxTexture_va0p5")
 theme_override_styles/pressed = SubResource("StyleBoxTexture_k5c6i")
 theme_override_styles/hover = SubResource("StyleBoxTexture_urb25")
 theme_override_styles/disabled = SubResource("StyleBoxTexture_112x7")
 
 [node name="nextButton" type="Button" parent="Page" unique_id=794032662]
-offset_left = 1049.0
-offset_top = 309.0
-offset_right = 1113.0
-offset_bottom = 373.0
+offset_left = 1100.0
+offset_top = 365.0
+offset_right = 1164.0
+offset_bottom = 429.0
+rotation = 3.1415927
 theme_override_styles/normal = SubResource("StyleBoxTexture_iymme")
 theme_override_styles/pressed = SubResource("StyleBoxTexture_3gx42")
 theme_override_styles/hover = SubResource("StyleBoxTexture_ubbqy")
 theme_override_styles/disabled = SubResource("StyleBoxTexture_uydi5")
 
 [node name="ReturnToLCMenu" type="Button" parent="Page" unique_id=1762920913]
-offset_left = 1064.0
-offset_top = 571.0
-offset_right = 1128.0
-offset_bottom = 635.0
+offset_left = 1037.0
+offset_top = 413.0
+offset_right = 1101.0
+offset_bottom = 477.0
 theme_override_styles/normal = SubResource("StyleBoxTexture_pehpa")
 theme_override_styles/pressed = SubResource("StyleBoxTexture_vw6wv")
 theme_override_styles/hover = SubResource("StyleBoxTexture_fvbx8")
+theme_override_styles/disabled = SubResource("StyleBoxTexture_3ddvu")
 
 [node name="Entry" type="RichTextLabel" parent="Page" unique_id=2033928089]
-offset_left = 148.0
-offset_top = 112.0
-offset_right = 984.0
-offset_bottom = 537.0
+offset_left = 227.0
+offset_top = 158.0
+offset_right = 947.0
+offset_bottom = 560.0
 
-[connection signal="pressed" from="Categories/SDLC Overview" to="." method="_on_sdlc_overview_pressed"]
-[connection signal="pressed" from="Categories/Agile" to="." method="_on_agile_pressed"]
-[connection signal="pressed" from="Categories/Waterfall" to="." method="_on_waterfall_pressed"]
-[connection signal="pressed" from="Categories/ProjectConstraints" to="." method="_on_project_constraints_pressed"]
-[connection signal="pressed" from="Categories/StakeholderManagement" to="." method="_on_stakeholder_management_pressed"]
-[connection signal="pressed" from="Categories/SprintPlanningBasics" to="." method="_on_sprint_planning_basics_pressed"]
-[connection signal="pressed" from="Categories/RiskManagement" to="." method="_on_risk_management_pressed"]
+[connection signal="pressed" from="Categories/ScrollContainer/VBoxContainer/SDLC Overview" to="." method="_on_sdlc_overview_pressed"]
+[connection signal="pressed" from="Categories/ScrollContainer/VBoxContainer/Agile" to="." method="_on_agile_pressed"]
+[connection signal="pressed" from="Categories/ScrollContainer/VBoxContainer/Waterfall" to="." method="_on_waterfall_pressed"]
+[connection signal="pressed" from="Categories/ScrollContainer/VBoxContainer/ProjectConstraints" to="." method="_on_project_constraints_pressed"]
+[connection signal="pressed" from="Categories/ScrollContainer/VBoxContainer/StakeholderManagement" to="." method="_on_stakeholder_management_pressed"]
+[connection signal="pressed" from="Categories/ScrollContainer/VBoxContainer/SprintPlanningBasics" to="." method="_on_sprint_planning_basics_pressed"]
+[connection signal="pressed" from="Categories/ScrollContainer/VBoxContainer/RiskManagement" to="." method="_on_risk_management_pressed"]
 [connection signal="pressed" from="Page/previousButton" to="." method="_on_previous_button_pressed"]
 [connection signal="pressed" from="Page/nextButton" to="." method="_on_next_button_pressed"]
 [connection signal="pressed" from="Page/ReturnToLCMenu" to="." method="_on_return_to_lc_menu_pressed"]

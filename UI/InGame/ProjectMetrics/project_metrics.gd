@@ -1,25 +1,27 @@
 extends Node2D
 
 
-# Called when the node enters the scene tree for the first time.
 func _ready() -> void:
-	pass # Replace with function body.
-
-
-# Called every frame. 'delta' is the elapsed time since the previous frame.
-func _process(delta: float) -> void:
+	TimeTool.timer.timeout.connect(updateCurrentStats)
+	PlayerTool.projectSelected.connect(setupMetrics)
 	pass
 
-func getCurrentMetrics(project,currentMetrics):
-	$methodologyLabel.text = "Methodology: " + project.methodology.get("name")
-	$frontEndBar.max_value = project.frontEndProjectMin
-	$frontEndBar.value = currentMetrics.get("frontEnd")
-	$backEndBar.max_value = project.backEndProjectMin
-	$backEndBar.value = currentMetrics.get("backEnd")
-	$documentationBar.max_value = project.documentingProjectMin
-	$documentationBar.value = currentMetrics.get("documenting")
+
+func setupMetrics():
+	$projectNameLabel.text = "Project: " + PlayerTool.currentProject.projectName + " | Client: " + PlayerTool.currentProject.clientName
+	$methodologyLabel.text = "Methodology: " + PlayerTool.currentProject.methodology.get("name")
+	$frontEndBar.max_value = PlayerTool.currentProject.frontEndProjectMin
+	$backEndBar.max_value = PlayerTool.currentProject.backEndProjectMin
+	$documentationBar.max_value = PlayerTool.currentProject.documentingProjectMin
 	$reliabilityBar.max_value = 100
-	$reliabilityBar.value = currentMetrics.get("reliability")
 	$stakeholderSatisfactionBar.max_value = 100
-	$stakeholderSatisfactionBar.value = currentMetrics.get("stakeholderSatisfaction")
 	pass
+
+func updateCurrentStats():
+	if PlayerTool.currentProject != null:
+		$frontEndBar.value = PlayerTool.currentMetrics.get("frontEnd")
+		$backEndBar.value = PlayerTool.currentMetrics.get("backEnd")
+		$documentationBar.value = PlayerTool.currentMetrics.get("documenting")
+		$reliabilityBar.value = PlayerTool.currentMetrics.get("reliability")
+		$stakeholderSatisfactionBar.value = PlayerTool.currentMetrics.get("stakeholderSatisfaction")		
+		pass

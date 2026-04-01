@@ -1,6 +1,22 @@
 [gd_scene format=3 uid="uid://bad3dg3pps7r7"]
 
+[ext_resource type="Texture2D" uid="uid://jpedmdobgans" path="res://UI/Theme/PCTheme/button/button.png" id="1_51uq0"]
 [ext_resource type="Script" uid="uid://cg0pp8eny7p3r" path="res://UI/InGame/ProjectSetup/ProjectItem/project_item.gd" id="1_xmqj3"]
+[ext_resource type="Texture2D" uid="uid://c44j5fdrdkpuw" path="res://UI/Theme/PCTheme/button/buttonPressed.png" id="2_ciu5s"]
+[ext_resource type="Texture2D" uid="uid://cmdgsum31psqr" path="res://UI/Theme/PCTheme/button/buttonHeld.png" id="3_cajoh"]
+[ext_resource type="Texture2D" uid="uid://du30etnm0gfaa" path="res://UI/Theme/PCTheme/button/buttonDisabled.png" id="4_0x3gt"]
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_xmqj3"]
+texture = ExtResource("1_51uq0")
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_ojhb1"]
+texture = ExtResource("2_ciu5s")
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_i5on1"]
+texture = ExtResource("3_cajoh")
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_vfxta"]
+texture = ExtResource("4_0x3gt")
 
 [node name="ProjectItem" type="Button" unique_id=1964688718]
 custom_minimum_size = Vector2(260, 245)
@@ -9,9 +25,13 @@ anchor_right = 0.19500001
 anchor_bottom = 0.335
 offset_left = 0.5
 offset_right = 35.859985
-offset_bottom = 27.919998
+offset_bottom = 42.92
 grow_horizontal = 2
 grow_vertical = 2
+theme_override_styles/normal = SubResource("StyleBoxTexture_xmqj3")
+theme_override_styles/pressed = SubResource("StyleBoxTexture_ojhb1")
+theme_override_styles/hover = SubResource("StyleBoxTexture_i5on1")
+theme_override_styles/disabled = SubResource("StyleBoxTexture_vfxta")
 script = ExtResource("1_xmqj3")
 
 [node name="ProjectDetails" type="Label" parent="." unique_id=2026093634]
@@ -19,11 +39,12 @@ layout_mode = 1
 anchors_preset = -1
 anchor_right = 1.0020001
 anchor_bottom = 1.0040001
-offset_left = -1.5
-offset_top = 1.0
-offset_right = -0.020019531
-offset_bottom = 0.019989014
+offset_left = 12.5
+offset_top = 22.0
+offset_right = -12.076019
+offset_bottom = -13.152008
 mouse_filter = 1
+theme_override_font_sizes/font_size = 14
 text = "Project Name
 Description
 Client

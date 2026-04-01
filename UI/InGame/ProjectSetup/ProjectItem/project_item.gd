@@ -5,7 +5,7 @@ var heldProject: Node
 
 func prepProject(project):
 	heldProject = project
-	$ProjectDetails.text = "Project:" +project.projectName + "\n" + "Description: " + project.projectDescription + "\n" + "Client: " + project.clientName + "\n" + "Difficulty: " + str(project.difficulty) + "\n" + "Sprint Amount: " + str(project.sprintAmount) + "\n"+"Sprint Length" + str(project.sprintLength) + "\n"+"Front End: " + str(project.frontEndProjectMin) + "\n"+"Back End: " + str(project.backEndProjectMin) + "\n"+"Documenting: "+str(project.documentingProjectMin)
+	$ProjectDetails.text = "Project:" +project.projectName + "\n" + "Description: " + project.projectDescription + "\n" + "Client: " + project.clientName + "\n" + "Sprint Amount: " + str(project.baseSprintAmount) + "\n"+"Weeks per Sprint: " + str(project.baseSprintLength) +"\n"+"Metrics Per Sprint: "+str(project.baseSprintMetricAmount)+ "\n"+"Front End: " + str(project.frontEndProjectMin) + "\n"+"Back End: " + str(project.backEndProjectMin) + "\n"+"Documenting: "+str(project.documentingProjectMin)
 
 func _on_pressed() -> void:
 	selected.emit(heldProject)
