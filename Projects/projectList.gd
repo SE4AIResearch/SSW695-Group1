@@ -9,14 +9,14 @@ var projects = [
 "frontEndScalar":1,
 "backEndScalar":1,
 "documentingScalar":1,
-"baseSprintAmount":5,
+"baseSprintAmount":2,
 "baseSprintLength":3,
 "baseSprintMetricAmount":3,
 "preferredMethodology":"Agile",
 #The total amount of Metrics should be a multiple of "baseSprintMetricAmount" times "baseSprintAmount".
-"frontEndMetrics":{},
-"backEndMetrics":{},
-"documentingMetrics":{}
+"frontEndMetrics":{0:"Front End Metric 1",1:"Front End Metric 2"},
+"backEndMetrics":{0:"Back End Metric 1",1:"Back End Metric 2"},
+"documentingMetrics":{0:"Documenting Metric 1",1:"Documenting Metric 2"}
 },
 {
 "name":"Food Delivery App",

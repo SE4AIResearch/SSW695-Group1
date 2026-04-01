@@ -44,6 +44,7 @@
 [ext_resource type="Texture2D" uid="uid://crruuadiafv87" path="res://UI/Theme/PCTheme/Back/pcBackHeld.png" id="25_x2ak7"]
 [ext_resource type="Texture2D" uid="uid://o4k321o7djhb" path="res://UI/Theme/PCTheme/Back/pcBackDisabled.png" id="26_ktvj5"]
 [ext_resource type="PackedScene" uid="uid://bt0pge4yh7l4p" path="res://UI/InGame/ProjectMetrics/ProjectMetrics.tscn" id="29_uibgn"]
+[ext_resource type="Texture2D" uid="uid://be3qkx4golcyk" path="res://UI/Theme/Back/backDisabled.png" id="41_hsny4"]
 [ext_resource type="Texture2D" uid="uid://dhthtk5swgjkl" path="res://UI/Theme/MainLevel/calendar.png" id="42_ce85j"]
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_62x8c"]
@@ -138,6 +139,9 @@ texture = ExtResource("9_5o0fy")
 
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_ct15o"]
 texture = ExtResource("10_adavl")
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_tpo4u"]
+texture = ExtResource("41_hsny4")
 
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_vvxbn"]
 texture = ExtResource("12_rudkk")
@@ -543,6 +547,7 @@ offset_bottom = 138.0
 theme_override_styles/normal = SubResource("StyleBoxTexture_s1qlg")
 theme_override_styles/pressed = SubResource("StyleBoxTexture_rudkk")
 theme_override_styles/hover = SubResource("StyleBoxTexture_ct15o")
+theme_override_styles/disabled = SubResource("StyleBoxTexture_tpo4u")
 
 [node name="PauseButton" type="Button" parent="UI" unique_id=1348602957]
 process_mode = 3

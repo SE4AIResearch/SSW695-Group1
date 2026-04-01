@@ -1,9 +1,12 @@
 [gd_scene format=3 uid="uid://dl321u4e71m5q"]
 
 [ext_resource type="Texture2D" uid="uid://k7xby2l5gc5f" path="res://UI/Theme/MainLevel/backlog/BG.png" id="1_gwqqw"]
+[ext_resource type="Script" uid="uid://b48o1abbwl63b" path="res://UI/InGame/Backlog/backlog.gd" id="1_qp40g"]
 [ext_resource type="FontFile" uid="uid://b0lji18tmt8ua" path="res://UI/Theme/Fonts/jakes-writing-font/Jakeswriting-P2Zr.ttf" id="2_qp40g"]
 
 [node name="Backlog" type="Node2D" unique_id=671302833]
+process_mode = 2
+script = ExtResource("1_qp40g")
 
 [node name="Sprite2D" type="Sprite2D" parent="." unique_id=254106440]
 position = Vector2(576, 323.99997)
@@ -20,13 +23,6 @@ theme_override_fonts/font = ExtResource("2_qp40g")
 theme_override_font_sizes/font_size = 24
 text = "Assignable Workers"
 
-[node name="Workers" type="VBoxContainer" parent="." unique_id=260048008]
-clip_contents = true
-offset_left = 74.0
-offset_top = 129.0
-offset_right = 285.0
-offset_bottom = 524.0
-
 [node name="BacklogLabel" type="Label" parent="." unique_id=388305119]
 offset_left = 400.0
 offset_top = 87.0
@@ -36,12 +32,6 @@ theme_override_colors/font_color = Color(0, 0, 0, 1)
 theme_override_fonts/font = ExtResource("2_qp40g")
 theme_override_font_sizes/font_size = 24
 text = "Backlog"
-
-[node name="Backlog" type="VBoxContainer" parent="." unique_id=1388620830]
-offset_left = 320.0
-offset_top = 131.0
-offset_right = 537.0
-offset_bottom = 576.0
 
 [node name="InProgressLabel" type="Label" parent="." unique_id=1904665504]
 offset_left = 671.0
@@ -53,12 +43,6 @@ theme_override_fonts/font = ExtResource("2_qp40g")
 theme_override_font_sizes/font_size = 24
 text = "In Progress"
 
-[node name="InProgress" type="VBoxContainer" parent="." unique_id=1546489709]
-offset_left = 629.0
-offset_top = 126.0
-offset_right = 811.0
-offset_bottom = 594.0
-
 [node name="CompletedLabel" type="Label" parent="." unique_id=1919838751]
 offset_left = 920.0
 offset_top = 78.0
@@ -67,10 +51,41 @@ offset_bottom = 101.0
 theme_override_colors/font_color = Color(0, 0, 0, 1)
 theme_override_fonts/font = ExtResource("2_qp40g")
 theme_override_font_sizes/font_size = 24
-text = "In Progress"
+text = "Completed"
 
-[node name="Completed" type="VBoxContainer" parent="." unique_id=432847845]
-offset_left = 846.0
-offset_top = 119.0
-offset_right = 1080.0
-offset_bottom = 587.0
+[node name="WorkersScroll" type="ScrollContainer" parent="." unique_id=1079949786]
+offset_left = 77.0
+offset_top = 103.0
+offset_right = 301.0
+offset_bottom = 648.0
+
+[node name="Workers" type="VBoxContainer" parent="WorkersScroll" unique_id=260048008]
+clip_contents = true
+layout_mode = 2
+
+[node name="BacklogScroll" type="ScrollContainer" parent="." unique_id=1302348264]
+offset_left = 331.0
+offset_top = 114.0
+offset_right = 541.0
+offset_bottom = 638.0
+
+[node name="Backlog" type="VBoxContainer" parent="BacklogScroll" unique_id=1388620830]
+layout_mode = 2
+
+[node name="InProgressScroll" type="ScrollContainer" parent="." unique_id=116730548]
+offset_left = 657.0
+offset_top = 127.0
+offset_right = 794.0
+offset_bottom = 648.0
+
+[node name="InProgress" type="VBoxContainer" parent="InProgressScroll" unique_id=1546489709]
+layout_mode = 2
+
+[node name="CompletedScroll" type="ScrollContainer" parent="." unique_id=712342680]
+offset_left = 911.0
+offset_top = 147.0
+offset_right = 1028.0
+offset_bottom = 648.0
+
+[node name="Completed" type="VBoxContainer" parent="CompletedScroll" unique_id=432847845]
+layout_mode = 2

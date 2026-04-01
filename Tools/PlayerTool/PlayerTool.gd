@@ -17,9 +17,14 @@ var currentMetrics={
 "reliability":0,
 "stakeholderSatisfaction":0
 }
+var currentMetricProgress={}
+var completedMetrics=[]
 var currentWeekTime: int = 0
 var currentProjWeek: int = 0
 var currentProjSprint: int = 0
+var currentFEBacklogStep: int = 0
+var currentBEBacklogStep: int = 0
+var currentDocBacklogStep: int = 0
 var workers: Array
 var upgrades: Array
 var passiveStats = {
@@ -40,12 +45,26 @@ func initializeNewSave():
 	pass
 
 func resetData():
-	#resets stats to default values
+	#resets Project stats to default values
 	currentProject = null
 	currentMetrics = {"frontEnd":0,"backEnd":0,"documenting":0,"reliability":0,"stakeholderSatisfaction":0}
 	workers = []
 	upgrades = []
 	passiveStats = {"randomEventChance": .33}
+	currentWeekTime = 0
+	currentProjWeek = 0
+	currentProjSprint = 0
+	pass
+
+func resetProjectStats():
+	currentProject = null
+	currentMetrics = {"frontEnd":0,"backEnd":0,"documenting":0,"reliability":0,"stakeholderSatisfaction":0}
+	currentWeekTime = 0
+	currentProjWeek = 0
+	currentProjSprint = 0
+	currentFEBacklogStep = 0
+	currentBEBacklogStep = 0
+	currentDocBacklogStep = 0
 	pass
 
 func _ready() -> void:

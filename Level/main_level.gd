@@ -8,9 +8,6 @@ func _ready() -> void:
 	setupDeskVisuals()
 	PlayerTool.levelLoaded.emit()
 
-func _process(delta: float) -> void:
-	pass
-
 func initializeSave():
 	pass
 

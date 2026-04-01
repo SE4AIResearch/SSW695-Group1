@@ -41,7 +41,11 @@ func endMenu():
 		false:
 			$BackButton.visible = false
 			get_tree().paused = false
-	
+
+func newProject():
+	endMenu()
+	_on_pc_power_pressed()
+	createMenu(BacklogMenu.instantiate())
 
 func _on_upgrades_button_pressed() -> void: createMenu(UpgradesMenu.instantiate())
 

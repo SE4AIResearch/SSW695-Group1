@@ -16,3 +16,7 @@ func addTimer():
 	timer.reparent(PlayerTool.level)
 	timer.start(1)
 	
+func reset():
+	timer.reparent(self)
+	timer.stop()
+	pass
