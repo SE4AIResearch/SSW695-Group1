@@ -1,5 +1,7 @@
 extends Node
 
+const WorkerStats = preload("res://Person/Worker/worker_stats.gd")
+
 var nameList = load("res://Person/names.gd").new()
 var textureList = load("res://Person/Textures/textures.gd").new()
 var workerItem = preload("res://Person/Worker/Worker.tscn")
@@ -32,25 +34,30 @@ func generateVisuals(person):
 	pass
 
 func generateWorkerStats(worker): #CREATE SCALING FOR THIS!
-	worker.frontEndStat = 3
-	worker.backEndStat = 3
-	worker.documentingStat = 3
-	worker.speedStat = 100
-	worker.staminaStat = 100
+	WorkerStats.apply_to_worker(worker)
 	pass
 
-func generateWorker():
+func generateWorker(stats: Dictionary = {}):
 	var newHire = workerItem.instantiate()
 	newHire.personName = generateName()
 	generateVisuals(newHire)
-	generateWorkerStats(newHire)
+	WorkerStats.apply_to_worker(newHire, stats)
 	return newHire
 	pass
 
+func generateBudgetWorker(budget: int):
+	return generateWorker(WorkerStats.roll_hiring_worker_stats(budget))
+
 func setBasicStats(worker):
-	worker.frontEndStat = 3
-	worker.backEndStat = 3
-	worker.documentingStat = 3
-	worker.speedStat = 100
-	worker.staminaStat = 100
+	WorkerStats.apply_to_worker(worker)
+	pass
+
+func getStartingWorkerStats(workerIndex: int) -> Dictionary:
+	return WorkerStats.get_starting_worker_stats(workerIndex)
+
+func getHiringTierForBudget(budget: int) -> Dictionary:
+	return WorkerStats.get_hiring_tier_for_budget(budget)
+
+func setStartingWorkerStats(worker, workerIndex: int) -> void:
+	WorkerStats.apply_to_worker(worker, getStartingWorkerStats(workerIndex))
 	pass

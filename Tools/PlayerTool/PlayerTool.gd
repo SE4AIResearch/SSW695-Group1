@@ -32,10 +32,8 @@ var passiveStats = {
 }
 
 func initializeNewSave():
-	var freeWorker1 = PersonConstructor.generateWorker()
-	var freeWorker2 = PersonConstructor.generateWorker()
-	PersonConstructor.setBasicStats(freeWorker1)
-	PersonConstructor.setBasicStats(freeWorker2)
+	var freeWorker1 = PersonConstructor.generateWorker(PersonConstructor.getStartingWorkerStats(0))
+	var freeWorker2 = PersonConstructor.generateWorker(PersonConstructor.getStartingWorkerStats(1))
 	$workerHoldover.add_child(freeWorker1)
 	$workerHoldover.add_child(freeWorker2)
 	freeWorker1.scale = Vector2(2.5,2.5)

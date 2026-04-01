@@ -1,18 +1,26 @@
-[gd_scene format=3 uid="uid://bpiowg6rfby2v"]
+[gd_scene load_steps=2 format=3 uid="uid://bpiowg6rfby2v"]
+
+[ext_resource type="Script" path="res://UI/InGame/WorkerDetails/worker_details.gd" id="1_3cy2l"]
 
 [node name="WorkerDetails" type="Node2D" unique_id=311203519]
+z_index = 100
+script = ExtResource("1_3cy2l")
 
-[node name="Background" type="Sprite2D" parent="." unique_id=1644785332]
+[node name="Panel" type="Panel" parent="." unique_id=1644785332]
+offset_right = 240.0
+offset_bottom = 160.0
+mouse_filter = 2
 
-[node name="RichTextLabel" type="RichTextLabel" parent="Background" unique_id=1097183476]
-anchors_preset = -1
-anchor_left = -88.00001
-anchor_top = -85.00001
-anchor_right = 89.00001
-anchor_bottom = 84.00001
+[node name="WorkerInfo" type="RichTextLabel" parent="Panel" unique_id=1097183476]
+offset_left = 8.0
+offset_top = 8.0
+offset_right = 232.0
+offset_bottom = 152.0
+mouse_filter = 2
+scroll_active = false
 text = "Name Here
-Backend
-Frontend
-Documenting
-Speed
-Stamina"
+Front End: 0
+Back End: 0
+Documenting: 0
+Speed: 0
+Stamina: 0"

@@ -6,7 +6,9 @@ func _ready() -> void:
 	checkIfMaxHire()
 
 func _process(delta: float) -> void:
-	$BudgetLabel.text = "Hiring Search Budget: $"+ str($BudgetSlider.value)
+	var budget = int($BudgetSlider.value)
+	var hiringTier = PersonConstructor.getHiringTierForBudget(budget)
+	$BudgetLabel.text = "Budget: $" + str(budget) + " | T" + str(hiringTier["rank"])
 	pass
 
 func checkIfMaxHire(): if PlayerTool.workers.size() >= 6:
@@ -15,10 +17,11 @@ func checkIfMaxHire(): if PlayerTool.workers.size() >= 6:
 
 
 func _on_search_button_pressed() -> void:
+	var budget = int($BudgetSlider.value)
 	for child in $Hires.get_children(): child.queue_free()
 	for i in range(3):
 		var newHireUI = hireItem.instantiate()
-		var newHire = PersonConstructor.generateWorker()
+		var newHire = PersonConstructor.generateBudgetWorker(budget)
 		newHireUI.fillInfo(newHire)
 		newHireUI.connect("selected",hireSelected)
 		$Hires.add_child(newHireUI)
