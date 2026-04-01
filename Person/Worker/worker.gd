@@ -1,5 +1,8 @@
 extends Node2D
 
+signal hover_started(worker)
+signal hover_ended(worker)
+
 var personName: String
 
 var headSpritePath: String
@@ -20,3 +23,13 @@ var currentMetric={
 "metricType":null,
 "metricName":null
 }
+
+func _ready() -> void:
+	$HoverArea.mouse_entered.connect(_on_hover_area_mouse_entered)
+	$HoverArea.mouse_exited.connect(_on_hover_area_mouse_exited)
+
+func _on_hover_area_mouse_entered() -> void:
+	hover_started.emit(self)
+
+func _on_hover_area_mouse_exited() -> void:
+	hover_ended.emit(self)
