@@ -87,6 +87,64 @@ var projects = [
 "frontEndMetrics":{0:"Inventory management dashboard",1:"Purchase order interface",2:"Sales reporting views",3:"Finance and accounting panels",4:"Warehouse tracking display"},
 "backEndMetrics":{0:"Core data model and permissions engine",1:"Inventory and warehouse logic",2:"Purchasing and vendor integration",3:"Financial transaction processing",4:"Data migration pipeline"},
 "documentingMetrics":{0:"Data dictionary and schema documentation",1:"User role and permission guide",2:"Migration and cutover plan",3:"Vendor integration specifications"}
+},
+# ============ V-MODEL PROJECTS ============
+{
+"name":"Hospital Appointment Booking System",
+"description":"Build an appointment booking system for a community hospital. Requirements must be clearly defined before development, and every function must have corresponding test cases. Patient information must be handled securely and accurately.",
+"frontEndScalar":1.1,
+"backEndScalar":1.2,
+"documentingScalar":1.4,
+"baseSprintAmount":6,
+"baseSprintLength":4,
+"baseSprintMetricAmount":3,
+"preferredMethodology":"V-Model",
+"frontEndMetrics":{0:"Patient registration and login page",1:"Appointment booking interface",2:"Appointment cancellation and rescheduling view",3:"Doctor schedule display",4:"Notification and reminder UI"},
+"backEndMetrics":{0:"User account and authentication system",1:"Appointment scheduling engine",2:"Doctor availability management",3:"Email and SMS notification service",4:"Patient data validation and security"},
+"documentingMetrics":{0:"Requirements specification with test case mapping",1:"Data handling and privacy compliance document",2:"Unit and integration test reports",3:"User manual for reception staff"}
+},
+{
+"name":"Supermarket Self-Checkout System",
+"description":"Develop a self-checkout system for a regional supermarket chain. Hardware and software must work together, and every feature must be matched with testing. Errors during checkout directly affect customer experience and store operations.",
+"frontEndScalar":1.2,
+"backEndScalar":1.3,
+"documentingScalar":1.4,
+"baseSprintAmount":7,
+"baseSprintLength":4,
+"baseSprintMetricAmount":3,
+"preferredMethodology":"V-Model",
+"frontEndMetrics":{0:"Product scanning interface",1:"Payment method selection screen",2:"Receipt and transaction summary display",3:"Error and assistance prompt UI",4:"Store manager override panel"},
+"backEndMetrics":{0:"Barcode scanning and product lookup engine",1:"Payment processing integration",2:"Transaction logging and reconciliation",3:"Inventory update on purchase",4:"Hardware device communication layer"},
+"documentingMetrics":{0:"Hardware-software integration specification",1:"Feature-to-test-case traceability matrix",2:"Acceptance test reports",3:"Cashier and maintenance team manual"}
+},
+# ============ SPIRAL PROJECTS ============
+{
+"name":"Cybersecurity Threat Detection Platform",
+"description":"Build a threat detection platform for a national cybersecurity agency. The threat landscape constantly evolves, requiring continuous risk analysis, security validation, and iterative refinement of detection algorithms.",
+"frontEndScalar":0.9,
+"backEndScalar":1.8,
+"documentingScalar":1.3,
+"baseSprintAmount":6,
+"baseSprintLength":5,
+"baseSprintMetricAmount":3,
+"preferredMethodology":"Spiral",
+"frontEndMetrics":{0:"Threat alert dashboard",1:"Analyst investigation interface",2:"Report generation and export view"},
+"backEndMetrics":{0:"Network traffic analysis engine",1:"Anomaly detection algorithm",2:"Threat signature database and updater",3:"Integration with existing monitoring systems",4:"Automated incident response triggers"},
+"documentingMetrics":{0:"Risk analysis report per iteration",1:"Security validation and penetration test results",2:"Algorithm performance evaluation document",3:"System integration specification"}
+},
+{
+"name":"Smart City Traffic Management Platform",
+"description":"Develop a traffic management platform for a city transportation department. Requires complex integration with real-time sensors, iterative validation of predictive models, and risk assessment for large-scale deployment.",
+"frontEndScalar":1.1,
+"backEndScalar":1.7,
+"documentingScalar":1.3,
+"baseSprintAmount":7,
+"baseSprintLength":5,
+"baseSprintMetricAmount":3,
+"preferredMethodology":"Spiral",
+"frontEndMetrics":{0:"Real-time traffic map display",1:"Signal control dashboard",2:"Incident reporting interface",3:"Analytics and prediction visualization"},
+"backEndMetrics":{0:"Real-time sensor data ingestion pipeline",1:"Traffic prediction model engine",2:"Signal timing optimization algorithm",3:"Camera and IoT device integration",4:"High-volume data storage and processing"},
+"documentingMetrics":{0:"Risk assessment report per prototype cycle",1:"Sensor integration specification",2:"Model validation and accuracy report",3:"Deployment rollout and rollback plan"}
 }
 ]
 
