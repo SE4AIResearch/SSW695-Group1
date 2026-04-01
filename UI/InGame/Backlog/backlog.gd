@@ -4,7 +4,6 @@ var backlogItem = preload("res://UI/InGame/Backlog/BacklogItem/BacklogItem.tscn"
 var backlogWorkerItem = preload("res://UI/InGame/Backlog/BacklogWorkerItem/BacklogWorkerItem.tscn")
 
 var selectedWorker: Node
-var selectedItem: Node
 
 func _ready() -> void:
 	populateWorkerBacklog()
@@ -36,8 +35,7 @@ func populateWorkerBacklog():
 		newWorker.WorkerSelected.connect(workerSelected)
 		$WorkersScroll/Workers.add_child(newWorker)
 
-func backlogSelected(metricButton): 
-	selectedItem = metricButton
+func backlogSelected(metricButton): pass
 
 func workerSelected(workerButton):
 	if selectedWorker != null:
