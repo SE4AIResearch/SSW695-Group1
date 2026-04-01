@@ -1,6 +1,6 @@
 extends Button
 
-signal WorkerSelected(worker)
+signal WorkerSelected(button)
 
 var heldWorker: Node
 
@@ -21,5 +21,5 @@ func createWorkerItem(worker):
 
 
 func _on_pressed() -> void:
-	WorkerSelected.emit(heldWorker)
+	WorkerSelected.emit(self)
 	

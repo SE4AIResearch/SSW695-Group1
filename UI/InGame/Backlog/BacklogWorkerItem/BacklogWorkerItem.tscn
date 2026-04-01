@@ -30,6 +30,7 @@ theme_override_styles/normal = SubResource("StyleBoxTexture_kui40")
 theme_override_styles/pressed = SubResource("StyleBoxTexture_t5dkv")
 theme_override_styles/hover = SubResource("StyleBoxTexture_p28hv")
 theme_override_styles/disabled = SubResource("StyleBoxTexture_15pmb")
+toggle_mode = true
 script = ExtResource("1_5fg85")
 
 [node name="Person" parent="." unique_id=1533579046 instance=ExtResource("6_1bg4a")]
@@ -57,7 +58,7 @@ offset_bottom = -107.14894
 mouse_filter = 2
 theme_override_font_sizes/normal_font_size = 32
 bbcode_enabled = true
-text = "dwa"
+text = "Name"
 horizontal_alignment = 1
 vertical_alignment = 1
 

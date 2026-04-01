@@ -4,7 +4,7 @@ var backlogItem = preload("res://UI/InGame/Backlog/BacklogItem/BacklogItem.tscn"
 var backlogWorkerItem = preload("res://UI/InGame/Backlog/BacklogWorkerItem/BacklogWorkerItem.tscn")
 
 var selectedWorker: Node
-var selectedItem: Array
+var selectedItem: Node
 
 func _ready() -> void:
 	populateWorkerBacklog()
@@ -26,6 +26,7 @@ func newBEItem(metric,type):
 	newItem.prepItem(metric,type)
 	newItem.MetricChosen.connect(backlogSelected)
 	$BacklogScroll/Backlog.add_child(newItem)
+	newItem.disabled = true
 	pass
 
 func populateWorkerBacklog(): 
@@ -35,8 +36,15 @@ func populateWorkerBacklog():
 		newWorker.WorkerSelected.connect(workerSelected)
 		$WorkersScroll/Workers.add_child(newWorker)
 
-func backlogSelected(metricName,metricType): 
-	selectedItem = [metricName,metricType]
+func backlogSelected(metricButton): 
+	selectedItem = metricButton
 
-func workerSelected(worker):
-	selectedWorker = worker
+func workerSelected(workerButton):
+	if selectedWorker != null:
+		if selectedWorker.heldWorker != workerButton.heldWorker: selectedWorker.button_pressed = false
+	selectedWorker = workerButton
+	match workerButton.button_pressed:
+		true: for item in $BacklogScroll/Backlog.get_children(): item.disabled = false
+		false: for item in $BacklogScroll/Backlog.get_children(): item.disabled = true
+	
+	

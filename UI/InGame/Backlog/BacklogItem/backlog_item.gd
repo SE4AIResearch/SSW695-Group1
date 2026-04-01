@@ -1,6 +1,6 @@
 extends Button
 
-signal MetricChosen(metric,type)
+signal MetricChosen(button)
 
 #0 = front end, 1 = back end, 2 = documentation
 var metricType: int
@@ -26,4 +26,4 @@ func prepItem(metric,type):
 
 
 func _on_pressed() -> void:
-	MetricChosen.emit(metricName,metricType)
+	MetricChosen.emit(self)
