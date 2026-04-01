@@ -139,6 +139,10 @@ const HIRING_BUDGET_TIERS := [
 	},
 ]
 
+const TIER_MIDPOINT_THRESHOLD := 50
+const LOWER_HALF_UPPER_VALUE_CHANCE := 0.3
+const UPPER_HALF_UPPER_VALUE_CHANCE := 0.7
+
 static func get_default_worker_stats() -> Dictionary:
 	return DEFAULT_WORKER_STATS.duplicate(true)
 
@@ -157,14 +161,35 @@ static func get_hiring_tier_for_budget(budget: int) -> Dictionary:
 			return tier.duplicate(true)
 	return HIRING_BUDGET_TIERS[HIRING_BUDGET_TIERS.size() - 1].duplicate(true)
 
+static func get_budget_progress_in_tier(budget: int, tier: Dictionary) -> int:
+	return clampi(budget - tier["min_budget"], 0, tier["max_budget"] - tier["min_budget"])
+
+static func roll_weighted_range_value(min_value: int, max_value: int, budget_progress_in_tier: int) -> int:
+	if min_value >= max_value:
+		return min_value
+
+	var values = range(min_value, max_value + 1)
+	var upper_half_chance = LOWER_HALF_UPPER_VALUE_CHANCE
+	if budget_progress_in_tier >= TIER_MIDPOINT_THRESHOLD:
+		upper_half_chance = UPPER_HALF_UPPER_VALUE_CHANCE
+
+	var roll = randf()
+	if roll < upper_half_chance:
+		var upper_start = mini(values.size() - 1, int(ceil(values.size() / 2.0)))
+		return values[randi_range(upper_start, values.size() - 1)]
+
+	var lower_end = maxi(0, int(floor((values.size() - 1) / 2.0)))
+	return values[randi_range(0, lower_end)]
+
 static func roll_hiring_worker_stats(budget: int) -> Dictionary:
 	var tier = get_hiring_tier_for_budget(budget)
+	var budget_progress_in_tier = get_budget_progress_in_tier(clampi(budget, 0, 1000), tier)
 	return {
-		"front_end": randi_range(tier["skill_floor"], tier["skill_ceiling"]),
-		"back_end": randi_range(tier["skill_floor"], tier["skill_ceiling"]),
-		"documenting": randi_range(tier["skill_floor"], tier["skill_ceiling"]),
-		"speed": randi_range(tier["speed_floor"], tier["speed_ceiling"]),
-		"stamina": randi_range(tier["stamina_floor"], tier["stamina_ceiling"]),
+		"front_end": roll_weighted_range_value(tier["skill_floor"], tier["skill_ceiling"], budget_progress_in_tier),
+		"back_end": roll_weighted_range_value(tier["skill_floor"], tier["skill_ceiling"], budget_progress_in_tier),
+		"documenting": roll_weighted_range_value(tier["skill_floor"], tier["skill_ceiling"], budget_progress_in_tier),
+		"speed": roll_weighted_range_value(tier["speed_floor"], tier["speed_ceiling"], budget_progress_in_tier),
+		"stamina": roll_weighted_range_value(tier["stamina_floor"], tier["stamina_ceiling"], budget_progress_in_tier),
 	}
 
 static func apply_to_worker(worker, stats: Dictionary = {}) -> void:
