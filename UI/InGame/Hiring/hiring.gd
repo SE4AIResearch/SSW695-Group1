@@ -34,3 +34,6 @@ func hireSelected(worker):
 		child.queue_free()
 	get_parent().get_parent().endMenu()
 	pass
+
+
+func _on_pc_back_pressed() -> void: get_parent().get_parent().endMenu()

@@ -34,7 +34,6 @@ func endMenu():
 	currentMenu.queue_free()
 	match pcMode:
 		true:
-			$PCButtons/PCBack.disabled = true
 			$PCButtons/UpgradesButton.disabled = false
 			$PCButtons/HiringButton.disabled = false
 			$PCButtons/projectStartMenu.disabled = false
@@ -69,7 +68,6 @@ func createMenu(menu):
 	currentMenu.visible = true
 	match pcMode:
 		true: 
-			$PCButtons/PCBack.disabled = false
 			$PCButtons/UpgradesButton.disabled = true
 			$PCButtons/HiringButton.disabled = true
 			$PCButtons/projectStartMenu.disabled = true
@@ -79,7 +77,6 @@ func _on_pc_pressed() -> void:
 	#Insert code of screen lerping in size and position to the middle of the screen
 	#and showing the PC Buttons when completed
 	pcMode = true
-	$PCButtons/PCBack.disabled = true
 	get_tree().paused = true
 	$PCStats.visible = false
 	$PCScreen.visible = true
@@ -94,7 +91,6 @@ func _on_pc_power_pressed() -> void:
 	$PCScreen.visible = false
 	$PCScreenPanel.visible = false
 	$PCButtons.visible = false
-	$PCButtons/PCBack.disabled = true
 	$PCButtons/UpgradesButton.disabled = false
 	$PCButtons/HiringButton.disabled = false
 	$PCButtons/projectStartMenu.disabled = false

@@ -107,3 +107,6 @@ func finishProjectChoosing():
 	get_tree().paused = false
 	self.queue_free()
 	pass
+
+
+func _on_pc_back_pressed() -> void: get_parent().get_parent().endMenu()

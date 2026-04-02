@@ -39,10 +39,6 @@
 [ext_resource type="Texture2D" uid="uid://b3yb8bcjykj7m" path="res://UI/Theme/PCTheme/powerButton/pcPowerHeld.png" id="18_tmx83"]
 [ext_resource type="Texture2D" uid="uid://2jvaulftw7b6" path="res://UI/Theme/PCTheme/button/slimButtonDisabled.png" id="21_lkgwe"]
 [ext_resource type="Script" uid="uid://cmvfif4wbkq60" path="res://Level/pc_stats.gd" id="23_62x8c"]
-[ext_resource type="Texture2D" uid="uid://d00apn0evacqg" path="res://UI/Theme/PCTheme/Back/pcBack.png" id="23_ejxy1"]
-[ext_resource type="Texture2D" uid="uid://dkqvr0lf6ytje" path="res://UI/Theme/PCTheme/Back/pcBackPressed.png" id="24_ktvj5"]
-[ext_resource type="Texture2D" uid="uid://crruuadiafv87" path="res://UI/Theme/PCTheme/Back/pcBackHeld.png" id="25_x2ak7"]
-[ext_resource type="Texture2D" uid="uid://o4k321o7djhb" path="res://UI/Theme/PCTheme/Back/pcBackDisabled.png" id="26_ktvj5"]
 [ext_resource type="PackedScene" uid="uid://bt0pge4yh7l4p" path="res://UI/InGame/ProjectMetrics/ProjectMetrics.tscn" id="29_uibgn"]
 [ext_resource type="Texture2D" uid="uid://be3qkx4golcyk" path="res://UI/Theme/Back/backDisabled.png" id="41_hsny4"]
 [ext_resource type="Texture2D" uid="uid://dhthtk5swgjkl" path="res://UI/Theme/MainLevel/calendar.png" id="42_ce85j"]
@@ -118,18 +114,6 @@ texture = ExtResource("17_uy1d4")
 
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_k25hm"]
 texture = ExtResource("18_tmx83")
-
-[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_unvvn"]
-texture = ExtResource("23_ejxy1")
-
-[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_ern18"]
-texture = ExtResource("24_ktvj5")
-
-[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_a5dl5"]
-texture = ExtResource("25_x2ak7")
-
-[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_xwmsp"]
-texture = ExtResource("26_ktvj5")
 
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_s1qlg"]
 texture = ExtResource("8_3c0mk")
@@ -523,16 +507,6 @@ theme_override_styles/normal = SubResource("StyleBoxTexture_u051x")
 theme_override_styles/pressed = SubResource("StyleBoxTexture_simky")
 theme_override_styles/hover = SubResource("StyleBoxTexture_k25hm")
 
-[node name="PCBack" type="Button" parent="UI/PCButtons" unique_id=752686175]
-offset_left = 1024.0
-offset_top = 136.0
-offset_right = 1088.0
-offset_bottom = 200.0
-theme_override_styles/normal = SubResource("StyleBoxTexture_unvvn")
-theme_override_styles/pressed = SubResource("StyleBoxTexture_ern18")
-theme_override_styles/hover = SubResource("StyleBoxTexture_a5dl5")
-theme_override_styles/disabled = SubResource("StyleBoxTexture_xwmsp")
-
 [node name="ProjectMetrics" parent="UI/PCButtons" unique_id=65546387 instance=ExtResource("29_uibgn")]
 
 [node name="NewMenu" type="Node2D" parent="UI" unique_id=1478451013]
@@ -575,6 +549,5 @@ script = ExtResource("5_f8h88")
 [connection signal="pressed" from="UI/PCButtons/HiringButton" to="UI" method="_on_hiring_button_pressed"]
 [connection signal="pressed" from="UI/PCButtons/projectStartMenu" to="UI" method="_on_project_start_menu_pressed"]
 [connection signal="pressed" from="UI/PCButtons/PCPower" to="UI" method="_on_pc_power_pressed"]
-[connection signal="pressed" from="UI/PCButtons/PCBack" to="UI" method="_on_pc_back_pressed"]
 [connection signal="pressed" from="UI/BackButton" to="UI" method="_on_back_button_pressed"]
 [connection signal="pressed" from="UI/PauseButton" to="UI" method="_on_pause_button_pressed"]
