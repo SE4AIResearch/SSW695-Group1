@@ -94,26 +94,32 @@ var projects = [
 var constraints = [
 {
 "name":"Moderate Complexity",
-"influence":{
-"frontEndScaling":.2,
-"backEndScaling":.2,
-"documentingScaling":.1,
+"frontEndScaling":1.2,
+"backEndScaling":1.2,
+"documentingScaling":1.1,
 "sprintAmount":1,
 "sprintLength":2,
 "sprintMetricAmount":0,
-"randomEventChance":.3
-}
+"randomEventChance":1.15
 },
 {
 "name":"High Complexity",
-"influence":{
-"frontEndScaling":.4,
-"backEndScaling":.4,
-"documentingScaling":.3,
+"frontEndScaling":1.4,
+"backEndScaling":1.4,
+"documentingScaling":1.3,
 "sprintAmount":2,
 "sprintLength":3,
 "sprintMetricAmount":1,
-"randomEventChance":.5
-}
+"randomEventChance":1.35
+},
+{
+"name":"Confusing Client",
+"frontEndScaling":1,
+"backEndScaling":1,
+"documentingScaling":1.5,
+"sprintAmount":0,
+"sprintLength":0,
+"sprintMetricAmount":0,
+"randomEventChance":1.75
 }
 ]

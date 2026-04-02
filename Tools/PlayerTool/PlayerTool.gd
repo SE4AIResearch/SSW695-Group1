@@ -28,9 +28,6 @@ var currentBEBacklogStep: int = 0
 var currentDocBacklogStep: int = 0
 var workers: Array
 var upgrades: Array
-var passiveStats = {
-"randomEventChance": .33
-}
 
 func initializeNewSave():
 	var freeWorker1 = PersonConstructor.generateWorker(PersonConstructor.getStartingWorkerStats(0))
@@ -59,7 +56,6 @@ func resetData():
 	currentMetrics = {"frontEnd":0,"backEnd":0,"documenting":0,"reliability":0,"stakeholderSatisfaction":0}
 	workers = []
 	upgrades = []
-	passiveStats = {"randomEventChance": .33}
 	currentWeekTime = 0
 	currentProjWeek = 0
 	currentProjSprint = 0

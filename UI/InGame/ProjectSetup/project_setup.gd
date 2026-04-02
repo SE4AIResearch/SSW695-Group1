@@ -41,12 +41,31 @@ func generateProjectChoices() -> void:
 		newProject.frontEndProjectMin = totalFE*randomProject.frontEndScalar
 		newProject.backEndProjectMin = totalBE*randomProject.backEndScalar
 		newProject.documentingProjectMin = totalD*randomProject.documentingScalar
-		newProject.baseSprintAmount = randomProject.baseSprintAmount
-		newProject.baseSprintLength = randomProject.baseSprintLength
-		newProject.baseSprintMetricAmount = randomProject.baseSprintMetricAmount
+		newProject.sprintAmount = randomProject.baseSprintAmount
+		newProject.sprintLength = randomProject.baseSprintLength
+		newProject.sprintMetricAmount = randomProject.baseSprintMetricAmount
 		newProject.frontEndMetrics = randomProject.frontEndMetrics
 		newProject.backEndMetrics = randomProject.backEndMetrics
 		newProject.documentingMetrics = randomProject.documentingMetrics
+
+		match i:
+			0: 	newProject.constraints.append(projectList.constraints.pick_random())
+			1:	while newProject.constraints.size() < 2:
+					var constraint = projectList.constraints.pick_random()
+					if !newProject.constraints.has(constraint): newProject.constraints.append(constraint)
+			2:	while newProject.constraints.size() < 3:
+					var constraint = projectList.constraints.pick_random()
+					if !newProject.constraints.has(constraint): newProject.constraints.append(constraint)
+		
+		for constraint in newProject.constraints:
+			newProject.frontEndProjectMin *= constraint.get("frontEndScaling")
+			newProject.backEndProjectMin *= constraint.get("backEndScaling")
+			newProject.documentingProjectMin *= constraint.get("documentingScaling")
+			newProject.sprintAmount += constraint.get("sprintAmount")
+			newProject.sprintLength += constraint.get("sprintLength")
+			newProject.sprintMetricAmount += constraint.get("sprintMetricAmount")
+			newProject.eventChance *= constraint.get("randomEventChance")
+		
 		newChoice.prepProject(newProject)
 		newChoice.connect("selected",projectSelected)
 		$ProjectChoose/ProjectChoices.add_child(newChoice)
@@ -72,20 +91,17 @@ func generateMetricsChoices():
 	pass
 
 func methodSelected(chosenMetric):
+	PlayerTool.resetProjectStats()
 	selectedProject.methodology = chosenMetric
 	for child in $MethodologyChoose/ScrollContainer/MethodologyChoices.get_children(): child.queue_free()
-	calculateConstraintAndMethodology()
+	calculateUpgradeEffects()
 	pass
 
-#Calculate effects of chosen methodology and generated constraints onto the project
-func calculateConstraintAndMethodology():
-	PlayerTool.resetProjectStats()
-	selectedProject.sprintAmount = selectedProject.baseSprintAmount
-	selectedProject.sprintLength = selectedProject.baseSprintLength
-	selectedProject.sprintMetricAmount = selectedProject.baseSprintMetricAmount
-	#Return calculated Project
+#Calculate effects from player upgrades here
+func calculateUpgradeEffects():
 	PlayerTool.newProject(selectedProject)
 	get_parent().get_parent().newProject()
+	pass
 	
 func finishProjectChoosing():
 	get_tree().paused = false

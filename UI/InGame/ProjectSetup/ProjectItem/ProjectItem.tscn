@@ -53,5 +53,6 @@ Sprint Amount
 Minimum FE
 Minimum BE
 Minimum D"
+autowrap_mode = 3
 
 [connection signal="pressed" from="." to="." method="_on_pressed"]
