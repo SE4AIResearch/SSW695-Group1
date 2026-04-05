@@ -4,30 +4,30 @@ extends Node
 
 var projects = [
 {
-"name":"Project 1",
-"description":"This is a description of the project",
+"name": "Project 1",
+"description": "This is a description of the project",
 "frontEndScalar":1,
 "backEndScalar":1,
 "documentingScalar":1,
 "baseSprintAmount":5,
 "baseSprintLength":3,
 "baseSprintMetricAmount":3,
-"preferredMethodology":"Agile",
+"preferredMethodology": "Agile",
 #The total amount of Metrics should be a multiple of "baseSprintMetricAmount" times "baseSprintAmount".
 "frontEndMetrics":{},
 "backEndMetrics":{},
 "documentingMetrics":{}
 },
 {
-"name":"Food Delivery App",
-"description":"To allow for users to order food from restaurants from wherever!",
+"name": "Food Delivery App",
+"description": "To allow for users to order food from restaurants from wherever!",
 "frontEndScalar":1.3,
 "backEndScalar":1.3,
-"documentingScalar":.3,
+"documentingScalar":1.3,
 "baseSprintAmount":3,
 "baseSprintLength":4,
 "baseSprintMetricAmount":3,
-"preferredMethodology":"Agile",
+"preferredMethodology": "Agile",
 "frontEndMetrics":{0:"Restaurant Page",1:"User Page",2:"Order from restaurant functionality",3:"Order tracking"},
 "backEndMetrics":{0:"Database for restaurants",1:"Database for users",2:"Database for delivery drivers",3:"Secure Payment Processing"},
 "documentingMetrics":{0:"Guide on how a restaurant can be added to the database"}
@@ -38,8 +38,8 @@ var projects = [
 var constraints = [
 {
 "name": "Moderate Complexity",
-"influence":{
-"frontEndScaling":.2,
+
+"frontEndScaling":1.2,
 "backEndScaling":.2,
 "documentingScaling":.1,
 "sprintAmount":1,
@@ -48,7 +48,7 @@ var constraints = [
 "randomEventChance":.3
 },
 
-}
+
 
 # -------------------- NEW CONSTRAINTS ADDED --------------------
 
@@ -57,31 +57,31 @@ var constraints = [
 # Leads to rework, more documentation, and higher uncertainty during development.
 {
 "name": "Confusing Client",
-"influence":{
-"frontEndScaling":.1,
-"backEndScaling":.1,
-"documentingScaling":.3,
+
+"frontEndScaling":1.1,
+"backEndScaling":1.1,
+"documentingScaling":1.3,
 "sprintAmount":2,
 "sprintLength":2,
 "sprintMetricAmount":1,
-"randomEventChance":.5
+"randomEventChance":1.5
 },
-},
+
 
 # Nonchalant Client:
 # Very relaxed and not actively involved. Slow responses and low urgency.
 # Causes longer timelines but fewer sudden disruptions or change requests.
 {
 "name": "Nonchalant Client",
-"influence":{
-"frontEndScaling":0,
-"backEndScaling":0,
-"documentingScaling":.1,
+
+"frontEndScaling":1,
+"backEndScaling":1,
+"documentingScaling":1.1,
 "sprintAmount":1,
 "sprintLength":3,
-"sprintMetricAmount":0,
-"randomEventChance":.2
-},
+"sprintMetricAmount":1,
+"randomEventChance":1.2
+
 },
 
 # Savvy Client:
@@ -89,46 +89,46 @@ var constraints = [
 # Places strong emphasis on high-quality front-end and back-end implementation.
 {
 "name": "Savvy Client",
-"influence":{
-"frontEndScaling":.4,
-"backEndScaling":.4,
-"documentingScaling":0,
-"sprintAmount":0,
-"sprintLength":0,
+
+"frontEndScaling":1.4,
+"backEndScaling":1.4,
+"documentingScaling":1,
+"sprintAmount":1,
+"sprintLength":1,
 "sprintMetricAmount":1,
-"randomEventChance":.1
+"randomEventChance":1.1
 },
-},
+
 
 # Business Client:
 # Focused on documentation, reporting, and overall business value.
 # Prioritizes clear documentation over deep technical complexity.
 {
 "name": "Business Client",
-"influence":{
-"frontEndScaling":0,
-"backEndScaling":0,
-"documentingScaling":.5,
+
+"frontEndScaling":1,
+"backEndScaling":1,
+"documentingScaling":1.5,
 "sprintAmount":1,
 "sprintLength":1,
 "sprintMetricAmount":1,
-"randomEventChance":.1
+"randomEventChance":1.1
 },
-},
+
 
 # Impatient Client:
 # Wants quick results and fast delivery with little tolerance for delays.
 # Shortens timelines but increases pressure and unexpected issues.
 {
 "name": "Impatient Client",
-"influence":{
-"frontEndScaling":.2,
-"backEndScaling":.2,
-"documentingScaling":.2,
+
+"frontEndScaling":1.2,
+"backEndScaling":1.2,
+"documentingScaling":1.2,
 "sprintAmount":1,
 "sprintLength":1,
-"sprintMetricAmount":0,
-"randomEventChance":.6
+"sprintMetricAmount":1,
+"randomEventChance":1.6
 },
 }
 
