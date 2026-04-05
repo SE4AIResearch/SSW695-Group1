@@ -2,10 +2,28 @@
 
 [ext_resource type="PackedScene" uid="uid://d1uebs0vqbym5" path="res://UI/InGame/Upgrades/UpgradeItem/UpgradeItem.tscn" id="1_eohcs"]
 [ext_resource type="Texture2D" uid="uid://cfrb47hgtaapp" path="res://UI/Theme/PCTheme/PanelTallerWider.png" id="1_vmit0"]
+[ext_resource type="Script" path="res://UI/InGame/Upgrades/upgrades.gd" id="2_upgs"]
+[ext_resource type="Texture2D" uid="uid://d00apn0evacqg" path="res://UI/Theme/PCTheme/Back/pcBack.png" id="3_close"]
+[ext_resource type="Texture2D" uid="uid://dkqvr0lf6ytje" path="res://UI/Theme/PCTheme/Back/pcBackPressed.png" id="4_close"]
+[ext_resource type="Texture2D" uid="uid://crruuadiafv87" path="res://UI/Theme/PCTheme/Back/pcBackHeld.png" id="5_close"]
+[ext_resource type="Texture2D" uid="uid://o4k321o7djhb" path="res://UI/Theme/PCTheme/Back/pcBackDisabled.png" id="6_close"]
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_upgr_n"]
+texture = ExtResource("3_close")
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_upgr_p"]
+texture = ExtResource("4_close")
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_upgr_h"]
+texture = ExtResource("5_close")
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_upgr_d"]
+texture = ExtResource("6_close")
 
 [node name="Upgrades" type="Node2D" unique_id=644922682]
 process_mode = 2
 position = Vector2(0, 4)
+script = ExtResource("2_upgs")
 
 [node name="Panel" type="Sprite2D" parent="." unique_id=1917269237]
 position = Vector2(574.00006, 320)
@@ -48,3 +66,16 @@ layout_mode = 2
 
 [node name="UpgradeItem7" parent="ScrollContainer/VBoxContainer" unique_id=220980892 instance=ExtResource("1_eohcs")]
 layout_mode = 2
+
+[node name="CloseButton" type="Button" parent="." unique_id=999000003]
+process_mode = 2
+offset_left = 645.0
+offset_top = 40.0
+offset_right = 709.0
+offset_bottom = 104.0
+theme_override_styles/normal = SubResource("StyleBoxTexture_upgr_n")
+theme_override_styles/pressed = SubResource("StyleBoxTexture_upgr_p")
+theme_override_styles/hover = SubResource("StyleBoxTexture_upgr_h")
+theme_override_styles/disabled = SubResource("StyleBoxTexture_upgr_d")
+
+[connection signal="pressed" from="CloseButton" to="." method="_on_close_button_pressed"]

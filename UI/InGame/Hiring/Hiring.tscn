@@ -2,6 +2,22 @@
 
 [ext_resource type="Script" uid="uid://s8223fc5qud0" path="res://UI/InGame/Hiring/hiring.gd" id="1_kiv20"]
 [ext_resource type="Texture2D" uid="uid://gwrmwrr5sxpg" path="res://UI/Theme/PCTheme/PanelShort.png" id="2_jceta"]
+[ext_resource type="Texture2D" uid="uid://d00apn0evacqg" path="res://UI/Theme/PCTheme/Back/pcBack.png" id="3_close"]
+[ext_resource type="Texture2D" uid="uid://dkqvr0lf6ytje" path="res://UI/Theme/PCTheme/Back/pcBackPressed.png" id="4_close"]
+[ext_resource type="Texture2D" uid="uid://crruuadiafv87" path="res://UI/Theme/PCTheme/Back/pcBackHeld.png" id="5_close"]
+[ext_resource type="Texture2D" uid="uid://o4k321o7djhb" path="res://UI/Theme/PCTheme/Back/pcBackDisabled.png" id="6_close"]
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_hire_n"]
+texture = ExtResource("3_close")
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_hire_p"]
+texture = ExtResource("4_close")
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_hire_h"]
+texture = ExtResource("5_close")
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_hire_d"]
+texture = ExtResource("6_close")
 
 [node name="Hiring" type="Node2D" unique_id=628576152]
 process_mode = 2
@@ -45,4 +61,16 @@ text = "Hiring Budget"
 horizontal_alignment = 1
 vertical_alignment = 1
 
+[node name="CloseButton" type="Button" parent="." unique_id=999000001]
+process_mode = 2
+offset_left = 618.0
+offset_top = -30.0
+offset_right = 682.0
+offset_bottom = 34.0
+theme_override_styles/normal = SubResource("StyleBoxTexture_hire_n")
+theme_override_styles/pressed = SubResource("StyleBoxTexture_hire_p")
+theme_override_styles/hover = SubResource("StyleBoxTexture_hire_h")
+theme_override_styles/disabled = SubResource("StyleBoxTexture_hire_d")
+
 [connection signal="pressed" from="SearchButton" to="." method="_on_search_button_pressed"]
+[connection signal="pressed" from="CloseButton" to="." method="_on_close_button_pressed"]

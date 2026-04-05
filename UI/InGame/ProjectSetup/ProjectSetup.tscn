@@ -6,6 +6,10 @@
 [ext_resource type="Texture2D" uid="uid://bnulbxemxoryo" path="res://UI/Theme/PCTheme/button/slimButtonPressed.png" id="4_1j4pd"]
 [ext_resource type="Texture2D" uid="uid://di1kn3fa7np7c" path="res://UI/Theme/PCTheme/button/slimButtonHeld.png" id="5_ti15a"]
 [ext_resource type="Texture2D" uid="uid://2jvaulftw7b6" path="res://UI/Theme/PCTheme/button/slimButtonDisabled.png" id="6_ro35i"]
+[ext_resource type="Texture2D" uid="uid://d00apn0evacqg" path="res://UI/Theme/PCTheme/Back/pcBack.png" id="7_close"]
+[ext_resource type="Texture2D" uid="uid://dkqvr0lf6ytje" path="res://UI/Theme/PCTheme/Back/pcBackPressed.png" id="8_close"]
+[ext_resource type="Texture2D" uid="uid://crruuadiafv87" path="res://UI/Theme/PCTheme/Back/pcBackHeld.png" id="9_close"]
+[ext_resource type="Texture2D" uid="uid://o4k321o7djhb" path="res://UI/Theme/PCTheme/Back/pcBackDisabled.png" id="10_close"]
 
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_khj05"]
 texture = ExtResource("3_r18lb")
@@ -18,6 +22,18 @@ texture = ExtResource("5_ti15a")
 
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_e4uks"]
 texture = ExtResource("6_ro35i")
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_proj_n"]
+texture = ExtResource("7_close")
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_proj_p"]
+texture = ExtResource("8_close")
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_proj_h"]
+texture = ExtResource("9_close")
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_proj_d"]
+texture = ExtResource("10_close")
 
 [node name="ProjectSetup" type="Node2D" unique_id=172000320]
 process_mode = 2
@@ -69,4 +85,16 @@ theme_override_styles/hover = SubResource("StyleBoxTexture_lmcgk")
 theme_override_styles/disabled = SubResource("StyleBoxTexture_e4uks")
 text = "Generate Project Choices"
 
+[node name="CloseButton" type="Button" parent="." unique_id=999000002]
+process_mode = 2
+offset_left = 913.0
+offset_top = 144.0
+offset_right = 977.0
+offset_bottom = 208.0
+theme_override_styles/normal = SubResource("StyleBoxTexture_proj_n")
+theme_override_styles/pressed = SubResource("StyleBoxTexture_proj_p")
+theme_override_styles/hover = SubResource("StyleBoxTexture_proj_h")
+theme_override_styles/disabled = SubResource("StyleBoxTexture_proj_d")
+
 [connection signal="pressed" from="ProjectChoose/Button" to="." method="_on_button_pressed"]
+[connection signal="pressed" from="CloseButton" to="." method="_on_close_button_pressed"]
