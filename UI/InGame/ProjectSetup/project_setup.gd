@@ -115,5 +115,7 @@ func finishProjectChoosing():
 	self.queue_free()
 	pass
 
-
 func _on_pc_back_pressed() -> void: get_parent().get_parent().endMenu()
+
+func _on_close_button_pressed() -> void:
+	get_parent().get_parent().endMenu()
