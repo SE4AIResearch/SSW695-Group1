@@ -76,11 +76,11 @@ var constraints = [
 "influence":{
 "frontEndScaling":0,
 "backEndScaling":0,
-"documentingScaling":-.1,
+"documentingScaling":.1,
 "sprintAmount":1,
 "sprintLength":3,
 "sprintMetricAmount":0,
-"randomEventChance":-.2
+"randomEventChance":.2
 },
 },
 
@@ -124,9 +124,9 @@ var constraints = [
 "influence":{
 "frontEndScaling":.2,
 "backEndScaling":.2,
-"documentingScaling":-.2,
-"sprintAmount":-1,
-"sprintLength":-1,
+"documentingScaling":.2,
+"sprintAmount":1,
+"sprintLength":1,
 "sprintMetricAmount":0,
 "randomEventChance":.6
 },
