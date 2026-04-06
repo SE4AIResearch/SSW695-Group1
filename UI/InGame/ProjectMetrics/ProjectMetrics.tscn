@@ -14,28 +14,19 @@ position = Vector2(401, 387)
 scale = Vector2(5, 5)
 texture = ExtResource("2_h6qok")
 
-[node name="Label" type="Label" parent="." unique_id=738700508]
-offset_left = 101.0
-offset_top = 187.0
-offset_right = 218.0
-offset_bottom = 227.0
-text = "Project Metrics"
-horizontal_alignment = 1
-vertical_alignment = 1
-
 [node name="projectNameLabel" type="Label" parent="." unique_id=1524367975]
-offset_left = 100.0
-offset_top = 227.0
-offset_right = 701.0
-offset_bottom = 250.0
+offset_left = 102.0
+offset_top = 194.0
+offset_right = 699.0
+offset_bottom = 217.0
 text = "Project: "
 vertical_alignment = 1
 
 [node name="methodologyLabel" type="Label" parent="." unique_id=1012099979]
-offset_left = 248.0
-offset_top = 262.0
-offset_right = 430.0
-offset_bottom = 285.0
+offset_left = 220.0
+offset_top = 231.0
+offset_right = 565.0
+offset_bottom = 254.0
 text = "Methodology: "
 horizontal_alignment = 1
 vertical_alignment = 1
