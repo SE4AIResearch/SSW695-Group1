@@ -96,7 +96,7 @@ theme_override_colors/font_pressed_color = Color(0, 0, 0, 1)
 theme_override_colors/font_hover_color = Color(0, 0, 0, 1)
 theme_override_colors/font_disabled_color = Color(0.8745098, 0.8745098, 0.8745098, 0.5019608)
 theme_override_fonts/font = ExtResource("8_nxm3p")
-theme_override_font_sizes/font_size = 28
+theme_override_font_sizes/font_size = 22
 text = "Learning Center"
 
 [node name="QuitButton" type="Button" parent="UI/MainButtons" unique_id=444549206]
