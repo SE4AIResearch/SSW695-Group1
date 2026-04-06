@@ -32,6 +32,10 @@ window/snap/snap_2d_transforms_to_pixel=true
 
 project/assembly_name="SSW656-CapstoneProject"
 
+[gui]
+
+theme/default_font_multichannel_signed_distance_field=true
+
 [physics]
 
 3d/physics_engine="Jolt Physics"
