@@ -16,10 +16,30 @@ func _on_button_pressed() -> void:
 
 func _ready():
 	PCWindowLayout.apply(self)
+	_apply_content_layout()
 	if PlayerTool.workers.size() == 0:
 		$ProjectChoose/Button.text = "Hire a Worker!"
 		$ProjectChoose/Button.disabled = true
 	pass
+
+func _apply_content_layout() -> void:
+	var content_rect: Rect2 = PCWindowLayout.content_rect()
+	var row_width: float = 788.0
+	var row_left: float = content_rect.position.x + (content_rect.size.x - row_width) / 2.0
+	var button_width: float = $ProjectChoose/Button.offset_right - $ProjectChoose/Button.offset_left
+	var button_height: float = $ProjectChoose/Button.offset_bottom - $ProjectChoose/Button.offset_top
+	var button_left: float = content_rect.position.x + (content_rect.size.x - button_width) / 2.0
+
+	$ProjectChoose/ProjectChoices.offset_left = row_left
+	$ProjectChoose/ProjectChoices.offset_right = row_left + row_width
+
+	$MethodologyChoose/ScrollContainer.offset_left = row_left
+	$MethodologyChoose/ScrollContainer.offset_right = row_left + row_width
+
+	$ProjectChoose/Button.offset_left = button_left
+	$ProjectChoose/Button.offset_right = button_left + button_width
+	$ProjectChoose/Button.offset_top = content_rect.position.y + content_rect.size.y - button_height - 12.0
+	$ProjectChoose/Button.offset_bottom = $ProjectChoose/Button.offset_top + button_height
 
 func generateProjectChoices() -> void:
 	#Insert below code to pool together total worker skills
