@@ -1,5 +1,7 @@
 extends Node2D
 
+const PCWindowLayout = preload("res://UI/InGame/PCWindow/pc_window_layout.gd")
+
 var projectList = load("res://Projects/projectList.gd").new()
 var projectItem = preload("res://Projects/projectBase.tscn")
 var methodItem = preload("res://UI/InGame/ProjectSetup/MethodItem/MethodItem.tscn")
@@ -13,6 +15,7 @@ func _on_button_pressed() -> void:
 	pass
 
 func _ready():
+	PCWindowLayout.apply(self)
 	if PlayerTool.workers.size() == 0:
 		$ProjectChoose/Button.text = "Hire a Worker!"
 		$ProjectChoose/Button.disabled = true

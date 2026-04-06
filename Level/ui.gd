@@ -34,6 +34,7 @@ func endMenu():
 	currentMenu.queue_free()
 	match pcMode:
 		true:
+			$PCButtons.visible = true
 			$PCButtons/UpgradesButton.disabled = false
 			$PCButtons/HiringButton.disabled = false
 			$PCButtons/projectStartMenu.disabled = false
@@ -68,6 +69,7 @@ func createMenu(menu):
 	currentMenu.visible = true
 	match pcMode:
 		true: 
+			$PCButtons.visible = false
 			$PCButtons/UpgradesButton.disabled = true
 			$PCButtons/HiringButton.disabled = true
 			$PCButtons/projectStartMenu.disabled = true
@@ -78,6 +80,7 @@ func _on_pc_pressed() -> void:
 	#and showing the PC Buttons when completed
 	pcMode = true
 	get_tree().paused = true
+	$PauseButton.visible = false
 	$PCStats.visible = false
 	$PCScreen.visible = true
 	$PCScreenPanel.visible = true	
@@ -87,6 +90,7 @@ func _on_pc_power_pressed() -> void:
 	#Insert code of screen lerping in size and position to the original PC location and render buttons invisible
 	pcMode = false
 	get_tree().paused = false
+	$PauseButton.visible = true
 	$PCStats.visible = true
 	$PCScreen.visible = false
 	$PCScreenPanel.visible = false
