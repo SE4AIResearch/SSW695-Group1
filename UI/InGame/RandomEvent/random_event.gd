@@ -110,8 +110,17 @@ func calculateOutcome(eventChoice):
 		"FrontEnd": PlayerTool.currentMetrics.set("frontEnd",PlayerTool.currentMetrics.get("frontEnd") * eventChoice)
 		"BackEnd": PlayerTool.currentMetrics.set("backEnd",PlayerTool.currentMetrics.get("backEnd") * eventChoice)
 		"Documenting": PlayerTool.currentMetrics.set("documenting",PlayerTool.currentMetrics.get("documenting") * eventChoice)
-		"Stakeholder": pass
-		"Backlog": pass
-		
+		"Stakeholder": #DISALLOW STAKEHOLDER EVENTS FROM TAKING PLACE ON THE LAST SPRINT???????????
+			if eventChoice is not Array:
+				if eventChoice[0] != 0: PlayerTool.currentProject.sprintAmount += eventChoice[0]
+				if eventChoice[1] != 0: PlayerTool.currentProject.sprintLength += eventChoice[1]
+				if eventChoice[2] != 0: PlayerTool.currentProject.sprintMetricAmount += eventChoice[2]
+			pass
+		"Backlog":
+				match eventChoice[0]:
+					"frontEnd": PlayerTool.currentProject.frontEndMetrics[int(PlayerTool.currentProject.frontEndMetrics.size())] = eventChoice[1]
+					"backEnd": PlayerTool.currentProject.backEndMetrics[int(PlayerTool.currentProject.backEndMetrics.size())] = eventChoice[1]
+					"documenting": PlayerTool.currentProject.documentingMetrics[int(PlayerTool.currentProject.documentingMetrics.size())] = eventChoice[1]
+	
 	get_parent().get_parent().endMenu()
 	pass

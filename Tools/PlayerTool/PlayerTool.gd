@@ -11,6 +11,7 @@ signal statsChanged
 var level
 
 var currentProject: Node
+var projectAmount: int = 0
 var currentMetrics={
 "frontEnd":0,
 "backEnd":0,
@@ -81,6 +82,7 @@ func newProject(project) -> void:
 	currentProject = project
 	currentProjWeek = 1
 	currentProjSprint = 1
+	projectAmount += 1
 	projectSelected.emit()
 	pass
 

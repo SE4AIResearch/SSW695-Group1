@@ -378,7 +378,7 @@ offset_right = 941.0
 offset_bottom = 417.0
 mouse_filter = 2
 bbcode_enabled = true
-text = "Score:"
+text = "Projects: "
 metadata/_edit_use_anchors_ = true
 
 [node name="frontEndLabel" type="Label" parent="UI/PCStats" unique_id=984340097]
