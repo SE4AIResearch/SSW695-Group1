@@ -146,7 +146,7 @@ func calculateOutcome(eventChoice):
 			if eventChoice is Dictionary:
 				_apply_metric_changes(eventChoice)
 			elif eventChoice is float or eventChoice is int:
-				var metric_name := chosenEvent.type.to_lower()
+				var metric_name: String = str(chosenEvent.type).to_lower()
 				if metric_name == "frontend":
 					metric_name = "frontEnd"
 				elif metric_name == "backend":
