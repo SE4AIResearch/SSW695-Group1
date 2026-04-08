@@ -19,7 +19,7 @@ texture = ExtResource("3_cajoh")
 texture = ExtResource("4_0x3gt")
 
 [node name="ProjectItem" type="Button" unique_id=1964688718]
-custom_minimum_size = Vector2(260, 245)
+custom_minimum_size = Vector2(260, 305)
 anchors_preset = -1
 anchor_right = 0.19500001
 anchor_bottom = 0.335
@@ -45,6 +45,7 @@ offset_right = -12.076019
 offset_bottom = -13.152008
 mouse_filter = 1
 theme_override_font_sizes/font_size = 14
+theme_override_constants/line_spacing = 2
 text = "Project Name
 Description
 Client

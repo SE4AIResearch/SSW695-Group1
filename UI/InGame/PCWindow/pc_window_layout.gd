@@ -2,10 +2,10 @@ class_name PCWindowLayout
 extends RefCounted
 
 # shared PC window chrome.
-const WINDOW_LEFT := 30.0
-const WINDOW_TOP := 30.0
-const WINDOW_WIDTH := 1095.0
-const WINDOW_HEIGHT := 583.0
+const WINDOW_LEFT := 70.0
+const WINDOW_TOP := 70.0
+const WINDOW_WIDTH := 1015.0
+const WINDOW_HEIGHT := 500.0
 
 const TITLE_LEFT_PADDING := 96.0
 const TITLE_TOP_PADDING := 30.0
@@ -13,8 +13,8 @@ const TITLE_HEIGHT := 38.0
 
 const CLOSE_BUTTON_WIDTH := 80.0
 const CLOSE_BUTTON_HEIGHT := 20.0
-const CLOSE_BUTTON_TOP_PADDING := 35.0
-const CLOSE_BUTTON_RIGHT_PADDING := 75.0
+const CLOSE_BUTTON_TOP_PADDING := 25.0
+const CLOSE_BUTTON_RIGHT_PADDING := 40.0
 const TITLE_RIGHT_GAP := 24.0
 
 static func apply(root: Node) -> void:
@@ -32,15 +32,19 @@ static func apply(root: Node) -> void:
 	var window_bottom: float = WINDOW_TOP + WINDOW_HEIGHT
 	var close_left: float = window_right - CLOSE_BUTTON_RIGHT_PADDING - CLOSE_BUTTON_WIDTH
 	var close_top: float = WINDOW_TOP + CLOSE_BUTTON_TOP_PADDING
+	var title_side_padding: float = maxf(
+		TITLE_LEFT_PADDING,
+		CLOSE_BUTTON_RIGHT_PADDING + CLOSE_BUTTON_WIDTH + TITLE_RIGHT_GAP
+	)
 
 	frame.offset_left = WINDOW_LEFT
 	frame.offset_top = WINDOW_TOP
 	frame.offset_right = window_right
 	frame.offset_bottom = window_bottom
 
-	title.offset_left = WINDOW_LEFT + TITLE_LEFT_PADDING
+	title.offset_left = WINDOW_LEFT + title_side_padding
 	title.offset_top = WINDOW_TOP + TITLE_TOP_PADDING
-	title.offset_right = close_left - TITLE_RIGHT_GAP
+	title.offset_right = window_right - title_side_padding
 	title.offset_bottom = title.offset_top + TITLE_HEIGHT
 
 	close_button.offset_left = close_left
