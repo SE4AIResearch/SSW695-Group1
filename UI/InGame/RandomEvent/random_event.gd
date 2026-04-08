@@ -41,7 +41,17 @@ func setButtonVisual(menuButton: Button):
 	pass
 
 func initializeEvent():
-	chosenEvent = eventList.events.pick_random()
+	var project_name := ""
+	if PlayerTool.currentProject != null:
+		project_name = PlayerTool.currentProject.projectName
+
+	var event_pool: Array = eventList.get_event_pool(project_name)
+	if PlayerTool.currentProject == null:
+		event_pool = _filter_project_only_events(event_pool)
+	if event_pool.is_empty():
+		return
+
+	chosenEvent = event_pool.pick_random()
 	$eventText.text = chosenEvent.get("description")
 	setButtonVisual(button1)
 	setButtonVisual(button2)
@@ -104,23 +114,59 @@ func _on_choice_2_pressed() -> void: calculateOutcome(choice2OBJ)
 func _on_choice_3_pressed() -> void: calculateOutcome(choice3OBJ)
 func _on_choice_4_pressed() -> void: calculateOutcome(choice4OBJ)
 
+func _filter_project_only_events(event_pool: Array) -> Array:
+	var filtered: Array = []
+	for event_data in event_pool:
+		if event_data.get("type") in ["FrontEnd", "BackEnd", "Documenting"]:
+			filtered.append(event_data)
+	return filtered
+
+func _apply_metric_changes(metric_changes: Dictionary) -> void:
+	for metric_name in metric_changes.keys():
+		PlayerTool.currentMetrics.set(
+			metric_name,
+			PlayerTool.currentMetrics.get(metric_name, 0) + int(metric_changes.get(metric_name, 0))
+		)
+	PlayerTool.statsChanged.emit()
+
+func _append_backlog_items(metric_key: String, backlog_label: String, amount: int) -> void:
+	var target_metrics: Dictionary
+	match metric_key:
+		"frontEnd": target_metrics = PlayerTool.currentProject.frontEndMetrics
+		"backEnd": target_metrics = PlayerTool.currentProject.backEndMetrics
+		"documenting": target_metrics = PlayerTool.currentProject.documentingMetrics
+		_: return
+
+	for i in range(max(amount, 1)):
+		target_metrics[int(target_metrics.size())] = backlog_label
+
 func calculateOutcome(eventChoice):
-	#Insert code here which determines whether the outcome of the event is a project stat change, or a backlog item.
 	match chosenEvent.type:
-		"FrontEnd": PlayerTool.currentMetrics.set("frontEnd",PlayerTool.currentMetrics.get("frontEnd") * eventChoice)
-		"BackEnd": PlayerTool.currentMetrics.set("backEnd",PlayerTool.currentMetrics.get("backEnd") * eventChoice)
-		"Documenting": PlayerTool.currentMetrics.set("documenting",PlayerTool.currentMetrics.get("documenting") * eventChoice)
-		"Stakeholder": #DISALLOW STAKEHOLDER EVENTS FROM TAKING PLACE ON THE LAST SPRINT???????????
+		"FrontEnd", "BackEnd", "Documenting":
+			if eventChoice is Dictionary:
+				_apply_metric_changes(eventChoice)
+			elif eventChoice is float or eventChoice is int:
+				var metric_name := chosenEvent.type.to_lower()
+				if metric_name == "frontend":
+					metric_name = "frontEnd"
+				elif metric_name == "backend":
+					metric_name = "backEnd"
+				elif metric_name == "documenting":
+					metric_name = "documenting"
+				PlayerTool.currentMetrics.set(metric_name, PlayerTool.currentMetrics.get(metric_name, 0) * eventChoice)
+				PlayerTool.statsChanged.emit()
+		"Stakeholder":
+			if PlayerTool.currentProject == null:
+				return
 			if eventChoice is Array:
 				if eventChoice[0] != 0: PlayerTool.currentProject.sprintAmount += eventChoice[0]
 				if eventChoice[1] != 0: PlayerTool.currentProject.sprintLength += eventChoice[1]
 				if eventChoice[2] != 0: PlayerTool.currentProject.sprintMetricAmount += eventChoice[2]
-			pass
 		"Backlog":
-				match eventChoice[0]:
-					"frontEnd": PlayerTool.currentProject.frontEndMetrics[int(PlayerTool.currentProject.frontEndMetrics.size())] = eventChoice[1]
-					"backEnd": PlayerTool.currentProject.backEndMetrics[int(PlayerTool.currentProject.backEndMetrics.size())] = eventChoice[1]
-					"documenting": PlayerTool.currentProject.documentingMetrics[int(PlayerTool.currentProject.documentingMetrics.size())] = eventChoice[1]
+			if PlayerTool.currentProject == null:
+				return
+			if eventChoice is Array and eventChoice.size() >= 3:
+				_append_backlog_items(str(eventChoice[0]), str(eventChoice[1]), int(eventChoice[2]))
 
 	get_parent().get_parent().endMenu()
 	pass

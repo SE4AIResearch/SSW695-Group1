@@ -24,6 +24,18 @@ var waterfall = {
 2:"How It Affects the Game\n\nChoosing Waterfall means longer sprints with more structured planning. Changes mid-project are costly and harder to manage. Documentation metrics tend to be stronger since Waterfall emphasizes thorough upfront planning, but Reliability may suffer if defects are discovered late. You must plan carefully from the start since backtracking is expensive."
 }
 
+var vModel = {
+0:"V-Model\n\nThe V-Model (Verification and Validation Model) is an extension of the Waterfall model where each development phase has a corresponding testing phase. The left side of the 'V' represents development stages like requirements, design, and implementation, while the right side represents their matching test stages like unit, integration, system, and acceptance testing.",
+1:"V-Model Phases\n\nRequirements Analysis <-> Acceptance Testing: User requirements are defined and matched with acceptance criteria.\n\nSystem Design <-> System Testing: The overall system architecture is designed and later validated as a whole.\n\nDetailed Design <-> Integration Testing: Individual modules are designed and later tested for how they work together.\n\nImplementation <-> Unit Testing: Code is written and each unit is tested against its specification.\n\nTest planning happens in parallel with development instead of being left to the end.",
+2:"How It Affects the Game\n\nWhen you choose V-Model, documentation requirements are higher because every feature should map to planned testing. Reliability can improve because testing is tightly coupled with development, but the structure is more rigid, so late changes are expensive. Projects with safety, hardware integration, or strict traceability are a strong fit."
+}
+
+var spiral = {
+0:"Spiral Model\n\nThe Spiral Model is a risk-driven development methodology that combines iterative development with systematic risk analysis. Work proceeds in cycles, and each cycle focuses on planning, risk analysis, engineering, and evaluation before the next loop begins.",
+1:"Spiral Phases (Per Cycle)\n\nPlanning: Define objectives, alternatives, and constraints for the current cycle.\n\nRisk Analysis: Identify and evaluate risks, then develop strategies to reduce them.\n\nEngineering: Build and test a prototype or increment of the product.\n\nEvaluation: Review the results with stakeholders and plan the next cycle.\n\nEach spiral builds on the previous one while continuously managing uncertainty.",
+2:"How It Affects the Game\n\nWhen you choose Spiral, Back End complexity often increases because these projects tend to involve uncertain technology, large integrations, or changing risks. Random events fit naturally into Spiral work because risk management is part of every cycle. Strong documentation and steady reliability decisions help keep these projects on track."
+}
+
 var projectConstraints = {
 0:"Project Constraints\n\nProject constraints refer to the limitations that affect how a project can be executed. The most common framework is the Triple Constraint, also known as the Iron Triangle: Scope, Time, and Cost. Changing one constraint inevitably impacts the others.",
 1:"The Triple Constraint\n\nScope: The features and functionality the project must deliver.\n\nTime: The schedule or deadline for project completion.\n\nCost: The budget and resources available, including team size.\n\nBalancing these three factors is one of the most critical skills in project management. Expanding scope without adjusting time or cost leads to overworked teams and lower quality.",

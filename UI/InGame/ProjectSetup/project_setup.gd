@@ -69,7 +69,7 @@ func generateProjectChoices() -> void:
 		var randomProject = projectList.projects.pick_random()
 		
 		newProject.projectName = randomProject.name
-		newProject.projectDescription = randomProject.name
+		newProject.projectDescription = randomProject.description
 		newProject.clientName = PersonConstructor.generateName()
 		newProject.frontEndProjectMin = (totalFE*randomProject.frontEndScalar)*clampf(PlayerTool.projectAmount*1.025,1,1000)
 		newProject.backEndProjectMin = (totalBE*randomProject.backEndScalar)*clampf(PlayerTool.projectAmount*1.025,1,1000)
@@ -77,9 +77,9 @@ func generateProjectChoices() -> void:
 		newProject.sprintAmount = randomProject.baseSprintAmount
 		newProject.sprintLength = randomProject.baseSprintLength
 		newProject.sprintMetricAmount = randomProject.baseSprintMetricAmount
-		newProject.frontEndMetrics = randomProject.frontEndMetrics
-		newProject.backEndMetrics = randomProject.backEndMetrics
-		newProject.documentingMetrics = randomProject.documentingMetrics
+		newProject.frontEndMetrics = randomProject.frontEndMetrics.duplicate(true)
+		newProject.backEndMetrics = randomProject.backEndMetrics.duplicate(true)
+		newProject.documentingMetrics = randomProject.documentingMetrics.duplicate(true)
 
 		match i:
 			0: 	newProject.constraints.append(projectList.constraints.pick_random())
