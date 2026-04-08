@@ -5,7 +5,7 @@ extends RefCounted
 const WINDOW_LEFT := 70.0
 const WINDOW_TOP := 70.0
 const WINDOW_WIDTH := 1015.0
-const WINDOW_HEIGHT := 500.0
+const WINDOW_HEIGHT := 530.0
 
 const TITLE_LEFT_PADDING := 96.0
 const TITLE_TOP_PADDING := 30.0

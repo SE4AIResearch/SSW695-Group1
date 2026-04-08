@@ -9,12 +9,12 @@ var methodList = load("res://Projects/MethodologyList.gd").new()
 var projectChoiceItem = preload("res://UI/InGame/ProjectSetup/ProjectItem/ProjectItem.tscn")
 
 const PROJECT_CARD_WIDTH := 260.0
-const PROJECT_CARD_HEIGHT := 305.0
+const PROJECT_CARD_HEIGHT := 365.0
 const PROJECT_CARD_GAP := 12.0
-const PROJECT_CHOICES_TOP := 52.0
+const PROJECT_CHOICES_TOP := -30.0
 const ACTION_BUTTON_WIDTH := 240.0
 const ACTION_BUTTON_HEIGHT := 64.0
-const ACTION_BUTTON_TOP := 330.0
+const ACTION_BUTTON_TOP := 360.0
 const METHODOLOGY_TOP := 68.0
 const METHODOLOGY_HEIGHT := 300.0
 
