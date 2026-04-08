@@ -1,9 +1,9 @@
 [gd_scene format=3 uid="uid://co4mejwhkp005"]
 
 [ext_resource type="Script" uid="uid://ciq3f5hcc1p1b" path="res://UI/InGame/Backlog/BacklogWorkerItem/backlog_worker_item.gd" id="1_5fg85"]
-[ext_resource type="Texture2D" uid="uid://c2it0w0k17wgn" path="res://UI/Theme/PCTheme/button/slimButton.png" id="1_mmcle"]
-[ext_resource type="Texture2D" uid="uid://bnulbxemxoryo" path="res://UI/Theme/PCTheme/button/slimButtonPressed.png" id="2_1bg4a"]
-[ext_resource type="Texture2D" uid="uid://di1kn3fa7np7c" path="res://UI/Theme/PCTheme/button/slimButtonHeld.png" id="3_mn4op"]
+[ext_resource type="Texture2D" uid="uid://drwt4l4mwiboc" path="res://UI/Theme/PCTheme/button/slimButton.png" id="1_mmcle"]
+[ext_resource type="Texture2D" uid="uid://cuyr4sv3sto4b" path="res://UI/Theme/PCTheme/button/slimButtonPressed.png" id="2_1bg4a"]
+[ext_resource type="Texture2D" uid="uid://b8snwl2q3qflg" path="res://UI/Theme/PCTheme/button/slimButtonHeld.png" id="3_mn4op"]
 [ext_resource type="Texture2D" uid="uid://2jvaulftw7b6" path="res://UI/Theme/PCTheme/button/slimButtonDisabled.png" id="4_30wkw"]
 [ext_resource type="PackedScene" uid="uid://doy5ib16ee1oa" path="res://Person/Person.tscn" id="6_1bg4a"]
 
@@ -20,12 +20,12 @@ texture = ExtResource("3_mn4op")
 texture = ExtResource("4_30wkw")
 
 [node name="BacklogWorkerItem" type="Button" unique_id=1168618699]
-custom_minimum_size = Vector2(192, 64)
+custom_minimum_size = Vector2(240, 96)
 anchors_preset = -1
 anchor_right = 0.208
 anchor_bottom = 0.123
-offset_right = -47.615997
-offset_bottom = -15.704002
+offset_right = 0.3840027
+offset_bottom = 16.295998
 theme_override_styles/normal = SubResource("StyleBoxTexture_kui40")
 theme_override_styles/pressed = SubResource("StyleBoxTexture_t5dkv")
 theme_override_styles/hover = SubResource("StyleBoxTexture_p28hv")
@@ -34,29 +34,30 @@ toggle_mode = true
 script = ExtResource("1_5fg85")
 
 [node name="Person" parent="." unique_id=1533579046 instance=ExtResource("6_1bg4a")]
-position = Vector2(28, 37)
-scale = Vector2(1.5, 1.5)
+position = Vector2(43, 55)
+scale = Vector2(2, 2)
 
 [node name="textParent" type="Node2D" parent="." unique_id=1862655238]
-position = Vector2(24, 37)
+position = Vector2(11.999998, 25)
 scale = Vector2(0.235, 0.235)
 
 [node name="statsLabel" type="RichTextLabel" parent="textParent" unique_id=211450542]
-offset_left = 102.127655
-offset_top = -106.38298
-offset_right = 663.82983
-offset_bottom = 99.06383
+offset_left = 306.38297
+offset_top = -29.78724
+offset_right = 906.38293
+offset_bottom = 276.59576
 mouse_filter = 2
-theme_override_font_sizes/normal_font_size = 44
+theme_override_font_sizes/normal_font_size = 56
 bbcode_enabled = true
+vertical_alignment = 1
 
 [node name="nameLabel" type="RichTextLabel" parent="textParent" unique_id=2070673382]
-offset_left = -51.06383
-offset_top = -157.44681
-offset_right = 663.8298
-offset_bottom = -107.14894
+offset_left = -8.510631
+offset_top = -106.38298
+offset_right = 927.65955
+offset_bottom = -29.78724
 mouse_filter = 2
-theme_override_font_sizes/normal_font_size = 32
+theme_override_font_sizes/normal_font_size = 48
 bbcode_enabled = true
 text = "Name"
 horizontal_alignment = 1

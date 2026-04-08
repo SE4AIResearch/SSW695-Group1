@@ -42,12 +42,12 @@ var events = [
 "outcomes":[0,0,0,0],
 "reliabilityInfluence":[-1,-1,1,1]
 },
-{ #Stakeholder outcomes impact the Project sprint length, sprint amount,and metrics per sprint, and appear in the outcomes array in the same order.
+{ #Stakeholder outcomes impact the Project sprint amount, sprint length,and metrics per sprint, and appear in the outcomes array in the same order.
 "name":"scaleDownProject",
 "type":"Stakeholder",
 "description":"The client is asking for the project to be scaled down!",
 "choices":["Propose a reason why it should stay?","Scale down project?"],
-"outcomes":[0,[0,-1,1]],
+"outcomes":[0,[-1,0,3]],
 "reliabilityInfluence":[-1,1]
 },
 { #Backlog outcomes are in arrays, outcomes[0] is the backlog item name, outcomes[1] is the metric it is based on, outcomes[2] is the amount of the metric.
@@ -55,7 +55,7 @@ var events = [
 "type":"Backlog",
 "description":"The client is asking for a mobile front end for the project!",
 "choices":["Propose that it is unfeasible","Add mobile front end to the backlog"],
-"outcomes":[0,["Mobile Front End","frontEnd",8]],
+"outcomes":[0,["frontEnd","Mobile Front End",1]],
 "reliabilityInfluence":[-1,1]
 }
 ]

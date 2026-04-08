@@ -24,10 +24,10 @@ theme_override_font_sizes/font_size = 24
 text = "Assignable Workers"
 
 [node name="BacklogLabel" type="Label" parent="." unique_id=388305119]
-offset_left = 400.0
-offset_top = 87.0
-offset_right = 469.0
-offset_bottom = 110.0
+offset_left = 429.0
+offset_top = 88.0
+offset_right = 498.0
+offset_bottom = 111.0
 theme_override_colors/font_color = Color(0, 0, 0, 1)
 theme_override_fonts/font = ExtResource("2_qp40g")
 theme_override_font_sizes/font_size = 24
@@ -54,9 +54,9 @@ theme_override_font_sizes/font_size = 24
 text = "Completed"
 
 [node name="WorkersScroll" type="ScrollContainer" parent="." unique_id=1079949786]
-offset_left = 77.0
+offset_left = 68.0
 offset_top = 103.0
-offset_right = 301.0
+offset_right = 336.0
 offset_bottom = 648.0
 
 [node name="Workers" type="VBoxContainer" parent="WorkersScroll" unique_id=260048008]
@@ -64,10 +64,10 @@ clip_contents = true
 layout_mode = 2
 
 [node name="BacklogScroll" type="ScrollContainer" parent="." unique_id=1302348264]
-offset_left = 331.0
-offset_top = 114.0
-offset_right = 541.0
-offset_bottom = 638.0
+offset_left = 354.0
+offset_top = 113.0
+offset_right = 564.0
+offset_bottom = 648.0
 
 [node name="Backlog" type="VBoxContainer" parent="BacklogScroll" unique_id=1388620830]
 layout_mode = 2

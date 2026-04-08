@@ -71,9 +71,9 @@ func generateProjectChoices() -> void:
 		newProject.projectName = randomProject.name
 		newProject.projectDescription = randomProject.name
 		newProject.clientName = PersonConstructor.generateName()
-		newProject.frontEndProjectMin = totalFE*randomProject.frontEndScalar
-		newProject.backEndProjectMin = totalBE*randomProject.backEndScalar
-		newProject.documentingProjectMin = totalD*randomProject.documentingScalar
+		newProject.frontEndProjectMin = (totalFE*randomProject.frontEndScalar)*clampf(PlayerTool.projectAmount*1.025,1,1000)
+		newProject.backEndProjectMin = (totalBE*randomProject.backEndScalar)*clampf(PlayerTool.projectAmount*1.025,1,1000)
+		newProject.documentingProjectMin = (totalD*randomProject.documentingScalar)*clampf(PlayerTool.projectAmount*1.025,1,1000)
 		newProject.sprintAmount = randomProject.baseSprintAmount
 		newProject.sprintLength = randomProject.baseSprintLength
 		newProject.sprintMetricAmount = randomProject.baseSprintMetricAmount

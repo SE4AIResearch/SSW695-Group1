@@ -11,6 +11,7 @@ signal statsChanged
 var level
 
 var currentProject: Node
+var projectAmount: int = 0
 var currentMetrics={
 "frontEnd":0,
 "backEnd":0,
@@ -53,6 +54,7 @@ func changeProjectStats(type,amount):
 func resetData():
 	#resets Project stats to default values
 	currentProject = null
+	projectAmount = 0
 	currentMetrics = {"frontEnd":0,"backEnd":0,"documenting":0,"reliability":0,"stakeholderSatisfaction":0}
 	workers = []
 	upgrades = []
@@ -81,6 +83,7 @@ func newProject(project) -> void:
 	currentProject = project
 	currentProjWeek = 1
 	currentProjSprint = 1
+	projectAmount += 1
 	projectSelected.emit()
 	pass
 
