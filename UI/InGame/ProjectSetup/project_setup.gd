@@ -77,9 +77,19 @@ func generateProjectChoices() -> void:
 		newProject.sprintAmount = randomProject.baseSprintAmount
 		newProject.sprintLength = randomProject.baseSprintLength
 		newProject.sprintMetricAmount = randomProject.baseSprintMetricAmount
+		newProject.preferredMethodology = randomProject.preferredMethodology
+		newProject.learningObjective = randomProject.get("learningObjective", "")
+		newProject.successCriteria = randomProject.get("successCriteria", "")
+		newProject.recommendedMethodology = randomProject.get("recommendedMethodology", randomProject.preferredMethodology)
+		newProject.tutorialSprintPlan = randomProject.get("tutorialSprintPlan", []).duplicate(true)
 		newProject.frontEndMetrics = randomProject.frontEndMetrics.duplicate(true)
 		newProject.backEndMetrics = randomProject.backEndMetrics.duplicate(true)
 		newProject.documentingMetrics = randomProject.documentingMetrics.duplicate(true)
+
+		if newProject.projectName == "Food Delivery App":
+			newProject.sprintAmount = 3
+			newProject.sprintLength = 1
+			newProject.sprintMetricAmount = 2
 
 		match i:
 			0: 	newProject.constraints.append(projectList.constraints.pick_random())

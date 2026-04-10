@@ -113,21 +113,73 @@ var project_events = {
 "type":"FrontEnd",
 "description":"Restaurant partners are complaining that the onboarding process is too complicated and they are dropping out. What is your approach?",
 "choices":["Redesign the entire restaurant registration flow","Add a step-by-step guided wizard","Provide video tutorials instead of changing the UI"],
-"outcomes":[{"frontEnd":3,"backEnd":-1},{"frontEnd":2,"documenting":1},{"documenting":2,"frontEnd":-1}]
+"outcomes":[{"frontEnd":3,"backEnd":-1},{"frontEnd":2,"documenting":1},{"documenting":2,"frontEnd":-1}],
+"learn_more_topic":"stakeholderManagement",
+"teaching_message":"This event is about feedback fit: the right choice is not universal, but volatile products reward teams that can adapt without losing control of scope.",
+"methodology_effects":{
+	"Agile":{
+		"metric_deltas":{"stakeholderSatisfaction":3},
+		"outcome_summary":"Stakeholder Satisfaction improved because Agile made it easier to react to partner feedback without freezing the plan.",
+		"teaching_message":"Agile fits this situation well because customer-facing changes can be absorbed into the next increment instead of treated as a project disruption."
+	},
+	"Hybrid":{
+		"metric_deltas":{"stakeholderSatisfaction":1},
+		"outcome_summary":"Stakeholder Satisfaction improved slightly, but the change still created planning friction.",
+		"teaching_message":"Hybrid can handle this, but not as smoothly as a process built around rapid iteration."
+	},
+	"Waterfall":{
+		"metric_deltas":{"stakeholderSatisfaction":-4},
+		"outcome_summary":"Stakeholder Satisfaction fell because the requested change arrived after the plan had already hardened.",
+		"teaching_message":"Waterfall is still playable, but late UX changes are expensive in a rigid plan. That is the methodology-fit lesson the slice is trying to teach."
+	}
+}
 },
 {
 "name":"orderTrackingUX",
 "type":"FrontEnd",
 "description":"User feedback shows that the order tracking page is confusing. Customers cannot tell where their food is. How do you improve it?",
 "choices":["Add a real-time map with driver location","Simplify the status display with clear progress steps","Add push notifications for each delivery stage"],
-"outcomes":[{"frontEnd":3,"backEnd":-1},{"frontEnd":2},{"frontEnd":1,"backEnd":1}]
+"outcomes":[{"frontEnd":3,"backEnd":-1},{"frontEnd":2},{"frontEnd":1,"backEnd":1}],
+"learn_more_topic":"agile",
+"teaching_message":"The player should see that visible user feedback is part of the job, not a warning message to avoid.",
+"methodology_effects":{
+	"Agile":{
+		"metric_deltas":{"stakeholderSatisfaction":2},
+		"outcome_summary":"Stakeholder Satisfaction increased because the team could turn feedback into a visible UX improvement quickly.",
+		"teaching_message":"Agile reinforces short learning loops: feedback changes the product, and the product teaches the player why process fit matters."
+	},
+	"Waterfall":{
+		"metric_deltas":{"stakeholderSatisfaction":-3},
+		"outcome_summary":"Stakeholder Satisfaction slipped because even a reasonable UX fix competed with a rigid pre-committed plan.",
+		"teaching_message":"On a stable compliance-heavy project that rigidity can help. On a changing consumer MVP, it becomes a cost."
+	}
+}
 },
 {
 "name":"deliveryAppSurge",
 "type":"BackEnd",
 "description":"A marketing campaign has gone viral and orders have tripled overnight! The system is struggling under the load. What do you do?",
 "choices":["Scale infrastructure and optimize queries urgently","Implement rate limiting to control the load","Temporarily disable the promotion to stabilize"],
-"outcomes":[{"backEnd":3,"frontEnd":-1},{"backEnd":2,"reliability":1},{"backEnd":1,"stakeholderSatisfaction":-2}]
+"outcomes":[{"backEnd":3,"frontEnd":-1},{"backEnd":2,"reliability":1},{"backEnd":1,"stakeholderSatisfaction":-2}],
+"learn_more_topic":"riskManagement",
+"teaching_message":"This event is about just-in-time consequence feedback. The player should feel how ignored technical risk turns into user-facing pain.",
+"methodology_effects":{
+	"Agile":{
+		"metric_deltas":{"reliability":2},
+		"outcome_summary":"Reliability improved because the team had already been iterating and could react quickly to the surge.",
+		"teaching_message":"Agile did not remove the problem, but it shortened the feedback and response loop."
+	},
+	"Hybrid":{
+		"metric_deltas":{"reliability":1},
+		"outcome_summary":"Reliability improved slightly, but the mixed process still carried some coordination overhead.",
+		"teaching_message":"Hybrid handled the surge better than Waterfall, but slower than a highly adaptive team."
+	},
+	"Waterfall":{
+		"metric_deltas":{"reliability":-3,"stakeholderSatisfaction":-2},
+		"outcome_summary":"Reliability and Stakeholder Satisfaction fell because a rigid plan left less room for quick operational response.",
+		"teaching_message":"This is the consequence-based lesson your professor described: the game should let the player choose the poor fit, then feel the cost."
+	}
+}
 }
 ],
 "Customer Support Ticketing Tool":[

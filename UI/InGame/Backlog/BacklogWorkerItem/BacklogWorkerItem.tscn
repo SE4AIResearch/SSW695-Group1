@@ -20,12 +20,13 @@ texture = ExtResource("3_mn4op")
 texture = ExtResource("4_30wkw")
 
 [node name="BacklogWorkerItem" type="Button" unique_id=1168618699]
-custom_minimum_size = Vector2(240, 96)
+custom_minimum_size = Vector2(220, 96)
 anchors_preset = -1
 anchor_right = 0.208
 anchor_bottom = 0.123
 offset_right = 0.3840027
 offset_bottom = 16.295998
+size_flags_horizontal = 4
 theme_override_styles/normal = SubResource("StyleBoxTexture_kui40")
 theme_override_styles/pressed = SubResource("StyleBoxTexture_t5dkv")
 theme_override_styles/hover = SubResource("StyleBoxTexture_p28hv")
@@ -39,12 +40,12 @@ scale = Vector2(2, 2)
 
 [node name="textParent" type="Node2D" parent="." unique_id=1862655238]
 position = Vector2(11.999998, 25)
-scale = Vector2(0.235, 0.235)
+scale = Vector2(0.215, 0.215)
 
 [node name="statsLabel" type="RichTextLabel" parent="textParent" unique_id=211450542]
 offset_left = 306.38297
 offset_top = -29.78724
-offset_right = 906.38293
+offset_right = 860.0
 offset_bottom = 276.59576
 mouse_filter = 2
 theme_override_font_sizes/normal_font_size = 56
@@ -54,7 +55,7 @@ vertical_alignment = 1
 [node name="nameLabel" type="RichTextLabel" parent="textParent" unique_id=2070673382]
 offset_left = -8.510631
 offset_top = -106.38298
-offset_right = 927.65955
+offset_right = 860.0
 offset_bottom = -29.78724
 mouse_filter = 2
 theme_override_font_sizes/normal_font_size = 48
