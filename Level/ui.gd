@@ -109,3 +109,11 @@ func _on_pc_power_pressed() -> void:
 func toggleProjectButtons():
 	var hasProject = PlayerTool.currentProject != null
 	$BacklogButton.disabled = !hasProject
+
+func startEvent():
+	get_tree().paused = true
+	$randomEventRinger.play("ringing")
+	$randomEventRinger/ringerAudio.play()
+	await $randomEventRinger/ringerAudio.finished
+	$randomEventRinger.play("idle")
+	createMenu(randomEventMenu.instantiate())

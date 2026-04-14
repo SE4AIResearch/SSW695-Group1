@@ -5,7 +5,6 @@ signal deadlineReached
 signal sprintComplete
 signal hireSelected
 signal levelLoaded
-signal weekPassed
 signal statsChanged
 
 var level

@@ -3,15 +3,15 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://df0nfm3f5alcg"
-path="res://.godot/imported/RandomEventPressed.png-8730a357d4ba2625628d1d31a92a4e3e.ctex"
+path="res://.godot/imported/RandomEventRinging2.png-605405aa68272358b4f21e232f0f5883.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://UI/Theme/MainLevel/RandomEvent/RandomEventPressed.png"
-dest_files=["res://.godot/imported/RandomEventPressed.png-8730a357d4ba2625628d1d31a92a4e3e.ctex"]
+source_file="res://UI/Theme/MainLevel/RandomEvent/RandomEventRinging2.png"
+dest_files=["res://.godot/imported/RandomEventRinging2.png-605405aa68272358b4f21e232f0f5883.ctex"]
 
 [params]
 

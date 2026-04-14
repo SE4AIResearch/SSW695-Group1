@@ -21,9 +21,9 @@
 [ext_resource type="Texture2D" uid="uid://dx1jihl0vksqy" path="res://UI/Theme/MainLevel/backlog/backlogDisabled.png" id="8_qbsll"]
 [ext_resource type="Texture2D" uid="uid://bv1wdylubep72" path="res://UI/Theme/Back/backPressed.png" id="9_5o0fy"]
 [ext_resource type="Script" uid="uid://cl6r473skkxqf" path="res://Level/calendar.gd" id="9_ce85j"]
-[ext_resource type="Texture2D" uid="uid://df0nfm3f5alcg" path="res://UI/Theme/MainLevel/RandomEvent/RandomEventPressed.png" id="9_qbsll"]
+[ext_resource type="Texture2D" uid="uid://df0nfm3f5alcg" path="res://UI/Theme/MainLevel/RandomEvent/RandomEventRinging2.png" id="9_qbsll"]
 [ext_resource type="Texture2D" uid="uid://b8mmjep4nbkf4" path="res://UI/Theme/Back/backHover.png" id="10_adavl"]
-[ext_resource type="Texture2D" uid="uid://bljlfsy1s2b6v" path="res://UI/Theme/MainLevel/RandomEvent/RandomEventHover.png" id="10_khv2s"]
+[ext_resource type="Texture2D" uid="uid://bljlfsy1s2b6v" path="res://UI/Theme/MainLevel/RandomEvent/RandomEventRinging1.png" id="10_khv2s"]
 [ext_resource type="Texture2D" uid="uid://du1kpy7dje0d8" path="res://UI/Theme/MainLevel/date/progressBar.png" id="10_skrj4"]
 [ext_resource type="Texture2D" uid="uid://k7ruc7jhb2cb" path="res://UI/Theme/pause/pause.png" id="12_rudkk"]
 [ext_resource type="Texture2D" uid="uid://djaxs4b63o5yq" path="res://UI/Theme/pause/pausePressed.png" id="13_ct15o"]
@@ -37,6 +37,7 @@
 [ext_resource type="Texture2D" uid="uid://b2d03va5d08g6" path="res://UI/Theme/PCTheme/powerButton/pcPowerPressed.png" id="17_uy1d4"]
 [ext_resource type="Texture2D" uid="uid://b8snwl2q3qflg" path="res://UI/Theme/PCTheme/button/slimButtonHeld.png" id="18_6ypmx"]
 [ext_resource type="Texture2D" uid="uid://b3yb8bcjykj7m" path="res://UI/Theme/PCTheme/powerButton/pcPowerHeld.png" id="18_tmx83"]
+[ext_resource type="AudioStream" uid="uid://d0dj1n03heinn" path="res://UI/InGame/RandomEvent/phoneRing.mp3" id="19_ce85j"]
 [ext_resource type="Texture2D" uid="uid://2jvaulftw7b6" path="res://UI/Theme/PCTheme/button/slimButtonDisabled.png" id="21_lkgwe"]
 [ext_resource type="Script" uid="uid://cmvfif4wbkq60" path="res://Level/pc_stats.gd" id="23_62x8c"]
 [ext_resource type="PackedScene" uid="uid://bt0pge4yh7l4p" path="res://UI/InGame/ProjectMetrics/ProjectMetrics.tscn" id="29_uibgn"]
@@ -74,14 +75,27 @@ texture = ExtResource("7_2q8k2")
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_tmx83"]
 texture = ExtResource("8_qbsll")
 
-[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_w8aag"]
-texture = ExtResource("8_chqqn")
-
-[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_fy2ok"]
-texture = ExtResource("9_qbsll")
-
-[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_uy1d4"]
-texture = ExtResource("10_khv2s")
+[sub_resource type="SpriteFrames" id="SpriteFrames_xwmsp"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("8_chqqn")
+}],
+"loop": false,
+"name": &"idle",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("10_khv2s")
+}, {
+"duration": 1.0,
+"texture": ExtResource("9_qbsll")
+}],
+"loop": true,
+"name": &"ringing",
+"speed": 8.0
+}]
 
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_mk20e"]
 texture = ExtResource("5_mk20e")
@@ -326,15 +340,16 @@ theme_override_styles/disabled = SubResource("StyleBoxTexture_tmx83")
 disabled = true
 metadata/_edit_use_anchors_ = true
 
-[node name="RandomEventButton" type="Button" parent="UI" unique_id=943257127]
-offset_left = 166.0
-offset_top = 511.0
-offset_right = 342.0
-offset_bottom = 630.0
-theme_override_styles/normal = SubResource("StyleBoxTexture_w8aag")
-theme_override_styles/pressed = SubResource("StyleBoxTexture_fy2ok")
-theme_override_styles/hover = SubResource("StyleBoxTexture_uy1d4")
+[node name="randomEventRinger" type="AnimatedSprite2D" parent="UI" unique_id=1191905118]
+process_mode = 3
+position = Vector2(247.00002, 568.00006)
+scale = Vector2(6.1547637, 6.1547637)
+sprite_frames = SubResource("SpriteFrames_xwmsp")
+animation = &"idle"
 metadata/_edit_use_anchors_ = true
+
+[node name="ringerAudio" type="AudioStreamPlayer" parent="UI/randomEventRinger" unique_id=2084158107]
+stream = ExtResource("19_ce85j")
 
 [node name="PC" type="Button" parent="UI" unique_id=1894238861]
 offset_left = 732.0
@@ -543,7 +558,6 @@ position = Vector2(576, 324)
 script = ExtResource("5_f8h88")
 
 [connection signal="pressed" from="UI/BacklogButton" to="UI" method="_on_backlog_button_pressed"]
-[connection signal="pressed" from="UI/RandomEventButton" to="UI" method="_on_random_event_button_pressed"]
 [connection signal="pressed" from="UI/PC" to="UI" method="_on_pc_pressed"]
 [connection signal="pressed" from="UI/PCButtons/UpgradesButton" to="UI" method="_on_upgrades_button_pressed"]
 [connection signal="pressed" from="UI/PCButtons/HiringButton" to="UI" method="_on_hiring_button_pressed"]
