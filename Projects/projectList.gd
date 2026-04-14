@@ -94,7 +94,6 @@ var projects = [
 var constraints = [
 {
 "name": "Moderate Complexity",
-
 "frontEndScaling":1.2,
 "backEndScaling":.2,
 "documentingScaling":.1,
@@ -113,7 +112,6 @@ var constraints = [
 # Leads to rework, more documentation, and higher uncertainty during development.
 {
 "name": "Confusing Client",
-
 "frontEndScaling":1.1,
 "backEndScaling":1.1,
 "documentingScaling":1.3,
@@ -129,7 +127,6 @@ var constraints = [
 # Causes longer timelines but fewer sudden disruptions or change requests.
 {
 "name": "Nonchalant Client",
-
 "frontEndScaling":1,
 "backEndScaling":1,
 "documentingScaling":1.1,
@@ -145,7 +142,6 @@ var constraints = [
 # Places strong emphasis on high-quality front-end and back-end implementation.
 {
 "name": "Savvy Client",
-
 "frontEndScaling":1.4,
 "backEndScaling":1.4,
 "documentingScaling":1,
@@ -161,7 +157,6 @@ var constraints = [
 # Prioritizes clear documentation over deep technical complexity.
 {
 "name": "Business Client",
-
 "frontEndScaling":1,
 "backEndScaling":1,
 "documentingScaling":1.5,
@@ -177,7 +172,6 @@ var constraints = [
 # Shortens timelines but increases pressure and unexpected issues.
 {
 "name": "Impatient Client",
-
 "frontEndScaling":1.2,
 "backEndScaling":1.2,
 "documentingScaling":1.2,
@@ -185,7 +179,6 @@ var constraints = [
 "sprintLength":1,
 "sprintMetricAmount":1,
 "randomEventChance":1.6
-},
 }
 
 ]
