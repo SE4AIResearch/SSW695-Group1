@@ -19,10 +19,9 @@ var staminaStat: int
 
 var firable: bool = true
 
-var currentMetric={
-"metricType":null,
-"metricName":null
-}
+# 0 = FE, 1 = BE, 2 = Doc
+var metricType: int
+var metricName: String
 
 func _ready() -> void:
 	$HoverArea.mouse_entered.connect(_on_hover_area_mouse_entered)
