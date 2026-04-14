@@ -3,30 +3,10 @@
 [ext_resource type="Texture2D" uid="uid://k7xby2l5gc5f" path="res://UI/Theme/MainLevel/backlog/BG.png" id="1_gwqqw"]
 [ext_resource type="Script" uid="uid://b48o1abbwl63b" path="res://UI/InGame/Backlog/backlog.gd" id="1_qp40g"]
 [ext_resource type="FontFile" uid="uid://b0lji18tmt8ua" path="res://UI/Theme/Fonts/jakes-writing-font/Jakeswriting-P2Zr.ttf" id="2_qp40g"]
-[ext_resource type="Texture2D" path="res://UI/Theme/MainMenu/postIt.png" id="3_brief"]
-[ext_resource type="Texture2D" path="res://UI/Theme/MainMenu/postItHover.png" id="4_brief"]
-[ext_resource type="Texture2D" path="res://UI/Theme/MainMenu/postItSelect.png" id="5_brief"]
-[ext_resource type="Texture2D" path="res://UI/Theme/MainMenu/postIt2.png" id="6_brief"]
 [ext_resource type="Texture2D" path="res://UI/Theme/PCTheme/button/slimButton.png" id="7_adv_week"]
 [ext_resource type="Texture2D" path="res://UI/Theme/PCTheme/button/slimButtonPressed.png" id="8_adv_week"]
 [ext_resource type="Texture2D" path="res://UI/Theme/PCTheme/button/slimButtonHeld.png" id="9_adv_week"]
 [ext_resource type="Texture2D" path="res://UI/Theme/PCTheme/button/slimButtonDisabled.png" id="10_adv_week"]
-
-[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_brief_note"]
-texture = ExtResource("6_brief")
-modulate_color = Color(0.78, 0.9, 1, 1)
-
-[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_brief_normal"]
-texture = ExtResource("3_brief")
-modulate_color = Color(0.78, 0.9, 1, 1)
-
-[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_brief_hover"]
-texture = ExtResource("4_brief")
-modulate_color = Color(0.78, 0.9, 1, 1)
-
-[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_brief_pressed"]
-texture = ExtResource("5_brief")
-modulate_color = Color(0.78, 0.9, 1, 1)
 
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_adv_week_normal"]
 texture = ExtResource("7_adv_week")
@@ -104,33 +84,6 @@ theme_override_font_sizes/font_size = 28
 text = "Current Sprint"
 horizontal_alignment = 1
 
-[node name="BriefButton" type="Button" parent="." unique_id=104022236]
-offset_left = 58.0
-offset_top = 52.0
-offset_right = 146.0
-offset_bottom = 140.0
-theme_override_colors/font_color = Color(0, 0, 0, 1)
-theme_override_fonts/font = ExtResource("2_qp40g")
-theme_override_font_sizes/font_size = 18
-theme_override_styles/normal = SubResource("StyleBoxTexture_brief_normal")
-theme_override_styles/pressed = SubResource("StyleBoxTexture_brief_pressed")
-theme_override_styles/hover = SubResource("StyleBoxTexture_brief_hover")
-text = "Sprint\nBrief"
-toggle_mode = true
-
-[node name="GoalLabel" type="Label" parent="." unique_id=1812204147]
-visible = false
-offset_left = 112.0
-offset_top = 56.0
-offset_right = 1040.0
-offset_bottom = 91.0
-theme_override_colors/font_color = Color(0, 0, 0, 1)
-theme_override_fonts/font = ExtResource("2_qp40g")
-theme_override_font_sizes/font_size = 18
-text = "Sprint goal"
-horizontal_alignment = 1
-autowrap_mode = 3
-
 [node name="FeedbackLabel" type="RichTextLabel" parent="." unique_id=126199114]
 offset_left = 225.0
 offset_top = 136.0
@@ -200,49 +153,4 @@ offset_bottom = 648.0
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="BriefNote" type="Panel" parent="." unique_id=189957314]
-visible = false
-offset_left = 500.0
-offset_top = 88.0
-offset_right = 1058.0
-offset_bottom = 810.0
-theme_override_styles/panel = SubResource("StyleBoxTexture_brief_note")
-
-[node name="BriefTitle" type="Label" parent="BriefNote" unique_id=206714423]
-offset_left = 89.0
-offset_top = 42.0
-offset_right = 490.0
-offset_bottom = 86.0
-theme_override_colors/font_color = Color(0, 0, 0, 1)
-theme_override_fonts/font = ExtResource("2_qp40g")
-theme_override_font_sizes/font_size = 26
-text = "Sprint Brief"
-horizontal_alignment = 1
-
-[node name="BriefContent" type="RichTextLabel" parent="BriefNote" unique_id=108881347]
-offset_left = 135.0
-offset_top = 104.0
-offset_right = 547.0
-offset_bottom = 480.0
-mouse_filter = 2
-theme_override_colors/default_color = Color(0, 0, 0, 1)
-theme_override_fonts/normal_font = ExtResource("2_qp40g")
-theme_override_font_sizes/normal_font_size = 15
-bbcode_enabled = true
-scroll_active = false
-autowrap_mode = 3
-
-[node name="BriefCloseButton" type="Button" parent="BriefNote" unique_id=927555131]
-offset_left = 419.0
-offset_top = 492.0
-offset_right = 493.0
-offset_bottom = 528.0
-theme_override_fonts/font = ExtResource("2_qp40g")
-theme_override_font_sizes/font_size = 16
-text = "Close"
-
 [connection signal="pressed" from="AdvanceWeekButton" to="." method="_on_advance_week_button_pressed"]
-[connection signal="mouse_entered" from="BriefButton" to="." method="_on_brief_button_mouse_entered"]
-[connection signal="mouse_exited" from="BriefButton" to="." method="_on_brief_button_mouse_exited"]
-[connection signal="toggled" from="BriefButton" to="." method="_on_brief_button_toggled"]
-[connection signal="pressed" from="BriefNote/BriefCloseButton" to="." method="_on_brief_close_button_pressed"]
