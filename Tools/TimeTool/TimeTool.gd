@@ -1,6 +1,7 @@
 extends Node
 
 signal weekPassed
+signal sprintPassed
 
 var timer = Timer.new()
 var totalSeconds: int = 0

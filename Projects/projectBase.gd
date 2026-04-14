@@ -2,11 +2,7 @@ extends Node
 
 var projectName: String
 var projectDescription: String
-var preferredMethodology: String = ""
-var learningObjective: String = ""
-var successCriteria: String = ""
-var recommendedMethodology: String = ""
-var tutorialSprintPlan: Array = []
+var projectDifficulty: float
 
 var clientName: String
 

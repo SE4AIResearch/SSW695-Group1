@@ -37,5 +37,5 @@ func _on_worker_hover_ended(worker) -> void:
 
 func rollEvent():
 	var chance = randf_range(0,1)
-	if chance <= PlayerTool.currentProject.eventChance: $UI.startEvent()
+	if chance <= PlayerTool.project.eventChance: $UI.startEvent()
 	pass

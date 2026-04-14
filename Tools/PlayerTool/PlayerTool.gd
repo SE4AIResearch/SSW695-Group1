@@ -9,26 +9,29 @@ signal statsChanged
 
 var level
 
-var currentProject: Node
-var projectAmount: int = 0
-var teamRank: int = 1
-var currentMetrics={
+var project: Node
+var projectRatedDifficulty: float
+var metrics={
 "frontEnd":0,
 "backEnd":0,
 "documenting":0,
 "reliability":0,
 "stakeholderSatisfaction":0
 }
-var currentMetricProgress={}
+var MetricProgress={}
 var completedMetrics=[]
-var currentWeekTime: int = 0
-var currentProjWeek: int = 0
-var currentProjSprint: int = 0
-var currentFEBacklogStep: int = 0
-var currentBEBacklogStep: int = 0
-var currentDocBacklogStep: int = 0
+var weekTime: int = 0
+var projWeek: int = 0
+var projSprint: int = 0
+var FEBacklogStep: int = 0
+var BEBacklogStep: int = 0
+var docBacklogStep: int = 0
+
+var teamRank: int = 1
 var workers: Array
 var upgrades: Array
+var currency: float = 0.0
+var projectAmount: int = 0
 
 func initializeNewSave():
 	var freeWorker1 = PersonConstructor.generateWorker(PersonConstructor.getStartingWorkerStats(0))
@@ -44,44 +47,46 @@ func initializeNewSave():
 #Type : 0 = Front End | 1 = Back End | 2 = Documenting | 3 = Reliability | 4 = Stakeholder Satisfaction
 func changeProjectStats(type,amount):
 	match type:
-		0: currentMetrics.set("frontEnd",currentMetrics.get("frontEnd")+amount)
-		1: currentMetrics.set("backEnd",currentMetrics.get("backEnd",)+amount)
-		2: currentMetrics.set("documenting",currentMetrics.get("documenting")+amount)
-		3: currentMetrics.set("reliability",currentMetrics.get("reliability")+amount)
-		4: currentMetrics.set("stakeholderSatisfaction",currentMetrics.get("stakeholderSatisfaction")+amount)
+		0: metrics.set("frontEnd",metrics.get("frontEnd")+amount)
+		1: metrics.set("backEnd",metrics.get("backEnd",)+amount)
+		2: metrics.set("documenting",metrics.get("documenting")+amount)
+		3: metrics.set("reliability",metrics.get("reliability")+amount)
+		4: metrics.set("stakeholderSatisfaction",metrics.get("stakeholderSatisfaction")+amount)
 	statsChanged.emit()
 
 func resetData():
 	#resets Project stats to default values
-	currentProject = null
-	currentMetrics = {"frontEnd":0,"backEnd":0,"documenting":0,"reliability":0,"stakeholderSatisfaction":0}
+	project = null
+	metrics = {"frontEnd":0,"backEnd":0,"documenting":0,"reliability":0,"stakeholderSatisfaction":0}
 	workers = []
 	upgrades = []
-	currentWeekTime = 0
-	currentProjWeek = 0
-	currentProjSprint = 0
+	weekTime = 0
+	projWeek = 0
+	projSprint = 0
 	pass
 
 func resetProjectStats():
-	currentProject = null
-	currentMetrics = {"frontEnd":0,"backEnd":0,"documenting":0,"reliability":0,"stakeholderSatisfaction":0}
-	currentWeekTime = 0
-	currentProjWeek = 0
-	currentProjSprint = 0
-	currentFEBacklogStep = 0
-	currentBEBacklogStep = 0
-	currentDocBacklogStep = 0
+	projectRatedDifficulty = 0
+	project = null
+	metrics = {"frontEnd":0,"backEnd":0,"documenting":0,"reliability":0,"stakeholderSatisfaction":0}
+	weekTime = 0
+	projWeek = 0
+	projSprint = 0
+	FEBacklogStep = 0
+	BEBacklogStep = 0
+	docBacklogStep = 0
 	pass
 
 func _ready() -> void:
 	var workerNode = Node2D.new()
 	workerNode.name = "workerHoldover"
 	add_child(workerNode)
+	TimeTool.sprintPassed.connect(earnSprintMoney)
 
-func newProject(project) -> void:
-	currentProject = project
-	currentProjWeek = 1
-	currentProjSprint = 1
+func newProject(newProject) -> void:
+	project = newProject
+	projWeek = 1
+	projSprint = 1
 	projectAmount += 1
 	projectSelected.emit()
 	pass
@@ -95,3 +100,12 @@ func newHire(worker) -> void:
 	
 func newUpgrade(upgrade) -> void:
 	pass
+
+func earnSprintMoney():
+	if project != null:
+		currency += (30 * project.projectDifficulty) + (5*projectAmount) + (50*teamRank)
+		pass
+
+func earnProjectMoney():
+	
+		pass
