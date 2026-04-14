@@ -7,6 +7,8 @@ var methodList = load("res://Projects/MethodologyList.gd").new()
 var projectChoiceItem = preload("res://UI/InGame/ProjectSetup/ProjectItem/ProjectItem.tscn")
 
 var selectedProject: Node
+var randomProject: Node
+
 
 func _on_button_pressed() -> void:
 	generateProjectChoices()
@@ -31,42 +33,45 @@ func generateProjectChoices() -> void:
 	for child in $ProjectChoose/ProjectChoices.get_children():
 		child.queue_free()
 	for i in range(3):
-		var newProject = projectItem.instantiate()
+		var projectInfo = projectItem.instantiate()
 		var newChoice = projectChoiceItem.instantiate()
-		var randomProject = projectList.projects.pick_random()
+		randomProject = projectList.projects.pick_random()
 		
-		newProject.projectName = randomProject.name
-		newProject.projectDescription = randomProject.name
-		newProject.clientName = PersonConstructor.generateName()
-		newProject.frontEndProjectMin = (totalFE*randomProject.frontEndScalar)*clampf(PlayerTool.projectAmount*1.025,1,1000)
-		newProject.backEndProjectMin = (totalBE*randomProject.backEndScalar)*clampf(PlayerTool.projectAmount*1.025,1,1000)
-		newProject.documentingProjectMin = (totalD*randomProject.documentingScalar)*clampf(PlayerTool.projectAmount*1.025,1,1000)
-		newProject.sprintAmount = randomProject.baseSprintAmount
-		newProject.sprintLength = randomProject.baseSprintLength
-		newProject.sprintMetricAmount = randomProject.baseSprintMetricAmount
-		newProject.frontEndMetrics = randomProject.frontEndMetrics
-		newProject.backEndMetrics = randomProject.backEndMetrics
-		newProject.documentingMetrics = randomProject.documentingMetrics
+		projectInfo.projectName = randomProject.name
+		projectInfo.projectDescription = randomProject.name
+		projectInfo.clientName = PersonConstructor.generateName()
+		projectInfo.frontEndProjectMin = (totalFE*randomProject.frontEndScalar)*clampf(PlayerTool.projectAmount*1.025,1,1000)
+		projectInfo.backEndProjectMin = (totalBE*randomProject.backEndScalar)*clampf(PlayerTool.projectAmount*1.025,1,1000)
+		projectInfo.documentingProjectMin = (totalD*randomProject.documentingScalar)*clampf(PlayerTool.projectAmount*1.025,1,1000)
+		projectInfo.sprintAmount = randomProject.baseSprintAmount
+		projectInfo.sprintLength = randomProject.baseSprintLength
+		projectInfo.sprintMetricAmount = randomProject.baseSprintMetricAmount
+		projectInfo.frontEndMetrics = randomProject.frontEndMetrics
+		projectInfo.backEndMetrics = randomProject.backEndMetrics
+		projectInfo.documentingMetrics = randomProject.documentingMetrics
 
 		match i:
-			0: 	newProject.constraints.append(projectList.constraints.pick_random())
-			1:	while newProject.constraints.size() < 2:
+			0: 	projectInfo.constraints.append(projectList.constraints.pick_random())
+			1:	while projectInfo.constraints.size() < 2:
 					var constraint = projectList.constraints.pick_random()
-					if !newProject.constraints.has(constraint): newProject.constraints.append(constraint)
-			2:	while newProject.constraints.size() < 3:
+					if !projectInfo.constraints.has(constraint): projectInfo.constraints.append(constraint)
+			2:	while projectInfo.constraints.size() < 3:
 					var constraint = projectList.constraints.pick_random()
-					if !newProject.constraints.has(constraint): newProject.constraints.append(constraint)
+					if !projectInfo.constraints.has(constraint): projectInfo.constraints.append(constraint)
 		
-		for constraint in newProject.constraints:
-			newProject.frontEndProjectMin *= constraint.get("frontEndScaling")
-			newProject.backEndProjectMin *= constraint.get("backEndScaling")
-			newProject.documentingProjectMin *= constraint.get("documentingScaling")
-			newProject.sprintAmount += constraint.get("sprintAmount")
-			newProject.sprintLength += constraint.get("sprintLength")
-			newProject.sprintMetricAmount += constraint.get("sprintMetricAmount")
-			newProject.eventChance *= constraint.get("randomEventChance")
+		for constraint in projectInfo.constraints:
+			randomProject.set("frontEndScaling",constraint.get("frontEndScaling"))
+			randomProject.set("backEndScaling",constraint.get("backEndScaling"))
+			randomProject.set("documentingScaling",constraint.get("documentingScaling"))
+			projectInfo.frontEndProjectMin *= constraint.get("frontEndScaling")
+			projectInfo.backEndProjectMin *= constraint.get("backEndScaling")
+			projectInfo.documentingProjectMin *= constraint.get("documentingScaling")
+			projectInfo.sprintAmount += constraint.get("sprintAmount")
+			projectInfo.sprintLength += constraint.get("sprintLength")
+			projectInfo.sprintMetricAmount += constraint.get("sprintMetricAmount")
+			projectInfo.eventChance *= constraint.get("randomEventChance")
 		
-		newChoice.prepProject(newProject)
+		newChoice.prepProject(projectInfo)
 		newChoice.connect("selected",projectSelected)
 		$ProjectChoose/ProjectChoices.add_child(newChoice)
 		pass
@@ -99,8 +104,10 @@ func methodSelected(chosenMetric):
 
 #Calculate effects from player upgrades here
 func calculateUpgradeEffects():
-	PlayerTool.newProject(selectedProject)
-	get_parent().get_parent().newProject()
+
+	selectedProject.projectDifficulty = randomProject.get("frontEndScalar") + randomProject.get("backEndScalar") + randomProject.get("documentingScalar")
+	PlayerTool.projectInfo(selectedProject)
+	get_parent().get_parent().projectInfo()
 	pass
 	
 func finishProjectChoosing():

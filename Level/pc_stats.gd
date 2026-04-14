@@ -6,16 +6,16 @@ func _ready() -> void:
 	pass
 
 func setupMetrics():
-	$frontEndBar.max_value = PlayerTool.currentProject.frontEndProjectMin
-	$backEndBar.max_value = PlayerTool.currentProject.backEndProjectMin
-	$documentationBar.max_value = PlayerTool.currentProject.documentingProjectMin
+	$frontEndBar.max_value = PlayerTool.project.frontEndProjectMin
+	$backEndBar.max_value = PlayerTool.project.backEndProjectMin
+	$documentationBar.max_value = PlayerTool.project.documentingProjectMin
 	$reliabilityBar.max_value = 100
 	pass
 
 func updateCurrentStats():
-	if PlayerTool.currentProject != null:
-		$frontEndBar.value = PlayerTool.currentMetrics.get("frontEnd")
-		$backEndBar.value = PlayerTool.currentMetrics.get("backEnd")
-		$documentationBar.value = PlayerTool.currentMetrics.get("documenting")
-		$reliabilityBar.value = PlayerTool.currentMetrics.get("reliability")	
+	if PlayerTool.project != null:
+		$frontEndBar.value = PlayerTool.metrics.get("frontEnd")
+		$backEndBar.value = PlayerTool.metrics.get("backEnd")
+		$documentationBar.value = PlayerTool.metrics.get("documenting")
+		$reliabilityBar.value = PlayerTool.metrics.get("reliability")	
 		pass

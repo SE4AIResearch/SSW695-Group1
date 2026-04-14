@@ -35,7 +35,7 @@ func _on_hover_area_mouse_exited() -> void:
 	hover_ended.emit(self)
 
 func work():
-	if PlayerTool.currentProject != null:
+	if PlayerTool.project != null:
 		var type: int = randi_range(0,2)
 		var amount: int
 		match type:

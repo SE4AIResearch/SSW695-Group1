@@ -8,20 +8,20 @@ func _ready() -> void:
 
 
 func setupMetrics():
-	$projectNameLabel.text = "Project: " + PlayerTool.currentProject.projectName + " | Client: " + PlayerTool.currentProject.clientName
-	$methodologyLabel.text = "Methodology: " + PlayerTool.currentProject.methodology.get("name")
-	$frontEndBar.max_value = PlayerTool.currentProject.frontEndProjectMin
-	$backEndBar.max_value = PlayerTool.currentProject.backEndProjectMin
-	$documentationBar.max_value = PlayerTool.currentProject.documentingProjectMin
+	$projectNameLabel.text = "Project: " + PlayerTool.project.projectName + " | Client: " + PlayerTool.project.clientName
+	$methodologyLabel.text = "Methodology: " + PlayerTool.project.methodology.get("name")
+	$frontEndBar.max_value = PlayerTool.project.frontEndProjectMin
+	$backEndBar.max_value = PlayerTool.project.backEndProjectMin
+	$documentationBar.max_value = PlayerTool.project.documentingProjectMin
 	$reliabilityBar.max_value = 100
 	$stakeholderSatisfactionBar.max_value = 100
 	pass
 
 func updateCurrentStats():
-	if PlayerTool.currentProject != null:
-		$frontEndBar.value = PlayerTool.currentMetrics.get("frontEnd")
-		$backEndBar.value = PlayerTool.currentMetrics.get("backEnd")
-		$documentationBar.value = PlayerTool.currentMetrics.get("documenting")
-		$reliabilityBar.value = PlayerTool.currentMetrics.get("reliability")
-		$stakeholderSatisfactionBar.value = PlayerTool.currentMetrics.get("stakeholderSatisfaction")		
+	if PlayerTool.project != null:
+		$frontEndBar.value = PlayerTool.metrics.get("frontEnd")
+		$backEndBar.value = PlayerTool.metrics.get("backEnd")
+		$documentationBar.value = PlayerTool.metrics.get("documenting")
+		$reliabilityBar.value = PlayerTool.metrics.get("reliability")
+		$stakeholderSatisfactionBar.value = PlayerTool.metrics.get("stakeholderSatisfaction")		
 		pass

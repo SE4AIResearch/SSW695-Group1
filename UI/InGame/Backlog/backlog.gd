@@ -10,12 +10,12 @@ func _ready() -> void:
 	addBacklogItem()
 
 func addBacklogItem():
-	for i in range(PlayerTool.currentProject.frontEndMetrics.size()):
-		newBEItem(PlayerTool.currentProject.frontEndMetrics.get(i),0)
-	for i in range(PlayerTool.currentProject.backEndMetrics.size()):
-		newBEItem(PlayerTool.currentProject.backEndMetrics.get(i),1)
-	for i in range(PlayerTool.currentProject.documentingMetrics.size()):
-		newBEItem(PlayerTool.currentProject.documentingMetrics.get(i),2)
+	for i in range(PlayerTool.project.frontEndMetrics.size()):
+		newBEItem(PlayerTool.project.frontEndMetrics.get(i),0)
+	for i in range(PlayerTool.project.backEndMetrics.size()):
+		newBEItem(PlayerTool.project.backEndMetrics.get(i),1)
+	for i in range(PlayerTool.project.documentingMetrics.size()):
+		newBEItem(PlayerTool.project.documentingMetrics.get(i),2)
 		
 	pass
 

@@ -107,20 +107,20 @@ func _on_choice_4_pressed() -> void: calculateOutcome(choice4OBJ)
 func calculateOutcome(eventChoice):
 	#Insert code here which determines whether the outcome of the event is a project stat change, or a backlog item.
 	match chosenEvent.type:
-		"FrontEnd": PlayerTool.currentMetrics.set("frontEnd",PlayerTool.currentMetrics.get("frontEnd") * eventChoice)
-		"BackEnd": PlayerTool.currentMetrics.set("backEnd",PlayerTool.currentMetrics.get("backEnd") * eventChoice)
-		"Documenting": PlayerTool.currentMetrics.set("documenting",PlayerTool.currentMetrics.get("documenting") * eventChoice)
+		"FrontEnd": PlayerTool.metrics.set("frontEnd",PlayerTool.metrics.get("frontEnd") * eventChoice)
+		"BackEnd": PlayerTool.metrics.set("backEnd",PlayerTool.metrics.get("backEnd") * eventChoice)
+		"Documenting": PlayerTool.metrics.set("documenting",PlayerTool.metrics.get("documenting") * eventChoice)
 		"Stakeholder": #DISALLOW STAKEHOLDER EVENTS FROM TAKING PLACE ON THE LAST SPRINT???????????
 			if eventChoice is not Array:
-				if eventChoice[0] != 0: PlayerTool.currentProject.sprintAmount += eventChoice[0]
-				if eventChoice[1] != 0: PlayerTool.currentProject.sprintLength += eventChoice[1]
-				if eventChoice[2] != 0: PlayerTool.currentProject.sprintMetricAmount += eventChoice[2]
+				if eventChoice[0] != 0: PlayerTool.project.sprintAmount += eventChoice[0]
+				if eventChoice[1] != 0: PlayerTool.project.sprintLength += eventChoice[1]
+				if eventChoice[2] != 0: PlayerTool.project.sprintMetricAmount += eventChoice[2]
 			pass
 		"Backlog":
 				match eventChoice[0]:
-					"frontEnd": PlayerTool.currentProject.frontEndMetrics[int(PlayerTool.currentProject.frontEndMetrics.size())] = eventChoice[1]
-					"backEnd": PlayerTool.currentProject.backEndMetrics[int(PlayerTool.currentProject.backEndMetrics.size())] = eventChoice[1]
-					"documenting": PlayerTool.currentProject.documentingMetrics[int(PlayerTool.currentProject.documentingMetrics.size())] = eventChoice[1]
+					"frontEnd": PlayerTool.project.frontEndMetrics[int(PlayerTool.project.frontEndMetrics.size())] = eventChoice[1]
+					"backEnd": PlayerTool.project.backEndMetrics[int(PlayerTool.project.backEndMetrics.size())] = eventChoice[1]
+					"documenting": PlayerTool.project.documentingMetrics[int(PlayerTool.project.documentingMetrics.size())] = eventChoice[1]
 	
 	get_parent().get_parent().endMenu()
 	pass

@@ -9,28 +9,28 @@ func _ready() -> void:
 
 
 func setupProjData():
-	$TextParent/sprintData.text = str(PlayerTool.currentProjSprint) + "/" + str(PlayerTool.currentProject.sprintAmount)
-	$TextParent/weekData.text = str(PlayerTool.currentProjWeek) + "/" + str(PlayerTool.currentProject.sprintLength)	
-	$weekBar.value = PlayerTool.currentWeekTime
+	$TextParent/sprintData.text = str(PlayerTool.projSprint) + "/" + str(PlayerTool.project.sprintAmount)
+	$TextParent/weekData.text = str(PlayerTool.projWeek) + "/" + str(PlayerTool.project.sprintLength)	
+	$weekBar.value = PlayerTool.weekTime
 
 func trackTime():
-	if PlayerTool.currentProject != null:
+	if PlayerTool.project != null:
 		newWeek = false
-		if PlayerTool.currentWeekTime == $weekBar.max_value:
-			if PlayerTool.currentProjWeek == PlayerTool.currentProject.sprintLength:
-				if PlayerTool.currentProjSprint == PlayerTool.currentProject.sprintAmount:
+		if PlayerTool.weekTime == $weekBar.max_value:
+			if PlayerTool.projWeek == PlayerTool.project.sprintLength:
+				if PlayerTool.projSprint == PlayerTool.project.sprintAmount:
 					PlayerTool.deadlineReached.emit()
 				PlayerTool.sprintComplete.emit()
-				PlayerTool.currentProjWeek = 0
-				PlayerTool.currentProjSprint += 1
+				PlayerTool.projWeek = 0
+				PlayerTool.projSprint += 1
 			newWeek = true
 			TimeTool.weekPassed.emit()
-			PlayerTool.currentProjWeek += 1				
-			PlayerTool.currentWeekTime = 0
-		if !newWeek: PlayerTool.currentWeekTime += 1
-		$weekBar.value = PlayerTool.currentWeekTime
+			PlayerTool.projWeek += 1				
+			PlayerTool.weekTime = 0
+		if !newWeek: PlayerTool.weekTime += 1
+		$weekBar.value = PlayerTool.weekTime
 		
-		$TextParent/sprintData.text = str(PlayerTool.currentProjSprint) + "/" + str(PlayerTool.currentProject.sprintAmount)
-		$TextParent/weekData.text = str(PlayerTool.currentProjWeek) + "/" + str(PlayerTool.currentProject.sprintLength)
+		$TextParent/sprintData.text = str(PlayerTool.projSprint) + "/" + str(PlayerTool.project.sprintAmount)
+		$TextParent/weekData.text = str(PlayerTool.projWeek) + "/" + str(PlayerTool.project.sprintLength)
 		pass
 		

@@ -82,7 +82,7 @@ func _on_pc_pressed() -> void:
 	$PCScreen.visible = true
 	$PCScreenPanel.visible = true	
 	$PCButtons.visible = true
-	match PlayerTool.currentProject == null:
+	match PlayerTool.project == null:
 		true:
 			$PCButtons/projectStartMenu.text = "Start New Project"
 			$PCButtons/projectStartMenu.disabled = false
@@ -107,7 +107,7 @@ func _on_pc_power_pressed() -> void:
 	pass
 
 func toggleProjectButtons():
-	var hasProject = PlayerTool.currentProject != null
+	var hasProject = PlayerTool.project != null
 	$BacklogButton.disabled = !hasProject
 
 func startEvent():
