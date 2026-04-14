@@ -12,6 +12,7 @@ var level
 
 var currentProject: Node
 var projectAmount: int = 0
+var teamRank: int = 1
 var currentMetrics={
 "frontEnd":0,
 "backEnd":0,
