@@ -18,6 +18,7 @@ func _ready() -> void:
 	PlayerTool.connect("projectSelected",toggleProjectButtons)
 	PlayerTool.connect("deadlineReached",toggleProjectButtons)
 	PlayerTool.connect("projectCompleted",toggleProjectButtons)
+	PlayerTool.connect("weekResolved",_on_week_resolved)
 	toggleProjectButtons()
 
 func _physics_process(delta: float) -> void: pass
@@ -90,6 +91,13 @@ func showWeekResults() -> void:
 
 func showProjectSummary() -> void:
 	createMenu(ProjectSummaryMenu.instantiate())
+
+func _on_week_resolved() -> void:
+	if PlayerTool.loopPhase == PlayerTool.LOOP_PROJECT_SUMMARY and not PlayerTool.pendingProjectSummary.is_empty():
+		showProjectSummary()
+		return
+	if PlayerTool.shouldShowWeekResultsModal:
+		showWeekResults()
 
 func _on_pc_pressed() -> void:
 	#Insert code of screen lerping in size and position to the middle of the screen

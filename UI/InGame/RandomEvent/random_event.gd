@@ -196,7 +196,6 @@ func calculateOutcome(choiceIndex: int, eventChoice):
 		"",
 		"Continue"
 	)
-	get_parent().get_parent().showWeekResults()
 
 func _normalize_metric_key(metricName: String) -> String:
 	match metricName:

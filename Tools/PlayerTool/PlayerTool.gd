@@ -10,15 +10,18 @@ signal statsChanged
 signal backlogUpdated
 signal loopStateChanged
 signal weekResolved
+signal weekTimerUpdated
 signal projectCompleted
 signal currencyChanged
 signal scoreChanged
 
 const LOOP_NO_PROJECT := "no_project"
 const LOOP_PLANNING_WEEK := "planning_week"
+const LOOP_ACTIVE_WEEK := "active_week"
 const LOOP_RESOLVING_WEEK := "resolving_week"
 const LOOP_SPRINT_REVIEW := "sprint_review"
 const LOOP_PROJECT_SUMMARY := "project_summary"
+const WEEK_DURATION_SECONDS := 10
 
 var level
 
@@ -52,6 +55,7 @@ var backlogItems: Array = []
 var pendingProjectSummary: Dictionary = {}
 var currentSprintGoal: Dictionary = {}
 var scenarioFlags: Dictionary = {}
+var shouldShowWeekResultsModal: bool = false
 
 var _backlogItemIdCounter: int = 0
 
@@ -125,6 +129,7 @@ func resetData():
 	scenarioFlags = {}
 	currentSprintGoal = {}
 	sprintGrade = ""
+	shouldShowWeekResultsModal = false
 	currentWeekTime = 0
 	currentProjWeek = 0
 	currentProjSprint = 0
@@ -157,6 +162,7 @@ func resetProjectStats():
 	scenarioFlags = {}
 	currentSprintGoal = {}
 	sprintGrade = ""
+	shouldShowWeekResultsModal = false
 	currentWeekTime = 0
 	currentProjWeek = 0
 	currentProjSprint = 0
@@ -201,6 +207,19 @@ func newUpgrade(upgrade) -> void:
 
 func canAdvanceWeek() -> bool:
 	return currentProject != null and loopPhase == LOOP_PLANNING_WEEK and not selectedAssignments.is_empty()
+
+func isWeekActive() -> bool:
+	return currentProject != null and loopPhase == LOOP_ACTIVE_WEEK
+
+func startWeek() -> bool:
+	if not canAdvanceWeek():
+		return false
+	currentWeekTime = 0
+	loopPhase = LOOP_ACTIVE_WEEK
+	backlogUpdated.emit()
+	loopStateChanged.emit()
+	weekTimerUpdated.emit()
+	return true
 
 func assignWorkerToItem(workerName: String, itemId: int) -> Dictionary:
 	if currentProject == null or loopPhase != LOOP_PLANNING_WEEK:
@@ -266,7 +285,10 @@ func getActiveBacklogItemCount() -> int:
 	return count
 
 func advanceWeek() -> bool:
-	if not canAdvanceWeek():
+	return startWeek()
+
+func resolveWeek() -> bool:
+	if currentProject == null or loopPhase != LOOP_ACTIVE_WEEK:
 		return false
 
 	loopPhase = LOOP_RESOLVING_WEEK
@@ -328,6 +350,7 @@ func advanceWeek() -> bool:
 			results["summary_text"] = "The project has ended. Review the final score and methodology lesson."
 			currentProject = null
 			backlogItems = []
+			currentWeekTime = 0
 			currentProjWeek = 0
 			currentProjSprint = 0
 			currentSprintGoal = {}
@@ -336,6 +359,7 @@ func advanceWeek() -> bool:
 			deadlineReached.emit()
 			projectCompleted.emit()
 		else:
+			currentWeekTime = 0
 			currentProjSprint += 1
 			currentProjWeek = 1
 			var nextSprintEntries = _prepare_sprint_context(currentProjSprint)
@@ -345,6 +369,7 @@ func advanceWeek() -> bool:
 			loopPhase = LOOP_PLANNING_WEEK
 			weekPassed.emit()
 	else:
+		currentWeekTime = 0
 		currentProjWeek += 1
 		results["summary_text"] = "Week %d is complete. Re-open the backlog to plan Week %d." % [resolvedWeek, currentProjWeek]
 		loopPhase = LOOP_PLANNING_WEEK
@@ -354,8 +379,10 @@ func advanceWeek() -> bool:
 		results["summary_text"] = _build_default_week_summary(completedThisWeek)
 
 	weekResults = results
+	shouldShowWeekResultsModal = false
 	backlogUpdated.emit()
 	loopStateChanged.emit()
+	weekTimerUpdated.emit()
 	statsChanged.emit()
 	weekResolved.emit()
 	return true
@@ -370,6 +397,7 @@ func setTransientResults(title: String, entries: Array, learnMoreTopic: String =
 		"learn_more_topic": learnMoreTopic,
 		"continue_label": continueLabel,
 	}
+	shouldShowWeekResultsModal = true
 	weekResolved.emit()
 
 func addEventBacklogItem(metricKey: String, itemName: String, effort: int = 5, reward: int = 2, isScopeChange: bool = true) -> void:

@@ -6,6 +6,7 @@ func _ready() -> void:
 	PlayerTool.sprintComplete.connect(setupProjData)
 	PlayerTool.deadlineReached.connect(setupProjData)
 	PlayerTool.loopStateChanged.connect(setupProjData)
+	PlayerTool.weekTimerUpdated.connect(setupProjData)
 	setupProjData()
 
 func setupProjData():
@@ -17,5 +18,5 @@ func setupProjData():
 		return
 	$TextParent/sprintData.text = str(PlayerTool.currentProjSprint) + "/" + str(PlayerTool.currentProject.sprintAmount)
 	$TextParent/weekData.text = str(PlayerTool.currentProjWeek) + "/" + str(PlayerTool.currentProject.sprintLength)
-	$weekBar.max_value = maxi(1, PlayerTool.currentProject.sprintLength)
-	$weekBar.value = clampi(PlayerTool.currentProjWeek, 0, PlayerTool.currentProject.sprintLength)
+	$weekBar.max_value = PlayerTool.WEEK_DURATION_SECONDS
+	$weekBar.value = clampi(PlayerTool.currentWeekTime, 0, PlayerTool.WEEK_DURATION_SECONDS)
