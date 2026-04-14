@@ -103,9 +103,9 @@ func newUpgrade(upgrade) -> void:
 
 func earnSprintMoney():
 	if project != null:
-		currency += (30 * project.projectDifficulty) + (5*projectAmount) + (50*teamRank)
+		currency += (30*project.projectDifficulty) + (5*projectAmount) + (50*(teamRank-1))
 		pass
 
 func earnProjectMoney():
-	
+		currency += (500*project.projectDifficulty) + (25*projectAmount) + (650*(teamRank-1)) 
 		pass
