@@ -24,7 +24,7 @@ func trackTime():
 				PlayerTool.currentProjWeek = 0
 				PlayerTool.currentProjSprint += 1
 			newWeek = true
-			PlayerTool.weekPassed.emit()
+			TimeTool.weekPassed.emit()
 			PlayerTool.currentProjWeek += 1				
 			PlayerTool.currentWeekTime = 0
 		if !newWeek: PlayerTool.currentWeekTime += 1

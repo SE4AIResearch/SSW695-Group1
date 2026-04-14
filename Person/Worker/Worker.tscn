@@ -1,4 +1,4 @@
-[gd_scene format=3 uid="uid://u8bret2kckvv"]
+[gd_scene load_steps=7 format=3 uid="uid://u8bret2kckvv"]
 
 [ext_resource type="Script" uid="uid://cqag0vasl33gh" path="res://Person/Worker/worker.gd" id="1_l17xh"]
 [ext_resource type="Texture2D" uid="uid://breqcy7jrm1kr" path="res://Person/Textures/Head/01.png" id="2_k1q1s"]
@@ -7,8 +7,18 @@
 [ext_resource type="Texture2D" uid="uid://bbvn8pwcea6ax" path="res://Person/Textures/Nose/02.png" id="5_pvhlq"]
 [ext_resource type="Texture2D" uid="uid://c2ve11vt3n5jt" path="res://Person/Textures/Eyes/03.png" id="6_k1q1s"]
 
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_7d7cl"]
+size = Vector2(18, 24)
+
 [node name="Worker" type="Node2D" unique_id=1876878133]
 script = ExtResource("1_l17xh")
+
+[node name="HoverArea" type="Area2D" parent="." unique_id=1564372157]
+input_pickable = true
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="HoverArea" unique_id=1034979956]
+position = Vector2(0, -1)
+shape = SubResource("RectangleShape2D_7d7cl")
 
 [node name="headSprite" type="Sprite2D" parent="." unique_id=1710825731]
 texture = ExtResource("2_k1q1s")

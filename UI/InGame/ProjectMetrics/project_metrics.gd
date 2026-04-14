@@ -2,7 +2,7 @@ extends Node2D
 
 
 func _ready() -> void:
-	TimeTool.timer.timeout.connect(updateCurrentStats)
+	PlayerTool.statsChanged.connect(updateCurrentStats)
 	PlayerTool.projectSelected.connect(setupMetrics)
 	pass
 

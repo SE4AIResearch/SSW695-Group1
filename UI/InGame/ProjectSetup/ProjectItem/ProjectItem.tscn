@@ -34,7 +34,7 @@ theme_override_styles/hover = SubResource("StyleBoxTexture_i5on1")
 theme_override_styles/disabled = SubResource("StyleBoxTexture_vfxta")
 script = ExtResource("1_xmqj3")
 
-[node name="ProjectDetails" type="Label" parent="." unique_id=2026093634]
+[node name="ProjectDetails" type="RichTextLabel" parent="." unique_id=842768243]
 layout_mode = 1
 anchors_preset = -1
 anchor_right = 1.0020001
@@ -44,7 +44,7 @@ offset_top = 22.0
 offset_right = -12.076019
 offset_bottom = -13.152008
 mouse_filter = 1
-theme_override_font_sizes/font_size = 14
+bbcode_enabled = true
 text = "Project Name
 Description
 Client

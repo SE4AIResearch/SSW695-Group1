@@ -1,11 +1,15 @@
 [gd_scene format=3 uid="uid://dxn21lnj1tucq"]
 
 [ext_resource type="Script" uid="uid://xmimf63qhrhe" path="res://UI/InGame/ProjectSetup/project_setup.gd" id="1_4r33p"]
-[ext_resource type="Texture2D" uid="uid://c2it0w0k17wgn" path="res://UI/Theme/PCTheme/button/slimButton.png" id="3_r18lb"]
+[ext_resource type="Texture2D" uid="uid://drwt4l4mwiboc" path="res://UI/Theme/PCTheme/button/slimButton.png" id="3_r18lb"]
 [ext_resource type="Texture2D" uid="uid://cw80wa5shjq88" path="res://UI/Theme/PCTheme/panelTaller.png" id="3_ti15a"]
-[ext_resource type="Texture2D" uid="uid://bnulbxemxoryo" path="res://UI/Theme/PCTheme/button/slimButtonPressed.png" id="4_1j4pd"]
-[ext_resource type="Texture2D" uid="uid://di1kn3fa7np7c" path="res://UI/Theme/PCTheme/button/slimButtonHeld.png" id="5_ti15a"]
+[ext_resource type="Texture2D" uid="uid://cuyr4sv3sto4b" path="res://UI/Theme/PCTheme/button/slimButtonPressed.png" id="4_1j4pd"]
+[ext_resource type="Texture2D" uid="uid://b8snwl2q3qflg" path="res://UI/Theme/PCTheme/button/slimButtonHeld.png" id="5_ti15a"]
 [ext_resource type="Texture2D" uid="uid://2jvaulftw7b6" path="res://UI/Theme/PCTheme/button/slimButtonDisabled.png" id="6_ro35i"]
+[ext_resource type="Texture2D" uid="uid://d00apn0evacqg" path="res://UI/Theme/PCTheme/Back/pcBack.png" id="7_khj05"]
+[ext_resource type="Texture2D" uid="uid://dkqvr0lf6ytje" path="res://UI/Theme/PCTheme/Back/pcBackPressed.png" id="8_pfa6d"]
+[ext_resource type="Texture2D" uid="uid://crruuadiafv87" path="res://UI/Theme/PCTheme/Back/pcBackHeld.png" id="9_lmcgk"]
+[ext_resource type="Texture2D" uid="uid://o4k321o7djhb" path="res://UI/Theme/PCTheme/Back/pcBackDisabled.png" id="10_e4uks"]
 
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_khj05"]
 texture = ExtResource("3_r18lb")
@@ -18,6 +22,18 @@ texture = ExtResource("5_ti15a")
 
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_e4uks"]
 texture = ExtResource("6_ro35i")
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_cjw0q"]
+texture = ExtResource("7_khj05")
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_2id5r"]
+texture = ExtResource("8_pfa6d")
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_06nwt"]
+texture = ExtResource("9_lmcgk")
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_6qinh"]
+texture = ExtResource("10_e4uks")
 
 [node name="ProjectSetup" type="Node2D" unique_id=172000320]
 process_mode = 2
@@ -69,4 +85,15 @@ theme_override_styles/hover = SubResource("StyleBoxTexture_lmcgk")
 theme_override_styles/disabled = SubResource("StyleBoxTexture_e4uks")
 text = "Generate Project Choices"
 
+[node name="PCBack" type="Button" parent="." unique_id=546718404]
+offset_left = 875.0
+offset_top = 155.0
+offset_right = 955.0
+offset_bottom = 175.0
+theme_override_styles/normal = SubResource("StyleBoxTexture_cjw0q")
+theme_override_styles/pressed = SubResource("StyleBoxTexture_2id5r")
+theme_override_styles/hover = SubResource("StyleBoxTexture_06nwt")
+theme_override_styles/disabled = SubResource("StyleBoxTexture_6qinh")
+
 [connection signal="pressed" from="ProjectChoose/Button" to="." method="_on_button_pressed"]
+[connection signal="pressed" from="PCBack" to="." method="_on_pc_back_pressed"]

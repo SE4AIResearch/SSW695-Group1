@@ -18,10 +18,10 @@ config/icon="res://icon.svg"
 [autoload]
 
 PersonConstructor="*uid://dda20vvlva31s"
-PlayerTool="*uid://b4ab01cuo5f4k"
 SaveTool="*uid://ceqm1ltehlafn"
 TimeTool="*uid://ch3prtp0hjnxa"
 NumberVisualizer="*uid://cvghhtgb17hcm"
+PlayerTool="*uid://b4ab01cuo5f4k"
 
 [display]
 
@@ -31,6 +31,10 @@ window/snap/snap_2d_transforms_to_pixel=true
 [dotnet]
 
 project/assembly_name="SSW656-CapstoneProject"
+
+[gui]
+
+theme/default_font_multichannel_signed_distance_field=true
 
 [physics]
 

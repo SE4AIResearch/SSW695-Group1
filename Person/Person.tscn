@@ -2,22 +2,28 @@
 
 [ext_resource type="Script" uid="uid://dh2uv4xlq8gft" path="res://Person/person.gd" id="1_beudb"]
 [ext_resource type="Texture2D" uid="uid://breqcy7jrm1kr" path="res://Person/Textures/Head/01.png" id="2_hib4k"]
+[ext_resource type="Texture2D" uid="uid://b7dikmvar4jnb" path="res://Person/Textures/Hair/03.png" id="3_f0hy1"]
+[ext_resource type="Texture2D" uid="uid://cwaw43dvc7ejo" path="res://Person/Textures/Mouth/01.png" id="4_3xan4"]
+[ext_resource type="Texture2D" uid="uid://bbvn8pwcea6ax" path="res://Person/Textures/Nose/02.png" id="5_2y4xd"]
+[ext_resource type="Texture2D" uid="uid://c2ve11vt3n5jt" path="res://Person/Textures/Eyes/03.png" id="6_3yfdf"]
 
 [node name="Person" type="Node2D" unique_id=1533579046]
 script = ExtResource("1_beudb")
 
-[node name="headSprite" type="Sprite2D" parent="." unique_id=546239071]
-texture_filter = 1
+[node name="headSprite" type="Sprite2D" parent="." unique_id=234273941]
 texture = ExtResource("2_hib4k")
 
-[node name="hairSprite" type="Sprite2D" parent="." unique_id=1649586401]
-texture_filter = 1
+[node name="hairSprite" type="Sprite2D" parent="." unique_id=1183981827]
+texture = ExtResource("3_f0hy1")
 
-[node name="mouthSprite" type="Sprite2D" parent="." unique_id=599888584]
-texture_filter = 1
+[node name="mouthSprite" type="Sprite2D" parent="." unique_id=1701978237]
+position = Vector2(0, 7)
+texture = ExtResource("4_3xan4")
 
-[node name="noseSprite" type="Sprite2D" parent="." unique_id=850511957]
-texture_filter = 1
+[node name="noseSprite" type="Sprite2D" parent="." unique_id=1757797241]
+position = Vector2(0, 2)
+texture = ExtResource("5_2y4xd")
 
-[node name="eyeSprite" type="Sprite2D" parent="." unique_id=754297076]
-texture_filter = 1
+[node name="eyeSprite" type="Sprite2D" parent="." unique_id=198596690]
+position = Vector2(0, -3)
+texture = ExtResource("6_3yfdf")

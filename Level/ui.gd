@@ -34,14 +34,17 @@ func endMenu():
 	currentMenu.queue_free()
 	match pcMode:
 		true:
-			$PCButtons/PCBack.disabled = true
 			$PCButtons/UpgradesButton.disabled = false
 			$PCButtons/HiringButton.disabled = false
 			$PCButtons/projectStartMenu.disabled = false
 		false:
 			$BackButton.visible = false
 			get_tree().paused = false
-	
+
+func newProject():
+	endMenu()
+	_on_pc_power_pressed()
+	createMenu(BacklogMenu.instantiate())
 
 func _on_upgrades_button_pressed() -> void: createMenu(UpgradesMenu.instantiate())
 
@@ -65,7 +68,6 @@ func createMenu(menu):
 	currentMenu.visible = true
 	match pcMode:
 		true: 
-			$PCButtons/PCBack.disabled = false
 			$PCButtons/UpgradesButton.disabled = true
 			$PCButtons/HiringButton.disabled = true
 			$PCButtons/projectStartMenu.disabled = true
@@ -75,12 +77,20 @@ func _on_pc_pressed() -> void:
 	#Insert code of screen lerping in size and position to the middle of the screen
 	#and showing the PC Buttons when completed
 	pcMode = true
-	$PCButtons/PCBack.disabled = true
 	get_tree().paused = true
 	$PCStats.visible = false
 	$PCScreen.visible = true
 	$PCScreenPanel.visible = true	
 	$PCButtons.visible = true
+	match PlayerTool.currentProject == null:
+		true:
+			$PCButtons/projectStartMenu.text = "Start New Project"
+			$PCButtons/projectStartMenu.disabled = false
+			pass
+		false:
+			$PCButtons/projectStartMenu.text = "Already have a Project"
+			$PCButtons/projectStartMenu.disabled = true		
+			pass
 	
 func _on_pc_power_pressed() -> void:
 	#Insert code of screen lerping in size and position to the original PC location and render buttons invisible
@@ -90,7 +100,6 @@ func _on_pc_power_pressed() -> void:
 	$PCScreen.visible = false
 	$PCScreenPanel.visible = false
 	$PCButtons.visible = false
-	$PCButtons/PCBack.disabled = true
 	$PCButtons/UpgradesButton.disabled = false
 	$PCButtons/HiringButton.disabled = false
 	$PCButtons/projectStartMenu.disabled = false
@@ -100,3 +109,11 @@ func _on_pc_power_pressed() -> void:
 func toggleProjectButtons():
 	var hasProject = PlayerTool.currentProject != null
 	$BacklogButton.disabled = !hasProject
+
+func startEvent():
+	get_tree().paused = true
+	$randomEventRinger.play("ringing")
+	$randomEventRinger/ringerAudio.play()
+	await $randomEventRinger/ringerAudio.finished
+	$randomEventRinger.play("idle")
+	createMenu(randomEventMenu.instantiate())

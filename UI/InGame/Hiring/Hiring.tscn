@@ -2,6 +2,38 @@
 
 [ext_resource type="Script" uid="uid://s8223fc5qud0" path="res://UI/InGame/Hiring/hiring.gd" id="1_kiv20"]
 [ext_resource type="Texture2D" uid="uid://gwrmwrr5sxpg" path="res://UI/Theme/PCTheme/PanelShort.png" id="2_jceta"]
+[ext_resource type="Texture2D" uid="uid://drwt4l4mwiboc" path="res://UI/Theme/PCTheme/button/slimButton.png" id="3_5qap7"]
+[ext_resource type="Texture2D" uid="uid://d00apn0evacqg" path="res://UI/Theme/PCTheme/Back/pcBack.png" id="3_gtln3"]
+[ext_resource type="Texture2D" uid="uid://dkqvr0lf6ytje" path="res://UI/Theme/PCTheme/Back/pcBackPressed.png" id="4_1p48r"]
+[ext_resource type="Texture2D" uid="uid://cuyr4sv3sto4b" path="res://UI/Theme/PCTheme/button/slimButtonPressed.png" id="4_bdqul"]
+[ext_resource type="Texture2D" uid="uid://crruuadiafv87" path="res://UI/Theme/PCTheme/Back/pcBackHeld.png" id="5_cad51"]
+[ext_resource type="Texture2D" uid="uid://b8snwl2q3qflg" path="res://UI/Theme/PCTheme/button/slimButtonHeld.png" id="5_wx0r0"]
+[ext_resource type="Texture2D" uid="uid://2jvaulftw7b6" path="res://UI/Theme/PCTheme/button/slimButtonDisabled.png" id="6_gbnct"]
+[ext_resource type="Texture2D" uid="uid://o4k321o7djhb" path="res://UI/Theme/PCTheme/Back/pcBackDisabled.png" id="6_xki6e"]
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_d37a2"]
+texture = ExtResource("3_5qap7")
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_litpm"]
+texture = ExtResource("4_bdqul")
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_0bxjy"]
+texture = ExtResource("5_wx0r0")
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_df6go"]
+texture = ExtResource("6_gbnct")
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_5qap7"]
+texture = ExtResource("3_gtln3")
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_bdqul"]
+texture = ExtResource("4_1p48r")
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_wx0r0"]
+texture = ExtResource("5_cad51")
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_gbnct"]
+texture = ExtResource("6_xki6e")
 
 [node name="Hiring" type="Node2D" unique_id=628576152]
 process_mode = 2
@@ -22,10 +54,14 @@ alignment = 1
 
 [node name="SearchButton" type="Button" parent="." unique_id=148929133]
 process_mode = 2
-offset_left = 596.0
-offset_top = 273.0
-offset_right = 760.0
-offset_bottom = 355.0
+offset_left = 563.0
+offset_top = 287.0
+offset_right = 755.0
+offset_bottom = 351.0
+theme_override_styles/normal = SubResource("StyleBoxTexture_d37a2")
+theme_override_styles/pressed = SubResource("StyleBoxTexture_litpm")
+theme_override_styles/hover = SubResource("StyleBoxTexture_0bxjy")
+theme_override_styles/disabled = SubResource("StyleBoxTexture_df6go")
 text = "Search for hires"
 
 [node name="BudgetSlider" type="HSlider" parent="." unique_id=46284583]
@@ -45,4 +81,15 @@ text = "Hiring Budget"
 horizontal_alignment = 1
 vertical_alignment = 1
 
+[node name="PCBack" type="Button" parent="." unique_id=1908749477]
+offset_left = 583.0
+offset_top = -21.0
+offset_right = 663.0
+offset_bottom = -1.0
+theme_override_styles/normal = SubResource("StyleBoxTexture_5qap7")
+theme_override_styles/pressed = SubResource("StyleBoxTexture_bdqul")
+theme_override_styles/hover = SubResource("StyleBoxTexture_wx0r0")
+theme_override_styles/disabled = SubResource("StyleBoxTexture_gbnct")
+
 [connection signal="pressed" from="SearchButton" to="." method="_on_search_button_pressed"]
+[connection signal="pressed" from="PCBack" to="." method="_on_pc_back_pressed"]
