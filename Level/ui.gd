@@ -82,6 +82,15 @@ func _on_pc_pressed() -> void:
 	$PCScreen.visible = true
 	$PCScreenPanel.visible = true	
 	$PCButtons.visible = true
+	match PlayerTool.currentProject == null:
+		true:
+			$PCButtons/projectStartMenu.text = "Start New Project"
+			$PCButtons/projectStartMenu.disabled = false
+			pass
+		false:
+			$PCButtons/projectStartMenu.text = "Already have a Project"
+			$PCButtons/projectStartMenu.disabled = true		
+			pass
 	
 func _on_pc_power_pressed() -> void:
 	#Insert code of screen lerping in size and position to the original PC location and render buttons invisible

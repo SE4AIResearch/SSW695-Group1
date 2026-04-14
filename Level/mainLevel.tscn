@@ -496,7 +496,7 @@ theme_override_styles/normal = SubResource("StyleBoxTexture_ktvj5")
 theme_override_styles/pressed = SubResource("StyleBoxTexture_x2ak7")
 theme_override_styles/hover = SubResource("StyleBoxTexture_lkgwe")
 theme_override_styles/disabled = SubResource("StyleBoxTexture_uibgn")
-text = "Show Project Start Menu"
+text = "Start New Project"
 
 [node name="PCPower" type="Button" parent="UI/PCButtons" unique_id=1338520100]
 offset_left = 1024.0
