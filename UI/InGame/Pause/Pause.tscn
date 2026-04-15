@@ -4,12 +4,12 @@
 [ext_resource type="Script" uid="uid://ci70001xy6kfv" path="res://UI/InGame/Pause/pause.gd" id="1_krpmk"]
 [ext_resource type="Texture2D" uid="uid://bpmqerq7t6ow8" path="res://UI/Theme/PCTheme/Overlay.png" id="2_g7hvy"]
 [ext_resource type="PackedScene" uid="uid://bvn5808vxkqc4" path="res://UI/MainMenu/Settings/Settings.tscn" id="2_kl4qd"]
-[ext_resource type="Texture2D" uid="uid://c2it0w0k17wgn" path="res://UI/Theme/PCTheme/button/slimButton.png" id="3_1txv3"]
-[ext_resource type="Texture2D" uid="uid://bnulbxemxoryo" path="res://UI/Theme/PCTheme/button/slimButtonPressed.png" id="4_1eg5f"]
-[ext_resource type="Texture2D" uid="uid://di1kn3fa7np7c" path="res://UI/Theme/PCTheme/button/slimButtonHeld.png" id="5_ue8lb"]
-[ext_resource type="Texture2D" uid="uid://d00apn0evacqg" path="res://UI/Theme/PCTheme/Back/pcBack.png" id="8_ue8lb"]
-[ext_resource type="Texture2D" uid="uid://dkqvr0lf6ytje" path="res://UI/Theme/PCTheme/Back/pcBackPressed.png" id="9_xo5on"]
-[ext_resource type="Texture2D" uid="uid://crruuadiafv87" path="res://UI/Theme/PCTheme/Back/pcBackHeld.png" id="10_g56pf"]
+[ext_resource type="Texture2D" uid="uid://drwt4l4mwiboc" path="res://UI/Theme/PCTheme/button/slimButton.png" id="3_1txv3"]
+[ext_resource type="Texture2D" uid="uid://cuyr4sv3sto4b" path="res://UI/Theme/PCTheme/button/slimButtonPressed.png" id="4_1eg5f"]
+[ext_resource type="Texture2D" uid="uid://b8snwl2q3qflg" path="res://UI/Theme/PCTheme/button/slimButtonHeld.png" id="5_ue8lb"]
+[ext_resource type="Texture2D" uid="uid://21bqovjn7bnq" path="res://UI/Theme/PCTheme/arrow/next.png" id="8_ue8lb"]
+[ext_resource type="Texture2D" uid="uid://dla72g4cpmext" path="res://UI/Theme/PCTheme/arrow/nextPressed.png" id="9_xo5on"]
+[ext_resource type="Texture2D" uid="uid://fi7cm2jdqiqa" path="res://UI/Theme/PCTheme/arrow/nextHover.png" id="10_g56pf"]
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_xo5on"]
 
@@ -106,10 +106,11 @@ visible = false
 
 [node name="Back" type="Button" parent="." unique_id=457136848]
 visible = false
-offset_left = 1014.0
-offset_top = 59.0
-offset_right = 1094.0
-offset_bottom = 139.0
+offset_left = 1069.0
+offset_top = 155.0
+offset_right = 1149.0
+offset_bottom = 235.0
+rotation = 3.1415927
 theme_override_styles/normal = SubResource("StyleBoxTexture_defd4")
 theme_override_styles/pressed = SubResource("StyleBoxTexture_ewn82")
 theme_override_styles/hover = SubResource("StyleBoxTexture_eihmq")

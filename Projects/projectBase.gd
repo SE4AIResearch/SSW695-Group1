@@ -2,24 +2,22 @@ extends Node
 
 var projectName: String
 var projectDescription: String
+var projectDifficulty: float
 
 var clientName: String
-
-var frontEndScalar: float
-var backEndScalar: float
-var documentingScalar: float
 
 var frontEndProjectMin: int
 var backEndProjectMin: int
 var documentingProjectMin: int
 
-var baseSprintAmount: int
-var sprintAmount: int
+var sprintAmount: int #Total amount of Sprints
+var sprintLength: int #Dictates how many weeks for a sprint
+var sprintMetricAmount: int #How many metrics must be assigned per sprint
 
-var baseSprintLength: int
-var sprintLength: int
-
+var eventChance: float = 0.45
 var methodology: Dictionary
-var constraints: Dictionary
+var constraints: Array
 
-var metric: Dictionary
+var frontEndMetrics: Dictionary
+var backEndMetrics: Dictionary
+var documentingMetrics: Dictionary

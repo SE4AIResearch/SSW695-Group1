@@ -18,9 +18,10 @@ config/icon="res://icon.svg"
 [autoload]
 
 PersonConstructor="*uid://dda20vvlva31s"
-PlayerTool="*uid://b4ab01cuo5f4k"
 SaveTool="*uid://ceqm1ltehlafn"
 TimeTool="*uid://ch3prtp0hjnxa"
+NumberVisualizer="*uid://cvghhtgb17hcm"
+PlayerTool="*uid://b4ab01cuo5f4k"
 
 [display]
 
@@ -31,6 +32,10 @@ window/snap/snap_2d_transforms_to_pixel=true
 
 project/assembly_name="SSW656-CapstoneProject"
 
+[gui]
+
+theme/default_font_multichannel_signed_distance_field=true
+
 [physics]
 
 3d/physics_engine="Jolt Physics"
@@ -40,3 +45,4 @@ project/assembly_name="SSW656-CapstoneProject"
 textures/canvas_textures/default_texture_filter=0
 rendering_device/driver.windows="d3d12"
 2d/snap/snap_2d_transforms_to_pixel=true
+2d/snap/snap_2d_vertices_to_pixel=true

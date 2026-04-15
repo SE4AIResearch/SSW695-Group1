@@ -1,7 +1,10 @@
 extends Node
 
+const WorkerStats = preload("res://Person/Worker/worker_stats.gd")
+
 var nameList = load("res://Person/names.gd").new()
 var textureList = load("res://Person/Textures/textures.gd").new()
+var workerItem = preload("res://Person/Worker/Worker.tscn")
 
 var skinColors: Array[Color]
 
@@ -30,10 +33,31 @@ func generateVisuals(person):
 	person.get_node("hairSprite").modulate = Color(randf_range(0,1),randf_range(0,1),randf_range(0,1))
 	pass
 
-func generateWorkerStats(worker):
-	worker.frontEndWorkerStat = 1
-	worker.backEndWorkerStat = 1
-	worker.documentingWorkerStat = 1
-	worker.speedWorkerStat = 1
-	worker.staminaWorkerStat = 1
+func generateWorkerStats(worker): #CREATE SCALING FOR THIS!
+	WorkerStats.apply_to_worker(worker)
+	pass
+
+func generateWorker(stats: Dictionary = {}):
+	var newHire = workerItem.instantiate()
+	newHire.personName = generateName()
+	generateVisuals(newHire)
+	WorkerStats.apply_to_worker(newHire, stats)
+	return newHire
+	pass
+
+func generateBudgetWorker(budget: int):
+	return generateWorker(WorkerStats.roll_hiring_worker_stats(budget))
+
+func setBasicStats(worker):
+	WorkerStats.apply_to_worker(worker)
+	pass
+
+func getStartingWorkerStats(workerIndex: int) -> Dictionary:
+	return WorkerStats.get_starting_worker_stats(workerIndex)
+
+func getHiringTierForBudget(budget: int) -> Dictionary:
+	return WorkerStats.get_hiring_tier_for_budget(budget)
+
+func setStartingWorkerStats(worker, workerIndex: int) -> void:
+	WorkerStats.apply_to_worker(worker, getStartingWorkerStats(workerIndex))
 	pass

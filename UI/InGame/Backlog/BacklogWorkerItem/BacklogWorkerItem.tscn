@@ -1,6 +1,67 @@
 [gd_scene format=3 uid="uid://co4mejwhkp005"]
 
 [ext_resource type="Script" uid="uid://ciq3f5hcc1p1b" path="res://UI/InGame/Backlog/BacklogWorkerItem/backlog_worker_item.gd" id="1_5fg85"]
+[ext_resource type="Texture2D" uid="uid://drwt4l4mwiboc" path="res://UI/Theme/PCTheme/button/slimButton.png" id="1_mmcle"]
+[ext_resource type="Texture2D" uid="uid://cuyr4sv3sto4b" path="res://UI/Theme/PCTheme/button/slimButtonPressed.png" id="2_1bg4a"]
+[ext_resource type="Texture2D" uid="uid://b8snwl2q3qflg" path="res://UI/Theme/PCTheme/button/slimButtonHeld.png" id="3_mn4op"]
+[ext_resource type="Texture2D" uid="uid://2jvaulftw7b6" path="res://UI/Theme/PCTheme/button/slimButtonDisabled.png" id="4_30wkw"]
+[ext_resource type="PackedScene" uid="uid://doy5ib16ee1oa" path="res://Person/Person.tscn" id="6_1bg4a"]
 
-[node name="BacklogWorkerItem" type="Node2D" unique_id=1842726015]
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_kui40"]
+texture = ExtResource("1_mmcle")
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_t5dkv"]
+texture = ExtResource("2_1bg4a")
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_p28hv"]
+texture = ExtResource("3_mn4op")
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_15pmb"]
+texture = ExtResource("4_30wkw")
+
+[node name="BacklogWorkerItem" type="Button" unique_id=1168618699]
+custom_minimum_size = Vector2(220, 96)
+anchors_preset = -1
+anchor_right = 0.208
+anchor_bottom = 0.123
+offset_right = 0.3840027
+offset_bottom = 16.295998
+size_flags_horizontal = 4
+theme_override_styles/normal = SubResource("StyleBoxTexture_kui40")
+theme_override_styles/pressed = SubResource("StyleBoxTexture_t5dkv")
+theme_override_styles/hover = SubResource("StyleBoxTexture_p28hv")
+theme_override_styles/disabled = SubResource("StyleBoxTexture_15pmb")
+toggle_mode = true
 script = ExtResource("1_5fg85")
+
+[node name="Person" parent="." unique_id=1533579046 instance=ExtResource("6_1bg4a")]
+position = Vector2(43, 55)
+scale = Vector2(2, 2)
+
+[node name="textParent" type="Node2D" parent="." unique_id=1862655238]
+position = Vector2(11.999998, 25)
+scale = Vector2(0.215, 0.215)
+
+[node name="statsLabel" type="RichTextLabel" parent="textParent" unique_id=211450542]
+offset_left = 306.38297
+offset_top = -29.78724
+offset_right = 860.0
+offset_bottom = 276.59576
+mouse_filter = 2
+theme_override_font_sizes/normal_font_size = 56
+bbcode_enabled = true
+vertical_alignment = 1
+
+[node name="nameLabel" type="RichTextLabel" parent="textParent" unique_id=2070673382]
+offset_left = -8.510631
+offset_top = -106.38298
+offset_right = 860.0
+offset_bottom = -29.78724
+mouse_filter = 2
+theme_override_font_sizes/normal_font_size = 48
+bbcode_enabled = true
+text = "Name"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[connection signal="pressed" from="." to="." method="_on_pressed"]

@@ -4,13 +4,15 @@ var entries = load("res://UI/Learning Center/entries.gd").new()
 var currentEntry: Dictionary
 var currentPage: int = 0
 
-func _on_sdlc_overview_pressed() -> void: prepPage("sdlc_overview")
+func _on_sdlc_overview_pressed() -> void: prepPage("sdlcOverview")
 func _on_agile_pressed() -> void: prepPage("agile")
 func _on_waterfall_pressed() -> void: prepPage("waterfall")
-func _on_project_constraints_pressed() -> void: prepPage("project_constraints")
-func _on_stakeholder_management_pressed() -> void: prepPage("stakeholder_management")
-func _on_sprint_planning_basics_pressed() -> void: prepPage("sprint_planning")
-func _on_risk_management_pressed() -> void: prepPage("risk_management")
+func _on_v_model_pressed() -> void: prepPage("vModel")
+func _on_spiral_pressed() -> void: prepPage("spiral")
+func _on_project_constraints_pressed() -> void: prepPage("projectConstraints")
+func _on_stakeholder_management_pressed() -> void: prepPage("stakeholderManagement")
+func _on_sprint_planning_basics_pressed() -> void: prepPage("sprintPlanning")
+func _on_risk_management_pressed() -> void: prepPage("riskManagement")
 
 func prepPage(entry):
 	$Categories.visible = false

@@ -1,7 +1,8 @@
 extends Node2D
 
 var eventList = load("res://UI/InGame/RandomEvent/events.gd").new()
-var currentEvent: Dictionary
+
+var chosenEvent: Dictionary
 var choiceOutcomes: Array = []
 
 @onready var button1 = $choice1
@@ -89,22 +90,27 @@ func setButtonVisual(menuButton: Button):
 	menuButton.self_modulate = Color(randf_range(.5,1), randf_range(.5,1), randf_range(.5,1))
 
 func initializeEvent():
-	var pool = eventList.general_events.duplicate(true)
-	if PlayerTool.currentProject != null and "projectName" in PlayerTool.currentProject:
-		var pName = PlayerTool.currentProject.projectName
-		if eventList.project_events.has(pName):
-			pool.append_array(eventList.project_events[pName].duplicate(true))
+	var eventPool: Array = []
+	eventPool.append_array(eventList.general_events)
+	if PlayerTool.project != null and eventList.project_events.has(PlayerTool.project.projectName):
+		eventPool.append_array(eventList.project_events.get(PlayerTool.project.projectName, []))
+	if eventPool.is_empty():
+		$eventText.text = "No event available."
+		button1.visible = false
+		button2.visible = false
+		button3.visible = false
+		button4.visible = false
+		return
 
-	currentEvent = pool.pick_random()
-	choiceOutcomes = currentEvent.get("outcomes", [])
-	eventText.text = currentEvent.get("description")
+	chosenEvent = eventPool.pick_random()
+	var choices: Array = chosenEvent.get("choices", [])
+	choiceOutcomes = chosenEvent.get("outcomes", [])
+	$eventText.text = chosenEvent.get("description", "")
 
 	setButtonVisual(button1)
 	setButtonVisual(button2)
 	setButtonVisual(button3)
 	setButtonVisual(button4)
-
-	var choices = currentEvent.get("choices", [])
 	match choices.size():
 		1:
 			button1.visible = true
@@ -112,7 +118,7 @@ func initializeEvent():
 			button3.visible = false
 			button4.visible = false
 			button1.position = $single/Marker2D.position
-			button1.get_child(0).text = choices[0]
+			button1.get_child(0).text = str(choices[0])
 		2:
 			button1.visible = true
 			button2.visible = true
@@ -120,8 +126,8 @@ func initializeEvent():
 			button4.visible = false
 			button1.position = $double/Marker2D.position
 			button2.position = $double/Marker2D2.position
-			button1.get_child(0).text = choices[0]
-			button2.get_child(0).text = choices[1]
+			button1.get_child(0).text = str(choices[0])
+			button2.get_child(0).text = str(choices[1])
 		3:
 			button1.visible = true
 			button2.visible = true
@@ -130,9 +136,9 @@ func initializeEvent():
 			button1.position = $tripple/Marker2D.position
 			button2.position = $tripple/Marker2D2.position
 			button3.position = $tripple/Marker2D3.position
-			button1.get_child(0).text = choices[0]
-			button2.get_child(0).text = choices[1]
-			button3.get_child(0).text = choices[2]
+			button1.get_child(0).text = str(choices[0])
+			button2.get_child(0).text = str(choices[1])
+			button3.get_child(0).text = str(choices[2])
 		4:
 			button1.visible = true
 			button2.visible = true
@@ -142,10 +148,10 @@ func initializeEvent():
 			button2.position = $quad/Marker2D2.position
 			button3.position = $quad/Marker2D3.position
 			button4.position = $quad/Marker2D4.position
-			button1.get_child(0).text = choices[0]
-			button2.get_child(0).text = choices[1]
-			button3.get_child(0).text = choices[2]
-			button4.get_child(0).text = choices[3]
+			button1.get_child(0).text = str(choices[0])
+			button2.get_child(0).text = str(choices[1])
+			button3.get_child(0).text = str(choices[2])
+			button4.get_child(0).text = str(choices[3])
 
 func _on_choice_1_pressed() -> void: processChoice(0)
 func _on_choice_2_pressed() -> void: processChoice(1)
@@ -154,14 +160,35 @@ func _on_choice_4_pressed() -> void: processChoice(3)
 
 func processChoice(choiceIndex: int):
 	var outcome = choiceOutcomes[choiceIndex]
+	var eventType := str(chosenEvent.get("type", ""))
 
-	if outcome is Dictionary:
-		for key in outcome.keys():
-			if PlayerTool.currentMetrics.has(key):
-				PlayerTool.currentMetrics[key] += outcome[key]
+	match eventType:
+		"FrontEnd", "BackEnd", "Documenting":
+			_apply_metric_deltas(outcome)
+		"Stakeholder":
+			if outcome is Array and outcome.size() >= 3:
+				PlayerTool.project.sprintAmount += int(outcome[0])
+				PlayerTool.project.sprintLength += int(outcome[1])
+				PlayerTool.project.sprintMetricAmount += int(outcome[2])
+			elif outcome is Dictionary:
+				_apply_metric_deltas(outcome)
+		"Backlog":
+			if outcome is Array and outcome.size() >= 2:
+				var requiredSkill := str(outcome[0])
+				var backlogLabel := str(outcome[1])
+				var effortAmount := 1
+				if outcome.size() >= 3:
+					effortAmount = max(1, int(outcome[2]))
+				PlayerTool.addEventBacklogItem(requiredSkill, backlogLabel, effortAmount, effortAmount, true)
 
 	var quality = evaluateChoice(choiceIndex)
-	showFeedback(outcome, quality)
+	showFeedback(outcome, quality, eventType)
+
+func _apply_metric_deltas(metricDeltas) -> void:
+	if metricDeltas is not Dictionary:
+		return
+	for metricKey in metricDeltas.keys():
+		PlayerTool.changeMetricByName(str(metricKey), int(metricDeltas.get(metricKey, 0)))
 
 func evaluateChoice(choiceIndex: int) -> String:
 	var scores = []
@@ -171,6 +198,8 @@ func evaluateChoice(choiceIndex: int) -> String:
 			for val in outcome.values():
 				net += val
 			scores.append(net)
+		elif outcome is Array:
+			scores.append(outcome.reduce(func(acc, v): return acc + int(v), 0))
 		else:
 			scores.append(0)
 
@@ -189,7 +218,7 @@ func evaluateChoice(choiceIndex: int) -> String:
 		return "bad"
 	return "ok"
 
-func showFeedback(outcome, quality: String):
+func showFeedback(outcome, quality: String, eventType: String):
 	button1.visible = false
 	button2.visible = false
 	button3.visible = false
@@ -219,8 +248,18 @@ func showFeedback(outcome, quality: String):
 				text += "[color=red]" + str(value) + " " + displayName + "[/color]\n"
 			else:
 				text += str(value) + " " + displayName + "\n"
-	else:
-		text += "No effect on metrics"
+	elif eventType == "Stakeholder" and outcome is Array and outcome.size() >= 3:
+		var labels = ["Sprint Amount", "Sprint Length", "Sprint Metrics"]
+		for i in range(3):
+			var value = int(outcome[i])
+			if value > 0:
+				text += "[color=green]+" + str(value) + " " + labels[i] + "[/color]\n"
+			elif value < 0:
+				text += "[color=red]" + str(value) + " " + labels[i] + "[/color]\n"
+	elif eventType == "Backlog" and outcome is Array and outcome.size() >= 2:
+		text += "[color=yellow]New backlog item: " + str(outcome[1]) + "[/color]\n"
+	elif outcome == 0 or outcome == null:
+		text += "No effect"
 	text += "[/center]"
 	metricsLabel.text = text
 
