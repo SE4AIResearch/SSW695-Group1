@@ -1,10 +1,17 @@
 extends Node2D
 
+const PCWindowLayout = preload("res://UI/InGame/PCWindow/pc_window_layout.gd")
+
 var projectList = load("res://Projects/projectList.gd").new()
 var projectItem = preload("res://Projects/projectBase.tscn")
 var methodItem = preload("res://UI/InGame/ProjectSetup/MethodItem/MethodItem.tscn")
 var methodList = load("res://Projects/MethodologyList.gd").new()
 var projectChoiceItem = preload("res://UI/InGame/ProjectSetup/ProjectItem/ProjectItem.tscn")
+
+const PROJECT_CHOICES_HEIGHT := 245.0
+const ACTION_BUTTON_WIDTH := 240.0
+const ACTION_BUTTON_HEIGHT := 80.0
+const ACTION_BUTTON_BOTTOM_PADDING := 10.0
 
 var selectedProject: Node
 var randomProject: Dictionary
@@ -15,10 +22,36 @@ func _on_button_pressed() -> void:
 	pass
 
 func _ready():
+	PCWindowLayout.apply(self)
+	_apply_content_layout()
 	if PlayerTool.workers.size() == 0:
 		$ProjectChoose/Button.text = "Hire a Worker!"
 		$ProjectChoose/Button.disabled = true
 	pass
+
+func _apply_content_layout() -> void:
+	var content_rect: Rect2 = PCWindowLayout.content_rect()
+	var choice_top: float = content_rect.position.y + 28.0
+	var choices_left: float = content_rect.position.x + 82.0
+	var choices_right: float = content_rect.position.x + content_rect.size.x - 81.0
+
+	$ProjectChoose.position = Vector2.ZERO
+	$MethodologyChoose.position = Vector2.ZERO
+
+	$ProjectChoose/ProjectChoices.offset_left = choices_left
+	$ProjectChoose/ProjectChoices.offset_top = choice_top
+	$ProjectChoose/ProjectChoices.offset_right = choices_right
+	$ProjectChoose/ProjectChoices.offset_bottom = choice_top + PROJECT_CHOICES_HEIGHT
+
+	$ProjectChoose/Button.offset_left = content_rect.position.x + (content_rect.size.x - ACTION_BUTTON_WIDTH) / 2.0
+	$ProjectChoose/Button.offset_top = content_rect.position.y + content_rect.size.y - ACTION_BUTTON_HEIGHT - ACTION_BUTTON_BOTTOM_PADDING
+	$ProjectChoose/Button.offset_right = $ProjectChoose/Button.offset_left + ACTION_BUTTON_WIDTH
+	$ProjectChoose/Button.offset_bottom = $ProjectChoose/Button.offset_top + ACTION_BUTTON_HEIGHT
+
+	$MethodologyChoose/ScrollContainer.offset_left = content_rect.position.x + 82.0
+	$MethodologyChoose/ScrollContainer.offset_top = choice_top
+	$MethodologyChoose/ScrollContainer.offset_right = content_rect.position.x + content_rect.size.x - 81.0
+	$MethodologyChoose/ScrollContainer.offset_bottom = content_rect.position.y + content_rect.size.y - 34.0
 
 func generateProjectChoices() -> void:
 	#Insert below code to pool together total worker skills
