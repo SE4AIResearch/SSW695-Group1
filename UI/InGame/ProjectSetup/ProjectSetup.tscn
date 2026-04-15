@@ -11,6 +11,10 @@
 [ext_resource type="Texture2D" uid="uid://crruuadiafv87" path="res://UI/Theme/PCTheme/Back/pcBackHeld.png" id="9_lmcgk"]
 [ext_resource type="Texture2D" uid="uid://o4k321o7djhb" path="res://UI/Theme/PCTheme/Back/pcBackDisabled.png" id="10_e4uks"]
 [ext_resource type="PackedScene" uid="uid://ccmfo7vj6hbru" path="res://UI/Learning Center/LearningCenter.tscn" id="11_58bh3"]
+[ext_resource type="Texture2D" uid="uid://21bqovjn7bnq" path="res://UI/Theme/PCTheme/arrow/next.png" id="12_h8bg6"]
+[ext_resource type="Texture2D" uid="uid://dla72g4cpmext" path="res://UI/Theme/PCTheme/arrow/nextPressed.png" id="13_nst6h"]
+[ext_resource type="Texture2D" uid="uid://fi7cm2jdqiqa" path="res://UI/Theme/PCTheme/arrow/nextHover.png" id="14_hj3lm"]
+[ext_resource type="Texture2D" uid="uid://ckh4yuj22ffnl" path="res://UI/Theme/PCTheme/arrow/nextDisabled.png" id="15_g1vwt"]
 
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_khj05"]
 texture = ExtResource("3_r18lb")
@@ -35,6 +39,18 @@ texture = ExtResource("9_lmcgk")
 
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_6qinh"]
 texture = ExtResource("10_e4uks")
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_6u4a1"]
+texture = ExtResource("12_h8bg6")
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_70jxg"]
+texture = ExtResource("13_nst6h")
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_4okwh"]
+texture = ExtResource("14_hj3lm")
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_fd8y5"]
+texture = ExtResource("15_g1vwt")
 
 [node name="ProjectSetup" type="Node2D" unique_id=172000320]
 process_mode = 2
@@ -68,6 +84,19 @@ offset_bottom = 392.0
 
 [node name="MethodologyChoices" type="HBoxContainer" parent="MethodologyChoose/ScrollContainer" unique_id=1430408742]
 layout_mode = 2
+
+[node name="ConfirmButton" type="Button" parent="MethodologyChoose" unique_id=1900242201]
+visible = false
+offset_left = 455.0
+offset_top = 490.0
+offset_right = 695.0
+offset_bottom = 570.0
+theme_override_styles/normal = SubResource("StyleBoxTexture_khj05")
+theme_override_styles/pressed = SubResource("StyleBoxTexture_pfa6d")
+theme_override_styles/hover = SubResource("StyleBoxTexture_lmcgk")
+theme_override_styles/disabled = SubResource("StyleBoxTexture_e4uks")
+disabled = true
+text = "Confirm"
 
 [node name="ProjectChoose" type="Node2D" parent="." unique_id=819832813]
 position = Vector2(0, 30)
@@ -124,6 +153,20 @@ text = "learn more"
 [node name="LearningCenter" parent="." unique_id=2076332728 instance=ExtResource("11_58bh3")]
 visible = false
 
+[node name="LearningCenterBack" type="Button" parent="." unique_id=1425063357]
+visible = false
+offset_left = 133.0
+offset_top = 139.0
+offset_right = 197.0
+offset_bottom = 203.0
+rotation = 3.1415927
+theme_override_styles/normal = SubResource("StyleBoxTexture_6u4a1")
+theme_override_styles/pressed = SubResource("StyleBoxTexture_70jxg")
+theme_override_styles/hover = SubResource("StyleBoxTexture_4okwh")
+theme_override_styles/disabled = SubResource("StyleBoxTexture_fd8y5")
+
 [connection signal="pressed" from="ProjectChoose/Button" to="." method="_on_button_pressed"]
 [connection signal="pressed" from="PCBack" to="." method="_on_pc_back_pressed"]
 [connection signal="pressed" from="LearnMoreButton" to="." method="_on_learn_more_button_pressed"]
+[connection signal="pressed" from="MethodologyChoose/ConfirmButton" to="." method="_on_confirm_button_pressed"]
+[connection signal="pressed" from="LearningCenterBack" to="." method="_on_learning_center_back_pressed"]

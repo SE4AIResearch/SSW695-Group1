@@ -25,6 +25,7 @@ anchor_right = 0.16700001
 anchor_bottom = 0.296
 offset_right = -0.38401794
 offset_bottom = 0.19200134
+toggle_mode = true
 theme_override_styles/normal = SubResource("StyleBoxTexture_7ag1o")
 theme_override_styles/pressed = SubResource("StyleBoxTexture_6na4a")
 theme_override_styles/hover = SubResource("StyleBoxTexture_bcjrb")

@@ -48,6 +48,7 @@ var currency: float = 0.0
 var score: int = 0
 var projectAmount: int = 0
 var completed_project_count: int = 0
+var has_viewed_methodology_learning_center: bool = false
 var office_tier: int = 0
 var max_worker_capacity: int = 6
 
@@ -101,6 +102,7 @@ func resetData():
 	projectRatedDifficulty = 0
 	projectAmount = 0
 	completed_project_count = 0
+	has_viewed_methodology_learning_center = false
 	office_tier = 0
 	_sync_office_capacity()
 	metrics = {

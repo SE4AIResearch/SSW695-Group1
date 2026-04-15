@@ -80,6 +80,8 @@ func _on_worker_hover_ended(worker) -> void:
 	worker_details.hide_worker()
 
 func rollEvent():
+	var chance = randf_range(0,1)
+	if chance <= PlayerTool.project.eventChance: $UI.startEvent()
 	# Demo override: always trigger a random event each week.
-	$UI.startEvent()
+	# $UI.startEvent()
 	pass

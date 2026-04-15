@@ -18,9 +18,11 @@ const METHODOLOGY_WINDOW_SIDE_PADDING := 20.0
 const METHODOLOGY_CARD_GAP := 2
 const METHODOLOGY_CARD_HEIGHT := 240.0
 const METHODOLOGY_CARD_WIDTH_REDUCTION := 20.0
+const METHODOLOGY_CARD_BOTTOM_GAP := 16.0
 
 var selectedProject: Node
 var randomProject: Dictionary
+var pendingMethodology: Dictionary = {}
 
 
 func _on_button_pressed() -> void:
@@ -30,6 +32,7 @@ func _on_button_pressed() -> void:
 func _ready():
 	PCWindowLayout.apply(self)
 	_apply_content_layout()
+	_connect_learning_center_navigation()
 	$Title.text = "Select Project"
 	if PlayerTool.workers.size() == 0:
 		$ProjectChoose/Button.text = "Hire a Worker!"
@@ -62,10 +65,15 @@ func _apply_content_layout() -> void:
 	$LearnMoreButton.offset_right = $LearnMoreButton.offset_left + LEARN_MORE_BUTTON_WIDTH
 	$LearnMoreButton.offset_bottom = $LearnMoreButton.offset_top + LEARN_MORE_BUTTON_HEIGHT
 
+	$MethodologyChoose/ConfirmButton.offset_left = content_rect.position.x + (content_rect.size.x - ACTION_BUTTON_WIDTH) / 2.0
+	$MethodologyChoose/ConfirmButton.offset_top = content_rect.position.y + content_rect.size.y - ACTION_BUTTON_HEIGHT - ACTION_BUTTON_BOTTOM_PADDING
+	$MethodologyChoose/ConfirmButton.offset_right = $MethodologyChoose/ConfirmButton.offset_left + ACTION_BUTTON_WIDTH
+	$MethodologyChoose/ConfirmButton.offset_bottom = $MethodologyChoose/ConfirmButton.offset_top + ACTION_BUTTON_HEIGHT
+
 	$MethodologyChoose/ScrollContainer.offset_left = methodology_left
 	$MethodologyChoose/ScrollContainer.offset_top = choice_top
 	$MethodologyChoose/ScrollContainer.offset_right = methodology_right
-	$MethodologyChoose/ScrollContainer.offset_bottom = content_rect.position.y + content_rect.size.y - 34.0
+	$MethodologyChoose/ScrollContainer.offset_bottom = $MethodologyChoose/ConfirmButton.offset_top - METHODOLOGY_CARD_BOTTOM_GAP
 	_layout_method_cards(methodology_right - methodology_left)
 
 func _layout_method_cards(available_width: float) -> void:
@@ -81,6 +89,21 @@ func _layout_method_cards(available_width: float) -> void:
 	for child in methods_container.get_children():
 		child.custom_minimum_size = Vector2(card_width, METHODOLOGY_CARD_HEIGHT)
 		child.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+
+func _connect_learning_center_navigation() -> void:
+	var categories_container: VBoxContainer = $LearningCenter.get_node("Categories/ScrollContainer/VBoxContainer")
+	for child in categories_container.get_children():
+		if child is Button and !child.pressed.is_connected(_on_learning_center_page_opened):
+			child.pressed.connect(_on_learning_center_page_opened)
+
+	var return_button: Button = $LearningCenter.get_node("Page/ReturnToLCMenu")
+	if !return_button.pressed.is_connected(_on_learning_center_return_to_menu):
+		return_button.pressed.connect(_on_learning_center_return_to_menu)
+
+	_sync_learning_center_back_button()
+
+func _sync_learning_center_back_button() -> void:
+	$LearningCenterBack.visible = $LearningCenter.visible and $LearningCenter.get_node("Categories").visible
 
 func generateProjectChoices() -> void:
 	#Insert below code to pool together total worker skills
@@ -148,25 +171,52 @@ func projectSelected(project):
 	pass
 
 func generateMetricsChoices():
+	for child in $MethodologyChoose/ScrollContainer/MethodologyChoices.get_children():
+		child.queue_free()
+	pendingMethodology = {}
 	$MethodologyChoose.visible = true
+	$MethodologyChoose/ConfirmButton.visible = true
 	$LearnMoreButton.visible = true
+	$Title.visible = true
 	$Title.text = "Select Methodology"
 	for metric in methodList.methods:
 		var newMethod = methodItem.instantiate()
 		newMethod.setupMetric(metric)
-		newMethod.connect("MethodChosen",methodSelected)
+		newMethod.connect("MethodChosen", methodSelected.bind(newMethod))
 		$MethodologyChoose/ScrollContainer/MethodologyChoices.add_child(newMethod)
 		pass
 	_layout_method_cards($MethodologyChoose/ScrollContainer.offset_right - $MethodologyChoose/ScrollContainer.offset_left)
+	_update_confirm_button_state()
 	pass
 
-func methodSelected(chosenMetric):
+func methodSelected(chosenMetric, chosenButton: Button):
+	pendingMethodology = chosenMetric
+	for child in $MethodologyChoose/ScrollContainer/MethodologyChoices.get_children():
+		if child is Button:
+			child.button_pressed = child == chosenButton
+	_update_confirm_button_state()
+
+func _on_confirm_button_pressed() -> void:
+	if pendingMethodology.is_empty() or _requires_methodology_learning_center():
+		return
 	PlayerTool.resetProjectStats()
-	selectedProject.methodology = chosenMetric
-	_hide_learning_center()
-	for child in $MethodologyChoose/ScrollContainer/MethodologyChoices.get_children(): child.queue_free()
+	selectedProject.methodology = pendingMethodology
+	$LearningCenter.visible = false
+	$MethodologyChoose.visible = false
+	$MethodologyChoose/ConfirmButton.visible = false
+	$LearnMoreButton.visible = false
+	pendingMethodology = {}
+	for child in $MethodologyChoose/ScrollContainer/MethodologyChoices.get_children():
+		child.queue_free()
 	calculateUpgradeEffects()
-	pass
+
+func _requires_methodology_learning_center() -> bool:
+	return PlayerTool.completed_project_count == 0 and !PlayerTool.has_viewed_methodology_learning_center
+
+func _update_confirm_button_state() -> void:
+	var confirm_button: Button = $MethodologyChoose/ConfirmButton
+	var has_selection := !pendingMethodology.is_empty()
+	confirm_button.disabled = !has_selection or _requires_methodology_learning_center()
 
 #Calculate effects from player upgrades here
 func calculateUpgradeEffects():
@@ -188,20 +238,36 @@ func _on_pc_back_pressed() -> void:
 	get_parent().get_parent().endMenu()
 
 func _on_learn_more_button_pressed() -> void:
+	if _requires_methodology_learning_center():
+		PlayerTool.has_viewed_methodology_learning_center = true
 	$MethodologyChoose.visible = false
+	$MethodologyChoose/ConfirmButton.visible = false
 	$LearnMoreButton.visible = false
 	$Title.visible = false
 	_reset_learning_center()
 	$LearningCenter.visible = true
+	_sync_learning_center_back_button()
 
 func _hide_learning_center() -> void:
 	$LearningCenter.visible = false
 	$MethodologyChoose.visible = true
+	$MethodologyChoose/ConfirmButton.visible = true
 	$Title.visible = true
 	$LearnMoreButton.visible = true
 	_reset_learning_center()
+	_update_confirm_button_state()
+	_sync_learning_center_back_button()
 
 func _reset_learning_center() -> void:
 	$LearningCenter.get_node("Categories").visible = true
 	$LearningCenter.get_node("Page/Entry").text = ""
 	$LearningCenter.get_node("Page").visible = false
+
+func _on_learning_center_back_pressed() -> void:
+	_hide_learning_center()
+
+func _on_learning_center_page_opened() -> void:
+	call_deferred("_sync_learning_center_back_button")
+
+func _on_learning_center_return_to_menu() -> void:
+	call_deferred("_sync_learning_center_back_button")
