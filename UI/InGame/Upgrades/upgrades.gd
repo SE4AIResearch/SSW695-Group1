@@ -7,6 +7,7 @@ const COLUMN_GAP := 8.0
 const COLUMN_ITEM_GAP := 12
 const HEADER_HEIGHT := 56.0
 const CONTENT_PADDING := 2.0
+const HEADER_TO_CONTENT_GAP := 8.0
 
 const UPGRADE_COLUMNS := [
 	{
@@ -101,39 +102,68 @@ func _ready() -> void:
 
 func _apply_content_layout() -> void:
 	var content_rect: Rect2 = PCWindowLayout.content_rect()
+	var header_top := content_rect.position.y + CONTENT_PADDING
+	var header_bottom := header_top + HEADER_HEIGHT
+	var content_top := header_bottom + HEADER_TO_CONTENT_GAP
+
+	$HeaderColumns.offset_left = content_rect.position.x + CONTENT_PADDING
+	$HeaderColumns.offset_top = header_top
+	$HeaderColumns.offset_right = content_rect.position.x + content_rect.size.x - CONTENT_PADDING
+	$HeaderColumns.offset_bottom = header_bottom
 
 	$ScrollContainer.offset_left = content_rect.position.x + CONTENT_PADDING
-	$ScrollContainer.offset_top = content_rect.position.y + CONTENT_PADDING
+	$ScrollContainer.offset_top = content_top
 	$ScrollContainer.offset_right = content_rect.position.x + content_rect.size.x - CONTENT_PADDING
 	$ScrollContainer.offset_bottom = content_rect.position.y + content_rect.size.y - CONTENT_PADDING
 
 func _populate_columns() -> void:
+	var header_columns: HBoxContainer = $HeaderColumns
 	var columns: HBoxContainer = $ScrollContainer/UpgradeColumns
+	var available_width := _get_available_content_width()
+	var all_columns := _get_all_column_data()
+
+	for child in header_columns.get_children():
+		child.queue_free()
+
+	for child in columns.get_children():
+		child.queue_free()
+
+	header_columns.offset_right = header_columns.offset_left + available_width
+	header_columns.custom_minimum_size = Vector2(available_width, HEADER_HEIGHT)
+	header_columns.add_theme_constant_override("separation", COLUMN_GAP)
+	columns.custom_minimum_size = Vector2(available_width, 0.0)
+	columns.add_theme_constant_override("separation", COLUMN_GAP)
+	$Title.text = status_message
+
+	for column_data in all_columns:
+		_add_header_column(header_columns, column_data)
+		_add_card_column(columns, column_data)
+
+	_queue_header_sync()
+
+func _get_available_content_width() -> float:
 	var vertical_scroll_width: float = 0.0
 	var vertical_scroll_bar: VScrollBar = $ScrollContainer.get_v_scroll_bar()
 
 	if vertical_scroll_bar != null:
 		vertical_scroll_width = vertical_scroll_bar.get_combined_minimum_size().x
 
-	var available_width: float = maxf(0.0, $ScrollContainer.size.x - vertical_scroll_width - 2.0)
+	return maxf(0.0, $ScrollContainer.size.x - vertical_scroll_width - 2.0)
 
-	for child in columns.get_children():
-		child.queue_free()
+func _get_all_column_data() -> Array:
+	var all_columns := UPGRADE_COLUMNS.duplicate(true)
+	all_columns.append(_build_office_space_column())
+	return all_columns
 
-	columns.custom_minimum_size = Vector2(available_width, 0.0)
-	columns.add_theme_constant_override("separation", COLUMN_GAP)
-	$Title.text = status_message
+func _add_header_column(columns: HBoxContainer, column_data: Dictionary) -> void:
+	var header := _create_category_header(column_data)
+	header.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	columns.add_child(header)
 
-	for column_data in UPGRADE_COLUMNS:
-		_add_column(columns, column_data)
-
-	_add_column(columns, _build_office_space_column())
-
-func _add_column(columns: HBoxContainer, column_data: Dictionary) -> void:
+func _add_card_column(columns: HBoxContainer, column_data: Dictionary) -> void:
 	var column := VBoxContainer.new()
 	column.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	column.add_theme_constant_override("separation", COLUMN_ITEM_GAP)
-	column.add_child(_create_category_header(column_data))
 
 	for item_data in column_data["items"]:
 		var upgrade_card = UpgradeItemScene.instantiate()
@@ -143,6 +173,47 @@ func _add_column(columns: HBoxContainer, column_data: Dictionary) -> void:
 			upgrade_card.purchase_requested.connect(_on_upgrade_purchase_requested)
 
 	columns.add_child(column)
+
+func _queue_header_sync() -> void:
+	call_deferred("_sync_header_widths")
+
+func _sync_header_widths() -> void:
+	var header_columns: HBoxContainer = $HeaderColumns
+	var content_columns: HBoxContainer = $ScrollContainer/UpgradeColumns
+	var headers := header_columns.get_children()
+	var columns := content_columns.get_children()
+
+	if headers.size() != columns.size():
+		return
+
+	var total_width := 0.0
+	var missing_widths := false
+
+	for i in range(headers.size()):
+		var header := headers[i] as Control
+		var column := columns[i] as Control
+
+		if header == null or column == null:
+			continue
+
+		var column_width := column.size.x
+		if is_zero_approx(column_width):
+			column_width = column.get_combined_minimum_size().x
+		if is_zero_approx(column_width):
+			missing_widths = true
+			continue
+
+		header.size_flags_horizontal = 0
+		header.custom_minimum_size = Vector2(column_width, HEADER_HEIGHT)
+		total_width += column_width
+
+	if missing_widths:
+		call_deferred("_sync_header_widths")
+		return
+
+	total_width += COLUMN_GAP * maxf(0.0, float(headers.size() - 1))
+	header_columns.offset_right = header_columns.offset_left + total_width
+	header_columns.custom_minimum_size = Vector2(total_width, HEADER_HEIGHT)
 
 func _build_office_space_column() -> Dictionary:
 	var office_column := {

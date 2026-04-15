@@ -1,4 +1,4 @@
-[gd_scene load_steps=7 format=3 uid="uid://u8bret2kckvv"]
+[gd_scene format=3 uid="uid://u8bret2kckvv"]
 
 [ext_resource type="Script" uid="uid://cqag0vasl33gh" path="res://Person/Worker/worker.gd" id="1_l17xh"]
 [ext_resource type="Texture2D" uid="uid://breqcy7jrm1kr" path="res://Person/Textures/Head/01.png" id="2_k1q1s"]
@@ -14,7 +14,6 @@ size = Vector2(18, 24)
 script = ExtResource("1_l17xh")
 
 [node name="HoverArea" type="Area2D" parent="." unique_id=1564372157]
-input_pickable = true
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="HoverArea" unique_id=1034979956]
 position = Vector2(0, -1)
