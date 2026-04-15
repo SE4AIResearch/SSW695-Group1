@@ -7,7 +7,7 @@ var methodList = load("res://Projects/MethodologyList.gd").new()
 var projectChoiceItem = preload("res://UI/InGame/ProjectSetup/ProjectItem/ProjectItem.tscn")
 
 var selectedProject: Node
-var randomProject: Node
+var randomProject: Dictionary
 
 
 func _on_button_pressed() -> void:
@@ -38,7 +38,7 @@ func generateProjectChoices() -> void:
 		randomProject = projectList.projects.pick_random()
 		
 		projectInfo.projectName = randomProject.name
-		projectInfo.projectDescription = randomProject.name
+		projectInfo.projectDescription = randomProject.description
 		projectInfo.clientName = PersonConstructor.generateName()
 		projectInfo.frontEndProjectMin = (totalFE*randomProject.frontEndScalar)*clampf(PlayerTool.projectAmount*1.025,1,1000)
 		projectInfo.backEndProjectMin = (totalBE*randomProject.backEndScalar)*clampf(PlayerTool.projectAmount*1.025,1,1000)
@@ -46,9 +46,9 @@ func generateProjectChoices() -> void:
 		projectInfo.sprintAmount = randomProject.baseSprintAmount
 		projectInfo.sprintLength = randomProject.baseSprintLength
 		projectInfo.sprintMetricAmount = randomProject.baseSprintMetricAmount
-		projectInfo.frontEndMetrics = randomProject.frontEndMetrics
-		projectInfo.backEndMetrics = randomProject.backEndMetrics
-		projectInfo.documentingMetrics = randomProject.documentingMetrics
+		projectInfo.frontEndMetrics = randomProject.frontEndMetrics.duplicate(true)
+		projectInfo.backEndMetrics = randomProject.backEndMetrics.duplicate(true)
+		projectInfo.documentingMetrics = randomProject.documentingMetrics.duplicate(true)
 
 		match i:
 			0: 	projectInfo.constraints.append(projectList.constraints.pick_random())
@@ -106,8 +106,8 @@ func methodSelected(chosenMetric):
 func calculateUpgradeEffects():
 
 	selectedProject.projectDifficulty = randomProject.get("frontEndScalar") + randomProject.get("backEndScalar") + randomProject.get("documentingScalar")
-	PlayerTool.projectInfo(selectedProject)
-	get_parent().get_parent().projectInfo()
+	PlayerTool.newProject(selectedProject)
+	get_parent().get_parent().newProject()
 	pass
 	
 func finishProjectChoosing():
@@ -116,6 +116,3 @@ func finishProjectChoosing():
 	pass
 
 func _on_pc_back_pressed() -> void: get_parent().get_parent().endMenu()
-
-func _on_close_button_pressed() -> void:
-	get_parent().get_parent().endMenu()

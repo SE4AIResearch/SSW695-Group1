@@ -9,9 +9,25 @@ const CARD_TOP_PADDING := 12.0
 const CARD_BOTTOM_PADDING := 12.0
 const CARD_GAP := 6.0
 
-func prepItem(item: Dictionary):
-	heldItem = item
-	var requiredSkill := str(item.get("required_skill", "frontEnd"))
+func prepItem(item, itemType: int = -1):
+	if item is Dictionary:
+		heldItem = item
+	else:
+		var requiredSkill := "frontEnd"
+		match itemType:
+			1:
+				requiredSkill = "backEnd"
+			2:
+				requiredSkill = "documenting"
+		heldItem = {
+			"name": str(item),
+			"required_skill": requiredSkill,
+			"effort_remaining": 1,
+			"total_effort": 1,
+			"status": "todo",
+		}
+
+	var requiredSkill := str(heldItem.get("required_skill", "frontEnd"))
 	var skillColor := "#fc2403"
 	var skillLabel := "Front End"
 	match requiredSkill:
@@ -23,21 +39,21 @@ func prepItem(item: Dictionary):
 			skillLabel = "Documentation"
 
 	var tags: Array = []
-	if bool(item.get("is_scope_change", false)):
+	if bool(heldItem.get("is_scope_change", false)):
 		tags.append("Scope Change")
-	if bool(item.get("is_reliability_critical", false)):
+	if bool(heldItem.get("is_reliability_critical", false)):
 		tags.append("Reliability Critical")
-	if item.get("status") == "done":
+	if heldItem.get("status") == "done":
 		tags.append("Complete")
-	elif item.get("status") == "in_progress":
+	elif heldItem.get("status") == "in_progress":
 		tags.append("In Progress")
 
-	$metricName.text = "[color=%s]%s" % [skillColor, str(item.get("name", "Backlog Item"))]
+	$metricName.text = "[color=%s]%s" % [skillColor, str(heldItem.get("name", "Backlog Item"))]
 	var detailText := "[color=%s]%s | Effort %d/%d" % [
 		skillColor,
 		skillLabel,
-		int(item.get("effort_remaining", 0)),
-		int(item.get("total_effort", 0)),
+		int(heldItem.get("effort_remaining", 0)),
+		int(heldItem.get("total_effort", 0)),
 	]
 	if not tags.is_empty():
 		detailText += " | " + " | ".join(tags)

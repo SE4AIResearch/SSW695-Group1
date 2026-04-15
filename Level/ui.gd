@@ -31,9 +31,12 @@ func _on_back_button_pressed() -> void: endMenu()
 func _on_pc_back_pressed() -> void: endMenu()
 
 func endMenu():
-	currentMenu.queue_free()
+	if currentMenu != null and is_instance_valid(currentMenu):
+		currentMenu.queue_free()
+	currentMenu = null
 	match pcMode:
 		true:
+			$PCButtons.visible = true
 			$PCButtons/UpgradesButton.disabled = false
 			$PCButtons/HiringButton.disabled = false
 			$PCButtons/projectStartMenu.disabled = false
@@ -50,7 +53,7 @@ func _on_upgrades_button_pressed() -> void: createMenu(UpgradesMenu.instantiate(
 
 func _on_project_metrics_button_pressed() -> void:
 	var metricsMenu = ProjectMetricsMenu.instantiate()
-	metricsMenu.getCurrentMetrics(PlayerTool.currentProject,PlayerTool.currentMetrics)
+	metricsMenu.getCurrentMetrics(PlayerTool.project, PlayerTool.metrics)
 	createMenu(metricsMenu)
 
 func _on_hiring_button_pressed() -> void: createMenu(HiringMenu.instantiate())
@@ -62,12 +65,15 @@ func _on_project_start_menu_pressed() -> void: createMenu(ProjectSetupMenu.insta
 func _on_random_event_button_pressed() -> void: createMenu(randomEventMenu.instantiate())
 
 func createMenu(menu):
+	if currentMenu != null and is_instance_valid(currentMenu):
+		currentMenu.queue_free()
 	$NewMenu.add_child(menu)
 	currentMenu = menu
 	get_tree().paused = true
 	currentMenu.visible = true
 	match pcMode:
 		true: 
+			$PCButtons.visible = false
 			$PCButtons/UpgradesButton.disabled = true
 			$PCButtons/HiringButton.disabled = true
 			$PCButtons/projectStartMenu.disabled = true

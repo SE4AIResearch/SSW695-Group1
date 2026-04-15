@@ -1,5 +1,8 @@
 extends Node2D
 
+func getCurrentMetrics(_project, _metrics) -> void:
+	setupMetrics()
+	updateCurrentStats()
 
 func _ready() -> void:
 	PlayerTool.statsChanged.connect(updateCurrentStats)
@@ -8,6 +11,8 @@ func _ready() -> void:
 
 
 func setupMetrics():
+	if PlayerTool.project == null:
+		return
 	$projectNameLabel.text = "Project: " + PlayerTool.project.projectName + " | Client: " + PlayerTool.project.clientName
 	$methodologyLabel.text = "Methodology: " + PlayerTool.project.methodology.get("name")
 	$frontEndBar.max_value = PlayerTool.project.frontEndProjectMin
@@ -23,5 +28,11 @@ func updateCurrentStats():
 		$backEndBar.value = PlayerTool.metrics.get("backEnd")
 		$documentationBar.value = PlayerTool.metrics.get("documenting")
 		$reliabilityBar.value = PlayerTool.metrics.get("reliability")
-		$stakeholderSatisfactionBar.value = PlayerTool.metrics.get("stakeholderSatisfaction")		
-		pass
+		$stakeholderSatisfactionBar.value = PlayerTool.metrics.get("stakeholderSatisfaction")
+	else:
+		$frontEndBar.value = 0
+		$backEndBar.value = 0
+		$documentationBar.value = 0
+		$reliabilityBar.value = 0
+		$stakeholderSatisfactionBar.value = 0
+	pass

@@ -41,21 +41,35 @@ func setButtonVisual(menuButton: Button):
 	pass
 
 func initializeEvent():
-	chosenEvent = eventList.events.pick_random()
-	$eventText.text = chosenEvent.get("description")
+	var eventPool: Array = []
+	eventPool.append_array(eventList.general_events)
+	if PlayerTool.project != null and eventList.project_events.has(PlayerTool.project.projectName):
+		eventPool.append_array(eventList.project_events.get(PlayerTool.project.projectName, []))
+	if eventPool.is_empty():
+		$eventText.text = "No event available."
+		button1.visible = false
+		button2.visible = false
+		button3.visible = false
+		button4.visible = false
+		return
+
+	chosenEvent = eventPool.pick_random()
+	var choices: Array = chosenEvent.get("choices", [])
+	var outcomes: Array = chosenEvent.get("outcomes", [])
+	$eventText.text = chosenEvent.get("description", "")
 	setButtonVisual(button1)
 	setButtonVisual(button2)
 	setButtonVisual(button3)
 	setButtonVisual(button4)
-	match chosenEvent.get("choices").size():
+	match choices.size():
 		1:
 			button1.visible = true
 			button2.visible = false
 			button3.visible = false
 			button4.visible = false
 			button1.position = $single/Marker2D.position
-			button1.get_child(0).text = chosenEvent.choices[0]
-			choice1OBJ = chosenEvent.outcomes[0]
+			button1.get_child(0).text = str(choices[0])
+			choice1OBJ = outcomes[0]
 		2:
 			button1.visible = true
 			button2.visible = true
@@ -63,10 +77,10 @@ func initializeEvent():
 			button4.visible = false		
 			button1.position = $double/Marker2D.position
 			button2.position = $double/Marker2D2.position
-			button1.get_child(0).text = chosenEvent.choices[0]
-			button2.get_child(0).text = chosenEvent.choices[1]
-			choice1OBJ = chosenEvent.outcomes[0]
-			choice2OBJ = chosenEvent.outcomes[1]
+			button1.get_child(0).text = str(choices[0])
+			button2.get_child(0).text = str(choices[1])
+			choice1OBJ = outcomes[0]
+			choice2OBJ = outcomes[1]
 		3:
 			button1.visible = true
 			button3.visible = true
@@ -75,12 +89,12 @@ func initializeEvent():
 			button1.position = $tripple/Marker2D.position
 			button2.position = $tripple/Marker2D2.position
 			button3.position = $tripple/Marker2D3.position
-			button1.get_child(0).text = chosenEvent.choices[0]
-			button2.get_child(0).text = chosenEvent.choices[1]
-			button3.get_child(0).text = chosenEvent.choices[2]
-			choice1OBJ = chosenEvent.outcomes[0]
-			choice2OBJ = chosenEvent.outcomes[1]
-			choice3OBJ = chosenEvent.outcomes[2]
+			button1.get_child(0).text = str(choices[0])
+			button2.get_child(0).text = str(choices[1])
+			button3.get_child(0).text = str(choices[2])
+			choice1OBJ = outcomes[0]
+			choice2OBJ = outcomes[1]
+			choice3OBJ = outcomes[2]
 		4:
 			button1.visible = true
 			button2.visible = true
@@ -90,14 +104,14 @@ func initializeEvent():
 			button2.position = $quad/Marker2D2.position
 			button3.position = $quad/Marker2D3.position
 			button4.position = $quad/Marker2D4.position
-			button1.get_child(0).text = chosenEvent.choices[0]
-			button2.get_child(0).text = chosenEvent.choices[1]
-			button3.get_child(0).text = chosenEvent.choices[2]
-			button4.get_child(0).text = chosenEvent.choices[3]
-			choice1OBJ = chosenEvent.outcomes[0]
-			choice2OBJ = chosenEvent.outcomes[1]
-			choice3OBJ = chosenEvent.outcomes[2]
-			choice4OBJ = chosenEvent.outcomes[3]
+			button1.get_child(0).text = str(choices[0])
+			button2.get_child(0).text = str(choices[1])
+			button3.get_child(0).text = str(choices[2])
+			button4.get_child(0).text = str(choices[3])
+			choice1OBJ = outcomes[0]
+			choice2OBJ = outcomes[1]
+			choice3OBJ = outcomes[2]
+			choice4OBJ = outcomes[3]
 			
 func _on_choice_1_pressed() -> void: calculateOutcome(choice1OBJ)
 func _on_choice_2_pressed() -> void: calculateOutcome(choice2OBJ)
@@ -105,22 +119,31 @@ func _on_choice_3_pressed() -> void: calculateOutcome(choice3OBJ)
 func _on_choice_4_pressed() -> void: calculateOutcome(choice4OBJ)
 
 func calculateOutcome(eventChoice):
-	#Insert code here which determines whether the outcome of the event is a project stat change, or a backlog item.
-	match chosenEvent.type:
-		"FrontEnd": PlayerTool.metrics.set("frontEnd",PlayerTool.metrics.get("frontEnd") * eventChoice)
-		"BackEnd": PlayerTool.metrics.set("backEnd",PlayerTool.metrics.get("backEnd") * eventChoice)
-		"Documenting": PlayerTool.metrics.set("documenting",PlayerTool.metrics.get("documenting") * eventChoice)
-		"Stakeholder": #DISALLOW STAKEHOLDER EVENTS FROM TAKING PLACE ON THE LAST SPRINT???????????
-			if eventChoice is not Array:
-				if eventChoice[0] != 0: PlayerTool.project.sprintAmount += eventChoice[0]
-				if eventChoice[1] != 0: PlayerTool.project.sprintLength += eventChoice[1]
-				if eventChoice[2] != 0: PlayerTool.project.sprintMetricAmount += eventChoice[2]
-			pass
+	var eventType := str(chosenEvent.get("type", ""))
+	match eventType:
+		"FrontEnd", "BackEnd", "Documenting":
+			_apply_metric_deltas(eventChoice)
+		"Stakeholder":
+			if eventChoice is Array and eventChoice.size() >= 3:
+				PlayerTool.project.sprintAmount += int(eventChoice[0])
+				PlayerTool.project.sprintLength += int(eventChoice[1])
+				PlayerTool.project.sprintMetricAmount += int(eventChoice[2])
+			elif eventChoice is Dictionary:
+				_apply_metric_deltas(eventChoice)
 		"Backlog":
-				match eventChoice[0]:
-					"frontEnd": PlayerTool.project.frontEndMetrics[int(PlayerTool.project.frontEndMetrics.size())] = eventChoice[1]
-					"backEnd": PlayerTool.project.backEndMetrics[int(PlayerTool.project.backEndMetrics.size())] = eventChoice[1]
-					"documenting": PlayerTool.project.documentingMetrics[int(PlayerTool.project.documentingMetrics.size())] = eventChoice[1]
+			if eventChoice is Array and eventChoice.size() >= 2:
+				var requiredSkill := str(eventChoice[0])
+				var backlogLabel := str(eventChoice[1])
+				var effortAmount := 1
+				if eventChoice.size() >= 3:
+					effortAmount = max(1, int(eventChoice[2]))
+				PlayerTool.addEventBacklogItem(requiredSkill, backlogLabel, effortAmount, effortAmount, true)
 	
 	get_parent().get_parent().endMenu()
 	pass
+
+func _apply_metric_deltas(metricDeltas) -> void:
+	if metricDeltas is not Dictionary:
+		return
+	for metricKey in metricDeltas.keys():
+		PlayerTool.changeMetricByName(str(metricKey), int(metricDeltas.get(metricKey, 0)))

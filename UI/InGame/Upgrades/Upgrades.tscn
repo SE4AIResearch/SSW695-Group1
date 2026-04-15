@@ -60,16 +60,4 @@ theme_override_styles/pressed = SubResource("StyleBoxTexture_t5ir5")
 theme_override_styles/hover = SubResource("StyleBoxTexture_ku4p8")
 theme_override_styles/disabled = SubResource("StyleBoxTexture_gclh5")
 
-[node name="CloseButton" type="Button" parent="." unique_id=999000003]
-process_mode = 2
-offset_left = 934.0
-offset_top = 144.0
-offset_right = 998.0
-offset_bottom = 208.0
-theme_override_styles/normal = SubResource("StyleBoxTexture_dcl57")
-theme_override_styles/pressed = SubResource("StyleBoxTexture_t5ir5")
-theme_override_styles/hover = SubResource("StyleBoxTexture_ku4p8")
-theme_override_styles/disabled = SubResource("StyleBoxTexture_gclh5")
-
 [connection signal="pressed" from="PCBack" to="." method="_on_pc_back_pressed"]
-[connection signal="pressed" from="CloseButton" to="." method="_on_close_button_pressed"]

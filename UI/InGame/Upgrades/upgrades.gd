@@ -131,6 +131,3 @@ func _create_category_header(column_data: Dictionary) -> PanelContainer:
 	return header
 
 func _on_pc_back_pressed() -> void: get_parent().get_parent().endMenu()
-
-func _on_close_button_pressed() -> void:
-	get_parent().get_parent().endMenu()

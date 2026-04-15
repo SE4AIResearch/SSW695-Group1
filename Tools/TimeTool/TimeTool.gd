@@ -5,6 +5,7 @@ signal sprintPassed
 
 var timer = Timer.new()
 var totalSeconds: int = 0
+const WEEK_DURATION_SECONDS := 10
 
 func _ready() -> void:
 	add_child(timer)
@@ -17,10 +18,17 @@ func trackSeconds() -> void:
 	totalSeconds += 1
 	if not PlayerTool.isWeekActive():
 		return
-	PlayerTool.currentWeekTime = mini(PlayerTool.currentWeekTime + 1, PlayerTool.WEEK_DURATION_SECONDS)
+	PlayerTool.weekTime = mini(PlayerTool.weekTime + 1, WEEK_DURATION_SECONDS)
 	PlayerTool.weekTimerUpdated.emit()
-	if PlayerTool.currentWeekTime >= PlayerTool.WEEK_DURATION_SECONDS:
-		PlayerTool.resolveWeek()
+	if PlayerTool.weekTime < WEEK_DURATION_SECONDS:
+		return
+	var previousSprint := PlayerTool.projSprint
+	var resolved := PlayerTool.resolveWeek()
+	if not resolved:
+		return
+	weekPassed.emit()
+	if PlayerTool.project == null or PlayerTool.projSprint != previousSprint:
+		sprintPassed.emit()
 
 func addTimer() -> void:
 	timer.reparent(PlayerTool.level)
