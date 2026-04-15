@@ -7,7 +7,7 @@ var methodList = load("res://Projects/MethodologyList.gd").new()
 var projectChoiceItem = preload("res://UI/InGame/ProjectSetup/ProjectItem/ProjectItem.tscn")
 
 var selectedProject: Node
-var randomProject: Node
+var randomProject: Dictionary
 
 
 func _on_button_pressed() -> void:
@@ -106,8 +106,8 @@ func methodSelected(chosenMetric):
 func calculateUpgradeEffects():
 
 	selectedProject.projectDifficulty = randomProject.get("frontEndScalar") + randomProject.get("backEndScalar") + randomProject.get("documentingScalar")
-	PlayerTool.projectInfo(selectedProject)
-	get_parent().get_parent().projectInfo()
+	PlayerTool.newProject(selectedProject)
+	get_parent().get_parent().newProject()
 	pass
 	
 func finishProjectChoosing():
