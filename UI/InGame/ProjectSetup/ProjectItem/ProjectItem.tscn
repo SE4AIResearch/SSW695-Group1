@@ -19,7 +19,7 @@ texture = ExtResource("3_cajoh")
 texture = ExtResource("4_0x3gt")
 
 [node name="ProjectItem" type="Button" unique_id=1964688718]
-custom_minimum_size = Vector2(260, 305)
+custom_minimum_size = Vector2(260, 245)
 anchors_preset = -1
 anchor_right = 0.19500001
 anchor_bottom = 0.335
@@ -34,7 +34,7 @@ theme_override_styles/hover = SubResource("StyleBoxTexture_i5on1")
 theme_override_styles/disabled = SubResource("StyleBoxTexture_vfxta")
 script = ExtResource("1_xmqj3")
 
-[node name="ProjectDetails" type="Label" parent="." unique_id=2026093634]
+[node name="ProjectDetails" type="RichTextLabel" parent="." unique_id=842768243]
 layout_mode = 1
 anchors_preset = -1
 anchor_right = 1.0020001
@@ -44,8 +44,7 @@ offset_top = 22.0
 offset_right = -12.076019
 offset_bottom = -13.152008
 mouse_filter = 1
-theme_override_font_sizes/font_size = 14
-theme_override_constants/line_spacing = 2
+bbcode_enabled = true
 text = "Project Name
 Description
 Client
@@ -54,6 +53,5 @@ Sprint Amount
 Minimum FE
 Minimum BE
 Minimum D"
-autowrap_mode = 3
 
 [connection signal="pressed" from="." to="." method="_on_pressed"]

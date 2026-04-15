@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://df0nfm3f5alcg"
-path="res://.godot/imported/RandomEventPressed.png-8730a357d4ba2625628d1d31a92a4e3e.ctex"
+uid="uid://dla72g4cpmext"
+path="res://.godot/imported/nextPressed.png-f4e6f305c1942cf97ad8e125e33d8fb2.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://UI/Theme/MainLevel/RandomEvent/RandomEventPressed.png"
-dest_files=["res://.godot/imported/RandomEventPressed.png-8730a357d4ba2625628d1d31a92a4e3e.ctex"]
+source_file="res://UI/Theme/PCTheme/arrow/nextPressed.png"
+dest_files=["res://.godot/imported/nextPressed.png-f4e6f305c1942cf97ad8e125e33d8fb2.ctex"]
 
 [params]
 

@@ -7,8 +7,6 @@ var HiringMenu = load("res://UI/InGame/Hiring/Hiring.tscn")
 var BacklogMenu = load("res://UI/InGame/Backlog/Backlog.tscn")
 var ProjectSetupMenu = load("res://UI/InGame/ProjectSetup/ProjectSetup.tscn")
 var randomEventMenu = load("res://UI/InGame/RandomEvent/RandomEvent.tscn")
-var WeeklyResultsMenu = load("res://UI/InGame/WeeklyResults/WeeklyResults.tscn")
-var ProjectSummaryMenu = load("res://UI/InGame/ProjectSummary/ProjectSummary.tscn")
 
 var pcMode = false
 
@@ -17,8 +15,6 @@ var pcMode = false
 func _ready() -> void:
 	PlayerTool.connect("projectSelected",toggleProjectButtons)
 	PlayerTool.connect("deadlineReached",toggleProjectButtons)
-	PlayerTool.connect("projectCompleted",toggleProjectButtons)
-	PlayerTool.connect("weekResolved",_on_week_resolved)
 	toggleProjectButtons()
 
 func _physics_process(delta: float) -> void: pass
@@ -35,12 +31,9 @@ func _on_back_button_pressed() -> void: endMenu()
 func _on_pc_back_pressed() -> void: endMenu()
 
 func endMenu():
-	if currentMenu != null and is_instance_valid(currentMenu):
-		currentMenu.queue_free()
-	currentMenu = null
+	currentMenu.queue_free()
 	match pcMode:
 		true:
-			$PCButtons.visible = true
 			$PCButtons/UpgradesButton.disabled = false
 			$PCButtons/HiringButton.disabled = false
 			$PCButtons/projectStartMenu.disabled = false
@@ -66,55 +59,43 @@ func _on_backlog_button_pressed() -> void: createMenu(BacklogMenu.instantiate())
 
 func _on_project_start_menu_pressed() -> void: createMenu(ProjectSetupMenu.instantiate())
 
-func _on_random_event_button_pressed() -> void:
-	if PlayerTool.currentProject == null:
-		return
-	createMenu(randomEventMenu.instantiate())
+func _on_random_event_button_pressed() -> void: createMenu(randomEventMenu.instantiate())
 
 func createMenu(menu):
-	if currentMenu != null and is_instance_valid(currentMenu):
-		currentMenu.queue_free()
 	$NewMenu.add_child(menu)
 	currentMenu = menu
 	get_tree().paused = true
 	currentMenu.visible = true
 	match pcMode:
 		true: 
-			$PCButtons.visible = false
 			$PCButtons/UpgradesButton.disabled = true
 			$PCButtons/HiringButton.disabled = true
 			$PCButtons/projectStartMenu.disabled = true
 		false: $BackButton.visible = true
-
-func showWeekResults() -> void:
-	createMenu(WeeklyResultsMenu.instantiate())
-
-func showProjectSummary() -> void:
-	createMenu(ProjectSummaryMenu.instantiate())
-
-func _on_week_resolved() -> void:
-	if PlayerTool.loopPhase == PlayerTool.LOOP_PROJECT_SUMMARY and not PlayerTool.pendingProjectSummary.is_empty():
-		showProjectSummary()
-		return
-	if PlayerTool.shouldShowWeekResultsModal:
-		showWeekResults()
 
 func _on_pc_pressed() -> void:
 	#Insert code of screen lerping in size and position to the middle of the screen
 	#and showing the PC Buttons when completed
 	pcMode = true
 	get_tree().paused = true
-	$PauseButton.visible = false
 	$PCStats.visible = false
 	$PCScreen.visible = true
 	$PCScreenPanel.visible = true	
 	$PCButtons.visible = true
+	match PlayerTool.currentProject == null:
+		true:
+			$PCButtons/projectStartMenu.text = "Start New Project"
+			$PCButtons/projectStartMenu.disabled = false
+			pass
+		false:
+			$PCButtons/projectStartMenu.text = "Already have a Project"
+			$PCButtons/projectStartMenu.disabled = true		
+			pass
 	
 func _on_pc_power_pressed() -> void:
 	#Insert code of screen lerping in size and position to the original PC location and render buttons invisible
 	pcMode = false
 	get_tree().paused = false
-	$PauseButton.visible = true
 	$PCStats.visible = true
 	$PCScreen.visible = false
 	$PCScreenPanel.visible = false
@@ -128,6 +109,11 @@ func _on_pc_power_pressed() -> void:
 func toggleProjectButtons():
 	var hasProject = PlayerTool.currentProject != null
 	$BacklogButton.disabled = !hasProject
-	$RandomEventButton.disabled = false
-	$RandomEventButton.mouse_filter = Control.MOUSE_FILTER_STOP if hasProject else Control.MOUSE_FILTER_IGNORE
-	$PCButtons/projectStartMenu.disabled = hasProject
+
+func startEvent():
+	get_tree().paused = true
+	$randomEventRinger.play("ringing")
+	$randomEventRinger/ringerAudio.play()
+	await $randomEventRinger/ringerAudio.finished
+	$randomEventRinger.play("idle")
+	createMenu(randomEventMenu.instantiate())

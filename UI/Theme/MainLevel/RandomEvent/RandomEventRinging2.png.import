@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://bljlfsy1s2b6v"
-path="res://.godot/imported/RandomEventHover.png-48f65da70bbd50af88ddfa4b88224904.ctex"
+uid="uid://df0nfm3f5alcg"
+path="res://.godot/imported/RandomEventRinging2.png-605405aa68272358b4f21e232f0f5883.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://UI/Theme/MainLevel/RandomEvent/RandomEventHover.png"
-dest_files=["res://.godot/imported/RandomEventHover.png-48f65da70bbd50af88ddfa4b88224904.ctex"]
+source_file="res://UI/Theme/MainLevel/RandomEvent/RandomEventRinging2.png"
+dest_files=["res://.godot/imported/RandomEventRinging2.png-605405aa68272358b4f21e232f0f5883.ctex"]
 
 [params]
 

@@ -4,6 +4,7 @@ extends Node2D
 
 
 func _ready() -> void:
+	TimeTool.weekPassed.connect(rollEvent)
 	PlayerTool.hireSelected.connect(setupDeskVisuals)
 	initializeSave()
 	PlayerTool.level = self
@@ -33,3 +34,8 @@ func _on_worker_hover_started(worker) -> void:
 
 func _on_worker_hover_ended(worker) -> void:
 	worker_details.hide_worker()
+
+func rollEvent():
+	var chance = randf_range(0,1)
+	if chance <= PlayerTool.currentProject.eventChance: $UI.startEvent()
+	pass
