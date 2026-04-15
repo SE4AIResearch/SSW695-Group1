@@ -19,7 +19,7 @@ texture = ExtResource("3_lhns7")
 texture = ExtResource("4_d6deq")
 
 [node name="MetricItem" type="Button" unique_id=964148526]
-custom_minimum_size = Vector2(192, 192)
+custom_minimum_size = Vector2(176, 192)
 anchors_preset = -1
 anchor_right = 0.16700001
 anchor_bottom = 0.296

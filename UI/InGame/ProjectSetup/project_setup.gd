@@ -12,10 +12,10 @@ const PROJECT_CHOICES_HEIGHT := 245.0
 const ACTION_BUTTON_WIDTH := 240.0
 const ACTION_BUTTON_HEIGHT := 80.0
 const ACTION_BUTTON_BOTTOM_PADDING := 10.0
-const METHODOLOGY_HORIZONTAL_PADDING := 0.0
-const METHODOLOGY_CARD_GAP := 4
+const METHODOLOGY_WINDOW_SIDE_PADDING := 20.0
+const METHODOLOGY_CARD_GAP := 2
 const METHODOLOGY_CARD_HEIGHT := 240.0
-const METHODOLOGY_CARD_WIDTH_REDUCTION := 16.0
+const METHODOLOGY_CARD_WIDTH_REDUCTION := 20.0
 
 var selectedProject: Node
 var randomProject: Dictionary
@@ -28,6 +28,7 @@ func _on_button_pressed() -> void:
 func _ready():
 	PCWindowLayout.apply(self)
 	_apply_content_layout()
+	$Title.text = "Select Project"
 	if PlayerTool.workers.size() == 0:
 		$ProjectChoose/Button.text = "Hire a Worker!"
 		$ProjectChoose/Button.disabled = true
@@ -38,8 +39,8 @@ func _apply_content_layout() -> void:
 	var choice_top: float = content_rect.position.y + 28.0
 	var choices_left: float = content_rect.position.x + 82.0
 	var choices_right: float = content_rect.position.x + content_rect.size.x - 81.0
-	var methodology_left: float = content_rect.position.x + METHODOLOGY_HORIZONTAL_PADDING
-	var methodology_right: float = content_rect.position.x + content_rect.size.x - METHODOLOGY_HORIZONTAL_PADDING
+	var methodology_left: float = PCWindowLayout.WINDOW_LEFT + METHODOLOGY_WINDOW_SIDE_PADDING
+	var methodology_right: float = PCWindowLayout.WINDOW_LEFT + PCWindowLayout.WINDOW_WIDTH - METHODOLOGY_WINDOW_SIDE_PADDING
 
 	$ProjectChoose.position = Vector2.ZERO
 	$MethodologyChoose.position = Vector2.ZERO
@@ -141,6 +142,7 @@ func projectSelected(project):
 
 func generateMetricsChoices():
 	$MethodologyChoose.visible = true
+	$Title.text = "Select Methodology"
 	for metric in methodList.methods:
 		var newMethod = methodItem.instantiate()
 		newMethod.setupMetric(metric)
