@@ -10,7 +10,7 @@ var choiceOutcomes: Array = []
 @onready var button3 = $choice3
 @onready var button4 = $choice4
 @onready var eventText = $eventText
-@onready var eventLabel = $Label
+@onready var eventLabel = $eventText
 
 var feedbackContainer: Control
 var continueBtn: Button

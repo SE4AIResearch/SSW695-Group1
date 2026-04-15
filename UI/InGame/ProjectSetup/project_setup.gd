@@ -9,6 +9,8 @@ var methodList = load("res://Projects/MethodologyList.gd").new()
 var projectChoiceItem = preload("res://UI/InGame/ProjectSetup/ProjectItem/ProjectItem.tscn")
 
 const PROJECT_CHOICES_HEIGHT := 245.0
+const LEARN_MORE_BUTTON_WIDTH := 160.0
+const LEARN_MORE_BUTTON_HEIGHT := 40.0
 const ACTION_BUTTON_WIDTH := 240.0
 const ACTION_BUTTON_HEIGHT := 80.0
 const ACTION_BUTTON_BOTTOM_PADDING := 10.0
@@ -54,6 +56,11 @@ func _apply_content_layout() -> void:
 	$ProjectChoose/Button.offset_top = content_rect.position.y + content_rect.size.y - ACTION_BUTTON_HEIGHT - ACTION_BUTTON_BOTTOM_PADDING
 	$ProjectChoose/Button.offset_right = $ProjectChoose/Button.offset_left + ACTION_BUTTON_WIDTH
 	$ProjectChoose/Button.offset_bottom = $ProjectChoose/Button.offset_top + ACTION_BUTTON_HEIGHT
+
+	$LearnMoreButton.offset_left = PCWindowLayout.WINDOW_LEFT + 40.0
+	$LearnMoreButton.offset_top = PCWindowLayout.WINDOW_TOP + 18.0
+	$LearnMoreButton.offset_right = $LearnMoreButton.offset_left + LEARN_MORE_BUTTON_WIDTH
+	$LearnMoreButton.offset_bottom = $LearnMoreButton.offset_top + LEARN_MORE_BUTTON_HEIGHT
 
 	$MethodologyChoose/ScrollContainer.offset_left = methodology_left
 	$MethodologyChoose/ScrollContainer.offset_top = choice_top
@@ -142,6 +149,7 @@ func projectSelected(project):
 
 func generateMetricsChoices():
 	$MethodologyChoose.visible = true
+	$LearnMoreButton.visible = true
 	$Title.text = "Select Methodology"
 	for metric in methodList.methods:
 		var newMethod = methodItem.instantiate()
@@ -155,6 +163,7 @@ func generateMetricsChoices():
 func methodSelected(chosenMetric):
 	PlayerTool.resetProjectStats()
 	selectedProject.methodology = chosenMetric
+	_hide_learning_center()
 	for child in $MethodologyChoose/ScrollContainer/MethodologyChoices.get_children(): child.queue_free()
 	calculateUpgradeEffects()
 	pass
@@ -172,4 +181,27 @@ func finishProjectChoosing():
 	self.queue_free()
 	pass
 
-func _on_pc_back_pressed() -> void: get_parent().get_parent().endMenu()
+func _on_pc_back_pressed() -> void:
+	if $LearningCenter.visible:
+		_hide_learning_center()
+		return
+	get_parent().get_parent().endMenu()
+
+func _on_learn_more_button_pressed() -> void:
+	$MethodologyChoose.visible = false
+	$LearnMoreButton.visible = false
+	$Title.visible = false
+	_reset_learning_center()
+	$LearningCenter.visible = true
+
+func _hide_learning_center() -> void:
+	$LearningCenter.visible = false
+	$MethodologyChoose.visible = true
+	$Title.visible = true
+	$LearnMoreButton.visible = true
+	_reset_learning_center()
+
+func _reset_learning_center() -> void:
+	$LearningCenter.get_node("Categories").visible = true
+	$LearningCenter.get_node("Page/Entry").text = ""
+	$LearningCenter.get_node("Page").visible = false
