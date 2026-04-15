@@ -30,7 +30,7 @@ var docBacklogStep: int = 0
 var teamRank: int = 1
 var workers: Array
 var upgrades: Array
-var currency: float = 0.0
+var currency: float = 0.00
 var projectAmount: int = 0
 
 func initializeNewSave():

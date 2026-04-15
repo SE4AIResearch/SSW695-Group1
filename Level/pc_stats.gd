@@ -3,6 +3,7 @@ extends Node2D
 func _ready() -> void:
 	PlayerTool.statsChanged.connect(updateCurrentStats)
 	PlayerTool.projectSelected.connect(setupMetrics)
+	TimeTool.timer.timeout.connect(updateMoney)
 	pass
 
 func setupMetrics():
@@ -17,5 +18,9 @@ func updateCurrentStats():
 		$frontEndBar.value = PlayerTool.metrics.get("frontEnd")
 		$backEndBar.value = PlayerTool.metrics.get("backEnd")
 		$documentationBar.value = PlayerTool.metrics.get("documenting")
-		$reliabilityBar.value = PlayerTool.metrics.get("reliability")	
+		$reliabilityBar.value = PlayerTool.metrics.get("reliability")
 		pass
+
+func updateMoney():$Currency.text = "Currency: $"+str(snappedf(PlayerTool.currency,0.01))
+	
+	

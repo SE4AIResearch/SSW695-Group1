@@ -383,7 +383,7 @@ offset_right = 1106.0
 offset_bottom = 417.0
 mouse_filter = 2
 bbcode_enabled = true
-text = "Currency:"
+text = "Currency: $0.0"
 metadata/_edit_use_anchors_ = true
 
 [node name="Score" type="RichTextLabel" parent="UI/PCStats" unique_id=1758771665]
