@@ -12,6 +12,10 @@ const PROJECT_CHOICES_HEIGHT := 245.0
 const ACTION_BUTTON_WIDTH := 240.0
 const ACTION_BUTTON_HEIGHT := 80.0
 const ACTION_BUTTON_BOTTOM_PADDING := 10.0
+const METHODOLOGY_HORIZONTAL_PADDING := 0.0
+const METHODOLOGY_CARD_GAP := 4
+const METHODOLOGY_CARD_HEIGHT := 240.0
+const METHODOLOGY_CARD_WIDTH_REDUCTION := 16.0
 
 var selectedProject: Node
 var randomProject: Dictionary
@@ -34,6 +38,8 @@ func _apply_content_layout() -> void:
 	var choice_top: float = content_rect.position.y + 28.0
 	var choices_left: float = content_rect.position.x + 82.0
 	var choices_right: float = content_rect.position.x + content_rect.size.x - 81.0
+	var methodology_left: float = content_rect.position.x + METHODOLOGY_HORIZONTAL_PADDING
+	var methodology_right: float = content_rect.position.x + content_rect.size.x - METHODOLOGY_HORIZONTAL_PADDING
 
 	$ProjectChoose.position = Vector2.ZERO
 	$MethodologyChoose.position = Vector2.ZERO
@@ -48,10 +54,25 @@ func _apply_content_layout() -> void:
 	$ProjectChoose/Button.offset_right = $ProjectChoose/Button.offset_left + ACTION_BUTTON_WIDTH
 	$ProjectChoose/Button.offset_bottom = $ProjectChoose/Button.offset_top + ACTION_BUTTON_HEIGHT
 
-	$MethodologyChoose/ScrollContainer.offset_left = content_rect.position.x + 82.0
+	$MethodologyChoose/ScrollContainer.offset_left = methodology_left
 	$MethodologyChoose/ScrollContainer.offset_top = choice_top
-	$MethodologyChoose/ScrollContainer.offset_right = content_rect.position.x + content_rect.size.x - 81.0
+	$MethodologyChoose/ScrollContainer.offset_right = methodology_right
 	$MethodologyChoose/ScrollContainer.offset_bottom = content_rect.position.y + content_rect.size.y - 34.0
+	_layout_method_cards(methodology_right - methodology_left)
+
+func _layout_method_cards(available_width: float) -> void:
+	var methods_container: HBoxContainer = $MethodologyChoose/ScrollContainer/MethodologyChoices
+	var method_count: int = max(1, methodList.methods.size())
+	var base_card_width: float = floor((available_width - METHODOLOGY_CARD_GAP * (method_count - 1)) / method_count)
+	var card_width: float = maxf(0.0, base_card_width - METHODOLOGY_CARD_WIDTH_REDUCTION)
+
+	methods_container.alignment = BoxContainer.ALIGNMENT_CENTER
+	methods_container.add_theme_constant_override("separation", METHODOLOGY_CARD_GAP)
+	methods_container.custom_minimum_size = Vector2(available_width, METHODOLOGY_CARD_HEIGHT)
+
+	for child in methods_container.get_children():
+		child.custom_minimum_size = Vector2(card_width, METHODOLOGY_CARD_HEIGHT)
+		child.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 
 func generateProjectChoices() -> void:
 	#Insert below code to pool together total worker skills
@@ -126,6 +147,7 @@ func generateMetricsChoices():
 		newMethod.connect("MethodChosen",methodSelected)
 		$MethodologyChoose/ScrollContainer/MethodologyChoices.add_child(newMethod)
 		pass
+	_layout_method_cards($MethodologyChoose/ScrollContainer.offset_right - $MethodologyChoose/ScrollContainer.offset_left)
 	pass
 
 func methodSelected(chosenMetric):
