@@ -13,11 +13,13 @@ signal weekTimerUpdated
 signal projectCompleted
 signal currencyChanged
 signal scoreChanged
+signal officeTierChanged
 
 const LOOP_NO_PROJECT := "no_project"
 const LOOP_PLANNING_WEEK := "planning_week"
 const LOOP_ACTIVE_WEEK := "active_week"
 const LOOP_RESOLVING_WEEK := "resolving_week"
+const OFFICE_CAPACITY_BY_TIER := [6, 8, 10, 12, 14]
 
 var level
 
@@ -45,6 +47,9 @@ var upgrades: Array = []
 var currency: float = 0.0
 var score: int = 0
 var projectAmount: int = 0
+var completed_project_count: int = 0
+var office_tier: int = 0
+var max_worker_capacity: int = 6
 
 var loopPhase: String = LOOP_NO_PROJECT
 var weekResults: Dictionary = {}
@@ -95,6 +100,9 @@ func resetData():
 	project = null
 	projectRatedDifficulty = 0
 	projectAmount = 0
+	completed_project_count = 0
+	office_tier = 0
+	_sync_office_capacity()
 	metrics = {
 		"frontEnd": 0,
 		"backEnd": 0,
@@ -127,6 +135,7 @@ func resetData():
 	backlogUpdated.emit()
 	loopStateChanged.emit()
 	statsChanged.emit()
+	officeTierChanged.emit()
 
 func resetProjectStats():
 	projectRatedDifficulty = 0
@@ -178,11 +187,17 @@ func newProject(newProject) -> void:
 	loopStateChanged.emit()
 	statsChanged.emit()
 
-func newHire(worker) -> void:
+func newHire(worker) -> bool:
+	if workers.size() >= max_worker_capacity:
+		return false
 	worker.name = worker.personName
 	workers.append(worker)
-	worker.reparent($workerHoldover)
+	if worker.get_parent() != null:
+		worker.reparent($workerHoldover)
+	else:
+		$workerHoldover.add_child(worker)
 	hireSelected.emit()
+	return true
 
 func newUpgrade(upgrade) -> void:
 	upgrades.append(upgrade)
@@ -235,6 +250,7 @@ func resolveWeek() -> bool:
 		sprintComplete.emit()
 		if projSprint >= int(project.sprintAmount) or _allBacklogItemsComplete():
 			earnProjectMoney()
+			completed_project_count += 1
 			project = null
 			backlogItems = []
 			currentSprintGoal = {}
@@ -417,3 +433,54 @@ func earnSprintMoney():
 
 func earnProjectMoney():
 	addCurrency(int((500 * projectRatedDifficulty) + (25 * projectAmount) + (650 * (teamRank - 1))))
+
+func get_office_capacity_for_tier(tier: int) -> int:
+	var clamped_tier := clampi(tier, 0, OFFICE_CAPACITY_BY_TIER.size() - 1)
+	return int(OFFICE_CAPACITY_BY_TIER[clamped_tier])
+
+func can_purchase_office_upgrade(upgrade_data: Dictionary) -> Dictionary:
+	var target_tier := int(upgrade_data.get("tier", 0))
+	var required_projects := int(upgrade_data.get("required_projects", 0))
+	var required_workers := int(upgrade_data.get("required_workers", 0))
+	var cost := int(upgrade_data.get("cost", 0))
+
+	if target_tier < 1 or target_tier >= OFFICE_CAPACITY_BY_TIER.size():
+		return {"ok": false, "reason": "That office tier is invalid."}
+	if target_tier <= office_tier:
+		return {"ok": false, "reason": "That office has already been purchased."}
+	if target_tier != office_tier + 1:
+		return {"ok": false, "reason": "Purchase the previous office upgrade first."}
+	if completed_project_count < required_projects:
+		return {"ok": false, "reason": "Complete more projects to unlock this office."}
+	if workers.size() < required_workers:
+		return {"ok": false, "reason": "Hire more workers to unlock this office."}
+	if int(currency) < cost:
+		return {"ok": false, "reason": "You do not have enough money for this office upgrade."}
+	return {"ok": true, "reason": "Ready to purchase this office upgrade."}
+
+func purchase_office_upgrade(upgrade_data: Dictionary) -> Dictionary:
+	var validation := can_purchase_office_upgrade(upgrade_data)
+	if not bool(validation.get("ok", false)):
+		return validation
+
+	var target_tier := int(upgrade_data.get("tier", 0))
+	var cost := int(upgrade_data.get("cost", 0))
+	addCurrency(-cost)
+	office_tier = target_tier
+	_sync_office_capacity()
+	newUpgrade({
+		"category": "Office Space",
+		"tier": office_tier,
+		"capacity": max_worker_capacity,
+	})
+	officeTierChanged.emit()
+	return {
+		"ok": true,
+		"reason": "Purchased %s. Office capacity is now %d workers." % [
+			str(upgrade_data.get("name", "Office Upgrade")),
+			max_worker_capacity
+		]
+	}
+
+func _sync_office_capacity() -> void:
+	max_worker_capacity = get_office_capacity_for_tier(office_tier)

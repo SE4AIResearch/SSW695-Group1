@@ -41,9 +41,15 @@ func _apply_content_layout() -> void:
 	$SearchButton.offset_right = $SearchButton.offset_left + 180.0
 	$SearchButton.offset_bottom = $SearchButton.offset_top + 56.0
 
-func checkIfMaxHire(): if PlayerTool.workers.size() >= 6:
-		$SearchButton.disabled = true
-		$SearchButton.text = "Max Hired"
+func checkIfMaxHire() -> void:
+	var current_workers := PlayerTool.workers.size()
+	var max_workers := PlayerTool.max_worker_capacity
+	var at_capacity := current_workers >= max_workers
+	$SearchButton.disabled = at_capacity
+	if at_capacity:
+		$SearchButton.text = "Max Hired (%d/%d)" % [current_workers, max_workers]
+	else:
+		$SearchButton.text = "Search Hires (%d/%d)" % [current_workers, max_workers]
 
 
 func _on_search_button_pressed() -> void:
@@ -58,7 +64,9 @@ func _on_search_button_pressed() -> void:
 	pass
 
 func hireSelected(worker):
-	PlayerTool.newHire(worker)
+	if not PlayerTool.newHire(worker):
+		checkIfMaxHire()
+		return
 	for child in $Hires.get_children(): 
 		if worker != child.heldWorker: child.heldWorker.queue_free()
 		child.queue_free()

@@ -40,23 +40,64 @@ const UPGRADE_COLUMNS := [
 			{"tier": 3, "name": "Standing Desks", "description": "+5% Frontend, +5% Backend", "cost": 450, "locked": true},
 			{"tier": 4, "name": "Air Conditioner", "description": "+10% Reliability", "cost": 900, "locked": true}
 		]
-	},
-	{
-		"title": "Office Space",
-		"color": Color("062d34"),
-		"items": [
-			{"tier": 1, "name": "Downtown Loft Office", "description": "Office upgrade, 8 worker capacity", "cost": 300, "locked": false},
-			{"tier": 2, "name": "Mid-Size Tech Office", "description": "Office upgrade, 10 worker capacity", "cost": 650, "locked": true},
-			{"tier": 3, "name": "Corporate Headquarters", "description": "Office upgrade, 12 worker capacity", "cost": 1100, "locked": true},
-			{"tier": 4, "name": "Innovation Campus", "description": "Office upgrade, 14 worker capacity", "cost": 1800, "locked": true}
-		]
 	}
 ]
+
+const OFFICE_SPACE_COLUMN := {
+	"title": "Office Space",
+	"color": Color("062d34"),
+	"items": [
+		{
+			"category": "Office Space",
+			"tier": 1,
+			"name": "Downtown Loft Office",
+			"description": "Office upgrade, 8 worker capacity",
+			"capacity": 8,
+			"required_projects": 2,
+			"required_workers": 5,
+			"cost": 300
+		},
+		{
+			"category": "Office Space",
+			"tier": 2,
+			"name": "Mid-Size Tech Office",
+			"description": "Office upgrade, 10 worker capacity",
+			"capacity": 10,
+			"required_projects": 4,
+			"required_workers": 7,
+			"cost": 650
+		},
+		{
+			"category": "Office Space",
+			"tier": 3,
+			"name": "Corporate Headquarters",
+			"description": "Office upgrade, 12 worker capacity",
+			"capacity": 12,
+			"required_projects": 6,
+			"required_workers": 9,
+			"cost": 1100
+		},
+		{
+			"category": "Office Space",
+			"tier": 4,
+			"name": "Innovation Campus",
+			"description": "Office upgrade, 14 worker capacity",
+			"capacity": 14,
+			"required_projects": 8,
+			"required_workers": 11,
+			"cost": 1800
+		}
+	]
+}
+
+var status_message := "Upgrades"
 
 func _ready() -> void:
 	PCWindowLayout.apply(self)
 	_apply_content_layout()
 	_populate_columns()
+	if not PlayerTool.officeTierChanged.is_connected(_populate_columns):
+		PlayerTool.officeTierChanged.connect(_populate_columns)
 
 func _apply_content_layout() -> void:
 	var content_rect: Rect2 = PCWindowLayout.content_rect()
@@ -68,7 +109,6 @@ func _apply_content_layout() -> void:
 
 func _populate_columns() -> void:
 	var columns: HBoxContainer = $ScrollContainer/UpgradeColumns
-	var column_count: int = UPGRADE_COLUMNS.size()
 	var vertical_scroll_width: float = 0.0
 	var vertical_scroll_bar: VScrollBar = $ScrollContainer.get_v_scroll_bar()
 
@@ -82,19 +122,91 @@ func _populate_columns() -> void:
 
 	columns.custom_minimum_size = Vector2(available_width, 0.0)
 	columns.add_theme_constant_override("separation", COLUMN_GAP)
+	$Title.text = status_message
 
 	for column_data in UPGRADE_COLUMNS:
-		var column := VBoxContainer.new()
-		column.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-		column.add_theme_constant_override("separation", COLUMN_ITEM_GAP)
-		column.add_child(_create_category_header(column_data))
+		_add_column(columns, column_data)
 
-		for item_data in column_data["items"]:
-			var upgrade_card = UpgradeItemScene.instantiate()
-			column.add_child(upgrade_card)
-			upgrade_card.setup_upgrade(item_data)
+	_add_column(columns, _build_office_space_column())
 
-		columns.add_child(column)
+func _add_column(columns: HBoxContainer, column_data: Dictionary) -> void:
+	var column := VBoxContainer.new()
+	column.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	column.add_theme_constant_override("separation", COLUMN_ITEM_GAP)
+	column.add_child(_create_category_header(column_data))
+
+	for item_data in column_data["items"]:
+		var upgrade_card = UpgradeItemScene.instantiate()
+		column.add_child(upgrade_card)
+		upgrade_card.setup_upgrade(item_data)
+		if str(item_data.get("category", "")) == "Office Space":
+			upgrade_card.purchase_requested.connect(_on_upgrade_purchase_requested)
+
+	columns.add_child(column)
+
+func _build_office_space_column() -> Dictionary:
+	var office_column := {
+		"title": str(OFFICE_SPACE_COLUMN.get("title", "Office Space")),
+		"color": OFFICE_SPACE_COLUMN.get("color", Color("062d34")),
+		"items": []
+	}
+
+	for office_item in OFFICE_SPACE_COLUMN["items"]:
+		office_column["items"].append(_build_office_upgrade_display_data(office_item))
+
+	return office_column
+
+func _build_office_upgrade_display_data(office_item: Dictionary) -> Dictionary:
+	var upgrade_data := office_item.duplicate(true)
+	var tier := int(upgrade_data.get("tier", 0))
+	var required_projects := int(upgrade_data.get("required_projects", 0))
+	var required_workers := int(upgrade_data.get("required_workers", 0))
+	var current_projects := PlayerTool.completed_project_count
+	var current_workers := PlayerTool.workers.size()
+	var next_tier := PlayerTool.office_tier + 1
+	var requirements_line := "Projects: %d/%d | Workers: %d/%d" % [
+		current_projects,
+		required_projects,
+		current_workers,
+		required_workers
+	]
+	var description := str(upgrade_data.get("description", ""))
+
+	if tier <= PlayerTool.office_tier:
+		description += "\nPurchased"
+		upgrade_data["description"] = description
+		upgrade_data["purchased"] = true
+		upgrade_data["show_lock_label"] = true
+		upgrade_data["lock_label"] = "PURCHASED"
+		upgrade_data["action_text"] = "Purchased"
+		upgrade_data["action_disabled"] = true
+		return upgrade_data
+
+	description += "\n" + requirements_line
+
+	if tier != next_tier:
+		description += "\nUnlock the previous office tier first."
+		upgrade_data["description"] = description
+		upgrade_data["locked"] = true
+		upgrade_data["show_lock_label"] = true
+		upgrade_data["lock_label"] = "LOCKED"
+		upgrade_data["action_text"] = "Locked"
+		upgrade_data["action_disabled"] = true
+		return upgrade_data
+
+	var requirements_met := current_projects >= required_projects and current_workers >= required_workers
+	upgrade_data["description"] = description
+	upgrade_data["locked"] = not requirements_met
+	upgrade_data["show_lock_label"] = not requirements_met
+	upgrade_data["lock_label"] = "LOCKED"
+	upgrade_data["action_text"] = "Buy - $%d" % int(upgrade_data.get("cost", 0))
+	upgrade_data["action_disabled"] = not requirements_met
+	return upgrade_data
+
+func _on_upgrade_purchase_requested(upgrade_data: Dictionary) -> void:
+	var result := PlayerTool.purchase_office_upgrade(upgrade_data)
+	status_message = str(result.get("reason", "Upgrades"))
+	_populate_columns()
 
 func _create_category_header(column_data: Dictionary) -> PanelContainer:
 	var header := PanelContainer.new()
