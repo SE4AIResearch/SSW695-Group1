@@ -57,7 +57,7 @@ var weekResults: Dictionary = {}
 var selectedAssignments: Dictionary = {}
 var backlogItems: Array = []
 var pendingProjectSummary: Dictionary = {}
-var currentSprintGoal: Dictionary = {}
+var sprintGoal: Dictionary = {}
 var shouldShowWeekResultsModal: bool = false
 
 var _backlogItemIdCounter: int = 0
@@ -122,7 +122,7 @@ func resetData():
 	selectedAssignments = {}
 	backlogItems = []
 	pendingProjectSummary = {}
-	currentSprintGoal = {}
+	sprintGoal = {}
 	shouldShowWeekResultsModal = false
 	weekTime = 0
 	projWeek = 0
@@ -155,7 +155,7 @@ func resetProjectStats():
 	selectedAssignments = {}
 	backlogItems = []
 	pendingProjectSummary = {}
-	currentSprintGoal = {}
+	sprintGoal = {}
 	shouldShowWeekResultsModal = false
 	weekTime = 0
 	projWeek = 0
@@ -255,7 +255,7 @@ func resolveWeek() -> bool:
 			completed_project_count += 1
 			project = null
 			backlogItems = []
-			currentSprintGoal = {}
+			sprintGoal = {}
 			projWeek = 0
 			projSprint = 0
 			loopPhase = LOOP_NO_PROJECT
@@ -330,12 +330,12 @@ func addEventBacklogItem(metricKey: String, itemName: String, effort: int = 5, r
 	_addBacklogItem(itemName, metricKey, effort, reward, isScopeChange, false)
 	backlogUpdated.emit()
 
-func _build_backlog_for_project(currentProject: Node) -> void:
+func _build_backlog_for_project(projectNode: Node) -> void:
 	backlogItems.clear()
 	_backlogItemIdCounter = 0
-	_appendMetricItems(currentProject.frontEndMetrics, "frontEnd", currentProject.frontEndProjectMin)
-	_appendMetricItems(currentProject.backEndMetrics, "backEnd", currentProject.backEndProjectMin)
-	_appendMetricItems(currentProject.documentingMetrics, "documenting", currentProject.documentingProjectMin)
+	_appendMetricItems(projectNode.frontEndMetrics, "frontEnd", projectNode.frontEndProjectMin)
+	_appendMetricItems(projectNode.backEndMetrics, "backEnd", projectNode.backEndProjectMin)
+	_appendMetricItems(projectNode.documentingMetrics, "documenting", projectNode.documentingProjectMin)
 
 func _appendMetricItems(metricDictionary: Dictionary, requiredSkill: String, targetTotal: int) -> void:
 	var itemCount := maxi(1, metricDictionary.size())
@@ -383,7 +383,7 @@ func _addBacklogItem(itemName: String, requiredSkill: String, effort: int, metri
 	})
 
 func _prepare_sprint_context(sprintNumber: int) -> void:
-	currentSprintGoal = {
+	sprintGoal = {
 		"title": "Sprint %d" % sprintNumber
 	}
 

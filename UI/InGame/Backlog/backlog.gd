@@ -69,7 +69,7 @@ func updateHeader() -> void:
 		$FeedbackLabel.text = _format_feedback_message("Open the PC to choose a new project.")
 		$AdvanceWeekButton.disabled = true
 		return
-	var sprintTitle := str(PlayerTool.currentSprintGoal.get("title", "Sprint %d" % PlayerTool.projSprint))
+	var sprintTitle := str(PlayerTool.sprintGoal.get("title", "Sprint %d" % PlayerTool.projSprint))
 	$CurrentSprintLabel.text = sprintTitle + " | Week %d/%d" % [PlayerTool.projWeek, PlayerTool.project.sprintLength]
 	if PlayerTool.loopPhase == PlayerTool.LOOP_ACTIVE_WEEK:
 		status_message = "Week in progress. Assignments are locked until the timer ends."

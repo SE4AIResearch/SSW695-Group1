@@ -8,7 +8,7 @@ var staminaModifiers: float
 var reliabilityModifier: float
 var stakeholderSatisfactionModifier: float
 
-var currentMetrics={
+var metrics={
 "frontEnd":0,
 "backEnd":0,
 "documenting":0,
