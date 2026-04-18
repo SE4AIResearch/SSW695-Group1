@@ -125,9 +125,9 @@ func generateProjectChoices() -> void:
 		projectInfo.projectName = randomProject.name
 		projectInfo.projectDescription = randomProject.description
 		projectInfo.clientName = PersonConstructor.generateName()
-		projectInfo.frontEndProjectMin = (totalFE*randomProject.frontEndScalar)*clampf(PlayerTool.projectAmount*1.025,1,1000)
-		projectInfo.backEndProjectMin = (totalBE*randomProject.backEndScalar)*clampf(PlayerTool.projectAmount*1.025,1,1000)
-		projectInfo.documentingProjectMin = (totalD*randomProject.documentingScalar)*clampf(PlayerTool.projectAmount*1.025,1,1000)
+		projectInfo.frontEndProjectMin = randomProject.frontEndMetrics.size()
+		projectInfo.backEndProjectMin = randomProject.backEndMetrics.size()
+		projectInfo.documentingProjectMin = randomProject.documentingMetrics.size()
 		projectInfo.sprintAmount = randomProject.baseSprintAmount
 		projectInfo.sprintLength = randomProject.baseSprintLength
 		projectInfo.sprintMetricAmount = randomProject.baseSprintMetricAmount
@@ -148,9 +148,6 @@ func generateProjectChoices() -> void:
 			randomProject.set("frontEndScaling",constraint.get("frontEndScaling"))
 			randomProject.set("backEndScaling",constraint.get("backEndScaling"))
 			randomProject.set("documentingScaling",constraint.get("documentingScaling"))
-			projectInfo.frontEndProjectMin *= constraint.get("frontEndScaling")
-			projectInfo.backEndProjectMin *= constraint.get("backEndScaling")
-			projectInfo.documentingProjectMin *= constraint.get("documentingScaling")
 			projectInfo.sprintAmount += constraint.get("sprintAmount")
 			projectInfo.sprintLength += constraint.get("sprintLength")
 			projectInfo.sprintMetricAmount += constraint.get("sprintMetricAmount")

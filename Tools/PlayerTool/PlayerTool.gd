@@ -25,7 +25,7 @@ var level
 
 var project: Node
 var projectRatedDifficulty: float
-var metrics := {
+var metrics = {
 	"frontEnd": 0,
 	"backEnd": 0,
 	"documenting": 0,
@@ -91,7 +91,7 @@ func changeProjectStats(type, amount):
 func changeMetricByName(metricName: String, amount: int) -> void:
 	if not metrics.has(metricName):
 		return
-	var updatedValue := int(metrics.get(metricName, 0)) + amount
+	var updatedValue := int(metrics.get(metricName)) + amount
 	if metricName in ["reliability", "stakeholderSatisfaction"]:
 		updatedValue = clampi(updatedValue, 0, 100)
 	metrics.set(metricName, updatedValue)
