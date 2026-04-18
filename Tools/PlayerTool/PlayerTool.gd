@@ -241,7 +241,7 @@ func resolveWeek() -> bool:
 		var worker = getWorkerByName(str(workerName))
 		if item.is_empty() or worker == null:
 			continue
-		_resolve_assignment(worker, item)
+		if !worker.resting: _resolve_assignment(worker, item)
 
 	clearAssignments()
 	weekTime = 0

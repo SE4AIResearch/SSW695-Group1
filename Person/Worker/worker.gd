@@ -3,6 +3,9 @@ extends Node2D
 signal hover_started(worker)
 signal hover_ended(worker)
 
+@export var restingColor: Color
+@export var workingColor: Color
+
 var personName: String
 
 var headSpritePath: String
@@ -44,8 +47,13 @@ func work():
 			$staminaBar.value -= 1
 			if $staminaBar.value <= 0:
 				resting = true
+				$staminaBar.tint_under = restingColor
+				$staminaBar.tint_progress = restingColor
+				
 		true:
 			$staminaBar.value += 5
 			if $staminaBar.value >= staminaStat:
 				$staminaBar.value = staminaStat
+				$staminaBar.tint_under = workingColor
+				$staminaBar.tint_progress = workingColor
 				resting = false

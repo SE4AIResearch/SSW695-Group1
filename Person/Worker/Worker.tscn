@@ -14,6 +14,8 @@ size = Vector2(22, 26)
 
 [node name="Worker" type="Node2D" unique_id=1876878133]
 script = ExtResource("1_l17xh")
+restingColor = Color(0.017259976, 0.4440687, 0.8440869, 1)
+workingColor = Color(0.92116153, 0.9704216, 0, 1)
 
 [node name="HoverArea" type="Area2D" parent="." unique_id=1564372157]
 
@@ -49,5 +51,5 @@ value = 100.0
 rounded = true
 texture_under = ExtResource("7_4ucnk")
 texture_progress = ExtResource("8_pvhlq")
-tint_under = Color(0.7105001, 0.68498766, 0, 1)
-tint_progress = Color(0.91437376, 1, 0.54450566, 1)
+tint_under = Color(0.92156863, 0.96862745, 0, 1)
+tint_progress = Color(0.92156863, 0.96862745, 0, 1)
