@@ -1,0 +1,80 @@
+[gd_scene format=3 uid="uid://bk0kt6c5hn7t1"]
+
+[ext_resource type="Texture2D" uid="uid://wu85ujm6qvdv" path="res://UI/Theme/Random Event/BG.png" id="1_xrsr1"]
+[ext_resource type="FontFile" uid="uid://b0lji18tmt8ua" path="res://UI/Theme/Fonts/jakes-writing-font/Jakeswriting-P2Zr.ttf" id="2_dgai6"]
+
+[node name="ProjectCompletion" type="Node2D" unique_id=1085384657]
+
+[node name="BG" type="Sprite2D" parent="." unique_id=1339856687]
+position = Vector2(575.99994, 324)
+scale = Vector2(4.4999995, 4.4999995)
+texture = ExtResource("1_xrsr1")
+
+[node name="ProjectComplete" type="RichTextLabel" parent="." unique_id=361478752]
+offset_left = 246.0
+offset_top = 38.0
+offset_right = 922.0
+offset_bottom = 192.99998
+theme_override_colors/default_color = Color(0, 0, 0, 1)
+theme_override_fonts/normal_font = ExtResource("2_dgai6")
+theme_override_font_sizes/normal_font_size = 83
+bbcode_enabled = true
+text = "Project Complete!"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="ProjectInfo" type="RichTextLabel" parent="." unique_id=730047851]
+offset_left = 239.0
+offset_top = 125.0
+offset_right = 915.0
+offset_bottom = 280.0
+theme_override_colors/default_color = Color(0, 0, 0, 1)
+theme_override_fonts/normal_font = ExtResource("2_dgai6")
+theme_override_font_sizes/normal_font_size = 83
+bbcode_enabled = true
+text = "Project Complete!"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="FERating" type="TextureProgressBar" parent="." unique_id=1493150188]
+offset_left = 149.0
+offset_top = 342.0
+offset_right = 189.0
+offset_bottom = 382.0
+
+[node name="BERating" type="TextureProgressBar" parent="." unique_id=1722781297]
+offset_left = 776.0
+offset_top = 351.0
+offset_right = 990.0
+offset_bottom = 391.0
+
+[node name="DocRating" type="TextureProgressBar" parent="." unique_id=1000429221]
+offset_left = 149.0
+offset_top = 426.0
+offset_right = 189.0
+offset_bottom = 466.0
+
+[node name="ReliabilityRating" type="TextureProgressBar" parent="." unique_id=24222692]
+offset_left = 890.0
+offset_top = 415.0
+offset_right = 930.0
+offset_bottom = 455.0
+
+[node name="Stakeholder Satisfaction" type="TextureProgressBar" parent="." unique_id=1131236843]
+offset_left = 385.0
+offset_top = 520.0
+offset_right = 425.0
+offset_bottom = 560.0
+
+[node name="CurrencyGained" type="RichTextLabel" parent="." unique_id=1881593657]
+offset_left = 531.0
+offset_top = 457.0
+offset_right = 1043.0
+offset_bottom = 612.0
+theme_override_colors/default_color = Color(0, 0, 0, 1)
+theme_override_fonts/normal_font = ExtResource("2_dgai6")
+theme_override_font_sizes/normal_font_size = 83
+bbcode_enabled = true
+text = "Project Complete!"
+horizontal_alignment = 1
+vertical_alignment = 1
