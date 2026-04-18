@@ -2,14 +2,22 @@ extends Node2D
 
 
 # Called when the node enters the scene tree for the first time.
-func _ready() -> void:
-	pass # Replace with function body.
+func _ready() -> void: calculateCompletion()
 
+func calculateCompletion():
+	prepMenu()
+	calculateStakeholderSatisfaction()
+	calculateCurrencyEarned()
+	
 
-# Called every frame. 'delta' is the elapsed time since the previous frame.
-func _process(delta: float) -> void:
+func prepMenu():
+	$projectInfo.text = "Project Name:"+PlayerTool.project.projectName + "\nClient: " + PlayerTool.project.clientName 
 	pass
 
 func calculateStakeholderSatisfaction():
 
+	pass
+
+func calculateCurrencyEarned():
+	
 	pass
