@@ -51,6 +51,7 @@ var completed_project_count: int = 0
 var has_viewed_methodology_learning_center: bool = false
 var office_tier: int = 0
 var max_worker_capacity: int = 6
+var remaining_project_choice_names: Array = []
 
 var loopPhase: String = LOOP_NO_PROJECT
 var weekResults: Dictionary = {}
@@ -104,6 +105,7 @@ func resetData():
 	completed_project_count = 0
 	has_viewed_methodology_learning_center = false
 	office_tier = 0
+	remaining_project_choice_names = []
 	_sync_office_capacity()
 	metrics = {
 		"frontEnd": 0,
@@ -173,6 +175,60 @@ func _ready() -> void:
 	var workerNode := Node2D.new()
 	workerNode.name = "workerHoldover"
 	add_child(workerNode)
+
+func get_unique_project_choices(all_projects: Array, count: int = 3) -> Array:
+	var selected_projects: Array = []
+	var selected_names: Array = []
+	var target_count: int = mini(count, all_projects.size())
+
+	while selected_projects.size() < target_count:
+		if remaining_project_choice_names.is_empty():
+			_refill_project_choice_pool(all_projects)
+
+		var project_name: String = _pop_next_project_choice_name(selected_names)
+		if project_name.is_empty():
+			_refill_project_choice_pool(all_projects)
+			project_name = _pop_next_project_choice_name(selected_names)
+			if project_name.is_empty():
+				break
+
+		var project_choice: Dictionary = _find_project_choice(all_projects, project_name)
+		if project_choice.is_empty():
+			continue
+
+		selected_names.append(project_name)
+		selected_projects.append(project_choice)
+
+	return selected_projects
+
+func _refill_project_choice_pool(all_projects: Array) -> void:
+	remaining_project_choice_names.clear()
+	for project_choice in all_projects:
+		var project_name: String = str(project_choice.get("name", ""))
+		if !project_name.is_empty():
+			remaining_project_choice_names.append(project_name)
+	remaining_project_choice_names.shuffle()
+
+func _pop_next_project_choice_name(excluded_names: Array) -> String:
+	var deferred_names: Array = []
+
+	while !remaining_project_choice_names.is_empty():
+		var project_name: String = str(remaining_project_choice_names.pop_back())
+		if excluded_names.has(project_name):
+			deferred_names.append(project_name)
+			continue
+
+		remaining_project_choice_names.append_array(deferred_names)
+		return project_name
+
+	remaining_project_choice_names.append_array(deferred_names)
+	return ""
+
+func _find_project_choice(all_projects: Array, project_name: String) -> Dictionary:
+	for project_choice in all_projects:
+		if str(project_choice.get("name", "")) == project_name:
+			return project_choice
+	return {}
 
 func newProject(newProject) -> void:
 	resetProjectStats()

@@ -8,22 +8,8 @@ const DEFAULT_WORKER_STATS := {
 	"stamina": 100,
 }
 
-const STARTING_WORKER_STATS := [
-	{
-		"front_end": 5,
-		"back_end": 5,
-		"documenting": 5,
-		"speed": 100,
-		"stamina": 100,
-	},
-	{
-		"front_end": 5,
-		"back_end": 5,
-		"documenting": 5,
-		"speed": 100,
-		"stamina": 100,
-	},
-]
+# Change this for testing to force starter workers into a specific tier.
+const STARTING_WORKER_TIER := 1
 
 # Edit these tiers to rebalance hiring without changing any generation logic.
 const HIRING_BUDGET_TIERS := [
@@ -146,13 +132,18 @@ const UPPER_HALF_UPPER_VALUE_CHANCE := 0.7
 static func get_default_worker_stats() -> Dictionary:
 	return DEFAULT_WORKER_STATS.duplicate(true)
 
-static func get_starting_worker_stats(worker_index: int) -> Dictionary:
-	if worker_index >= 0 and worker_index < STARTING_WORKER_STATS.size():
-		return STARTING_WORKER_STATS[worker_index].duplicate(true)
-	return get_default_worker_stats()
+static func get_starting_worker_stats(_worker_index: int) -> Dictionary:
+	return roll_worker_stats_for_tier(STARTING_WORKER_TIER)
 
 static func get_hiring_budget_tiers() -> Array:
 	return HIRING_BUDGET_TIERS.duplicate(true)
+
+static func get_hiring_tier_by_rank(rank: int) -> Dictionary:
+	var clamped_rank := clampi(rank, 1, HIRING_BUDGET_TIERS.size())
+	for tier in HIRING_BUDGET_TIERS:
+		if int(tier.get("rank", 0)) == clamped_rank:
+			return tier.duplicate(true)
+	return HIRING_BUDGET_TIERS[HIRING_BUDGET_TIERS.size() - 1].duplicate(true)
 
 static func get_hiring_tier_for_budget(budget: int) -> Dictionary:
 	var clamped_budget = clampi(budget, 0, 1000)
@@ -180,6 +171,21 @@ static func roll_weighted_range_value(min_value: int, max_value: int, budget_pro
 
 	var lower_end = maxi(0, int(floor((values.size() - 1) / 2.0)))
 	return values[randi_range(0, lower_end)]
+
+static func roll_uniform_range_value(min_value: int, max_value: int) -> int:
+	if min_value >= max_value:
+		return min_value
+	return randi_range(min_value, max_value)
+
+static func roll_worker_stats_for_tier(rank: int) -> Dictionary:
+	var tier := get_hiring_tier_by_rank(rank)
+	return {
+		"front_end": roll_uniform_range_value(int(tier["skill_floor"]), int(tier["skill_ceiling"])),
+		"back_end": roll_uniform_range_value(int(tier["skill_floor"]), int(tier["skill_ceiling"])),
+		"documenting": roll_uniform_range_value(int(tier["skill_floor"]), int(tier["skill_ceiling"])),
+		"speed": roll_uniform_range_value(int(tier["speed_floor"]), int(tier["speed_ceiling"])),
+		"stamina": roll_uniform_range_value(int(tier["stamina_floor"]), int(tier["stamina_ceiling"])),
+	}
 
 static func roll_hiring_worker_stats(budget: int) -> Dictionary:
 	var tier = get_hiring_tier_for_budget(budget)

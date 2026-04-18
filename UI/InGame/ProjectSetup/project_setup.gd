@@ -8,7 +8,7 @@ var methodItem = preload("res://UI/InGame/ProjectSetup/MethodItem/MethodItem.tsc
 var methodList = load("res://Projects/MethodologyList.gd").new()
 var projectChoiceItem = preload("res://UI/InGame/ProjectSetup/ProjectItem/ProjectItem.tscn")
 
-const PROJECT_CHOICES_HEIGHT := 245.0
+const PROJECT_CHOICES_HEIGHT := 305.0
 const LEARN_MORE_BUTTON_WIDTH := 160.0
 const LEARN_MORE_BUTTON_HEIGHT := 40.0
 const ACTION_BUTTON_WIDTH := 240.0
@@ -21,7 +21,6 @@ const METHODOLOGY_CARD_WIDTH_REDUCTION := 20.0
 const METHODOLOGY_CARD_BOTTOM_GAP := 16.0
 
 var selectedProject: Node
-var randomProject: Dictionary
 var pendingMethodology: Dictionary = {}
 
 
@@ -41,7 +40,7 @@ func _ready():
 
 func _apply_content_layout() -> void:
 	var content_rect: Rect2 = PCWindowLayout.content_rect()
-	var choice_top: float = content_rect.position.y + 28.0
+	var choice_top: float = content_rect.position.y + 10.0
 	var choices_left: float = content_rect.position.x + 82.0
 	var choices_right: float = content_rect.position.x + content_rect.size.x - 81.0
 	var methodology_left: float = PCWindowLayout.WINDOW_LEFT + METHODOLOGY_WINDOW_SIDE_PADDING
@@ -117,23 +116,25 @@ func generateProjectChoices() -> void:
 	#Read above comment
 	for child in $ProjectChoose/ProjectChoices.get_children():
 		child.queue_free()
-	for i in range(3):
+	var project_choices: Array = PlayerTool.get_unique_project_choices(projectList.projects, 3)
+	for i in range(project_choices.size()):
 		var projectInfo = projectItem.instantiate()
 		var newChoice = projectChoiceItem.instantiate()
-		randomProject = projectList.projects.pick_random()
+		var project_data: Dictionary = project_choices[i]
 		
-		projectInfo.projectName = randomProject.name
-		projectInfo.projectDescription = randomProject.description
+		projectInfo.projectName = str(project_data.get("name", ""))
+		projectInfo.projectDescription = str(project_data.get("description", ""))
 		projectInfo.clientName = PersonConstructor.generateName()
-		projectInfo.frontEndProjectMin = randomProject.frontEndMetrics.size()
-		projectInfo.backEndProjectMin = randomProject.backEndMetrics.size()
-		projectInfo.documentingProjectMin = randomProject.documentingMetrics.size()
-		projectInfo.sprintAmount = randomProject.baseSprintAmount
-		projectInfo.sprintLength = randomProject.baseSprintLength
-		projectInfo.sprintMetricAmount = randomProject.baseSprintMetricAmount
-		projectInfo.frontEndMetrics = randomProject.frontEndMetrics.duplicate(true)
-		projectInfo.backEndMetrics = randomProject.backEndMetrics.duplicate(true)
-		projectInfo.documentingMetrics = randomProject.documentingMetrics.duplicate(true)
+		projectInfo.frontEndProjectMin = project_data.frontEndMetrics.size()
+		projectInfo.backEndProjectMin = project_data.backEndMetrics.size()
+		projectInfo.documentingProjectMin = project_data.documentingMetrics.size()
+		projectInfo.sprintAmount = int(project_data.get("baseSprintAmount", 0))
+		projectInfo.sprintLength = int(project_data.get("baseSprintLength", 0))
+		projectInfo.sprintMetricAmount = int(project_data.get("baseSprintMetricAmount", 0))
+		projectInfo.projectDifficulty = float(project_data.get("frontEndScalar", 0.0)) + float(project_data.get("backEndScalar", 0.0)) + float(project_data.get("documentingScalar", 0.0))
+		projectInfo.frontEndMetrics = project_data.frontEndMetrics.duplicate(true)
+		projectInfo.backEndMetrics = project_data.backEndMetrics.duplicate(true)
+		projectInfo.documentingMetrics = project_data.documentingMetrics.duplicate(true)
 
 		match i:
 			0: 	projectInfo.constraints.append(projectList.constraints.pick_random())
@@ -145,9 +146,6 @@ func generateProjectChoices() -> void:
 					if !projectInfo.constraints.has(constraint): projectInfo.constraints.append(constraint)
 		
 		for constraint in projectInfo.constraints:
-			randomProject.set("frontEndScaling",constraint.get("frontEndScaling"))
-			randomProject.set("backEndScaling",constraint.get("backEndScaling"))
-			randomProject.set("documentingScaling",constraint.get("documentingScaling"))
 			projectInfo.sprintAmount += constraint.get("sprintAmount")
 			projectInfo.sprintLength += constraint.get("sprintLength")
 			projectInfo.sprintMetricAmount += constraint.get("sprintMetricAmount")
@@ -217,8 +215,6 @@ func _update_confirm_button_state() -> void:
 
 #Calculate effects from player upgrades here
 func calculateUpgradeEffects():
-
-	selectedProject.projectDifficulty = randomProject.get("frontEndScalar") + randomProject.get("backEndScalar") + randomProject.get("documentingScalar")
 	PlayerTool.newProject(selectedProject)
 	get_parent().get_parent().newProject()
 	pass
