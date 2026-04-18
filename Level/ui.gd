@@ -39,7 +39,7 @@ func endMenu():
 			$PCButtons.visible = true
 			$PCButtons/UpgradesButton.disabled = false
 			$PCButtons/HiringButton.disabled = false
-			var hasProject = PlayerTool.currentProject != null
+			var hasProject = PlayerTool.project != null
 			$PCButtons/projectStartMenu.text = "Already have a Project" if hasProject else "Start New Project"
 			$PCButtons/projectStartMenu.disabled = hasProject
 		false:
