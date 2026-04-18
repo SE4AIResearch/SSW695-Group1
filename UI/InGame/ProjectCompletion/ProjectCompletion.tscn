@@ -41,56 +41,121 @@ text = "{Project Name:
 Client:"
 vertical_alignment = 1
 
+[node name="FELabel" type="RichTextLabel" parent="." unique_id=1697327346]
+offset_left = 72.0
+offset_top = 402.0
+offset_right = 285.0
+offset_bottom = 474.0
+theme_override_colors/default_color = Color(0, 0, 0, 1)
+theme_override_fonts/normal_font = ExtResource("2_dgai6")
+theme_override_font_sizes/normal_font_size = 34
+bbcode_enabled = true
+text = "Front End:"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="FELabel2" type="RichTextLabel" parent="." unique_id=401053953]
+offset_left = 78.0
+offset_top = 273.0
+offset_right = 311.0
+offset_bottom = 359.0
+theme_override_colors/default_color = Color(0, 0, 0, 1)
+theme_override_fonts/normal_font = ExtResource("2_dgai6")
+theme_override_font_sizes/normal_font_size = 38
+bbcode_enabled = true
+text = "Stakeholder Satisfaction:"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="DocLabel" type="RichTextLabel" parent="." unique_id=528355137]
+offset_left = 74.0
+offset_top = 497.0
+offset_right = 287.0
+offset_bottom = 569.0
+theme_override_colors/default_color = Color(0, 0, 0, 1)
+theme_override_fonts/normal_font = ExtResource("2_dgai6")
+theme_override_font_sizes/normal_font_size = 34
+bbcode_enabled = true
+text = "Documenting:"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="BELabel" type="RichTextLabel" parent="." unique_id=2144863367]
+offset_left = 609.0
+offset_top = 404.0
+offset_right = 822.0
+offset_bottom = 476.0
+theme_override_colors/default_color = Color(0, 0, 0, 1)
+theme_override_fonts/normal_font = ExtResource("2_dgai6")
+theme_override_font_sizes/normal_font_size = 34
+bbcode_enabled = true
+text = "Back End:"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="RelLabel" type="RichTextLabel" parent="." unique_id=1511658931]
+offset_left = 609.0
+offset_top = 497.0
+offset_right = 822.0
+offset_bottom = 569.0
+theme_override_colors/default_color = Color(0, 0, 0, 1)
+theme_override_fonts/normal_font = ExtResource("2_dgai6")
+theme_override_font_sizes/normal_font_size = 34
+bbcode_enabled = true
+text = "Reliability:"
+horizontal_alignment = 1
+vertical_alignment = 1
+
 [node name="FERating" type="TextureProgressBar" parent="." unique_id=1493150188]
-offset_left = 186.0
-offset_top = 414.0
-offset_right = 266.0
-offset_bottom = 438.0
+offset_left = 285.0
+offset_top = 402.0
+offset_right = 365.0
+offset_bottom = 426.0
 scale = Vector2(3, 3)
 texture_under = ExtResource("4_jx4kq")
 texture_progress = ExtResource("5_67dgf")
 
 [node name="BERating" type="TextureProgressBar" parent="." unique_id=1722781297]
-offset_left = 689.0
-offset_top = 424.0
-offset_right = 769.0
-offset_bottom = 448.0
+offset_left = 822.0
+offset_top = 404.00003
+offset_right = 902.0
+offset_bottom = 428.00003
 scale = Vector2(3, 3)
 texture_under = ExtResource("4_jx4kq")
 texture_progress = ExtResource("5_67dgf")
 
 [node name="DocRating" type="TextureProgressBar" parent="." unique_id=1000429221]
-offset_left = 186.0
-offset_top = 512.0
-offset_right = 266.0
-offset_bottom = 536.0
+offset_left = 287.0
+offset_top = 497.0
+offset_right = 367.0
+offset_bottom = 521.0
 scale = Vector2(3, 3)
 texture_under = ExtResource("4_jx4kq")
 texture_progress = ExtResource("5_67dgf")
 
 [node name="ReliabilityRating" type="TextureProgressBar" parent="." unique_id=24222692]
-offset_left = 690.0
-offset_top = 511.0
-offset_right = 770.0
-offset_bottom = 535.0
+offset_left = 822.0
+offset_top = 497.00003
+offset_right = 902.0
+offset_bottom = 521.0
 scale = Vector2(3, 3)
 texture_under = ExtResource("4_jx4kq")
 texture_progress = ExtResource("5_67dgf")
 
 [node name="Stakeholder Satisfaction" type="TextureProgressBar" parent="." unique_id=1131236843]
-offset_left = 193.0
-offset_top = 275.0
-offset_right = 273.0
-offset_bottom = 299.0
+offset_left = 313.0
+offset_top = 266.0
+offset_right = 393.0
+offset_bottom = 290.0
 scale = Vector2(4, 4)
 texture_under = ExtResource("4_jx4kq")
 texture_progress = ExtResource("5_67dgf")
 
 [node name="CurrencyGained" type="RichTextLabel" parent="." unique_id=1881593657]
-offset_left = 579.0
-offset_top = 280.0
-offset_right = 1050.0
-offset_bottom = 367.0
+offset_left = 664.0
+offset_top = 271.0
+offset_right = 1076.0
+offset_bottom = 358.0
 theme_override_colors/default_color = Color(0, 0, 0, 1)
 theme_override_fonts/normal_font = ExtResource("2_dgai6")
 theme_override_font_sizes/normal_font_size = 48
