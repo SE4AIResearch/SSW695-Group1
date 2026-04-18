@@ -7,7 +7,7 @@ var HiringMenu = load("res://UI/InGame/Hiring/Hiring.tscn")
 var BacklogMenu = load("res://UI/InGame/Backlog/Backlog.tscn")
 var ProjectSetupMenu = load("res://UI/InGame/ProjectSetup/ProjectSetup.tscn")
 var randomEventMenu = load("res://UI/InGame/RandomEvent/RandomEvent.tscn")
-
+var projectCompletionMenu = load("res://UI/InGame/ProjectCompletion/ProjectCompletion.tscn")
 var pcMode = false
 
 
@@ -128,5 +128,4 @@ func startEvent():
 	createMenu(randomEventMenu.instantiate())
 
 func runProjectCompletion():
-
-	pass
+	createMenu(projectCompletionMenu)

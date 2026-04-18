@@ -6,17 +6,21 @@
 [ext_resource type="Texture2D" uid="uid://cwaw43dvc7ejo" path="res://Person/Textures/Mouth/01.png" id="4_4ucnk"]
 [ext_resource type="Texture2D" uid="uid://bbvn8pwcea6ax" path="res://Person/Textures/Nose/02.png" id="5_pvhlq"]
 [ext_resource type="Texture2D" uid="uid://c2ve11vt3n5jt" path="res://Person/Textures/Eyes/03.png" id="6_k1q1s"]
+[ext_resource type="Texture2D" uid="uid://k1qhxiwd6122" path="res://UI/Theme/worker/staminaBarBorder.png" id="7_4ucnk"]
+[ext_resource type="Texture2D" uid="uid://csxqr0yte2gh1" path="res://UI/Theme/worker/staminaBarProgress.png" id="8_pvhlq"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_7d7cl"]
-size = Vector2(18, 24)
+size = Vector2(22, 26)
 
 [node name="Worker" type="Node2D" unique_id=1876878133]
 script = ExtResource("1_l17xh")
+restingColor = Color(0.017259976, 0.4440687, 0.8440869, 1)
+workingColor = Color(0.92116153, 0.9704216, 0, 1)
 
 [node name="HoverArea" type="Area2D" parent="." unique_id=1564372157]
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="HoverArea" unique_id=1034979956]
-position = Vector2(0, -1)
+position = Vector2(0, -2)
 shape = SubResource("RectangleShape2D_7d7cl")
 
 [node name="headSprite" type="Sprite2D" parent="." unique_id=1710825731]
@@ -36,3 +40,16 @@ texture = ExtResource("5_pvhlq")
 [node name="eyeSprite" type="Sprite2D" parent="." unique_id=1862072873]
 position = Vector2(0, -3)
 texture = ExtResource("6_k1q1s")
+
+[node name="staminaBar" type="TextureProgressBar" parent="." unique_id=1966300420]
+offset_left = -18.0
+offset_top = -24.0
+offset_right = 18.0
+offset_bottom = -16.0
+step = 0.0
+value = 100.0
+rounded = true
+texture_under = ExtResource("7_4ucnk")
+texture_progress = ExtResource("8_pvhlq")
+tint_under = Color(0.92156863, 0.96862745, 0, 1)
+tint_progress = Color(0.92156863, 0.96862745, 0, 1)
