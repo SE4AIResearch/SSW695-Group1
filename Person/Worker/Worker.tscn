@@ -49,5 +49,5 @@ value = 100.0
 rounded = true
 texture_under = ExtResource("7_4ucnk")
 texture_progress = ExtResource("8_pvhlq")
-tint_under = Color(0.53497624, 0.5146224, 5.7756904e-07, 1)
-tint_progress = Color(1, 0.9411765, 0, 1)
+tint_under = Color(0.7105001, 0.68498766, 0, 1)
+tint_progress = Color(0.91437376, 1, 0.54450566, 1)
