@@ -248,10 +248,9 @@ func resolveWeek() -> bool:
 
 	var sprintFinished: bool = projWeek >= int(project.sprintLength)
 	if sprintFinished:
-		earnSprintMoney()
-		sprintComplete.emit()
 		if projSprint >= int(project.sprintAmount) or _allBacklogItemsComplete():
-			earnProjectMoney()
+			projectCompleted.emit()
+			deadlineReached.emit()
 			completed_project_count += 1
 			project = null
 			backlogItems = []
@@ -259,9 +258,9 @@ func resolveWeek() -> bool:
 			projWeek = 0
 			projSprint = 0
 			loopPhase = LOOP_NO_PROJECT
-			deadlineReached.emit()
-			projectCompleted.emit()
 		else:
+			earnSprintMoney()
+			sprintComplete.emit()
 			projSprint += 1
 			projWeek = 1
 			_prepare_sprint_context(projSprint)
@@ -433,8 +432,8 @@ func earnSprintMoney():
 	if project != null:
 		addCurrency(int((30 * project.projectDifficulty) + (5 * projectAmount) + (50 * (teamRank - 1))))
 
-func earnProjectMoney():
-	addCurrency(int((500 * projectRatedDifficulty) + (25 * projectAmount) + (650 * (teamRank - 1))))
+func earnProjectMoney(SatisfactionAmount):
+	addCurrency((int((500 * projectRatedDifficulty) + (25 * projectAmount) + (650 * (teamRank - 1))))*SatisfactionAmount)
 
 func get_office_capacity_for_tier(tier: int) -> int:
 	var clamped_tier := clampi(tier, 0, OFFICE_CAPACITY_BY_TIER.size() - 1)

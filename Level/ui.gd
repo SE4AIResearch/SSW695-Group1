@@ -16,7 +16,8 @@ func _ready() -> void:
 	PlayerTool.connect("projectSelected",toggleProjectButtons)
 	PlayerTool.connect("deadlineReached",toggleProjectButtons)
 	toggleProjectButtons()
-
+	playerTool.projectCompleted.connect(runProjectCompletion)
+	
 func _physics_process(delta: float) -> void: pass
 
 func _on_pause_button_pressed() -> void:
@@ -123,3 +124,7 @@ func startEvent():
 	await $randomEventRinger/ringerAudio.finished
 	$randomEventRinger.play("idle")
 	createMenu(randomEventMenu.instantiate())
+
+func runProjectCompletion():
+
+	pass

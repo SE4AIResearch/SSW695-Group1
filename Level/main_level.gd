@@ -22,7 +22,6 @@ func _ready() -> void:
 	_ensure_office_slots()
 	setupDeskVisuals()
 	PlayerTool.levelLoaded.emit()
-
 func initializeSave():
 	pass
 
@@ -84,4 +83,8 @@ func rollEvent():
 	if chance <= PlayerTool.project.eventChance: $UI.startEvent()
 	# Demo override: always trigger a random event each week.
 	# $UI.startEvent()
+	pass
+
+func checkProjectCompletion():
+
 	pass
