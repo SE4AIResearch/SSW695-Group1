@@ -31,8 +31,10 @@ func _on_button_pressed() -> void:
 func _ready():
 	PCWindowLayout.apply(self)
 	_apply_content_layout()
-	_connect_learning_center_navigation()
+	if not $LearningCenter.close_requested.is_connected(_on_learning_center_close_requested):
+		$LearningCenter.close_requested.connect(_on_learning_center_close_requested)
 	$Title.text = "Select Project"
+	_sync_project_setup_back_button()
 	if PlayerTool.workers.size() == 0:
 		$ProjectChoose/Button.text = "Hire a Worker!"
 		$ProjectChoose/Button.disabled = true
@@ -89,20 +91,8 @@ func _layout_method_cards(available_width: float) -> void:
 		child.custom_minimum_size = Vector2(card_width, METHODOLOGY_CARD_HEIGHT)
 		child.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 
-func _connect_learning_center_navigation() -> void:
-	var categories_container: VBoxContainer = $LearningCenter.get_node("Categories/ScrollContainer/VBoxContainer")
-	for child in categories_container.get_children():
-		if child is Button and !child.pressed.is_connected(_on_learning_center_page_opened):
-			child.pressed.connect(_on_learning_center_page_opened)
-
-	var return_button: Button = $LearningCenter.get_node("Page/ReturnToLCMenu")
-	if !return_button.pressed.is_connected(_on_learning_center_return_to_menu):
-		return_button.pressed.connect(_on_learning_center_return_to_menu)
-
-	_sync_learning_center_back_button()
-
-func _sync_learning_center_back_button() -> void:
-	$LearningCenterBack.visible = $LearningCenter.visible and $LearningCenter.get_node("Categories").visible
+func _sync_project_setup_back_button() -> void:
+	$PCBack.visible = !$LearningCenter.visible
 
 func generateProjectChoices() -> void:
 	#Insert below code to pool together total worker skills
@@ -239,7 +229,7 @@ func _on_learn_more_button_pressed() -> void:
 	$Title.visible = false
 	_reset_learning_center()
 	$LearningCenter.visible = true
-	_sync_learning_center_back_button()
+	_sync_project_setup_back_button()
 
 func _hide_learning_center() -> void:
 	$LearningCenter.visible = false
@@ -249,18 +239,11 @@ func _hide_learning_center() -> void:
 	$LearnMoreButton.visible = true
 	_reset_learning_center()
 	_update_confirm_button_state()
-	_sync_learning_center_back_button()
+	_sync_project_setup_back_button()
 
 func _reset_learning_center() -> void:
-	$LearningCenter.get_node("Categories").visible = true
-	$LearningCenter.get_node("Page/Entry").text = ""
-	$LearningCenter.get_node("Page").visible = false
+	if $LearningCenter.has_method("reset_state"):
+		$LearningCenter.reset_state()
 
-func _on_learning_center_back_pressed() -> void:
+func _on_learning_center_close_requested() -> void:
 	_hide_learning_center()
-
-func _on_learning_center_page_opened() -> void:
-	call_deferred("_sync_learning_center_back_button")
-
-func _on_learning_center_return_to_menu() -> void:
-	call_deferred("_sync_learning_center_back_button")
