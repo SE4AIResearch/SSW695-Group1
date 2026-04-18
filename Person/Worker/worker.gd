@@ -17,16 +17,17 @@ var documentingStat: int
 var speedStat: int
 var staminaStat: int
 
-var currentStamina
-
 var firable: bool = true
+
+var resting: bool = false
 
 # 0 = FE, 1 = BE, 2 = Doc
 var metricType: int
 var metricName: String
 
 func _ready() -> void:
-	currentStamina = staminaStat
+	$staminaBar.max_value = staminaStat
+	$staminaBar.value = staminaStat
 	$HoverArea.mouse_entered.connect(_on_hover_area_mouse_entered)
 	$HoverArea.mouse_exited.connect(_on_hover_area_mouse_exited)
 	TimeTool.timer.timeout.connect(work)
@@ -38,5 +39,13 @@ func _on_hover_area_mouse_exited() -> void:
 	hover_ended.emit(self)
 
 func work():
-	staminaStat -= 1
-	pass
+	match resting:
+		false:
+			$staminaBar.value -= 1
+			if $staminaBar.value <= 0:
+				resting = true
+		true:
+			$staminaBar.value += 5
+			if $staminaBar.value >= staminaStat:
+				$staminaBar.value = staminaStat
+				resting = false
