@@ -22,11 +22,14 @@ var firable: bool = true
 # 0 = FE, 1 = BE, 2 = Doc
 var metricType: int
 var metricName: String
+var progress_bars: Array[CanvasItem] = []
 
 func _ready() -> void:
 	$HoverArea.mouse_entered.connect(_on_hover_area_mouse_entered)
 	$HoverArea.mouse_exited.connect(_on_hover_area_mouse_exited)
 	TimeTool.timer.timeout.connect(work)
+	if progress_bars.is_empty():
+		_cache_progress_bars(self)
 	
 func _on_hover_area_mouse_entered() -> void:
 	hover_started.emit(self)
@@ -52,10 +55,13 @@ func work():
 		NumberVisualizer.createNumber(amount,type,self.global_position+Vector2(randf_range(-30,30),randf_range(-20,-40)))
 		
 func set_progress_bars_visible(should_show: bool) -> void:
-	_set_progress_bars_visible_for(self, should_show)
+	if progress_bars.is_empty():
+		_cache_progress_bars(self)
+	for progress_bar in progress_bars:
+		progress_bar.visible = should_show
 
-func _set_progress_bars_visible_for(node: Node, should_show: bool) -> void:
+func _cache_progress_bars(node: Node) -> void:
 	if node is ProgressBar or node is TextureProgressBar:
-		node.visible = should_show
+		progress_bars.append(node)
 	for child in node.get_children():
-		_set_progress_bars_visible_for(child, should_show)
+		_cache_progress_bars(child)
