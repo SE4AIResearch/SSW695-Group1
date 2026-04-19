@@ -247,7 +247,6 @@ func _build_standard_upgrade_display_data(upgrade_data: Dictionary) -> Dictionar
 	var description := str(upgrade_data.get("description", ""))
 
 	if PlayerTool.has_upgrade(category, tier):
-		description += "\nPurchased"
 		upgrade_data["description"] = description
 		upgrade_data["purchased"] = true
 		upgrade_data["show_lock_label"] = true
@@ -291,7 +290,6 @@ func _build_office_upgrade_display_data(office_item: Dictionary) -> Dictionary:
 	var description := str(upgrade_data.get("description", ""))
 
 	if tier <= PlayerTool.office_tier:
-		description += "\nPurchased"
 		upgrade_data["description"] = description
 		upgrade_data["purchased"] = true
 		upgrade_data["show_lock_label"] = true
