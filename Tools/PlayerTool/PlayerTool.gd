@@ -14,12 +14,18 @@ signal projectCompleted
 signal currencyChanged
 signal scoreChanged
 signal officeTierChanged
+signal upgradesChanged
 
 const LOOP_NO_PROJECT := "no_project"
 const LOOP_PLANNING_WEEK := "planning_week"
 const LOOP_ACTIVE_WEEK := "active_week"
 const LOOP_RESOLVING_WEEK := "resolving_week"
 const OFFICE_CAPACITY_BY_TIER := [6, 8, 10, 12, 14]
+const COFFEE_MACHINE_SCENE_PROP_KEY := "coffee_machine"
+const COFFEE_MACHINE_STAMINA_MULTIPLIER := 1.1
+const COFFEE_MACHINE_BOOST_APPLIED_META_KEY := "coffee_machine_stamina_boost_applied"
+const COFFEE_MACHINE_BASE_STAMINA_META_KEY := "coffee_machine_base_stamina"
+const MIN_WORKER_STAMINA := 1
 
 var level
 
@@ -51,6 +57,7 @@ var completed_project_count: int = 0
 var has_viewed_methodology_learning_center: bool = false
 var office_tier: int = 0
 var max_worker_capacity: int = 6
+var remaining_project_choice_names: Array = []
 
 var loopPhase: String = LOOP_NO_PROJECT
 var weekResults: Dictionary = {}
@@ -104,6 +111,7 @@ func resetData():
 	completed_project_count = 0
 	has_viewed_methodology_learning_center = false
 	office_tier = 0
+	remaining_project_choice_names = []
 	_sync_office_capacity()
 	metrics = {
 		"frontEnd": 0,
@@ -116,7 +124,7 @@ func resetData():
 	completedMetrics = []
 	workers = []
 	upgrades = []
-	currency = 0.0
+	currency = 100.0
 	score = 0
 	weekResults = {}
 	selectedAssignments = {}
@@ -138,6 +146,7 @@ func resetData():
 	loopStateChanged.emit()
 	statsChanged.emit()
 	officeTierChanged.emit()
+	upgradesChanged.emit()
 
 func resetProjectStats():
 	projectRatedDifficulty = 0
@@ -174,6 +183,60 @@ func _ready() -> void:
 	workerNode.name = "workerHoldover"
 	add_child(workerNode)
 
+func get_unique_project_choices(all_projects: Array, count: int = 3) -> Array:
+	var selected_projects: Array = []
+	var selected_names: Array = []
+	var target_count: int = mini(count, all_projects.size())
+
+	while selected_projects.size() < target_count:
+		if remaining_project_choice_names.is_empty():
+			_refill_project_choice_pool(all_projects)
+
+		var project_name: String = _pop_next_project_choice_name(selected_names)
+		if project_name.is_empty():
+			_refill_project_choice_pool(all_projects)
+			project_name = _pop_next_project_choice_name(selected_names)
+			if project_name.is_empty():
+				break
+
+		var project_choice: Dictionary = _find_project_choice(all_projects, project_name)
+		if project_choice.is_empty():
+			continue
+
+		selected_names.append(project_name)
+		selected_projects.append(project_choice)
+
+	return selected_projects
+
+func _refill_project_choice_pool(all_projects: Array) -> void:
+	remaining_project_choice_names.clear()
+	for project_choice in all_projects:
+		var project_name: String = str(project_choice.get("name", ""))
+		if !project_name.is_empty():
+			remaining_project_choice_names.append(project_name)
+	remaining_project_choice_names.shuffle()
+
+func _pop_next_project_choice_name(excluded_names: Array) -> String:
+	var deferred_names: Array = []
+
+	while !remaining_project_choice_names.is_empty():
+		var project_name: String = str(remaining_project_choice_names.pop_back())
+		if excluded_names.has(project_name):
+			deferred_names.append(project_name)
+			continue
+
+		remaining_project_choice_names.append_array(deferred_names)
+		return project_name
+
+	remaining_project_choice_names.append_array(deferred_names)
+	return ""
+
+func _find_project_choice(all_projects: Array, project_name: String) -> Dictionary:
+	for project_choice in all_projects:
+		if str(project_choice.get("name", "")) == project_name:
+			return project_choice
+	return {}
+
 func newProject(newProject) -> void:
 	resetProjectStats()
 	project = newProject
@@ -192,6 +255,7 @@ func newProject(newProject) -> void:
 func newHire(worker) -> bool:
 	if workers.size() >= max_worker_capacity:
 		return false
+	_apply_active_upgrade_effects_to_worker(worker)
 	worker.name = worker.personName
 	workers.append(worker)
 	if worker.get_parent() != null:
@@ -201,8 +265,68 @@ func newHire(worker) -> bool:
 	hireSelected.emit()
 	return true
 
+func can_purchase_hire(hire_cost: int) -> Dictionary:
+	if workers.size() >= max_worker_capacity:
+		return {"ok": false, "reason": "You cannot hire more workers right now."}
+	if hire_cost < 0:
+		return {"ok": false, "reason": "That hire cost is invalid."}
+	if int(currency) < hire_cost:
+		return {"ok": false, "reason": "You do not have enough money for this hire."}
+	return {"ok": true, "reason": "Ready to hire this worker."}
+
+func purchase_hire(worker, hire_cost: int) -> Dictionary:
+	var validation: Dictionary = can_purchase_hire(hire_cost)
+	if not bool(validation.get("ok", false)):
+		return validation
+	if not newHire(worker):
+		return {"ok": false, "reason": "You cannot hire more workers right now."}
+
+	addCurrency(-hire_cost)
+	return {
+		"ok": true,
+		"reason": "Hired %s." % str(worker.personName)
+	}
+
 func newUpgrade(upgrade) -> void:
-	upgrades.append(upgrade)
+	upgrades.append(_normalize_upgrade_record(upgrade))
+	upgradesChanged.emit()
+
+func has_upgrade(category: String, tier: int) -> bool:
+	for upgrade in upgrades:
+		if str(upgrade.get("category", "")) == category and int(upgrade.get("tier", 0)) == tier:
+			return true
+	return false
+
+func can_purchase_standard_upgrade(upgrade_data: Dictionary) -> Dictionary:
+	var category := str(upgrade_data.get("category", ""))
+	var target_tier := int(upgrade_data.get("tier", 0))
+	var cost := int(upgrade_data.get("cost", 0))
+
+	if category.is_empty():
+		return {"ok": false, "reason": "That upgrade category is invalid."}
+	if target_tier < 1:
+		return {"ok": false, "reason": "That upgrade tier is invalid."}
+	if has_upgrade(category, target_tier):
+		return {"ok": false, "reason": "That upgrade has already been purchased."}
+	if target_tier > 1 and not has_upgrade(category, target_tier - 1):
+		return {"ok": false, "reason": "Purchase the previous %s upgrade first." % category}
+	if int(currency) < cost:
+		return {"ok": false, "reason": "You do not have enough money for this upgrade."}
+	return {"ok": true, "reason": "Ready to purchase this upgrade."}
+
+func purchase_standard_upgrade(upgrade_data: Dictionary) -> Dictionary:
+	var validation: Dictionary = can_purchase_standard_upgrade(upgrade_data)
+	if not bool(validation.get("ok", false)):
+		return validation
+
+	var purchased_upgrade: Dictionary = _normalize_upgrade_record(upgrade_data)
+	addCurrency(-int(upgrade_data.get("cost", 0)))
+	newUpgrade(purchased_upgrade)
+	_apply_standard_upgrade_purchase_effects(purchased_upgrade)
+	return {
+		"ok": true,
+		"reason": "Purchased %s." % str(upgrade_data.get("name", "Upgrade"))
+	}
 
 func addCurrency(amount: int) -> void:
 	currency = maxf(0.0, currency + amount)
@@ -460,7 +584,7 @@ func can_purchase_office_upgrade(upgrade_data: Dictionary) -> Dictionary:
 	return {"ok": true, "reason": "Ready to purchase this office upgrade."}
 
 func purchase_office_upgrade(upgrade_data: Dictionary) -> Dictionary:
-	var validation := can_purchase_office_upgrade(upgrade_data)
+	var validation: Dictionary = can_purchase_office_upgrade(upgrade_data)
 	if not bool(validation.get("ok", false)):
 		return validation
 
@@ -485,3 +609,64 @@ func purchase_office_upgrade(upgrade_data: Dictionary) -> Dictionary:
 
 func _sync_office_capacity() -> void:
 	max_worker_capacity = get_office_capacity_for_tier(office_tier)
+
+func _normalize_upgrade_record(upgrade_data: Dictionary) -> Dictionary:
+	var normalized_upgrade := {
+		"category": str(upgrade_data.get("category", "")),
+		"tier": int(upgrade_data.get("tier", 0)),
+		"name": str(upgrade_data.get("name", "")),
+	}
+
+	if upgrade_data.has("scene_prop_key"):
+		normalized_upgrade["scene_prop_key"] = str(upgrade_data.get("scene_prop_key", ""))
+	if upgrade_data.has("capacity"):
+		normalized_upgrade["capacity"] = int(upgrade_data.get("capacity", 0))
+
+	return normalized_upgrade
+
+func _apply_standard_upgrade_purchase_effects(upgrade_data: Dictionary) -> void:
+	if _is_coffee_machine_upgrade(upgrade_data):
+		_apply_coffee_machine_stamina_boost_to_all_workers()
+
+func _apply_active_upgrade_effects_to_worker(worker) -> void:
+	if _has_active_upgrade_with_scene_prop_key(COFFEE_MACHINE_SCENE_PROP_KEY):
+		_apply_worker_stamina_boost(worker, COFFEE_MACHINE_STAMINA_MULTIPLIER)
+
+func _apply_coffee_machine_stamina_boost_to_all_workers() -> void:
+	for worker in workers:
+		_apply_worker_stamina_boost(worker, COFFEE_MACHINE_STAMINA_MULTIPLIER)
+
+func _has_active_upgrade_with_scene_prop_key(scene_prop_key: String) -> bool:
+	for upgrade_data in upgrades:
+		if str(upgrade_data.get("scene_prop_key", "")) == scene_prop_key:
+			return true
+	return false
+
+func _is_coffee_machine_upgrade(upgrade_data: Dictionary) -> bool:
+	return str(upgrade_data.get("scene_prop_key", "")) == COFFEE_MACHINE_SCENE_PROP_KEY
+
+func _apply_worker_stamina_boost(worker, multiplier: float) -> void:
+	if worker == null:
+		return
+	if bool(worker.get_meta(COFFEE_MACHINE_BOOST_APPLIED_META_KEY, false)):
+		return
+	var stamina_bar = worker.get_node_or_null("staminaBar")
+	var previous_stamina_max := int(worker.staminaStat)
+	var previous_stamina_value := previous_stamina_max
+	if stamina_bar != null:
+		previous_stamina_max = int(stamina_bar.max_value)
+		previous_stamina_value = int(stamina_bar.value)
+	if not worker.has_meta(COFFEE_MACHINE_BASE_STAMINA_META_KEY):
+		var base_stamina := int(worker.staminaStat)
+		worker.set_meta(COFFEE_MACHINE_BASE_STAMINA_META_KEY, base_stamina)
+	var boosted_stamina := int(round(float(worker.get_meta(COFFEE_MACHINE_BASE_STAMINA_META_KEY)) * multiplier))
+	worker.staminaStat = max(MIN_WORKER_STAMINA, boosted_stamina)
+	worker.set_meta(COFFEE_MACHINE_BOOST_APPLIED_META_KEY, true)
+
+	if stamina_bar != null:
+		stamina_bar.max_value = worker.staminaStat
+		if previous_stamina_max > 0:
+			var stamina_ratio := float(previous_stamina_value) / float(previous_stamina_max)
+			stamina_bar.value = clampi(int(round(stamina_ratio * float(worker.staminaStat))), 0, worker.staminaStat)
+		else:
+			stamina_bar.value = 0 if previous_stamina_value <= 0 else worker.staminaStat

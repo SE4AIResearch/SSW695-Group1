@@ -5,7 +5,8 @@ var currentMenu: Node
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
-	pass # Replace with function body.
+	if not $LearningCenter.close_requested.is_connected(_on_learning_center_close_requested):
+		$LearningCenter.close_requested.connect(_on_learning_center_close_requested)
 
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
@@ -32,10 +33,11 @@ func _on_quit_pressed() -> void:
 
 func _on_learning_centerbutton_pressed() -> void:
 	currentMenu = $LearningCenter
+	if currentMenu.has_method("reset_state"):
+		currentMenu.reset_state()
 	currentMenu.visible = true
 	$Menu.visible = false
-	$Back.visible = true
-	pass
+	$Back.visible = false
 
 
 func _on_settings_button_pressed() -> void:
@@ -50,8 +52,10 @@ func _on_back_pressed() -> void:
 	currentMenu.visible = false
 	$Menu.visible = true
 	$Back.visible = false
-	if currentMenu == $LearningCenter:
-		$LearningCenter.get_node("Categories").visible = true
-		$LearningCenter.get_node("Page/Entry").text = ""
-		$LearningCenter.get_node("Page").visible = false
 	pass
+
+func _on_learning_center_close_requested() -> void:
+	$LearningCenter.visible = false
+	$Menu.visible = true
+	$Back.visible = false
+	currentMenu = null

@@ -17,9 +17,9 @@ func _build_details(entries: Array) -> String:
 	var blocks: Array = []
 	for entry in entries:
 		var lines: Array = []
-		var actionText := str(entry.get("player_action", ""))
-		var outcomeText := str(entry.get("outcome_summary", ""))
-		var teachingText := str(entry.get("teaching_message", ""))
+		var actionText: String = str(entry.get("player_action", ""))
+		var outcomeText: String = str(entry.get("outcome_summary", ""))
+		var teachingText: String = str(entry.get("teaching_message", ""))
 		if actionText != "":
 			lines.append("Action: " + actionText)
 		if outcomeText != "":
@@ -37,19 +37,16 @@ func _on_continue_button_pressed() -> void:
 	get_parent().get_parent().endMenu()
 
 func _on_learn_more_button_pressed() -> void:
-	var topic := str(PlayerTool.weekResults.get("learn_more_topic", ""))
+	var topic: String = str(PlayerTool.weekResults.get("learn_more_topic", ""))
 	if topic == "":
 		return
 	if $LearnMoreText.visible:
 		$LearnMoreText.visible = false
 		return
-	var entry = learningEntries.get(topic)
-	if entry == null or not (entry is Dictionary):
+	var article_text: String = learningEntries.get_article_text(topic)
+	if article_text == "":
 		$LearnMoreText.text = "No learning-center entry is available for \"%s\" yet." % topic
 		$LearnMoreText.visible = true
 		return
-	var pages: Array = []
-	for index in entry.keys():
-		pages.append(str(entry.get(index)))
-	$LearnMoreText.text = "\n\n".join(pages)
+	$LearnMoreText.text = article_text
 	$LearnMoreText.visible = true

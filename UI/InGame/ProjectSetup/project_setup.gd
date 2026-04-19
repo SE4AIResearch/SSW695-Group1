@@ -8,7 +8,7 @@ var methodItem = preload("res://UI/InGame/ProjectSetup/MethodItem/MethodItem.tsc
 var methodList = load("res://Projects/MethodologyList.gd").new()
 var projectChoiceItem = preload("res://UI/InGame/ProjectSetup/ProjectItem/ProjectItem.tscn")
 
-const PROJECT_CHOICES_HEIGHT := 245.0
+const PROJECT_CHOICES_HEIGHT := 305.0
 const LEARN_MORE_BUTTON_WIDTH := 160.0
 const LEARN_MORE_BUTTON_HEIGHT := 40.0
 const ACTION_BUTTON_WIDTH := 240.0
@@ -21,7 +21,6 @@ const METHODOLOGY_CARD_WIDTH_REDUCTION := 20.0
 const METHODOLOGY_CARD_BOTTOM_GAP := 16.0
 
 var selectedProject: Node
-var randomProject: Dictionary
 var pendingMethodology: Dictionary = {}
 
 
@@ -32,8 +31,10 @@ func _on_button_pressed() -> void:
 func _ready():
 	PCWindowLayout.apply(self)
 	_apply_content_layout()
-	_connect_learning_center_navigation()
+	if not $LearningCenter.close_requested.is_connected(_on_learning_center_close_requested):
+		$LearningCenter.close_requested.connect(_on_learning_center_close_requested)
 	$Title.text = "Select Project"
+	_sync_project_setup_back_button()
 	if PlayerTool.workers.size() == 0:
 		$ProjectChoose/Button.text = "Hire a Worker!"
 		$ProjectChoose/Button.disabled = true
@@ -41,7 +42,7 @@ func _ready():
 
 func _apply_content_layout() -> void:
 	var content_rect: Rect2 = PCWindowLayout.content_rect()
-	var choice_top: float = content_rect.position.y + 28.0
+	var choice_top: float = content_rect.position.y + 10.0
 	var choices_left: float = content_rect.position.x + 82.0
 	var choices_right: float = content_rect.position.x + content_rect.size.x - 81.0
 	var methodology_left: float = PCWindowLayout.WINDOW_LEFT + METHODOLOGY_WINDOW_SIDE_PADDING
@@ -90,20 +91,8 @@ func _layout_method_cards(available_width: float) -> void:
 		child.custom_minimum_size = Vector2(card_width, METHODOLOGY_CARD_HEIGHT)
 		child.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 
-func _connect_learning_center_navigation() -> void:
-	var categories_container: VBoxContainer = $LearningCenter.get_node("Categories/ScrollContainer/VBoxContainer")
-	for child in categories_container.get_children():
-		if child is Button and !child.pressed.is_connected(_on_learning_center_page_opened):
-			child.pressed.connect(_on_learning_center_page_opened)
-
-	var return_button: Button = $LearningCenter.get_node("Page/ReturnToLCMenu")
-	if !return_button.pressed.is_connected(_on_learning_center_return_to_menu):
-		return_button.pressed.connect(_on_learning_center_return_to_menu)
-
-	_sync_learning_center_back_button()
-
-func _sync_learning_center_back_button() -> void:
-	$LearningCenterBack.visible = $LearningCenter.visible and $LearningCenter.get_node("Categories").visible
+func _sync_project_setup_back_button() -> void:
+	$PCBack.visible = !$LearningCenter.visible
 
 func generateProjectChoices() -> void:
 	#Insert below code to pool together total worker skills
@@ -117,23 +106,25 @@ func generateProjectChoices() -> void:
 	#Read above comment
 	for child in $ProjectChoose/ProjectChoices.get_children():
 		child.queue_free()
-	for i in range(3):
+	var project_choices: Array = PlayerTool.get_unique_project_choices(projectList.projects, 3)
+	for i in range(project_choices.size()):
 		var projectInfo = projectItem.instantiate()
 		var newChoice = projectChoiceItem.instantiate()
-		randomProject = projectList.projects.pick_random()
+		var project_data: Dictionary = project_choices[i]
 		
-		projectInfo.projectName = randomProject.name
-		projectInfo.projectDescription = randomProject.description
+		projectInfo.projectName = str(project_data.get("name", ""))
+		projectInfo.projectDescription = str(project_data.get("description", ""))
 		projectInfo.clientName = PersonConstructor.generateName()
-		projectInfo.frontEndProjectMin = randomProject.frontEndMetrics.size()
-		projectInfo.backEndProjectMin = randomProject.backEndMetrics.size()
-		projectInfo.documentingProjectMin = randomProject.documentingMetrics.size()
-		projectInfo.sprintAmount = randomProject.baseSprintAmount
-		projectInfo.sprintLength = randomProject.baseSprintLength
-		projectInfo.sprintMetricAmount = randomProject.baseSprintMetricAmount
-		projectInfo.frontEndMetrics = randomProject.frontEndMetrics.duplicate(true)
-		projectInfo.backEndMetrics = randomProject.backEndMetrics.duplicate(true)
-		projectInfo.documentingMetrics = randomProject.documentingMetrics.duplicate(true)
+		projectInfo.frontEndProjectMin = project_data.frontEndMetrics.size()
+		projectInfo.backEndProjectMin = project_data.backEndMetrics.size()
+		projectInfo.documentingProjectMin = project_data.documentingMetrics.size()
+		projectInfo.sprintAmount = int(project_data.get("baseSprintAmount", 0))
+		projectInfo.sprintLength = int(project_data.get("baseSprintLength", 0))
+		projectInfo.sprintMetricAmount = int(project_data.get("baseSprintMetricAmount", 0))
+		projectInfo.projectDifficulty = float(project_data.get("frontEndScalar", 0.0)) + float(project_data.get("backEndScalar", 0.0)) + float(project_data.get("documentingScalar", 0.0))
+		projectInfo.frontEndMetrics = project_data.frontEndMetrics.duplicate(true)
+		projectInfo.backEndMetrics = project_data.backEndMetrics.duplicate(true)
+		projectInfo.documentingMetrics = project_data.documentingMetrics.duplicate(true)
 
 		match i:
 			0: 	projectInfo.constraints.append(projectList.constraints.pick_random())
@@ -145,9 +136,6 @@ func generateProjectChoices() -> void:
 					if !projectInfo.constraints.has(constraint): projectInfo.constraints.append(constraint)
 		
 		for constraint in projectInfo.constraints:
-			randomProject.set("frontEndScaling",constraint.get("frontEndScaling"))
-			randomProject.set("backEndScaling",constraint.get("backEndScaling"))
-			randomProject.set("documentingScaling",constraint.get("documentingScaling"))
 			projectInfo.sprintAmount += constraint.get("sprintAmount")
 			projectInfo.sprintLength += constraint.get("sprintLength")
 			projectInfo.sprintMetricAmount += constraint.get("sprintMetricAmount")
@@ -217,8 +205,6 @@ func _update_confirm_button_state() -> void:
 
 #Calculate effects from player upgrades here
 func calculateUpgradeEffects():
-
-	selectedProject.projectDifficulty = randomProject.get("frontEndScalar") + randomProject.get("backEndScalar") + randomProject.get("documentingScalar")
 	PlayerTool.newProject(selectedProject)
 	get_parent().get_parent().newProject()
 	pass
@@ -243,7 +229,7 @@ func _on_learn_more_button_pressed() -> void:
 	$Title.visible = false
 	_reset_learning_center()
 	$LearningCenter.visible = true
-	_sync_learning_center_back_button()
+	_sync_project_setup_back_button()
 
 func _hide_learning_center() -> void:
 	$LearningCenter.visible = false
@@ -253,18 +239,11 @@ func _hide_learning_center() -> void:
 	$LearnMoreButton.visible = true
 	_reset_learning_center()
 	_update_confirm_button_state()
-	_sync_learning_center_back_button()
+	_sync_project_setup_back_button()
 
 func _reset_learning_center() -> void:
-	$LearningCenter.get_node("Categories").visible = true
-	$LearningCenter.get_node("Page/Entry").text = ""
-	$LearningCenter.get_node("Page").visible = false
+	if $LearningCenter.has_method("reset_state"):
+		$LearningCenter.reset_state()
 
-func _on_learning_center_back_pressed() -> void:
+func _on_learning_center_close_requested() -> void:
 	_hide_learning_center()
-
-func _on_learning_center_page_opened() -> void:
-	call_deferred("_sync_learning_center_back_button")
-
-func _on_learning_center_return_to_menu() -> void:
-	call_deferred("_sync_learning_center_back_button")

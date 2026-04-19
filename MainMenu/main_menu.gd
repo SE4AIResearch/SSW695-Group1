@@ -1,5 +1,8 @@
 extends Node2D
 
+const DEFAULT_BACK_RECT := Rect2(1033.0, 529.0, 64.0, 64.0)
+const LEARNING_CENTER_BACK_RECT := Rect2(1069.0, 155.0, 64.0, 64.0)
+
 var currentMenu: Node
 
 var postIt1Sprites = ["res://UI/Theme/MainMenu/postIt.png","res://UI/Theme/MainMenu/postItHover.png","res://UI/Theme/MainMenu/postItSelect.png"]
@@ -15,12 +18,17 @@ func _enter_tree() -> void:
 	setButtonVisual($UI/MainButtons/QuitButton)
 	pass
 
+func _ready() -> void:
+	if not $UI/LearningCenter.close_requested.is_connected(_on_learning_center_close_requested):
+		$UI/LearningCenter.close_requested.connect(_on_learning_center_close_requested)
+
 func _on_new_game_button_pressed() -> void:
 	get_tree().change_scene_to_file("res://Level/mainLevel.tscn")
 	PlayerTool.initializeNewSave()
 	pass
 
 func setupMenu(menu):
+	_position_back_button(menu)
 	$UI/Back.visible = true
 	currentMenu = menu
 	menu.visible = true
@@ -31,15 +39,38 @@ func setupMenu(menu):
 
 func _on_load_data_button_pressed() -> void:setupMenu($UI/Load)
 func _on_settings_button_pressed() -> void:setupMenu($UI/Settings)
-func _on_learning_center_button_pressed() -> void:setupMenu($UI/LearningCenter)
+func _on_learning_center_button_pressed() -> void:
+	currentMenu = $UI/LearningCenter
+	if currentMenu.has_method("reset_state"):
+		currentMenu.reset_state()
+	currentMenu.visible = true
+	$UI/Back.visible = false
+	$UI/MainButtons.visible = false
+	$Logo.visible = false
 func _on_quit_button_pressed() -> void: get_tree().quit()
 	
 func _on_back_pressed() -> void:
 	currentMenu.visible = false
 	$UI/Back.visible = false
+	_position_back_button(null)
 	$UI/MainButtons.visible = true
 	$Logo.visible = true
 	pass
+
+func _position_back_button(menu) -> void:
+	var target_rect: Rect2 = LEARNING_CENTER_BACK_RECT if menu == $UI/LearningCenter else DEFAULT_BACK_RECT
+	$UI/Back.offset_left = target_rect.position.x
+	$UI/Back.offset_top = target_rect.position.y
+	$UI/Back.offset_right = target_rect.position.x + target_rect.size.x
+	$UI/Back.offset_bottom = target_rect.position.y + target_rect.size.y
+
+func _on_learning_center_close_requested() -> void:
+	$UI/LearningCenter.visible = false
+	$UI/Back.visible = false
+	_position_back_button(null)
+	$UI/MainButtons.visible = true
+	$Logo.visible = true
+	currentMenu = null
 
 func setButtonVisual(menuButton: Button):
 	var textureSet
