@@ -19,7 +19,7 @@ func setupMetrics():
 	$frontEndBar.max_value = PlayerTool.project.frontEndProjectMin
 	$backEndBar.max_value = PlayerTool.project.backEndProjectMin
 	$documentationBar.max_value = PlayerTool.project.documentingProjectMin
-	$reliabilityBar.max_value = 100
+	$reliabilityBar.max_value = 1
 
 func updateCurrentStats():
 	if PlayerTool.project != null:
@@ -27,6 +27,7 @@ func updateCurrentStats():
 		$backEndBar.value = PlayerTool.metrics.get("backEnd")
 		$documentationBar.value = PlayerTool.metrics.get("documenting")
 		$reliabilityBar.value = PlayerTool.metrics.get("reliability")
+		$reliabilityBar.max_value = PlayerTool.totalEvents
 		return
 	$frontEndBar.value = 0
 	$backEndBar.value = 0
