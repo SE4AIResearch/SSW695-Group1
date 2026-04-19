@@ -342,7 +342,6 @@ func _on_upgrade_purchase_requested(upgrade_data: Dictionary) -> void:
 		_show_insufficient_funds_popup(result_message)
 		return
 
-	status_message = result_message
 	_populate_columns()
 
 func _show_insufficient_funds_popup(message: String) -> void:
