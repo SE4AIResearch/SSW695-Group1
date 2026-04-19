@@ -645,9 +645,12 @@ func _is_coffee_machine_upgrade(upgrade_data: Dictionary) -> bool:
 func _apply_worker_stamina_boost(worker, multiplier: float) -> void:
 	if worker == null:
 		return
+	if bool(worker.get_meta("coffee_machine_stamina_boost_applied", false)):
+		return
 	var current_stamina := int(worker.staminaStat)
 	var boosted_stamina := int(ceil(float(current_stamina) * multiplier))
 	worker.staminaStat = int(max(1, boosted_stamina))
+	worker.set_meta("coffee_machine_stamina_boost_applied", true)
 
 	var stamina_bar = worker.get_node_or_null("staminaBar")
 	if stamina_bar != null:
