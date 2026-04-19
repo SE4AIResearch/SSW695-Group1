@@ -55,7 +55,8 @@ func work():
 		
 func set_progress_bars_visible(should_show: bool) -> void:
 	for progress_bar in progressBars:
-		progress_bar.visible = should_show
+		if is_instance_valid(progress_bar):
+			progress_bar.visible = should_show
 
 func _cache_progress_bars(node: Node) -> void:
 	if node is ProgressBar or node is TextureProgressBar:
