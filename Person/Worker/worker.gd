@@ -51,3 +51,8 @@ func work():
 
 		NumberVisualizer.createNumber(amount,type,self.global_position+Vector2(randf_range(-30,30),randf_range(-20,-40)))
 		
+func set_progress_bars_visible(should_show: bool) -> void:
+	for progress_bar in find_children("*", "ProgressBar", true, false):
+		progress_bar.visible = should_show
+	for texture_progress_bar in find_children("*", "TextureProgressBar", true, false):
+		texture_progress_bar.visible = should_show
