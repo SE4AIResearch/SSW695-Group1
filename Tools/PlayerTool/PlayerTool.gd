@@ -647,13 +647,13 @@ func _is_coffee_machine_upgrade(upgrade_data: Dictionary) -> bool:
 func _apply_worker_stamina_boost(worker, multiplier: float) -> void:
 	if worker == null:
 		return
-	if bool(worker.get_meta(COFFEE_MACHINE_BOOST_APPLIED_META_KEY, false)):
-		return
 	var base_stamina := int(worker.get_meta(COFFEE_MACHINE_BASE_STAMINA_META_KEY, int(worker.staminaStat)))
 	if not worker.has_meta(COFFEE_MACHINE_BASE_STAMINA_META_KEY):
 		worker.set_meta(COFFEE_MACHINE_BASE_STAMINA_META_KEY, base_stamina)
+	if bool(worker.get_meta(COFFEE_MACHINE_BOOST_APPLIED_META_KEY, false)):
+		return
 	var boosted_stamina := int(ceil(float(base_stamina) * multiplier))
-	worker.staminaStat = int(max(1, boosted_stamina))
+	worker.staminaStat = max(1, boosted_stamina)
 	worker.set_meta(COFFEE_MACHINE_BOOST_APPLIED_META_KEY, true)
 
 	var stamina_bar = worker.get_node_or_null("staminaBar")
