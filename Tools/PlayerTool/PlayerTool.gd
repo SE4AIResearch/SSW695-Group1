@@ -23,6 +23,8 @@ const LOOP_RESOLVING_WEEK := "resolving_week"
 const OFFICE_CAPACITY_BY_TIER := [6, 8, 10, 12, 14]
 const COFFEE_MACHINE_SCENE_PROP_KEY := "coffee_machine"
 const COFFEE_MACHINE_STAMINA_MULTIPLIER := 1.1
+const COFFEE_MACHINE_BOOST_APPLIED_META_KEY := "coffee_machine_stamina_boost_applied"
+const COFFEE_MACHINE_BASE_STAMINA_META_KEY := "coffee_machine_base_stamina"
 
 var level
 
@@ -645,12 +647,14 @@ func _is_coffee_machine_upgrade(upgrade_data: Dictionary) -> bool:
 func _apply_worker_stamina_boost(worker, multiplier: float) -> void:
 	if worker == null:
 		return
-	if bool(worker.get_meta("coffee_machine_stamina_boost_applied", false)):
+	if bool(worker.get_meta(COFFEE_MACHINE_BOOST_APPLIED_META_KEY, false)):
 		return
-	var current_stamina := int(worker.staminaStat)
-	var boosted_stamina := int(ceil(float(current_stamina) * multiplier))
+	var base_stamina := int(worker.get_meta(COFFEE_MACHINE_BASE_STAMINA_META_KEY, int(worker.staminaStat)))
+	if not worker.has_meta(COFFEE_MACHINE_BASE_STAMINA_META_KEY):
+		worker.set_meta(COFFEE_MACHINE_BASE_STAMINA_META_KEY, base_stamina)
+	var boosted_stamina := int(ceil(float(base_stamina) * multiplier))
 	worker.staminaStat = int(max(1, boosted_stamina))
-	worker.set_meta("coffee_machine_stamina_boost_applied", true)
+	worker.set_meta(COFFEE_MACHINE_BOOST_APPLIED_META_KEY, true)
 
 	var stamina_bar = worker.get_node_or_null("staminaBar")
 	if stamina_bar != null:
