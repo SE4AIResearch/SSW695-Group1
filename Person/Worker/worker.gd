@@ -28,6 +28,7 @@ var resting: bool = false
 var metricType: int
 var metricName: String
 var progressBars: Array[CanvasItem] = []
+var progress_bars_visible: bool = true
 
 func _ready() -> void:
 	$staminaBar.max_value = staminaStat
@@ -36,6 +37,7 @@ func _ready() -> void:
 	$HoverArea.mouse_exited.connect(_on_hover_area_mouse_exited)
 	TimeTool.timer.timeout.connect(work)
 	_cache_progress_bars(self)
+	set_progress_bars_visible(progress_bars_visible)
 	
 func _on_hover_area_mouse_entered() -> void:
 	hover_started.emit(self)
@@ -61,6 +63,7 @@ func work():
 				resting = false
 
 func set_progress_bars_visible(should_show: bool) -> void:
+	progress_bars_visible = should_show
 	for progress_bar in progressBars:
 		if is_instance_valid(progress_bar):
 			progress_bar.visible = should_show
