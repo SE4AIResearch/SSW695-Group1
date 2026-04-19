@@ -669,4 +669,4 @@ func _apply_worker_stamina_boost(worker, multiplier: float) -> void:
 			var stamina_ratio := float(previous_stamina_value) / float(previous_stamina_max)
 			stamina_bar.value = clampi(int(round(stamina_ratio * float(worker.staminaStat))), 0, worker.staminaStat)
 		else:
-			stamina_bar.value = worker.staminaStat
+			stamina_bar.value = 0 if previous_stamina_value <= 0 else worker.staminaStat
