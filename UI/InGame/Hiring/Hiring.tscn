@@ -35,6 +35,8 @@ texture = ExtResource("5_cad51")
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_gbnct"]
 texture = ExtResource("6_xki6e")
 
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_hiring_popup_ok_focus"]
+
 [node name="Hiring" type="Node2D" unique_id=628576152]
 process_mode = 2
 position = Vector2(202, 243)
@@ -81,6 +83,8 @@ offset_left = -53.0
 offset_top = 326.0
 offset_right = 522.0
 offset_bottom = 342.0
+min_value = 1.0
+value = 1.0
 max_value = 1000.0
 ticks_position = 2
 
@@ -103,5 +107,82 @@ theme_override_styles/pressed = SubResource("StyleBoxTexture_bdqul")
 theme_override_styles/hover = SubResource("StyleBoxTexture_wx0r0")
 theme_override_styles/disabled = SubResource("StyleBoxTexture_gbnct")
 
+[node name="InsufficientFundsModal" type="Control" parent="." unique_id=1003852829]
+visible = false
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 0
+
+[node name="InputBlocker" type="Control" parent="InsufficientFundsModal" unique_id=700170683]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 0
+
+[node name="Overlay" type="ColorRect" parent="InsufficientFundsModal" unique_id=1962538842]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+color = Color(0, 0, 0, 0.45)
+
+[node name="MessagePanel" type="Panel" parent="InsufficientFundsModal" unique_id=613950904]
+offset_left = 84.0
+offset_top = -63.0
+offset_right = 664.0
+offset_bottom = 225.0
+theme_override_styles/panel = ExtResource("2_5eyy2")
+
+[node name="BackgroundFill" type="ColorRect" parent="InsufficientFundsModal/MessagePanel" unique_id=1172234974]
+offset_left = 18.0
+offset_top = 18.0
+offset_right = 562.0
+offset_bottom = 270.0
+mouse_filter = 2
+color = Color(0.07, 0.09, 0.15, 1)
+
+[node name="Title" type="Label" parent="InsufficientFundsModal/MessagePanel" unique_id=1334507850]
+offset_left = 120.0
+offset_top = 24.0
+offset_right = 460.0
+offset_bottom = 68.0
+text = "Purchase Failed"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Message" type="Label" parent="InsufficientFundsModal/MessagePanel" unique_id=719359049]
+offset_left = 56.0
+offset_top = 88.0
+offset_right = 524.0
+offset_bottom = 188.0
+horizontal_alignment = 1
+vertical_alignment = 1
+autowrap_mode = 2
+text = "You do not have enough money for this hire."
+
+[node name="OkButton" type="Button" parent="InsufficientFundsModal/MessagePanel" unique_id=1722117132]
+offset_left = 170.0
+offset_top = 196.0
+offset_right = 410.0
+offset_bottom = 276.0
+theme_override_styles/normal = SubResource("StyleBoxTexture_d37a2")
+theme_override_styles/pressed = SubResource("StyleBoxTexture_litpm")
+theme_override_styles/hover = SubResource("StyleBoxTexture_0bxjy")
+theme_override_styles/disabled = SubResource("StyleBoxTexture_df6go")
+theme_override_styles/focus = SubResource("StyleBoxEmpty_hiring_popup_ok_focus")
+focus_mode = 0
+text = "OK"
+
 [connection signal="pressed" from="SearchButton" to="." method="_on_search_button_pressed"]
 [connection signal="pressed" from="PCBack" to="." method="_on_pc_back_pressed"]
+[connection signal="pressed" from="InsufficientFundsModal/MessagePanel/OkButton" to="." method="_on_insufficient_funds_ok_pressed"]

@@ -14,6 +14,7 @@ signal projectCompleted
 signal currencyChanged
 signal scoreChanged
 signal officeTierChanged
+signal upgradesChanged
 
 const LOOP_NO_PROJECT := "no_project"
 const LOOP_PLANNING_WEEK := "planning_week"
@@ -118,7 +119,7 @@ func resetData():
 	completedMetrics = []
 	workers = []
 	upgrades = []
-	currency = 0.0
+	currency = 100.0
 	score = 0
 	weekResults = {}
 	selectedAssignments = {}
@@ -140,6 +141,7 @@ func resetData():
 	loopStateChanged.emit()
 	statsChanged.emit()
 	officeTierChanged.emit()
+	upgradesChanged.emit()
 
 func resetProjectStats():
 	projectRatedDifficulty = 0
@@ -257,8 +259,67 @@ func newHire(worker) -> bool:
 	hireSelected.emit()
 	return true
 
+func can_purchase_hire(hire_cost: int) -> Dictionary:
+	if workers.size() >= max_worker_capacity:
+		return {"ok": false, "reason": "You cannot hire more workers right now."}
+	if hire_cost < 0:
+		return {"ok": false, "reason": "That hire cost is invalid."}
+	if int(currency) < hire_cost:
+		return {"ok": false, "reason": "You do not have enough money for this hire."}
+	return {"ok": true, "reason": "Ready to hire this worker."}
+
+func purchase_hire(worker, hire_cost: int) -> Dictionary:
+	var validation: Dictionary = can_purchase_hire(hire_cost)
+	if not bool(validation.get("ok", false)):
+		return validation
+	if not newHire(worker):
+		return {"ok": false, "reason": "You cannot hire more workers right now."}
+
+	addCurrency(-hire_cost)
+	return {
+		"ok": true,
+		"reason": "Hired %s." % str(worker.personName)
+	}
+
 func newUpgrade(upgrade) -> void:
-	upgrades.append(upgrade)
+	upgrades.append(_normalize_upgrade_record(upgrade))
+	upgradesChanged.emit()
+
+func has_upgrade(category: String, tier: int) -> bool:
+	for upgrade in upgrades:
+		if str(upgrade.get("category", "")) == category and int(upgrade.get("tier", 0)) == tier:
+			return true
+	return false
+
+func can_purchase_standard_upgrade(upgrade_data: Dictionary) -> Dictionary:
+	var category := str(upgrade_data.get("category", ""))
+	var target_tier := int(upgrade_data.get("tier", 0))
+	var cost := int(upgrade_data.get("cost", 0))
+
+	if category.is_empty():
+		return {"ok": false, "reason": "That upgrade category is invalid."}
+	if target_tier < 1:
+		return {"ok": false, "reason": "That upgrade tier is invalid."}
+	if has_upgrade(category, target_tier):
+		return {"ok": false, "reason": "That upgrade has already been purchased."}
+	if target_tier > 1 and not has_upgrade(category, target_tier - 1):
+		return {"ok": false, "reason": "Purchase the previous %s upgrade first." % category}
+	if int(currency) < cost:
+		return {"ok": false, "reason": "You do not have enough money for this upgrade."}
+	return {"ok": true, "reason": "Ready to purchase this upgrade."}
+
+func purchase_standard_upgrade(upgrade_data: Dictionary) -> Dictionary:
+	var validation: Dictionary = can_purchase_standard_upgrade(upgrade_data)
+	if not bool(validation.get("ok", false)):
+		return validation
+
+	var purchased_upgrade: Dictionary = _normalize_upgrade_record(upgrade_data)
+	addCurrency(-int(upgrade_data.get("cost", 0)))
+	newUpgrade(purchased_upgrade)
+	return {
+		"ok": true,
+		"reason": "Purchased %s." % str(upgrade_data.get("name", "Upgrade"))
+	}
 
 func addCurrency(amount: int) -> void:
 	currency = maxf(0.0, currency + amount)
@@ -516,7 +577,7 @@ func can_purchase_office_upgrade(upgrade_data: Dictionary) -> Dictionary:
 	return {"ok": true, "reason": "Ready to purchase this office upgrade."}
 
 func purchase_office_upgrade(upgrade_data: Dictionary) -> Dictionary:
-	var validation := can_purchase_office_upgrade(upgrade_data)
+	var validation: Dictionary = can_purchase_office_upgrade(upgrade_data)
 	if not bool(validation.get("ok", false)):
 		return validation
 
@@ -541,3 +602,17 @@ func purchase_office_upgrade(upgrade_data: Dictionary) -> Dictionary:
 
 func _sync_office_capacity() -> void:
 	max_worker_capacity = get_office_capacity_for_tier(office_tier)
+
+func _normalize_upgrade_record(upgrade_data: Dictionary) -> Dictionary:
+	var normalized_upgrade := {
+		"category": str(upgrade_data.get("category", "")),
+		"tier": int(upgrade_data.get("tier", 0)),
+		"name": str(upgrade_data.get("name", "")),
+	}
+
+	if upgrade_data.has("scene_prop_key"):
+		normalized_upgrade["scene_prop_key"] = str(upgrade_data.get("scene_prop_key", ""))
+	if upgrade_data.has("capacity"):
+		normalized_upgrade["capacity"] = int(upgrade_data.get("capacity", 0))
+
+	return normalized_upgrade

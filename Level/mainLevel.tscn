@@ -376,13 +376,12 @@ texture = ExtResource("15_khv2s")
 [node name="PCStats" type="Node2D" parent="UI" unique_id=1817401256]
 script = ExtResource("23_62x8c")
 
-[node name="Currency" type="RichTextLabel" parent="UI/PCStats" unique_id=877430692]
+[node name="Currency" type="Label" parent="UI/PCStats" unique_id=877430692]
 offset_left = 975.0
 offset_top = 390.0
 offset_right = 1106.0
 offset_bottom = 417.0
 mouse_filter = 2
-bbcode_enabled = true
 text = "Currency: $0.00"
 metadata/_edit_use_anchors_ = true
 

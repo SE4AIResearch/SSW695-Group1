@@ -36,7 +36,7 @@ const UPGRADE_COLUMNS := [
 		"title": "Quality of Life",
 		"color": Color("3a2618"),
 		"items": [
-			{"tier": 1, "name": "Coffee Machine", "description": "+5% Reliability", "cost": 75, "locked": false},
+			{"tier": 1, "name": "Coffee Machine", "description": "+5% Reliability", "cost": 75, "locked": false, "scene_prop_key": "coffee_machine"},
 			{"tier": 2, "name": "Ergonomic Chairs", "description": "+5% Documentation, +5% Reliability", "cost": 200, "locked": true},
 			{"tier": 3, "name": "Standing Desks", "description": "+5% Frontend, +5% Backend", "cost": 450, "locked": true},
 			{"tier": 4, "name": "Air Conditioner", "description": "+10% Reliability", "cost": 900, "locked": true}
@@ -92,13 +92,17 @@ const OFFICE_SPACE_COLUMN := {
 }
 
 var status_message := "Upgrades"
+var insufficient_funds_message := ""
 
 func _ready() -> void:
 	PCWindowLayout.apply(self)
 	_apply_content_layout()
+	_hide_insufficient_funds_popup()
 	_populate_columns()
 	if not PlayerTool.officeTierChanged.is_connected(_populate_columns):
 		PlayerTool.officeTierChanged.connect(_populate_columns)
+	if not PlayerTool.upgradesChanged.is_connected(_populate_columns):
+		PlayerTool.upgradesChanged.connect(_populate_columns)
 
 func _apply_content_layout() -> void:
 	var content_rect: Rect2 = PCWindowLayout.content_rect()
@@ -151,7 +155,9 @@ func _get_available_content_width() -> float:
 	return maxf(0.0, $ScrollContainer.size.x - vertical_scroll_width - 2.0)
 
 func _get_all_column_data() -> Array:
-	var all_columns := UPGRADE_COLUMNS.duplicate(true)
+	var all_columns := []
+	for column_data in UPGRADE_COLUMNS:
+		all_columns.append(_build_standard_upgrade_column(column_data))
 	all_columns.append(_build_office_space_column())
 	return all_columns
 
@@ -169,8 +175,7 @@ func _add_card_column(columns: HBoxContainer, column_data: Dictionary) -> void:
 		var upgrade_card = UpgradeItemScene.instantiate()
 		column.add_child(upgrade_card)
 		upgrade_card.setup_upgrade(item_data)
-		if str(item_data.get("category", "")) == "Office Space":
-			upgrade_card.purchase_requested.connect(_on_upgrade_purchase_requested)
+		upgrade_card.purchase_requested.connect(_on_upgrade_purchase_requested)
 
 	columns.add_child(column)
 
@@ -227,8 +232,56 @@ func _build_office_space_column() -> Dictionary:
 
 	return office_column
 
+func _build_standard_upgrade_column(column_data: Dictionary) -> Dictionary:
+	var runtime_column: Dictionary = {
+		"title": str(column_data.get("title", "Upgrades")),
+		"color": column_data.get("color", Color("13274d")),
+		"items": []
+	}
+	var category := str(column_data.get("title", ""))
+
+	for item_data in column_data["items"]:
+		var upgrade_data: Dictionary = item_data.duplicate(true)
+		upgrade_data["category"] = category
+		runtime_column["items"].append(_build_standard_upgrade_display_data(upgrade_data))
+
+	return runtime_column
+
+func _build_standard_upgrade_display_data(upgrade_data: Dictionary) -> Dictionary:
+	var category := str(upgrade_data.get("category", ""))
+	var tier := int(upgrade_data.get("tier", 0))
+	var description := str(upgrade_data.get("description", ""))
+
+	if PlayerTool.has_upgrade(category, tier):
+		description += "\nPurchased"
+		upgrade_data["description"] = description
+		upgrade_data["purchased"] = true
+		upgrade_data["show_lock_label"] = true
+		upgrade_data["lock_label"] = "PURCHASED"
+		upgrade_data["action_text"] = "Purchased"
+		upgrade_data["action_disabled"] = true
+		return upgrade_data
+
+	if tier > 1 and not PlayerTool.has_upgrade(category, tier - 1):
+		description += "\nUnlock the previous tier first."
+		upgrade_data["description"] = description
+		upgrade_data["locked"] = true
+		upgrade_data["show_lock_label"] = true
+		upgrade_data["lock_label"] = "LOCKED"
+		upgrade_data["action_text"] = "Locked"
+		upgrade_data["action_disabled"] = true
+		return upgrade_data
+
+	upgrade_data["description"] = description
+	upgrade_data["locked"] = false
+	upgrade_data["show_lock_label"] = false
+	upgrade_data["lock_label"] = "LOCKED"
+	upgrade_data["action_text"] = "Buy - $%d" % int(upgrade_data.get("cost", 0))
+	upgrade_data["action_disabled"] = false
+	return upgrade_data
+
 func _build_office_upgrade_display_data(office_item: Dictionary) -> Dictionary:
-	var upgrade_data := office_item.duplicate(true)
+	var upgrade_data: Dictionary = office_item.duplicate(true)
 	var tier := int(upgrade_data.get("tier", 0))
 	var required_projects := int(upgrade_data.get("required_projects", 0))
 	var required_workers := int(upgrade_data.get("required_workers", 0))
@@ -275,9 +328,41 @@ func _build_office_upgrade_display_data(office_item: Dictionary) -> Dictionary:
 	return upgrade_data
 
 func _on_upgrade_purchase_requested(upgrade_data: Dictionary) -> void:
-	var result := PlayerTool.purchase_office_upgrade(upgrade_data)
-	status_message = str(result.get("reason", "Upgrades"))
+	if _is_insufficient_funds_popup_visible():
+		return
+
+	var result := {}
+	if str(upgrade_data.get("category", "")) == "Office Space":
+		result = PlayerTool.purchase_office_upgrade(upgrade_data)
+	else:
+		result = PlayerTool.purchase_standard_upgrade(upgrade_data)
+
+	var result_message := str(result.get("reason", "Upgrades"))
+	if not bool(result.get("ok", false)) and _is_insufficient_funds_message(result_message):
+		_show_insufficient_funds_popup(result_message)
+		return
+
+	status_message = result_message
 	_populate_columns()
+
+func _show_insufficient_funds_popup(message: String) -> void:
+	insufficient_funds_message = message
+	$InsufficientFundsModal/MessagePanel/Message.text = insufficient_funds_message
+	$InsufficientFundsModal.visible = true
+	$PCBack.disabled = true
+
+func _hide_insufficient_funds_popup() -> void:
+	$InsufficientFundsModal.visible = false
+	$PCBack.disabled = false
+
+func _is_insufficient_funds_popup_visible() -> bool:
+	return $InsufficientFundsModal.visible
+
+func _is_insufficient_funds_message(message: String) -> bool:
+	return message.contains("enough money")
+
+func _on_insufficient_funds_ok_pressed() -> void:
+	_hide_insufficient_funds_popup()
 
 func _create_category_header(column_data: Dictionary) -> PanelContainer:
 	var header := PanelContainer.new()
@@ -313,4 +398,8 @@ func _create_category_header(column_data: Dictionary) -> PanelContainer:
 
 	return header
 
-func _on_pc_back_pressed() -> void: get_parent().get_parent().endMenu()
+func _on_pc_back_pressed() -> void:
+	if _is_insufficient_funds_popup_visible():
+		_hide_insufficient_funds_popup()
+		return
+	get_parent().get_parent().endMenu()

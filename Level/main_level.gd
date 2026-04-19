@@ -12,15 +12,24 @@ const EXTRA_OFFICE_SLOT_POSITIONS := {
 	13: Vector2(120, 113),
 	14: Vector2(673, 113),
 }
+const PLACED_UPGRADE_VISUALS := {
+	"coffee_machine": {
+		"texture_path": "res://UI/Theme/MainLevel/coffee/coffee_machine.png",
+		"position": Vector2(600, 285),
+		"scale": Vector2(4, 4),
+	}
+}
 
 func _ready() -> void:
 	TimeTool.weekPassed.connect(rollEvent)
 	PlayerTool.hireSelected.connect(setupDeskVisuals)
 	PlayerTool.officeTierChanged.connect(setupDeskVisuals)
+	PlayerTool.upgradesChanged.connect(setupUpgradeVisuals)
 	initializeSave()
 	PlayerTool.level = self
 	_ensure_office_slots()
 	setupDeskVisuals()
+	setupUpgradeVisuals()
 	PlayerTool.levelLoaded.emit()
 func initializeSave():
 	pass
@@ -64,6 +73,43 @@ func _ensure_office_slots() -> void:
 		new_slot.position = EXTRA_OFFICE_SLOT_POSITIONS[slot_number]
 		new_slot.get_node("computer").animation = "off"
 		workers_node.add_child(new_slot)
+
+func setupUpgradeVisuals() -> void:
+	var upgrade_props := _ensure_upgrade_props_container()
+
+	for child in upgrade_props.get_children():
+		child.queue_free()
+
+	for upgrade in PlayerTool.upgrades:
+		var scene_prop_key := str(upgrade.get("scene_prop_key", ""))
+		if scene_prop_key.is_empty() or not PLACED_UPGRADE_VISUALS.has(scene_prop_key):
+			continue
+
+		var visual_config: Dictionary = PLACED_UPGRADE_VISUALS[scene_prop_key]
+		var prop_sprite := Sprite2D.new()
+		var texture_path := str(visual_config.get("texture_path", ""))
+
+		if texture_path.is_empty():
+			continue
+
+		prop_sprite.name = scene_prop_key
+		prop_sprite.texture = load(texture_path)
+		prop_sprite.position = visual_config.get("position", Vector2.ZERO)
+		prop_sprite.scale = visual_config.get("scale", Vector2.ONE)
+		upgrade_props.add_child(prop_sprite)
+
+func _ensure_upgrade_props_container() -> Node2D:
+	var level_node: Node2D = $Level
+	var upgrade_props := level_node.get_node_or_null("UpgradeProps") as Node2D
+
+	if upgrade_props == null:
+		upgrade_props = Node2D.new()
+		upgrade_props.name = "UpgradeProps"
+		level_node.add_child(upgrade_props)
+
+	var background_index := level_node.get_node("background").get_index()
+	level_node.move_child(upgrade_props, background_index + 1)
+	return upgrade_props
 
 func _get_worker_slots() -> Array:
 	var worker_slots := []
