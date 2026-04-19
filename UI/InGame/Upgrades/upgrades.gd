@@ -123,7 +123,6 @@ func _apply_content_layout() -> void:
 func _populate_columns() -> void:
 	var header_columns: HBoxContainer = $HeaderColumns
 	var columns: HBoxContainer = $ScrollContainer/UpgradeColumns
-	var available_width := _get_available_content_width()
 	var all_columns := _get_all_column_data()
 
 	for child in header_columns.get_children():
@@ -132,10 +131,10 @@ func _populate_columns() -> void:
 	for child in columns.get_children():
 		child.queue_free()
 
-	header_columns.offset_right = header_columns.offset_left + available_width
-	header_columns.custom_minimum_size = Vector2(available_width, HEADER_HEIGHT)
+	header_columns.offset_right = $ScrollContainer.offset_right
+	header_columns.custom_minimum_size = Vector2(0.0, HEADER_HEIGHT)
 	header_columns.add_theme_constant_override("separation", COLUMN_GAP)
-	columns.custom_minimum_size = Vector2(available_width, 0.0)
+	columns.custom_minimum_size = Vector2(0.0, 0.0)
 	columns.add_theme_constant_override("separation", COLUMN_GAP)
 	$Title.text = status_message
 
@@ -143,16 +142,16 @@ func _populate_columns() -> void:
 		_add_header_column(header_columns, column_data)
 		_add_card_column(columns, column_data)
 
-	_queue_header_sync()
+	_queue_fixed_column_layout()
 
-func _get_available_content_width() -> float:
-	var vertical_scroll_width: float = 0.0
+func _get_visible_content_width() -> float:
+	var visible_width: float = $ScrollContainer.size.x
 	var vertical_scroll_bar: VScrollBar = $ScrollContainer.get_v_scroll_bar()
 
-	if vertical_scroll_bar != null:
-		vertical_scroll_width = vertical_scroll_bar.get_combined_minimum_size().x
+	if vertical_scroll_bar != null and vertical_scroll_bar.visible:
+		visible_width -= vertical_scroll_bar.get_combined_minimum_size().x
 
-	return maxf(0.0, $ScrollContainer.size.x - vertical_scroll_width - 2.0)
+	return maxf(0.0, visible_width - 2.0)
 
 func _get_all_column_data() -> Array:
 	var all_columns := []
@@ -160,6 +159,13 @@ func _get_all_column_data() -> Array:
 		all_columns.append(_build_standard_upgrade_column(column_data))
 	all_columns.append(_build_office_space_column())
 	return all_columns
+
+func _get_column_width(available_width: float, column_count: int) -> float:
+	if column_count <= 0:
+		return 0.0
+
+	var total_gap_width := COLUMN_GAP * maxf(0.0, float(column_count - 1))
+	return maxf(0.0, floorf((available_width - total_gap_width) / float(column_count)))
 
 func _add_header_column(columns: HBoxContainer, column_data: Dictionary) -> void:
 	var header := _create_category_header(column_data)
@@ -179,46 +185,34 @@ func _add_card_column(columns: HBoxContainer, column_data: Dictionary) -> void:
 
 	columns.add_child(column)
 
-func _queue_header_sync() -> void:
-	call_deferred("_sync_header_widths")
+func _queue_fixed_column_layout() -> void:
+	call_deferred("_apply_fixed_column_layout")
 
-func _sync_header_widths() -> void:
+func _apply_fixed_column_layout() -> void:
 	var header_columns: HBoxContainer = $HeaderColumns
 	var content_columns: HBoxContainer = $ScrollContainer/UpgradeColumns
 	var headers := header_columns.get_children()
 	var columns := content_columns.get_children()
+	var column_count: int = mini(headers.size(), columns.size())
+	var visible_width: float = _get_visible_content_width()
+	var column_width: float = _get_column_width(visible_width, column_count)
+	var row_size: Vector2 = content_columns.size
 
-	if headers.size() != columns.size():
-		return
+	header_columns.offset_right = header_columns.offset_left + visible_width
+	header_columns.custom_minimum_size = Vector2(visible_width, HEADER_HEIGHT)
+	content_columns.custom_minimum_size = Vector2(visible_width, 0.0)
+	row_size.x = visible_width
+	content_columns.size = row_size
 
-	var total_width := 0.0
-	var missing_widths := false
-
-	for i in range(headers.size()):
+	for i in range(column_count):
 		var header := headers[i] as Control
 		var column := columns[i] as Control
 
-		if header == null or column == null:
-			continue
+		if header != null:
+			header.custom_minimum_size = Vector2(column_width, HEADER_HEIGHT)
 
-		var column_width := column.size.x
-		if is_zero_approx(column_width):
-			column_width = column.get_combined_minimum_size().x
-		if is_zero_approx(column_width):
-			missing_widths = true
-			continue
-
-		header.size_flags_horizontal = 0
-		header.custom_minimum_size = Vector2(column_width, HEADER_HEIGHT)
-		total_width += column_width
-
-	if missing_widths:
-		call_deferred("_sync_header_widths")
-		return
-
-	total_width += COLUMN_GAP * maxf(0.0, float(headers.size() - 1))
-	header_columns.offset_right = header_columns.offset_left + total_width
-	header_columns.custom_minimum_size = Vector2(total_width, HEADER_HEIGHT)
+		if column != null:
+			column.custom_minimum_size = Vector2(column_width, 0.0)
 
 func _build_office_space_column() -> Dictionary:
 	var office_column := {
@@ -393,6 +387,9 @@ func _create_category_header(column_data: Dictionary) -> PanelContainer:
 	label.text = str(column_data.get("title", "Upgrades"))
 	label.add_theme_font_size_override("font_size", 18)
 	label.modulate = Color(1, 1, 1)
+	label.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	label.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+	label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	label.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
 	margin.add_child(label)
 
