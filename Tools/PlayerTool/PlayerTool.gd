@@ -21,6 +21,11 @@ const LOOP_PLANNING_WEEK := "planning_week"
 const LOOP_ACTIVE_WEEK := "active_week"
 const LOOP_RESOLVING_WEEK := "resolving_week"
 const OFFICE_CAPACITY_BY_TIER := [6, 8, 10, 12, 14]
+const COFFEE_MACHINE_SCENE_PROP_KEY := "coffee_machine"
+const COFFEE_MACHINE_STAMINA_MULTIPLIER := 1.1
+const COFFEE_MACHINE_BOOST_APPLIED_META_KEY := "coffee_machine_stamina_boost_applied"
+const COFFEE_MACHINE_BASE_STAMINA_META_KEY := "coffee_machine_base_stamina"
+const MIN_WORKER_STAMINA := 1
 
 var level
 
@@ -250,6 +255,7 @@ func newProject(newProject) -> void:
 func newHire(worker) -> bool:
 	if workers.size() >= max_worker_capacity:
 		return false
+	_apply_active_upgrade_effects_to_worker(worker)
 	worker.name = worker.personName
 	workers.append(worker)
 	if worker.get_parent() != null:
@@ -316,6 +322,7 @@ func purchase_standard_upgrade(upgrade_data: Dictionary) -> Dictionary:
 	var purchased_upgrade: Dictionary = _normalize_upgrade_record(upgrade_data)
 	addCurrency(-int(upgrade_data.get("cost", 0)))
 	newUpgrade(purchased_upgrade)
+	_apply_standard_upgrade_purchase_effects(purchased_upgrade)
 	return {
 		"ok": true,
 		"reason": "Purchased %s." % str(upgrade_data.get("name", "Upgrade"))
@@ -616,3 +623,50 @@ func _normalize_upgrade_record(upgrade_data: Dictionary) -> Dictionary:
 		normalized_upgrade["capacity"] = int(upgrade_data.get("capacity", 0))
 
 	return normalized_upgrade
+
+func _apply_standard_upgrade_purchase_effects(upgrade_data: Dictionary) -> void:
+	if _is_coffee_machine_upgrade(upgrade_data):
+		_apply_coffee_machine_stamina_boost_to_all_workers()
+
+func _apply_active_upgrade_effects_to_worker(worker) -> void:
+	if _has_active_upgrade_with_scene_prop_key(COFFEE_MACHINE_SCENE_PROP_KEY):
+		_apply_worker_stamina_boost(worker, COFFEE_MACHINE_STAMINA_MULTIPLIER)
+
+func _apply_coffee_machine_stamina_boost_to_all_workers() -> void:
+	for worker in workers:
+		_apply_worker_stamina_boost(worker, COFFEE_MACHINE_STAMINA_MULTIPLIER)
+
+func _has_active_upgrade_with_scene_prop_key(scene_prop_key: String) -> bool:
+	for upgrade_data in upgrades:
+		if str(upgrade_data.get("scene_prop_key", "")) == scene_prop_key:
+			return true
+	return false
+
+func _is_coffee_machine_upgrade(upgrade_data: Dictionary) -> bool:
+	return str(upgrade_data.get("scene_prop_key", "")) == COFFEE_MACHINE_SCENE_PROP_KEY
+
+func _apply_worker_stamina_boost(worker, multiplier: float) -> void:
+	if worker == null:
+		return
+	if bool(worker.get_meta(COFFEE_MACHINE_BOOST_APPLIED_META_KEY, false)):
+		return
+	var stamina_bar = worker.get_node_or_null("staminaBar")
+	var previous_stamina_max := int(worker.staminaStat)
+	var previous_stamina_value := previous_stamina_max
+	if stamina_bar != null:
+		previous_stamina_max = int(stamina_bar.max_value)
+		previous_stamina_value = int(stamina_bar.value)
+	if not worker.has_meta(COFFEE_MACHINE_BASE_STAMINA_META_KEY):
+		var base_stamina := int(worker.staminaStat)
+		worker.set_meta(COFFEE_MACHINE_BASE_STAMINA_META_KEY, base_stamina)
+	var boosted_stamina := int(round(float(worker.get_meta(COFFEE_MACHINE_BASE_STAMINA_META_KEY)) * multiplier))
+	worker.staminaStat = max(MIN_WORKER_STAMINA, boosted_stamina)
+	worker.set_meta(COFFEE_MACHINE_BOOST_APPLIED_META_KEY, true)
+
+	if stamina_bar != null:
+		stamina_bar.max_value = worker.staminaStat
+		if previous_stamina_max > 0:
+			var stamina_ratio := float(previous_stamina_value) / float(previous_stamina_max)
+			stamina_bar.value = clampi(int(round(stamina_ratio * float(worker.staminaStat))), 0, worker.staminaStat)
+		else:
+			stamina_bar.value = 0 if previous_stamina_value <= 0 else worker.staminaStat

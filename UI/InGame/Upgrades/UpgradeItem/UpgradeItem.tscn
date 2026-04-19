@@ -62,24 +62,29 @@ size_flags_horizontal = 3
 [node name="LockLabel" type="Label" parent="MarginContainer/VBoxContainer/HeaderRow"]
 visible = false
 layout_mode = 2
+custom_minimum_size = Vector2(74, 0)
 theme_override_font_sizes/font_size = 10
 text = "LOCKED"
 
 [node name="UpgradeName" type="Label" parent="MarginContainer/VBoxContainer" unique_id=1943363255]
 layout_mode = 2
+size_flags_horizontal = 3
 theme_override_font_sizes/font_size = 18
 text = "Upgrade Name"
+autowrap_mode = 3
 
 [node name="Description" type="Label" parent="MarginContainer/VBoxContainer"]
 layout_mode = 2
+size_flags_horizontal = 3
 size_flags_vertical = 3
 theme_override_font_sizes/font_size = 14
 text = "Upgrade description"
 autowrap_mode = 3
 
 [node name="ActionButton" type="Button" parent="MarginContainer/VBoxContainer"]
-custom_minimum_size = Vector2(0, 38)
+custom_minimum_size = Vector2(124, 38)
 layout_mode = 2
+size_flags_horizontal = 3
 theme_override_styles/normal = SubResource("StyleBoxTexture_c147e")
 theme_override_styles/pressed = SubResource("StyleBoxTexture_wpb2e")
 theme_override_styles/hover = SubResource("StyleBoxTexture_b8xyh")
