@@ -250,6 +250,7 @@ func newProject(newProject) -> void:
 func newHire(worker) -> bool:
 	if workers.size() >= max_worker_capacity:
 		return false
+	_apply_active_upgrade_effects_to_worker(worker)
 	worker.name = worker.personName
 	workers.append(worker)
 	if worker.get_parent() != null:
@@ -316,6 +317,7 @@ func purchase_standard_upgrade(upgrade_data: Dictionary) -> Dictionary:
 	var purchased_upgrade: Dictionary = _normalize_upgrade_record(upgrade_data)
 	addCurrency(-int(upgrade_data.get("cost", 0)))
 	newUpgrade(purchased_upgrade)
+	_apply_standard_upgrade_purchase_effects(purchased_upgrade)
 	return {
 		"ok": true,
 		"reason": "Purchased %s." % str(upgrade_data.get("name", "Upgrade"))
@@ -616,3 +618,32 @@ func _normalize_upgrade_record(upgrade_data: Dictionary) -> Dictionary:
 		normalized_upgrade["capacity"] = int(upgrade_data.get("capacity", 0))
 
 	return normalized_upgrade
+
+func _apply_standard_upgrade_purchase_effects(upgrade_data: Dictionary) -> void:
+	var category := str(upgrade_data.get("category", ""))
+	var tier := int(upgrade_data.get("tier", 0))
+	if category == "Quality of Life" and tier == 1:
+		_apply_coffee_machine_stamina_boost_to_all_workers()
+
+func _apply_active_upgrade_effects_to_worker(worker) -> void:
+	for upgrade_data in upgrades:
+		var category := str(upgrade_data.get("category", ""))
+		var tier := int(upgrade_data.get("tier", 0))
+		if category == "Quality of Life" and tier == 1:
+			_apply_worker_stamina_boost(worker, 1.1)
+
+func _apply_coffee_machine_stamina_boost_to_all_workers() -> void:
+	for worker in workers:
+		_apply_worker_stamina_boost(worker, 1.1)
+
+func _apply_worker_stamina_boost(worker, multiplier: float) -> void:
+	if worker == null:
+		return
+	var current_stamina := int(worker.staminaStat)
+	var boosted_stamina := int(ceili(float(current_stamina) * multiplier))
+	worker.staminaStat = maxi(1, boosted_stamina)
+
+	var stamina_bar = worker.get_node_or_null("staminaBar")
+	if stamina_bar != null:
+		stamina_bar.max_value = worker.staminaStat
+		stamina_bar.value = worker.staminaStat
