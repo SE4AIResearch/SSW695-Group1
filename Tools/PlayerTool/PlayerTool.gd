@@ -21,6 +21,8 @@ const LOOP_PLANNING_WEEK := "planning_week"
 const LOOP_ACTIVE_WEEK := "active_week"
 const LOOP_RESOLVING_WEEK := "resolving_week"
 const OFFICE_CAPACITY_BY_TIER := [6, 8, 10, 12, 14]
+const COFFEE_MACHINE_SCENE_PROP_KEY := "coffee_machine"
+const COFFEE_MACHINE_STAMINA_MULTIPLIER := 1.1
 
 var level
 
@@ -620,28 +622,32 @@ func _normalize_upgrade_record(upgrade_data: Dictionary) -> Dictionary:
 	return normalized_upgrade
 
 func _apply_standard_upgrade_purchase_effects(upgrade_data: Dictionary) -> void:
-	var category := str(upgrade_data.get("category", ""))
-	var tier := int(upgrade_data.get("tier", 0))
-	if category == "Quality of Life" and tier == 1:
+	if _is_coffee_machine_upgrade(upgrade_data):
 		_apply_coffee_machine_stamina_boost_to_all_workers()
 
 func _apply_active_upgrade_effects_to_worker(worker) -> void:
-	for upgrade_data in upgrades:
-		var category := str(upgrade_data.get("category", ""))
-		var tier := int(upgrade_data.get("tier", 0))
-		if category == "Quality of Life" and tier == 1:
-			_apply_worker_stamina_boost(worker, 1.1)
+	if _has_active_upgrade_with_scene_prop_key(COFFEE_MACHINE_SCENE_PROP_KEY):
+		_apply_worker_stamina_boost(worker, COFFEE_MACHINE_STAMINA_MULTIPLIER)
 
 func _apply_coffee_machine_stamina_boost_to_all_workers() -> void:
 	for worker in workers:
-		_apply_worker_stamina_boost(worker, 1.1)
+		_apply_worker_stamina_boost(worker, COFFEE_MACHINE_STAMINA_MULTIPLIER)
+
+func _has_active_upgrade_with_scene_prop_key(scene_prop_key: String) -> bool:
+	for upgrade_data in upgrades:
+		if str(upgrade_data.get("scene_prop_key", "")) == scene_prop_key:
+			return true
+	return false
+
+func _is_coffee_machine_upgrade(upgrade_data: Dictionary) -> bool:
+	return str(upgrade_data.get("scene_prop_key", "")) == COFFEE_MACHINE_SCENE_PROP_KEY
 
 func _apply_worker_stamina_boost(worker, multiplier: float) -> void:
 	if worker == null:
 		return
 	var current_stamina := int(worker.staminaStat)
-	var boosted_stamina := int(ceili(float(current_stamina) * multiplier))
-	worker.staminaStat = maxi(1, boosted_stamina)
+	var boosted_stamina := int(ceil(float(current_stamina) * multiplier))
+	worker.staminaStat = int(max(1, boosted_stamina))
 
 	var stamina_bar = worker.get_node_or_null("staminaBar")
 	if stamina_bar != null:
