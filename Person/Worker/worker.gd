@@ -27,6 +27,7 @@ var resting: bool = false
 # 0 = FE, 1 = BE, 2 = Doc
 var metricType: int
 var metricName: String
+var progressBars: Array[CanvasItem] = []
 
 func _ready() -> void:
 	$staminaBar.max_value = staminaStat
@@ -34,6 +35,7 @@ func _ready() -> void:
 	$HoverArea.mouse_entered.connect(_on_hover_area_mouse_entered)
 	$HoverArea.mouse_exited.connect(_on_hover_area_mouse_exited)
 	TimeTool.timer.timeout.connect(work)
+	_cache_progress_bars(self)
 	
 func _on_hover_area_mouse_entered() -> void:
 	hover_started.emit(self)
@@ -57,3 +59,14 @@ func work():
 				$staminaBar.tint_under = workingColor
 				$staminaBar.tint_progress = workingColor
 				resting = false
+
+func set_progress_bars_visible(should_show: bool) -> void:
+	for progress_bar in progressBars:
+		if is_instance_valid(progress_bar):
+			progress_bar.visible = should_show
+
+func _cache_progress_bars(node: Node) -> void:
+	if node is ProgressBar or node is TextureProgressBar:
+		progressBars.append(node)
+	for child in node.get_children():
+		_cache_progress_bars(child)

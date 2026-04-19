@@ -38,6 +38,7 @@ func setupDeskVisuals():
 	for worker in PlayerTool.workers:
 		if workerCount > PlayerTool.max_worker_capacity:
 			break
+		worker.set_progress_bars_visible(true)
 		if not worker.hover_started.is_connected(_on_worker_hover_started):
 			worker.hover_started.connect(_on_worker_hover_started)
 		if not worker.hover_ended.is_connected(_on_worker_hover_ended):
