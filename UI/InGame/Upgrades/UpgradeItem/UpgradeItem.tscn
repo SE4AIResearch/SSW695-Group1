@@ -1,6 +1,7 @@
 [gd_scene format=3 uid="uid://d1uebs0vqbym5"]
 
 [ext_resource type="Texture2D" uid="uid://c2it0w0k17wgn" path="res://UI/Theme/PCTheme/button/slimButton.png" id="1_nokiw"]
+[ext_resource type="Script" path="res://UI/InGame/Upgrades/UpgradeItem/upgrade_item.gd" id="1_v7rgi"]
 [ext_resource type="Texture2D" uid="uid://bnulbxemxoryo" path="res://UI/Theme/PCTheme/button/slimButtonPressed.png" id="2_5v52h"]
 [ext_resource type="Texture2D" uid="uid://di1kn3fa7np7c" path="res://UI/Theme/PCTheme/button/slimButtonHeld.png" id="3_tcbf8"]
 [ext_resource type="Texture2D" uid="uid://2jvaulftw7b6" path="res://UI/Theme/PCTheme/button/slimButtonDisabled.png" id="4_2q807"]
@@ -17,38 +18,75 @@ texture = ExtResource("3_tcbf8")
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_js4j5"]
 texture = ExtResource("4_2q807")
 
-[node name="UpgradeItem" type="Button" unique_id=886813104]
-custom_minimum_size = Vector2(240, 80)
-anchors_preset = -1
-anchor_right = 0.29200003
-anchor_bottom = 0.17300001
-offset_right = -96.38403
-offset_bottom = -32.104004
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_3o8x5"]
+bg_color = Color(0.0745098, 0.113725, 0.203922, 1)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0.196078, 0.278431, 0.435294, 1)
+corner_radius_top_left = 10
+corner_radius_top_right = 10
+corner_radius_bottom_right = 10
+corner_radius_bottom_left = 10
+
+[node name="UpgradeItem" type="PanelContainer" unique_id=886813104]
+custom_minimum_size = Vector2(0, 156)
+size_flags_horizontal = 3
+theme_override_styles/panel = SubResource("StyleBoxFlat_3o8x5")
+script = ExtResource("1_v7rgi")
+
+[node name="MarginContainer" type="MarginContainer" parent="."]
+layout_mode = 2
+theme_override_constants/margin_left = 14
+theme_override_constants/margin_top = 14
+theme_override_constants/margin_right = 14
+theme_override_constants/margin_bottom = 14
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer"]
+layout_mode = 2
+theme_override_constants/separation = 8
+
+[node name="HeaderRow" type="HBoxContainer" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="TierLabel" type="Label" parent="MarginContainer/VBoxContainer/HeaderRow"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 10
+text = "TIER 1"
+
+[node name="HeaderSpacer" type="Control" parent="MarginContainer/VBoxContainer/HeaderRow"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="LockLabel" type="Label" parent="MarginContainer/VBoxContainer/HeaderRow"]
+visible = false
+layout_mode = 2
+custom_minimum_size = Vector2(74, 0)
+theme_override_font_sizes/font_size = 10
+text = "LOCKED"
+
+[node name="UpgradeName" type="Label" parent="MarginContainer/VBoxContainer" unique_id=1943363255]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_font_sizes/font_size = 18
+text = "Upgrade Name"
+autowrap_mode = 3
+
+[node name="Description" type="Label" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme_override_font_sizes/font_size = 14
+text = "Upgrade description"
+autowrap_mode = 3
+
+[node name="ActionButton" type="Button" parent="MarginContainer/VBoxContainer"]
+custom_minimum_size = Vector2(124, 38)
+layout_mode = 2
+size_flags_horizontal = 3
 theme_override_styles/normal = SubResource("StyleBoxTexture_c147e")
 theme_override_styles/pressed = SubResource("StyleBoxTexture_wpb2e")
 theme_override_styles/hover = SubResource("StyleBoxTexture_b8xyh")
 theme_override_styles/disabled = SubResource("StyleBoxTexture_js4j5")
-
-[node name="UpgradeName" type="Label" parent="." unique_id=1943363255]
-layout_mode = 0
-offset_left = 13.0
-offset_top = 13.0
-offset_right = 227.0
-offset_bottom = 50.0
-text = "Upgrade Name: Description"
-vertical_alignment = 1
-
-[node name="UpgradeName2" type="Label" parent="." unique_id=1806883558]
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-offset_left = 104.0
-offset_top = 49.0
-offset_right = -101.0
-offset_bottom = -8.0
-grow_horizontal = 2
-grow_vertical = 2
-text = "Cost"
-horizontal_alignment = 1
-vertical_alignment = 1
+text = "Buy - $100"

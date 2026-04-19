@@ -1,13 +1,400 @@
 extends Node2D
 
+const PCWindowLayout = preload("res://UI/InGame/PCWindow/pc_window_layout.gd")
+const UpgradeItemScene = preload("res://UI/InGame/Upgrades/UpgradeItem/UpgradeItem.tscn")
 
-# Called when the node enters the scene tree for the first time.
+const COLUMN_GAP := 8.0
+const COLUMN_ITEM_GAP := 12
+const HEADER_HEIGHT := 56.0
+const CONTENT_PADDING := 2.0
+const HEADER_TO_CONTENT_GAP := 8.0
+
+const UPGRADE_COLUMNS := [
+	{
+		"title": "Hardware",
+		"color": Color("102550"),
+		"items": [
+			{"tier": 1, "name": "Desktop PC", "description": "+5% Frontend", "cost": 100, "locked": false},
+			{"tier": 2, "name": "Dual Monitor Setup", "description": "+5% Frontend, +5% Documentation", "cost": 250, "locked": true},
+			{"tier": 3, "name": "Database Upgrades", "description": "+10% Backend", "cost": 500, "locked": true},
+			{"tier": 4, "name": "High-End Workstation", "description": "+10% Frontend, +10% Backend", "cost": 1000, "locked": true}
+		]
+	},
+	{
+		"title": "Software",
+		"color": Color("27134a"),
+		"items": [
+			{"tier": 1, "name": "IDE Suite", "description": "+10% Frontend, +10% Backend", "cost": 150, "locked": false},
+			{"tier": 2, "name": "Version Control Platform", "description": "+10% Reliability", "cost": 300, "locked": true},
+			{"tier": 3, "name": "Automated Testing Suite", "description": "+15% Reliability", "cost": 500, "locked": true},
+			{"tier": 4, "name": "CI/CD Pipeline", "description": "+10% Reliability, +5% Backend", "cost": 750, "locked": true},
+			{"tier": 5, "name": "AI Assistant", "description": "+5% Frontend, +5% Backend, +10% Documentation", "cost": 1000, "locked": true},
+			{"tier": 6, "name": "Enterprise Product Suite", "description": "+10% Frontend, +10% Backend, +10% Reliability, +10% Documentation, +10% Client Satisfaction", "cost": 1500, "locked": true}
+		]
+	},
+	{
+		"title": "Quality of Life",
+		"color": Color("3a2618"),
+		"items": [
+			{"tier": 1, "name": "Coffee Machine", "description": "+10% Stamina", "cost": 75, "locked": false, "scene_prop_key": "coffee_machine"},
+			{"tier": 2, "name": "Ergonomic Chairs", "description": "+5% Documentation, +5% Reliability", "cost": 200, "locked": true},
+			{"tier": 3, "name": "Standing Desks", "description": "+5% Frontend, +5% Backend", "cost": 450, "locked": true},
+			{"tier": 4, "name": "Air Conditioner", "description": "+10% Reliability", "cost": 900, "locked": true}
+		]
+	}
+]
+
+const OFFICE_SPACE_COLUMN := {
+	"title": "Office Space",
+	"color": Color("062d34"),
+	"items": [
+		{
+			"category": "Office Space",
+			"tier": 1,
+			"name": "Downtown Loft Office",
+			"description": "Office upgrade, 8 worker capacity",
+			"capacity": 8,
+			"required_projects": 2,
+			"required_workers": 5,
+			"cost": 300
+		},
+		{
+			"category": "Office Space",
+			"tier": 2,
+			"name": "Mid-Size Tech Office",
+			"description": "Office upgrade, 10 worker capacity",
+			"capacity": 10,
+			"required_projects": 4,
+			"required_workers": 7,
+			"cost": 650
+		},
+		{
+			"category": "Office Space",
+			"tier": 3,
+			"name": "Corporate Headquarters",
+			"description": "Office upgrade, 12 worker capacity",
+			"capacity": 12,
+			"required_projects": 6,
+			"required_workers": 9,
+			"cost": 1100
+		},
+		{
+			"category": "Office Space",
+			"tier": 4,
+			"name": "Innovation Campus",
+			"description": "Office upgrade, 14 worker capacity",
+			"capacity": 14,
+			"required_projects": 8,
+			"required_workers": 11,
+			"cost": 1800
+		}
+	]
+}
+
+var status_message := "Upgrades"
+var insufficient_funds_message := ""
+
 func _ready() -> void:
-	pass # Replace with function body.
+	PCWindowLayout.apply(self)
+	_apply_content_layout()
+	_hide_insufficient_funds_popup()
+	_populate_columns()
+	if not PlayerTool.officeTierChanged.is_connected(_populate_columns):
+		PlayerTool.officeTierChanged.connect(_populate_columns)
+	if not PlayerTool.upgradesChanged.is_connected(_populate_columns):
+		PlayerTool.upgradesChanged.connect(_populate_columns)
 
+func _apply_content_layout() -> void:
+	var content_rect: Rect2 = PCWindowLayout.content_rect()
+	var header_top := content_rect.position.y + CONTENT_PADDING
+	var header_bottom := header_top + HEADER_HEIGHT
+	var content_top := header_bottom + HEADER_TO_CONTENT_GAP
 
-# Called every frame. 'delta' is the elapsed time since the previous frame.
-func _process(delta: float) -> void:
-	pass
+	$HeaderColumns.offset_left = content_rect.position.x + CONTENT_PADDING
+	$HeaderColumns.offset_top = header_top
+	$HeaderColumns.offset_right = content_rect.position.x + content_rect.size.x - CONTENT_PADDING
+	$HeaderColumns.offset_bottom = header_bottom
 
-func _on_pc_back_pressed() -> void: get_parent().get_parent().endMenu()
+	$ScrollContainer.offset_left = content_rect.position.x + CONTENT_PADDING
+	$ScrollContainer.offset_top = content_top
+	$ScrollContainer.offset_right = content_rect.position.x + content_rect.size.x - CONTENT_PADDING
+	$ScrollContainer.offset_bottom = content_rect.position.y + content_rect.size.y - CONTENT_PADDING
+
+func _populate_columns() -> void:
+	var header_columns: HBoxContainer = $HeaderColumns
+	var columns: HBoxContainer = $ScrollContainer/UpgradeColumns
+	var all_columns := _get_all_column_data()
+
+	for child in header_columns.get_children():
+		child.queue_free()
+
+	for child in columns.get_children():
+		child.queue_free()
+
+	header_columns.offset_right = $ScrollContainer.offset_right
+	header_columns.custom_minimum_size = Vector2(0.0, HEADER_HEIGHT)
+	header_columns.add_theme_constant_override("separation", COLUMN_GAP)
+	columns.custom_minimum_size = Vector2(0.0, 0.0)
+	columns.add_theme_constant_override("separation", COLUMN_GAP)
+	$Title.text = status_message
+
+	for column_data in all_columns:
+		_add_header_column(header_columns, column_data)
+		_add_card_column(columns, column_data)
+
+	_queue_fixed_column_layout()
+
+func _get_visible_content_width() -> float:
+	var visible_width: float = $ScrollContainer.size.x
+	var vertical_scroll_bar: VScrollBar = $ScrollContainer.get_v_scroll_bar()
+
+	if vertical_scroll_bar != null and vertical_scroll_bar.visible:
+		visible_width -= vertical_scroll_bar.get_combined_minimum_size().x
+
+	return maxf(0.0, visible_width - 2.0)
+
+func _get_all_column_data() -> Array:
+	var all_columns := []
+	for column_data in UPGRADE_COLUMNS:
+		all_columns.append(_build_standard_upgrade_column(column_data))
+	all_columns.append(_build_office_space_column())
+	return all_columns
+
+func _get_column_width(available_width: float, column_count: int) -> float:
+	if column_count <= 0:
+		return 0.0
+
+	var total_gap_width := COLUMN_GAP * maxf(0.0, float(column_count - 1))
+	return maxf(0.0, floorf((available_width - total_gap_width) / float(column_count)))
+
+func _add_header_column(columns: HBoxContainer, column_data: Dictionary) -> void:
+	var header := _create_category_header(column_data)
+	header.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	columns.add_child(header)
+
+func _add_card_column(columns: HBoxContainer, column_data: Dictionary) -> void:
+	var column := VBoxContainer.new()
+	column.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	column.add_theme_constant_override("separation", COLUMN_ITEM_GAP)
+
+	for item_data in column_data["items"]:
+		var upgrade_card = UpgradeItemScene.instantiate()
+		column.add_child(upgrade_card)
+		upgrade_card.setup_upgrade(item_data)
+		upgrade_card.purchase_requested.connect(_on_upgrade_purchase_requested)
+
+	columns.add_child(column)
+
+func _queue_fixed_column_layout() -> void:
+	call_deferred("_apply_fixed_column_layout")
+
+func _apply_fixed_column_layout() -> void:
+	var header_columns: HBoxContainer = $HeaderColumns
+	var content_columns: HBoxContainer = $ScrollContainer/UpgradeColumns
+	var headers := header_columns.get_children()
+	var columns := content_columns.get_children()
+	var column_count: int = mini(headers.size(), columns.size())
+	var visible_width: float = _get_visible_content_width()
+	var column_width: float = _get_column_width(visible_width, column_count)
+	var row_size: Vector2 = content_columns.size
+
+	header_columns.offset_right = header_columns.offset_left + visible_width
+	header_columns.custom_minimum_size = Vector2(visible_width, HEADER_HEIGHT)
+	content_columns.custom_minimum_size = Vector2(visible_width, 0.0)
+	row_size.x = visible_width
+	content_columns.size = row_size
+
+	for i in range(column_count):
+		var header := headers[i] as Control
+		var column := columns[i] as Control
+
+		if header != null:
+			header.custom_minimum_size = Vector2(column_width, HEADER_HEIGHT)
+
+		if column != null:
+			column.custom_minimum_size = Vector2(column_width, 0.0)
+
+func _build_office_space_column() -> Dictionary:
+	var office_column := {
+		"title": str(OFFICE_SPACE_COLUMN.get("title", "Office Space")),
+		"color": OFFICE_SPACE_COLUMN.get("color", Color("062d34")),
+		"items": []
+	}
+
+	for office_item in OFFICE_SPACE_COLUMN["items"]:
+		office_column["items"].append(_build_office_upgrade_display_data(office_item))
+
+	return office_column
+
+func _build_standard_upgrade_column(column_data: Dictionary) -> Dictionary:
+	var runtime_column: Dictionary = {
+		"title": str(column_data.get("title", "Upgrades")),
+		"color": column_data.get("color", Color("13274d")),
+		"items": []
+	}
+	var category := str(column_data.get("title", ""))
+
+	for item_data in column_data["items"]:
+		var upgrade_data: Dictionary = item_data.duplicate(true)
+		upgrade_data["category"] = category
+		runtime_column["items"].append(_build_standard_upgrade_display_data(upgrade_data))
+
+	return runtime_column
+
+func _build_standard_upgrade_display_data(upgrade_data: Dictionary) -> Dictionary:
+	var category := str(upgrade_data.get("category", ""))
+	var tier := int(upgrade_data.get("tier", 0))
+	var description := str(upgrade_data.get("description", ""))
+
+	if PlayerTool.has_upgrade(category, tier):
+		upgrade_data["description"] = description
+		upgrade_data["purchased"] = true
+		upgrade_data["show_lock_label"] = true
+		upgrade_data["lock_label"] = "PURCHASED"
+		upgrade_data["action_text"] = "Purchased"
+		upgrade_data["action_disabled"] = true
+		return upgrade_data
+
+	if tier > 1 and not PlayerTool.has_upgrade(category, tier - 1):
+		description += "\nUnlock the previous tier first."
+		upgrade_data["description"] = description
+		upgrade_data["locked"] = true
+		upgrade_data["show_lock_label"] = true
+		upgrade_data["lock_label"] = "LOCKED"
+		upgrade_data["action_text"] = "Locked"
+		upgrade_data["action_disabled"] = true
+		return upgrade_data
+
+	upgrade_data["description"] = description
+	upgrade_data["locked"] = false
+	upgrade_data["show_lock_label"] = false
+	upgrade_data["lock_label"] = "LOCKED"
+	upgrade_data["action_text"] = "Buy - $%d" % int(upgrade_data.get("cost", 0))
+	upgrade_data["action_disabled"] = false
+	return upgrade_data
+
+func _build_office_upgrade_display_data(office_item: Dictionary) -> Dictionary:
+	var upgrade_data: Dictionary = office_item.duplicate(true)
+	var tier := int(upgrade_data.get("tier", 0))
+	var required_projects := int(upgrade_data.get("required_projects", 0))
+	var required_workers := int(upgrade_data.get("required_workers", 0))
+	var current_projects := PlayerTool.completed_project_count
+	var current_workers := PlayerTool.workers.size()
+	var next_tier := PlayerTool.office_tier + 1
+	var requirements_line := "Projects: %d/%d | Workers: %d/%d" % [
+		current_projects,
+		required_projects,
+		current_workers,
+		required_workers
+	]
+	var description := str(upgrade_data.get("description", ""))
+
+	if tier <= PlayerTool.office_tier:
+		upgrade_data["description"] = description
+		upgrade_data["purchased"] = true
+		upgrade_data["show_lock_label"] = true
+		upgrade_data["lock_label"] = "PURCHASED"
+		upgrade_data["action_text"] = "Purchased"
+		upgrade_data["action_disabled"] = true
+		return upgrade_data
+
+	description += "\n" + requirements_line
+
+	if tier != next_tier:
+		description += "\nUnlock the previous office tier first."
+		upgrade_data["description"] = description
+		upgrade_data["locked"] = true
+		upgrade_data["show_lock_label"] = true
+		upgrade_data["lock_label"] = "LOCKED"
+		upgrade_data["action_text"] = "Locked"
+		upgrade_data["action_disabled"] = true
+		return upgrade_data
+
+	var requirements_met := current_projects >= required_projects and current_workers >= required_workers
+	upgrade_data["description"] = description
+	upgrade_data["locked"] = not requirements_met
+	upgrade_data["show_lock_label"] = not requirements_met
+	upgrade_data["lock_label"] = "LOCKED"
+	upgrade_data["action_text"] = "Buy - $%d" % int(upgrade_data.get("cost", 0))
+	upgrade_data["action_disabled"] = not requirements_met
+	return upgrade_data
+
+func _on_upgrade_purchase_requested(upgrade_data: Dictionary) -> void:
+	if _is_insufficient_funds_popup_visible():
+		return
+
+	var result := {}
+	if str(upgrade_data.get("category", "")) == "Office Space":
+		result = PlayerTool.purchase_office_upgrade(upgrade_data)
+	else:
+		result = PlayerTool.purchase_standard_upgrade(upgrade_data)
+
+	var result_message := str(result.get("reason", "Upgrades"))
+	if not bool(result.get("ok", false)) and _is_insufficient_funds_message(result_message):
+		_show_insufficient_funds_popup(result_message)
+		return
+
+	if not bool(result.get("ok", false)):
+		_populate_columns()
+
+func _show_insufficient_funds_popup(message: String) -> void:
+	insufficient_funds_message = message
+	$InsufficientFundsModal/MessagePanel/Message.text = insufficient_funds_message
+	$InsufficientFundsModal.visible = true
+	$PCBack.disabled = true
+
+func _hide_insufficient_funds_popup() -> void:
+	$InsufficientFundsModal.visible = false
+	$PCBack.disabled = false
+
+func _is_insufficient_funds_popup_visible() -> bool:
+	return $InsufficientFundsModal.visible
+
+func _is_insufficient_funds_message(message: String) -> bool:
+	return message.contains("enough money")
+
+func _on_insufficient_funds_ok_pressed() -> void:
+	_hide_insufficient_funds_popup()
+
+func _create_category_header(column_data: Dictionary) -> PanelContainer:
+	var header := PanelContainer.new()
+	var style := StyleBoxFlat.new()
+	var margin := MarginContainer.new()
+	var label := Label.new()
+
+	header.custom_minimum_size = Vector2(0.0, HEADER_HEIGHT)
+	header.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	style.bg_color = column_data.get("color", Color("13274d"))
+	style.border_color = style.bg_color.lightened(0.18)
+	style.border_width_left = 1
+	style.border_width_top = 1
+	style.border_width_right = 1
+	style.border_width_bottom = 1
+	style.corner_radius_top_left = 10
+	style.corner_radius_top_right = 10
+	style.corner_radius_bottom_right = 10
+	style.corner_radius_bottom_left = 10
+	header.add_theme_stylebox_override("panel", style)
+
+	margin.add_theme_constant_override("margin_left", 16)
+	margin.add_theme_constant_override("margin_top", 10)
+	margin.add_theme_constant_override("margin_right", 16)
+	margin.add_theme_constant_override("margin_bottom", 10)
+	header.add_child(margin)
+
+	label.text = str(column_data.get("title", "Upgrades"))
+	label.add_theme_font_size_override("font_size", 18)
+	label.modulate = Color(1, 1, 1)
+	label.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	label.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+	label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	label.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
+	margin.add_child(label)
+
+	return header
+
+func _on_pc_back_pressed() -> void:
+	if _is_insufficient_funds_popup_visible():
+		_hide_insufficient_funds_popup()
+		return
+	get_parent().get_parent().endMenu()

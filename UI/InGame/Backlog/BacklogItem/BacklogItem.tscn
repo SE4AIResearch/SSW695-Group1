@@ -25,6 +25,7 @@ anchor_right = 0.125
 anchor_bottom = 0.074
 offset_right = 48.0
 offset_bottom = 16.048
+size_flags_horizontal = 4
 theme_override_font_sizes/font_size = 12
 theme_override_styles/normal = SubResource("StyleBoxTexture_y8yop")
 theme_override_styles/pressed = SubResource("StyleBoxTexture_rksi8")
@@ -36,27 +37,33 @@ script = ExtResource("1_nmmrt")
 [node name="metricName" type="RichTextLabel" parent="." unique_id=1690162902]
 layout_mode = 0
 offset_left = 12.0
-offset_top = 12.0
+offset_top = 20.0
 offset_right = 180.0
-offset_bottom = 46.0
+offset_bottom = 40.0
 mouse_filter = 2
 theme_override_font_sizes/normal_font_size = 12
 bbcode_enabled = true
 text = "Metric Name"
+fit_content = true
+scroll_active = false
 horizontal_alignment = 1
 vertical_alignment = 1
+autowrap_mode = 3
 
 [node name="metricDetails" type="RichTextLabel" parent="." unique_id=1439054878]
 layout_mode = 0
 offset_left = 12.0
-offset_top = 46.0
+offset_top = 38.0
 offset_right = 180.0
-offset_bottom = 60.0
+offset_bottom = 56.0
 mouse_filter = 2
 theme_override_font_sizes/normal_font_size = 10
 bbcode_enabled = true
 text = "Type"
+fit_content = true
+scroll_active = false
 horizontal_alignment = 1
 vertical_alignment = 1
+autowrap_mode = 3
 
 [connection signal="pressed" from="." to="." method="_on_pressed"]

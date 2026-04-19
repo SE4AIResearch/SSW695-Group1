@@ -3,6 +3,22 @@
 [ext_resource type="Texture2D" uid="uid://k7xby2l5gc5f" path="res://UI/Theme/MainLevel/backlog/BG.png" id="1_gwqqw"]
 [ext_resource type="Script" uid="uid://b48o1abbwl63b" path="res://UI/InGame/Backlog/backlog.gd" id="1_qp40g"]
 [ext_resource type="FontFile" uid="uid://b0lji18tmt8ua" path="res://UI/Theme/Fonts/jakes-writing-font/Jakeswriting-P2Zr.ttf" id="2_qp40g"]
+[ext_resource type="Texture2D" path="res://UI/Theme/PCTheme/button/slimButton.png" id="7_adv_week"]
+[ext_resource type="Texture2D" path="res://UI/Theme/PCTheme/button/slimButtonPressed.png" id="8_adv_week"]
+[ext_resource type="Texture2D" path="res://UI/Theme/PCTheme/button/slimButtonHeld.png" id="9_adv_week"]
+[ext_resource type="Texture2D" path="res://UI/Theme/PCTheme/button/slimButtonDisabled.png" id="10_adv_week"]
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_adv_week_normal"]
+texture = ExtResource("7_adv_week")
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_adv_week_pressed"]
+texture = ExtResource("8_adv_week")
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_adv_week_hover"]
+texture = ExtResource("9_adv_week")
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_adv_week_disabled"]
+texture = ExtResource("10_adv_week")
 
 [node name="Backlog" type="Node2D" unique_id=671302833]
 process_mode = 2
@@ -14,78 +30,127 @@ scale = Vector2(4.5, 4.4999995)
 texture = ExtResource("1_gwqqw")
 
 [node name="WorkerLabel" type="Label" parent="." unique_id=995072112]
-offset_left = 99.0
-offset_top = 77.0
-offset_right = 280.0
-offset_bottom = 100.0
+offset_left = 68.0
+offset_top = 168.0
+offset_right = 298.0
+offset_bottom = 191.0
 theme_override_colors/font_color = Color(0, 0, 0, 1)
 theme_override_fonts/font = ExtResource("2_qp40g")
 theme_override_font_sizes/font_size = 24
 text = "Assignable Workers"
+horizontal_alignment = 1
 
 [node name="BacklogLabel" type="Label" parent="." unique_id=388305119]
-offset_left = 429.0
-offset_top = 88.0
-offset_right = 498.0
-offset_bottom = 111.0
+offset_left = 320.0
+offset_top = 168.0
+offset_right = 530.0
+offset_bottom = 191.0
 theme_override_colors/font_color = Color(0, 0, 0, 1)
 theme_override_fonts/font = ExtResource("2_qp40g")
 theme_override_font_sizes/font_size = 24
 text = "Backlog"
+horizontal_alignment = 1
 
 [node name="InProgressLabel" type="Label" parent="." unique_id=1904665504]
-offset_left = 671.0
-offset_top = 85.0
-offset_right = 767.0
-offset_bottom = 108.0
+offset_left = 550.0
+offset_top = 168.0
+offset_right = 760.0
+offset_bottom = 191.0
 theme_override_colors/font_color = Color(0, 0, 0, 1)
 theme_override_fonts/font = ExtResource("2_qp40g")
 theme_override_font_sizes/font_size = 24
 text = "In Progress"
+horizontal_alignment = 1
 
 [node name="CompletedLabel" type="Label" parent="." unique_id=1919838751]
-offset_left = 920.0
-offset_top = 78.0
-offset_right = 1016.0
-offset_bottom = 101.0
+offset_left = 780.0
+offset_top = 168.0
+offset_right = 990.0
+offset_bottom = 191.0
 theme_override_colors/font_color = Color(0, 0, 0, 1)
 theme_override_fonts/font = ExtResource("2_qp40g")
 theme_override_font_sizes/font_size = 24
 text = "Completed"
+horizontal_alignment = 1
+
+[node name="CurrentSprintLabel" type="Label" parent="." unique_id=983120411]
+offset_left = 222.0
+offset_top = 100.0
+offset_right = 931.0
+offset_bottom = 127.0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_fonts/font = ExtResource("2_qp40g")
+theme_override_font_sizes/font_size = 28
+text = "Current Sprint"
+horizontal_alignment = 1
+
+[node name="FeedbackLabel" type="RichTextLabel" parent="." unique_id=126199114]
+offset_left = 225.0
+offset_top = 136.0
+offset_right = 927.0
+offset_bottom = 161.0
+mouse_filter = 2
+theme_override_colors/default_color = Color(0, 0, 0, 1)
+theme_override_fonts/normal_font = ExtResource("2_qp40g")
+theme_override_font_sizes/normal_font_size = 12
+bbcode_enabled = true
+fit_content = false
+scroll_active = false
+autowrap_mode = 3
+
+[node name="AdvanceWeekButton" type="Button" parent="." unique_id=1971555331]
+offset_left = 903.0
+offset_top = 59.0
+offset_right = 1048.0
+offset_bottom = 104.0
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_fonts/font = ExtResource("2_qp40g")
+theme_override_font_sizes/font_size = 16
+theme_override_styles/normal = SubResource("StyleBoxTexture_adv_week_normal")
+theme_override_styles/pressed = SubResource("StyleBoxTexture_adv_week_pressed")
+theme_override_styles/hover = SubResource("StyleBoxTexture_adv_week_hover")
+theme_override_styles/disabled = SubResource("StyleBoxTexture_adv_week_disabled")
+text = "Advance Week"
 
 [node name="WorkersScroll" type="ScrollContainer" parent="." unique_id=1079949786]
 offset_left = 68.0
-offset_top = 103.0
-offset_right = 336.0
+offset_top = 210.0
+offset_right = 298.0
 offset_bottom = 648.0
 
 [node name="Workers" type="VBoxContainer" parent="WorkersScroll" unique_id=260048008]
 clip_contents = true
 layout_mode = 2
+size_flags_horizontal = 3
 
 [node name="BacklogScroll" type="ScrollContainer" parent="." unique_id=1302348264]
-offset_left = 354.0
-offset_top = 113.0
-offset_right = 564.0
+offset_left = 320.0
+offset_top = 210.0
+offset_right = 530.0
 offset_bottom = 648.0
 
 [node name="Backlog" type="VBoxContainer" parent="BacklogScroll" unique_id=1388620830]
 layout_mode = 2
+size_flags_horizontal = 3
 
 [node name="InProgressScroll" type="ScrollContainer" parent="." unique_id=116730548]
-offset_left = 657.0
-offset_top = 127.0
-offset_right = 794.0
+offset_left = 550.0
+offset_top = 210.0
+offset_right = 760.0
 offset_bottom = 648.0
 
 [node name="InProgress" type="VBoxContainer" parent="InProgressScroll" unique_id=1546489709]
 layout_mode = 2
+size_flags_horizontal = 3
 
 [node name="CompletedScroll" type="ScrollContainer" parent="." unique_id=712342680]
-offset_left = 911.0
-offset_top = 147.0
-offset_right = 1028.0
+offset_left = 780.0
+offset_top = 210.0
+offset_right = 990.0
 offset_bottom = 648.0
 
 [node name="Completed" type="VBoxContainer" parent="CompletedScroll" unique_id=432847845]
 layout_mode = 2
+size_flags_horizontal = 3
+
+[connection signal="pressed" from="AdvanceWeekButton" to="." method="_on_advance_week_button_pressed"]

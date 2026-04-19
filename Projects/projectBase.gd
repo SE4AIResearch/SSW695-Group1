@@ -2,6 +2,7 @@ extends Node
 
 var projectName: String
 var projectDescription: String
+var projectDifficulty: float
 
 var clientName: String
 

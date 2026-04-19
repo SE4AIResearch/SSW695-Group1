@@ -1,12 +1,15 @@
 [gd_scene format=3 uid="uid://0ydf0fui5u4q"]
 
-[ext_resource type="PackedScene" uid="uid://d1uebs0vqbym5" path="res://UI/InGame/Upgrades/UpgradeItem/UpgradeItem.tscn" id="1_eohcs"]
-[ext_resource type="Texture2D" uid="uid://cfrb47hgtaapp" path="res://UI/Theme/PCTheme/PanelTallerWider.png" id="1_vmit0"]
+[ext_resource type="StyleBoxTexture" path="res://UI/Theme/PCTheme/PCWindowFrame.tres" id="1_vmit0"]
 [ext_resource type="Script" uid="uid://cxopyswyngdbv" path="res://UI/InGame/Upgrades/upgrades.gd" id="1_y42v0"]
 [ext_resource type="Texture2D" uid="uid://d00apn0evacqg" path="res://UI/Theme/PCTheme/Back/pcBack.png" id="3_j7435"]
+[ext_resource type="Texture2D" uid="uid://drwt4l4mwiboc" path="res://UI/Theme/PCTheme/button/slimButton.png" id="3_okbtn"]
 [ext_resource type="Texture2D" uid="uid://dkqvr0lf6ytje" path="res://UI/Theme/PCTheme/Back/pcBackPressed.png" id="4_y42v0"]
+[ext_resource type="Texture2D" uid="uid://cuyr4sv3sto4b" path="res://UI/Theme/PCTheme/button/slimButtonPressed.png" id="4_okbtn"]
 [ext_resource type="Texture2D" uid="uid://crruuadiafv87" path="res://UI/Theme/PCTheme/Back/pcBackHeld.png" id="5_n4qk7"]
+[ext_resource type="Texture2D" uid="uid://b8snwl2q3qflg" path="res://UI/Theme/PCTheme/button/slimButtonHeld.png" id="5_okbtn"]
 [ext_resource type="Texture2D" uid="uid://o4k321o7djhb" path="res://UI/Theme/PCTheme/Back/pcBackDisabled.png" id="6_kgkrs"]
+[ext_resource type="Texture2D" uid="uid://2jvaulftw7b6" path="res://UI/Theme/PCTheme/button/slimButtonDisabled.png" id="6_okbtn"]
 
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_dcl57"]
 texture = ExtResource("3_j7435")
@@ -20,61 +23,142 @@ texture = ExtResource("5_n4qk7")
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_gclh5"]
 texture = ExtResource("6_kgkrs")
 
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_popup_ok"]
+texture = ExtResource("3_okbtn")
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_popup_ok_pressed"]
+texture = ExtResource("4_okbtn")
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_popup_ok_hover"]
+texture = ExtResource("5_okbtn")
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_popup_ok_disabled"]
+texture = ExtResource("6_okbtn")
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_popup_ok_focus"]
+
 [node name="Upgrades" type="Node2D" unique_id=644922682]
 process_mode = 2
 position = Vector2(0, 4)
 script = ExtResource("1_y42v0")
 
-[node name="Panel" type="Sprite2D" parent="." unique_id=1917269237]
-position = Vector2(574.00006, 320)
-scale = Vector2(5, 5)
-texture = ExtResource("1_vmit0")
+[node name="WindowFrame" type="Panel" parent="." unique_id=1917269237]
+mouse_filter = 2
+offset_left = 120.0
+offset_top = 96.0
+offset_right = 1030.0
+offset_bottom = 606.0
+theme_override_styles/panel = ExtResource("1_vmit0")
 
-[node name="Label" type="Label" parent="." unique_id=773230786]
-offset_left = 462.0
-offset_top = 48.0
-offset_right = 536.0
-offset_bottom = 71.0
+[node name="Title" type="Label" parent="." unique_id=773230786]
+offset_left = 400.0
+offset_top = 108.0
+offset_right = 750.0
+offset_bottom = 146.0
 text = "Upgrades"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="HeaderColumns" type="HBoxContainer" parent="." unique_id=494411287]
+offset_left = 454.0
+offset_top = 92.0
+offset_right = 699.0
+offset_bottom = 148.0
 
 [node name="ScrollContainer" type="ScrollContainer" parent="." unique_id=747577774]
 offset_left = 454.0
-offset_top = 80.0
+offset_top = 92.0
 offset_right = 699.0
 offset_bottom = 595.0
 
-[node name="VBoxContainer" type="VBoxContainer" parent="ScrollContainer" unique_id=148330908]
-layout_mode = 2
-
-[node name="UpgradeItem" parent="ScrollContainer/VBoxContainer" unique_id=886813104 instance=ExtResource("1_eohcs")]
-layout_mode = 2
-
-[node name="UpgradeItem2" parent="ScrollContainer/VBoxContainer" unique_id=1411720202 instance=ExtResource("1_eohcs")]
-layout_mode = 2
-
-[node name="UpgradeItem3" parent="ScrollContainer/VBoxContainer" unique_id=918703791 instance=ExtResource("1_eohcs")]
-layout_mode = 2
-
-[node name="UpgradeItem4" parent="ScrollContainer/VBoxContainer" unique_id=1642871935 instance=ExtResource("1_eohcs")]
-layout_mode = 2
-
-[node name="UpgradeItem5" parent="ScrollContainer/VBoxContainer" unique_id=370307807 instance=ExtResource("1_eohcs")]
-layout_mode = 2
-
-[node name="UpgradeItem6" parent="ScrollContainer/VBoxContainer" unique_id=479027567 instance=ExtResource("1_eohcs")]
-layout_mode = 2
-
-[node name="UpgradeItem7" parent="ScrollContainer/VBoxContainer" unique_id=220980892 instance=ExtResource("1_eohcs")]
+[node name="UpgradeColumns" type="HBoxContainer" parent="ScrollContainer" unique_id=148330908]
 layout_mode = 2
 
 [node name="PCBack" type="Button" parent="." unique_id=493423178]
-offset_left = 614.0
-offset_top = 51.0
-offset_right = 694.0
-offset_bottom = 71.0
+offset_left = 932.0
+offset_top = 112.0
+offset_right = 1012.0
+offset_bottom = 132.0
 theme_override_styles/normal = SubResource("StyleBoxTexture_dcl57")
 theme_override_styles/pressed = SubResource("StyleBoxTexture_t5ir5")
 theme_override_styles/hover = SubResource("StyleBoxTexture_ku4p8")
 theme_override_styles/disabled = SubResource("StyleBoxTexture_gclh5")
 
+[node name="InsufficientFundsModal" type="Control" parent="." unique_id=968713001]
+visible = false
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 0
+
+[node name="InputBlocker" type="Control" parent="InsufficientFundsModal" unique_id=172511221]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 0
+
+[node name="Overlay" type="ColorRect" parent="InsufficientFundsModal" unique_id=445820624]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+color = Color(0, 0, 0, 0.45)
+
+[node name="MessagePanel" type="Panel" parent="InsufficientFundsModal" unique_id=209822338]
+offset_left = 286.0
+offset_top = 180.0
+offset_right = 866.0
+offset_bottom = 468.0
+theme_override_styles/panel = ExtResource("1_vmit0")
+
+[node name="BackgroundFill" type="ColorRect" parent="InsufficientFundsModal/MessagePanel" unique_id=465991021]
+offset_left = 18.0
+offset_top = 18.0
+offset_right = 562.0
+offset_bottom = 270.0
+mouse_filter = 2
+color = Color(0.07, 0.09, 0.15, 1)
+
+[node name="Title" type="Label" parent="InsufficientFundsModal/MessagePanel" unique_id=417229812]
+offset_left = 120.0
+offset_top = 24.0
+offset_right = 460.0
+offset_bottom = 68.0
+text = "Purchase Failed"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Message" type="Label" parent="InsufficientFundsModal/MessagePanel" unique_id=869846043]
+offset_left = 56.0
+offset_top = 88.0
+offset_right = 524.0
+offset_bottom = 188.0
+horizontal_alignment = 1
+vertical_alignment = 1
+autowrap_mode = 2
+text = "You do not have enough money for this upgrade."
+
+[node name="OkButton" type="Button" parent="InsufficientFundsModal/MessagePanel" unique_id=1782916601]
+offset_left = 170.0
+offset_top = 196.0
+offset_right = 410.0
+offset_bottom = 276.0
+theme_override_styles/normal = SubResource("StyleBoxTexture_popup_ok")
+theme_override_styles/pressed = SubResource("StyleBoxTexture_popup_ok_pressed")
+theme_override_styles/hover = SubResource("StyleBoxTexture_popup_ok_hover")
+theme_override_styles/disabled = SubResource("StyleBoxTexture_popup_ok_disabled")
+theme_override_styles/focus = SubResource("StyleBoxEmpty_popup_ok_focus")
+focus_mode = 0
+text = "OK"
+
 [connection signal="pressed" from="PCBack" to="." method="_on_pc_back_pressed"]
+[connection signal="pressed" from="InsufficientFundsModal/MessagePanel/OkButton" to="." method="_on_insufficient_funds_ok_pressed"]
