@@ -25,6 +25,7 @@ const COFFEE_MACHINE_SCENE_PROP_KEY := "coffee_machine"
 const COFFEE_MACHINE_STAMINA_MULTIPLIER := 1.1
 const COFFEE_MACHINE_BOOST_APPLIED_META_KEY := "coffee_machine_stamina_boost_applied"
 const COFFEE_MACHINE_BASE_STAMINA_META_KEY := "coffee_machine_base_stamina"
+const MIN_WORKER_STAMINA := 1
 
 var level
 
@@ -648,18 +649,12 @@ func _apply_worker_stamina_boost(worker, multiplier: float) -> void:
 	if worker == null:
 		return
 	if bool(worker.get_meta(COFFEE_MACHINE_BOOST_APPLIED_META_KEY, false)):
-		if not worker.has_meta(COFFEE_MACHINE_BASE_STAMINA_META_KEY):
-			var inferred_base_stamina := int(round(float(worker.staminaStat) / multiplier))
-			worker.set_meta(COFFEE_MACHINE_BASE_STAMINA_META_KEY, inferred_base_stamina)
 		return
-	var base_stamina: int
-	if worker.has_meta(COFFEE_MACHINE_BASE_STAMINA_META_KEY):
-		base_stamina = int(worker.get_meta(COFFEE_MACHINE_BASE_STAMINA_META_KEY))
-	else:
-		base_stamina = int(worker.staminaStat)
+	if not worker.has_meta(COFFEE_MACHINE_BASE_STAMINA_META_KEY):
+		var base_stamina := int(worker.staminaStat)
 		worker.set_meta(COFFEE_MACHINE_BASE_STAMINA_META_KEY, base_stamina)
-	var boosted_stamina := int(floor(float(base_stamina) * multiplier))
-	worker.staminaStat = max(1, boosted_stamina)
+	var boosted_stamina := int(round(float(worker.get_meta(COFFEE_MACHINE_BASE_STAMINA_META_KEY)) * multiplier))
+	worker.staminaStat = max(MIN_WORKER_STAMINA, boosted_stamina)
 	worker.set_meta(COFFEE_MACHINE_BOOST_APPLIED_META_KEY, true)
 
 	var stamina_bar = worker.get_node_or_null("staminaBar")
