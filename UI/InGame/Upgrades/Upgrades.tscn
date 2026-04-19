@@ -1,7 +1,6 @@
 [gd_scene format=3 uid="uid://0ydf0fui5u4q"]
 
-[ext_resource type="PackedScene" uid="uid://d1uebs0vqbym5" path="res://UI/InGame/Upgrades/UpgradeItem/UpgradeItem.tscn" id="1_eohcs"]
-[ext_resource type="Texture2D" uid="uid://cfrb47hgtaapp" path="res://UI/Theme/PCTheme/PanelTallerWider.png" id="1_vmit0"]
+[ext_resource type="StyleBoxTexture" path="res://UI/Theme/PCTheme/PCWindowFrame.tres" id="1_vmit0"]
 [ext_resource type="Script" uid="uid://cxopyswyngdbv" path="res://UI/InGame/Upgrades/upgrades.gd" id="1_y42v0"]
 [ext_resource type="Texture2D" uid="uid://d00apn0evacqg" path="res://UI/Theme/PCTheme/Back/pcBack.png" id="3_j7435"]
 [ext_resource type="Texture2D" uid="uid://dkqvr0lf6ytje" path="res://UI/Theme/PCTheme/Back/pcBackPressed.png" id="4_y42v0"]
@@ -25,53 +24,43 @@ process_mode = 2
 position = Vector2(0, 4)
 script = ExtResource("1_y42v0")
 
-[node name="Panel" type="Sprite2D" parent="." unique_id=1917269237]
-position = Vector2(574.00006, 320)
-scale = Vector2(5, 5)
-texture = ExtResource("1_vmit0")
+[node name="WindowFrame" type="Panel" parent="." unique_id=1917269237]
+mouse_filter = 2
+offset_left = 120.0
+offset_top = 96.0
+offset_right = 1030.0
+offset_bottom = 606.0
+theme_override_styles/panel = ExtResource("1_vmit0")
 
-[node name="Label" type="Label" parent="." unique_id=773230786]
-offset_left = 462.0
-offset_top = 48.0
-offset_right = 536.0
-offset_bottom = 71.0
+[node name="Title" type="Label" parent="." unique_id=773230786]
+offset_left = 400.0
+offset_top = 108.0
+offset_right = 750.0
+offset_bottom = 146.0
 text = "Upgrades"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="HeaderColumns" type="HBoxContainer" parent="." unique_id=494411287]
+offset_left = 454.0
+offset_top = 92.0
+offset_right = 699.0
+offset_bottom = 148.0
 
 [node name="ScrollContainer" type="ScrollContainer" parent="." unique_id=747577774]
 offset_left = 454.0
-offset_top = 80.0
+offset_top = 92.0
 offset_right = 699.0
 offset_bottom = 595.0
 
-[node name="VBoxContainer" type="VBoxContainer" parent="ScrollContainer" unique_id=148330908]
-layout_mode = 2
-
-[node name="UpgradeItem" parent="ScrollContainer/VBoxContainer" unique_id=886813104 instance=ExtResource("1_eohcs")]
-layout_mode = 2
-
-[node name="UpgradeItem2" parent="ScrollContainer/VBoxContainer" unique_id=1411720202 instance=ExtResource("1_eohcs")]
-layout_mode = 2
-
-[node name="UpgradeItem3" parent="ScrollContainer/VBoxContainer" unique_id=918703791 instance=ExtResource("1_eohcs")]
-layout_mode = 2
-
-[node name="UpgradeItem4" parent="ScrollContainer/VBoxContainer" unique_id=1642871935 instance=ExtResource("1_eohcs")]
-layout_mode = 2
-
-[node name="UpgradeItem5" parent="ScrollContainer/VBoxContainer" unique_id=370307807 instance=ExtResource("1_eohcs")]
-layout_mode = 2
-
-[node name="UpgradeItem6" parent="ScrollContainer/VBoxContainer" unique_id=479027567 instance=ExtResource("1_eohcs")]
-layout_mode = 2
-
-[node name="UpgradeItem7" parent="ScrollContainer/VBoxContainer" unique_id=220980892 instance=ExtResource("1_eohcs")]
+[node name="UpgradeColumns" type="HBoxContainer" parent="ScrollContainer" unique_id=148330908]
 layout_mode = 2
 
 [node name="PCBack" type="Button" parent="." unique_id=493423178]
-offset_left = 614.0
-offset_top = 51.0
-offset_right = 694.0
-offset_bottom = 71.0
+offset_left = 932.0
+offset_top = 112.0
+offset_right = 1012.0
+offset_bottom = 132.0
 theme_override_styles/normal = SubResource("StyleBoxTexture_dcl57")
 theme_override_styles/pressed = SubResource("StyleBoxTexture_t5ir5")
 theme_override_styles/hover = SubResource("StyleBoxTexture_ku4p8")

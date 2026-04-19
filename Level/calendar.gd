@@ -1,36 +1,21 @@
 extends Sprite2D
 
-
-var newWeek: bool = false
-
 func _ready() -> void:
-	TimeTool.timer.timeout.connect(trackTime)
 	PlayerTool.projectSelected.connect(setupProjData)
-
+	TimeTool.timer.timeout.connect(setupProjData)
+	TimeTool.weekPassed.connect(setupProjData)
+	PlayerTool.sprintComplete.connect(setupProjData)
+	PlayerTool.deadlineReached.connect(setupProjData)
+	setupProjData()
 
 func setupProjData():
-	$TextParent/sprintData.text = str(PlayerTool.currentProjSprint) + "/" + str(PlayerTool.currentProject.sprintAmount)
-	$TextParent/weekData.text = str(PlayerTool.currentProjWeek) + "/" + str(PlayerTool.currentProject.sprintLength)	
-	$weekBar.value = PlayerTool.currentWeekTime
-
-func trackTime():
-	if PlayerTool.currentProject != null:
-		newWeek = false
-		if PlayerTool.currentWeekTime == $weekBar.max_value:
-			if PlayerTool.currentProjWeek == PlayerTool.currentProject.sprintLength:
-				if PlayerTool.currentProjSprint == PlayerTool.currentProject.sprintAmount:
-					PlayerTool.deadlineReached.emit()
-				PlayerTool.sprintComplete.emit()
-				PlayerTool.currentProjWeek = 0
-				PlayerTool.currentProjSprint += 1
-			newWeek = true
-			TimeTool.weekPassed.emit()
-			PlayerTool.currentProjWeek += 1				
-			PlayerTool.currentWeekTime = 0
-		if !newWeek: PlayerTool.currentWeekTime += 1
-		$weekBar.value = PlayerTool.currentWeekTime
-		
-		$TextParent/sprintData.text = str(PlayerTool.currentProjSprint) + "/" + str(PlayerTool.currentProject.sprintAmount)
-		$TextParent/weekData.text = str(PlayerTool.currentProjWeek) + "/" + str(PlayerTool.currentProject.sprintLength)
-		pass
-		
+	if PlayerTool.project == null:
+		$TextParent/sprintData.text = "0/0"
+		$TextParent/weekData.text = "0/0"
+		$weekBar.max_value = 1
+		$weekBar.value = 0
+		return
+	$TextParent/sprintData.text = str(PlayerTool.projSprint) + "/" + str(PlayerTool.project.sprintAmount)
+	$TextParent/weekData.text = str(PlayerTool.projWeek) + "/" + str(PlayerTool.project.sprintLength)
+	$weekBar.max_value = TimeTool.WEEK_DURATION_SECONDS
+	$weekBar.value = PlayerTool.weekTime

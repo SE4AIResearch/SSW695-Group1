@@ -3,6 +3,9 @@ extends Node2D
 signal hover_started(worker)
 signal hover_ended(worker)
 
+@export var restingColor: Color
+@export var workingColor: Color
+
 var personName: String
 
 var headSpritePath: String
@@ -19,12 +22,16 @@ var staminaStat: int
 
 var firable: bool = true
 
+var resting: bool = false
+
 # 0 = FE, 1 = BE, 2 = Doc
 var metricType: int
 var metricName: String
 var progressBars: Array[CanvasItem] = []
 
 func _ready() -> void:
+	$staminaBar.max_value = staminaStat
+	$staminaBar.value = staminaStat
 	$HoverArea.mouse_entered.connect(_on_hover_area_mouse_entered)
 	$HoverArea.mouse_exited.connect(_on_hover_area_mouse_exited)
 	TimeTool.timer.timeout.connect(work)
@@ -37,22 +44,22 @@ func _on_hover_area_mouse_exited() -> void:
 	hover_ended.emit(self)
 
 func work():
-	if PlayerTool.currentProject != null:
-		var type: int = randi_range(0,2)
-		var amount: int
-		match type:
-			0: 
-				amount = 1#frontEndStat
-				PlayerTool.changeProjectStats(type,amount)
-			1: 
-				amount = 1#backEndStat
-				PlayerTool.changeProjectStats(type,amount)
-			2: 
-				amount = 1#documentingStat
-				PlayerTool.changeProjectStats(type,amount)
+	match resting:
+		false:
+			$staminaBar.value -= 1
+			if $staminaBar.value <= 0:
+				resting = true
+				$staminaBar.tint_under = restingColor
+				$staminaBar.tint_progress = restingColor
+				
+		true:
+			$staminaBar.value += 5
+			if $staminaBar.value >= staminaStat:
+				$staminaBar.value = staminaStat
+				$staminaBar.tint_under = workingColor
+				$staminaBar.tint_progress = workingColor
+				resting = false
 
-		NumberVisualizer.createNumber(amount,type,self.global_position+Vector2(randf_range(-30,30),randf_range(-20,-40)))
-		
 func set_progress_bars_visible(should_show: bool) -> void:
 	for progress_bar in progressBars:
 		if is_instance_valid(progress_bar):

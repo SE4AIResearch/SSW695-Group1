@@ -19,6 +19,17 @@ func createWorkerItem(worker):
 	$textParent/statsLabel.text = "[color=#fc2403]Front End: " + str(worker.frontEndStat) + "[/color] \n [color=#30c4ff]Back End: " + str(worker.backEndStat) + "[/color] \n [color=#03fc41]Documenting: " + str(worker.documentingStat)
 	pass
 
+func setAssignmentLabel(assignmentText: String) -> void:
+	if assignmentText == "":
+		$textParent/nameLabel.text = heldWorker.personName
+	else:
+		var shortenedAssignment = assignmentText
+		if shortenedAssignment.begins_with("Assigned: "):
+			shortenedAssignment = shortenedAssignment.trim_prefix("Assigned: ")
+		if shortenedAssignment.length() > 22:
+			shortenedAssignment = shortenedAssignment.substr(0, 19) + "..."
+		$textParent/nameLabel.text = heldWorker.personName + "\nOn: " + shortenedAssignment
+
 
 func _on_pressed() -> void:
 	WorkerSelected.emit(self)
