@@ -650,6 +650,12 @@ func _apply_worker_stamina_boost(worker, multiplier: float) -> void:
 		return
 	if bool(worker.get_meta(COFFEE_MACHINE_BOOST_APPLIED_META_KEY, false)):
 		return
+	var stamina_bar = worker.get_node_or_null("staminaBar")
+	var previous_stamina_max := int(worker.staminaStat)
+	var previous_stamina_value := previous_stamina_max
+	if stamina_bar != null:
+		previous_stamina_max = int(stamina_bar.max_value)
+		previous_stamina_value = int(stamina_bar.value)
 	if not worker.has_meta(COFFEE_MACHINE_BASE_STAMINA_META_KEY):
 		var base_stamina := int(worker.staminaStat)
 		worker.set_meta(COFFEE_MACHINE_BASE_STAMINA_META_KEY, base_stamina)
@@ -657,7 +663,10 @@ func _apply_worker_stamina_boost(worker, multiplier: float) -> void:
 	worker.staminaStat = max(MIN_WORKER_STAMINA, boosted_stamina)
 	worker.set_meta(COFFEE_MACHINE_BOOST_APPLIED_META_KEY, true)
 
-	var stamina_bar = worker.get_node_or_null("staminaBar")
 	if stamina_bar != null:
 		stamina_bar.max_value = worker.staminaStat
-		stamina_bar.value = worker.staminaStat
+		if previous_stamina_max > 0:
+			var stamina_ratio := float(previous_stamina_value) / float(previous_stamina_max)
+			stamina_bar.value = clampi(int(round(stamina_ratio * float(worker.staminaStat))), 0, worker.staminaStat)
+		else:
+			stamina_bar.value = worker.staminaStat
