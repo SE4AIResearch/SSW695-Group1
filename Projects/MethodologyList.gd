@@ -30,14 +30,6 @@ var methods = [
 "randomEventChance":0
 },
 {
-"name":"Hybrid",
-"description":"",
-"sprintAmount":0,
-"sprintLength":0,
-"sprintMetricAmount":0,
-"randomEventChance":0
-},
-{
 "name":"V-Model",
 "description":"",
 "keywords":[
