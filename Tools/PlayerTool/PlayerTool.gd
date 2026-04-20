@@ -76,8 +76,6 @@ func initializeNewSave():
 	var freeWorker2 = PersonConstructor.generateWorker(PersonConstructor.getStartingWorkerStats(1))
 	$workerHoldover.add_child(freeWorker1)
 	$workerHoldover.add_child(freeWorker2)
-	freeWorker1.scale = Vector2(2.5, 2.5)
-	freeWorker2.scale = Vector2(2.5, 2.5)
 	newHire(freeWorker1)
 	newHire(freeWorker2)
 
@@ -258,6 +256,7 @@ func newProject(newProject) -> void:
 func newHire(worker) -> bool:
 	if workers.size() >= max_worker_capacity:
 		return false
+	worker.scale = Vector2(2.5, 2.5)
 	_apply_active_upgrade_effects_to_worker(worker)
 	worker.name = worker.personName
 	workers.append(worker)

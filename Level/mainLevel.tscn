@@ -549,13 +549,6 @@ metadata/_edit_use_anchors_ = true
 [node name="Pause" parent="UI" unique_id=1977347548 instance=ExtResource("8_5ay6t")]
 visible = false
 
-[node name="Button" type="Button" parent="UI" unique_id=136594066]
-offset_left = 656.0
-offset_top = 550.0
-offset_right = 896.0
-offset_bottom = 631.0
-text = "Test project completion menu"
-
 [node name="Camera2D" type="Camera2D" parent="." unique_id=1819020716]
 position = Vector2(576, 324)
 
@@ -570,4 +563,3 @@ script = ExtResource("5_f8h88")
 [connection signal="pressed" from="UI/PCButtons/PCPower" to="UI" method="_on_pc_power_pressed"]
 [connection signal="pressed" from="UI/BackButton" to="UI" method="_on_back_button_pressed"]
 [connection signal="pressed" from="UI/PauseButton" to="UI" method="_on_pause_button_pressed"]
-[connection signal="pressed" from="UI/Button" to="UI" method="_on_button_pressed"]

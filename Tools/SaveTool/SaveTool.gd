@@ -1,22 +1,108 @@
 extends Node
 
-const SavePath = "user://playerSave.cfg"
+const SaveListPath = "user://saves.cfg"
+const SaveDirectory = "user://saves/"
+
+var current_save_name: String = "playerSave"
+var save_list: Array = []
 
 func _ready():
 	print(OS.get_data_dir())
-	loadPlayerData()
+	_ensure_save_directory_exists()
+	_load_save_list()
+	
+	# Default to the last-used save, or "playerSave" if none exists.
+	if save_list.is_empty():
+		_register_save("playerSave")
+	else:
+		current_save_name = save_list[0]
+	
+	if not PlayerTool.weekResolved.is_connected(savePlayerData):
+		PlayerTool.weekResolved.connect(savePlayerData)
+
+func _ensure_save_directory_exists():
+	if not DirAccess.dir_exists_absolute(SaveDirectory):
+		DirAccess.make_dir_absolute(SaveDirectory)
+
+func _load_save_list():
+	if not FileAccess.file_exists(SaveListPath):
+		save_list = []
+		return
+	
+	var listFile = ConfigFile.new()
+	var err = listFile.load(SaveListPath)
+	if err == OK:
+		save_list = listFile.get_value("Saves", "list", [])
+	else:
+		save_list = []
+
+func _save_save_list():
+	var listFile = ConfigFile.new()
+	listFile.set_value("Saves", "list", save_list)
+	listFile.save(SaveListPath)
+
+func get_save_list() -> Array:
+	return save_list
+
+func create_new_save(saveName: String):
+	_register_save(saveName)
+	initializeNewPlayerData()
+
+func _register_save(saveName: String):
+	if saveName in save_list:
+		push_warning("Save already exists: " + saveName)
+		current_save_name = saveName
+		return
+	
+	save_list.append(saveName)
+	_save_save_list()
+	current_save_name = saveName
+
+func delete_save(saveName: String):
+	if saveName in save_list:
+		save_list.erase(saveName)
+		_save_save_list()
+		var path = get_save_path(saveName)
+		if FileAccess.file_exists(path):
+			DirAccess.remove_absolute(path)
+		
+		if current_save_name == saveName:
+			if not save_list.is_empty():
+				current_save_name = save_list[0]
+			else:
+				create_new_save("playerSave")
+
+func get_save_path(saveName: String) -> String:
+	return SaveDirectory + saveName + ".cfg"
+	
+func get_save_summary(saveName: String) -> Dictionary:
+	var path = get_save_path(saveName)
+	var summary = {"currency": 0.0, "completed_project_count": 0}
+	
+	if not FileAccess.file_exists(path):
+		return summary
+	
+	var saveData = ConfigFile.new()
+	var err = saveData.load(path)
+	if err == OK:
+		summary["currency"] = saveData.get_value("Player", "currency", 0.0)
+		summary["completed_project_count"] = saveData.get_value("Player", "completed_project_count", 0)
+	
+	return summary
 
 func initializeNewPlayerData():
 	PlayerTool.initializeNewSave()
 	savePlayerData()
 
-func loadPlayerData():
-	if not FileAccess.file_exists(SavePath):
-		initializeNewPlayerData()
+func loadPlayerData(saveName: String = current_save_name):
+	current_save_name = saveName
+	var path = get_save_path(saveName)
+	
+	if not FileAccess.file_exists(path):
 		return
 	
 	var saveData = ConfigFile.new()
-	var err = saveData.load(SavePath)
+	var err = saveData.load(path)
 	if err != OK:
 		push_error("Failed to load save data")
 		return
@@ -104,7 +190,7 @@ func savePlayerData():
 	saveData.set_value("Lists", "upgrades", PlayerTool.upgrades)
 	saveData.set_value("Lists", "workers", serializeWorkers())
 	
-	saveData.save(SavePath)
+	saveData.save(get_save_path(current_save_name))
 
 func serializeWorkers() -> Array:
 	var list = []
