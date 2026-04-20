@@ -7,6 +7,7 @@
 [ext_resource type="Texture2D" uid="uid://bdrwmobn5nte6" path="res://UI/Theme/MainLevel/ProjectCompletion/barProgress.png" id="5_67dgf"]
 
 [node name="ProjectCompletion" type="Node2D" unique_id=1085384657]
+process_mode = 2
 script = ExtResource("1_omq17")
 
 [node name="BG" type="Sprite2D" parent="." unique_id=1339856687]
@@ -162,3 +163,18 @@ theme_override_font_sizes/normal_font_size = 48
 bbcode_enabled = true
 text = "Currency Earned:"
 vertical_alignment = 1
+
+[node name="ContinueButton" type="Button" parent="."]
+offset_left = 480.0
+offset_top = 585.0
+offset_right = 672.0
+offset_bottom = 630.0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_colors/font_focus_color = Color(0, 0, 0, 1)
+theme_override_colors/font_pressed_color = Color(0, 0, 0, 1)
+theme_override_colors/font_hover_color = Color(0, 0, 0, 1)
+theme_override_fonts/font = ExtResource("2_dgai6")
+theme_override_font_sizes/font_size = 28
+text = "Continue"
+
+[connection signal="pressed" from="ContinueButton" to="." method="_on_continue_pressed"]

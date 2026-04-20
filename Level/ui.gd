@@ -128,4 +128,6 @@ func startEvent():
 	createMenu(randomEventMenu.instantiate())
 
 func runProjectCompletion():
-	createMenu(projectCompletionMenu)
+	if pcMode:
+		_on_pc_power_pressed()
+	createMenu(projectCompletionMenu.instantiate())
