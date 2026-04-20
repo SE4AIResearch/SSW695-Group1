@@ -30,7 +30,13 @@ const MIN_WORKER_STAMINA := 1
 var level
 
 var project: Node
+var methodology: Dictionary = {}
+var projectName: String = ""
+var clientName: String = ""
+var sprintLength: int = 0
+var sprintAmount: int = 0
 var projectRatedDifficulty: float
+var eventChance: float = 0.45
 var metrics = {
 	"frontEnd": 0,
 	"backEnd": 0,
@@ -105,6 +111,10 @@ func changeMetricByName(metricName: String, amount: int) -> void:
 
 func resetData():
 	project = null
+	projectName = ""
+	clientName = ""
+	sprintLength = 0
+	sprintAmount = 0
 	projectRatedDifficulty = 0
 	projectAmount = 0
 	completed_project_count = 0
@@ -151,6 +161,12 @@ func resetData():
 func resetProjectStats():
 	projectRatedDifficulty = 0
 	project = null
+	methodology = {}
+	projectName = ""
+	clientName = ""
+	sprintLength = 0
+	sprintAmount = 0
+	eventChance = 0.45
 	metrics = {
 		"frontEnd": 0,
 		"backEnd": 0,
@@ -241,7 +257,13 @@ func _find_project_choice(all_projects: Array, project_name: String) -> Dictiona
 func newProject(newProject) -> void:
 	resetProjectStats()
 	project = newProject
+	methodology = newProject.methodology
+	projectName = newProject.projectName
+	clientName = newProject.clientName
+	sprintLength = int(newProject.sprintLength)
+	sprintAmount = int(newProject.sprintAmount)
 	projectRatedDifficulty = float(newProject.projectDifficulty)
+	eventChance = float(newProject.eventChance)
 	projWeek = 1
 	projSprint = 1
 	projectAmount += 1

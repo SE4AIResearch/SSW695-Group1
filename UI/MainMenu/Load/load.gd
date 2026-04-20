@@ -20,5 +20,11 @@ func populate_save_list() -> void:
 		var summary = SaveTool.get_save_summary(save_name)
 		item.currency = summary.currency
 		item.completed_projects = summary.completed_project_count
+		item.project_name = summary.projectName
+		item.client_name = summary.clientName
+		item.current_week = summary.projWeek
+		item.total_weeks = summary.sprintLength
+		item.current_sprint = summary.projSprint
+		item.total_sprints = summary.sprintAmount
 		
 		$VBoxContainer.add_child(item)

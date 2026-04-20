@@ -77,7 +77,16 @@ func get_save_path(saveName: String) -> String:
 	
 func get_save_summary(saveName: String) -> Dictionary:
 	var path = get_save_path(saveName)
-	var summary = {"currency": 0.0, "completed_project_count": 0}
+	var summary = {
+		"currency": 0.0,
+		"completed_project_count": 0,
+		"projectName": "",
+		"clientName": "",
+		"projWeek": 0,
+		"sprintLength": 0,
+		"projSprint": 0,
+		"sprintAmount": 0
+	}
 	
 	if not FileAccess.file_exists(path):
 		return summary
@@ -87,6 +96,12 @@ func get_save_summary(saveName: String) -> Dictionary:
 	if err == OK:
 		summary["currency"] = saveData.get_value("Player", "currency", 0.0)
 		summary["completed_project_count"] = saveData.get_value("Player", "completed_project_count", 0)
+		summary["projectName"] = saveData.get_value("Project", "projectName", "")
+		summary["clientName"] = saveData.get_value("Project", "clientName", "")
+		summary["projWeek"] = saveData.get_value("Project", "projWeek", 0)
+		summary["sprintLength"] = saveData.get_value("Project", "sprintLength", 0)
+		summary["projSprint"] = saveData.get_value("Project", "projSprint", 0)
+		summary["sprintAmount"] = saveData.get_value("Project", "sprintAmount", 0)
 	
 	return summary
 
@@ -109,6 +124,12 @@ func loadPlayerData(saveName: String = current_save_name):
 	
 	# Load variables from lines 32 - 69 of PlayerTool.gd
 	PlayerTool.projectRatedDifficulty = saveData.get_value("Project", "projectRatedDifficulty", 0.0)
+	PlayerTool.projectName = saveData.get_value("Project", "projectName", "")
+	PlayerTool.methodology = saveData.get_value("Project", "methodology", {})
+	PlayerTool.clientName = saveData.get_value("Project", "clientName", "")
+	PlayerTool.sprintLength = saveData.get_value("Project", "sprintLength", 0)
+	PlayerTool.sprintAmount = saveData.get_value("Project", "sprintAmount", 0)
+	PlayerTool.eventChance = saveData.get_value("Project", "eventChance", 0.45)
 	PlayerTool.metrics = saveData.get_value("Project", "metrics", {
 		"frontEnd": 0,
 		"backEnd": 0,
@@ -155,6 +176,12 @@ func savePlayerData():
 	
 	# Project variables
 	saveData.set_value("Project", "projectRatedDifficulty", PlayerTool.projectRatedDifficulty)
+	saveData.set_value("Project", "projectName", PlayerTool.projectName)
+	saveData.set_value("Project", "methodology", PlayerTool.methodology)
+	saveData.set_value("Project", "clientName", PlayerTool.clientName)
+	saveData.set_value("Project", "sprintLength", PlayerTool.sprintLength)
+	saveData.set_value("Project", "sprintAmount", PlayerTool.sprintAmount)
+	saveData.set_value("Project", "eventChance", PlayerTool.eventChance)
 	saveData.set_value("Project", "metrics", PlayerTool.metrics)
 	saveData.set_value("Project", "MetricProgress", PlayerTool.MetricProgress)
 	saveData.set_value("Project", "completedMetrics", PlayerTool.completedMetrics)
