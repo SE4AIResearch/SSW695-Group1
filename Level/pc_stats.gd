@@ -26,8 +26,9 @@ func updateCurrentStats():
 		$frontEndBar.value = PlayerTool.metrics.get("frontEnd")
 		$backEndBar.value = PlayerTool.metrics.get("backEnd")
 		$documentationBar.value = PlayerTool.metrics.get("documenting")
-		$reliabilityBar.value = PlayerTool.metrics.get("reliability")
-		$reliabilityBar.max_value = PlayerTool.totalEvents
+		if PlayerTool.totalEvents != 0:
+			$reliabilityBar.value = PlayerTool.metrics.get("reliability")
+			$reliabilityBar.max_value = PlayerTool.totalEvents
 		return
 	$frontEndBar.value = 0
 	$backEndBar.value = 0

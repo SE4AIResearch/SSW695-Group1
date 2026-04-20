@@ -46,6 +46,7 @@ var projSprint: int = 0
 var FEBacklogStep: int = 0
 var BEBacklogStep: int = 0
 var docBacklogStep: int = 0
+var totalEvents: int = 0
 
 var teamRank: int = 1
 var workers: Array = []
@@ -135,6 +136,7 @@ func resetData():
 	weekTime = 0
 	projWeek = 0
 	projSprint = 0
+	totalEvents = 0
 	FEBacklogStep = 0
 	BEBacklogStep = 0
 	docBacklogStep = 0
@@ -167,6 +169,7 @@ func resetProjectStats():
 	sprintGoal = {}
 	shouldShowWeekResultsModal = false
 	weekTime = 0
+	totalEvents = 0
 	projWeek = 0
 	projSprint = 0
 	FEBacklogStep = 0
@@ -554,10 +557,13 @@ func _worker_is_specialist_for_item(worker, item: Dictionary) -> bool:
 
 func earnSprintMoney():
 	if project != null:
-		addCurrency(int((30 * project.projectDifficulty) + (5 * projectAmount) + (50 * (teamRank - 1))))
+		addCurrency(floorf((30 * project.projectDifficulty) + (5 * projectAmount) + (50 * (teamRank - 1))))
 
 func earnProjectMoney(SatisfactionAmount):
-	addCurrency((int((500 * projectRatedDifficulty) + (25 * projectAmount) + (650 * (teamRank - 1))))*SatisfactionAmount)
+	addCurrency(floorf((500 * projectRatedDifficulty) + (25 * projectAmount) + (650 * (teamRank - 1))*SatisfactionAmount))
+
+func returnSprintMoney(SatisfactionAmount):
+	return floorf(((500 * projectRatedDifficulty) + (25 * projectAmount) + (650 * (teamRank - 1)))*SatisfactionAmount)
 
 func get_office_capacity_for_tier(tier: int) -> int:
 	var clamped_tier := clampi(tier, 0, OFFICE_CAPACITY_BY_TIER.size() - 1)
