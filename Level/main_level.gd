@@ -131,7 +131,3 @@ func rollEvent():
 	# Demo override: always trigger a random event each week.
 	# $UI.startEvent()
 	pass
-
-func checkProjectCompletion():
-
-	pass

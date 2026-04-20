@@ -49,10 +49,6 @@ func calculateCurrencyEarned(satisfactionAmount: float):
 	var percentageEarned = satisfactionAmount/4
 	PlayerTool.earnProjectMoney(percentageEarned)
 	$CurrencyAmount.text = "$" + str(PlayerTool.returnSprintMoney(percentageEarned))
-	pass
-
-
-func _on_button_pressed() -> void:
+	PlayerTool.completed_project_count += 1
 	PlayerTool.resetProjectStats()
-	get_parent().get_parent().endMenu()
 	pass

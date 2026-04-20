@@ -5,18 +5,6 @@
 [ext_resource type="FontFile" uid="uid://b0lji18tmt8ua" path="res://UI/Theme/Fonts/jakes-writing-font/Jakeswriting-P2Zr.ttf" id="2_dgai6"]
 [ext_resource type="Texture2D" uid="uid://v5e7102exc8b" path="res://UI/Theme/MainLevel/ProjectCompletion/barBorder.png" id="4_jx4kq"]
 [ext_resource type="Texture2D" uid="uid://bdrwmobn5nte6" path="res://UI/Theme/MainLevel/ProjectCompletion/barProgress.png" id="5_67dgf"]
-[ext_resource type="Texture2D" uid="uid://wxpipi3cqg55" path="res://UI/Theme/next/next.png" id="6_48mji"]
-[ext_resource type="Texture2D" uid="uid://ci7edtym4xjan" path="res://UI/Theme/next/nextPressed.png" id="7_syj4q"]
-[ext_resource type="Texture2D" uid="uid://bn7hpclr6boqv" path="res://UI/Theme/next/nextHover.png" id="8_ss88f"]
-
-[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_ji4yw"]
-texture = ExtResource("6_48mji")
-
-[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_fe03b"]
-texture = ExtResource("7_syj4q")
-
-[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_exrh0"]
-texture = ExtResource("8_ss88f")
 
 [node name="ProjectCompletion" type="Node2D" unique_id=1085384657]
 process_mode = 3
@@ -167,6 +155,7 @@ offset_bottom = 335.0
 scale = Vector2(4, 4)
 texture_under = ExtResource("4_jx4kq")
 texture_progress = ExtResource("5_67dgf")
+tint_progress = Color(0.8907567, 0.7006594, 0.5800754, 1)
 
 [node name="CurrencyGained" type="RichTextLabel" parent="." unique_id=1881593657]
 offset_left = 659.0
@@ -193,14 +182,3 @@ theme_override_font_sizes/normal_font_size = 48
 bbcode_enabled = true
 horizontal_alignment = 1
 vertical_alignment = 1
-
-[node name="Button" type="Button" parent="." unique_id=1257974428]
-offset_left = 916.0
-offset_top = 109.0
-offset_right = 1012.0
-offset_bottom = 205.0
-theme_override_styles/normal = SubResource("StyleBoxTexture_ji4yw")
-theme_override_styles/pressed = SubResource("StyleBoxTexture_fe03b")
-theme_override_styles/hover = SubResource("StyleBoxTexture_exrh0")
-
-[connection signal="pressed" from="Button" to="." method="_on_button_pressed"]

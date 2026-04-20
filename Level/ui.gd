@@ -129,8 +129,3 @@ func startEvent():
 
 func runProjectCompletion():
 	createMenu(projectCompletionMenu.instantiate())
-
-
-func _on_button_pressed() -> void:
-	runProjectCompletion()
-	pass
