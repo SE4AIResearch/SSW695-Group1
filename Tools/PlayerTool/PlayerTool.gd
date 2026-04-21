@@ -542,9 +542,10 @@ func _prepare_sprint_context(sprintNumber: int) -> void:
 func _resolve_assignment(worker, item: Dictionary) -> void:
 	var metricKey := str(item.get("required_skill", "frontEnd"))
 	var workerSkill := _get_worker_skill(worker, metricKey)
-	var progress := maxi(1, workerSkill)
-	if not _worker_is_specialist_for_item(worker, item):
-		progress = maxi(1, int(floor(progress * 0.5)))
+	var progress := workerSkill
+	# if not _worker_is_specialist_for_item(worker, item):
+	# 	progress = int(floor(progress * 0.5))
+	progress = maxi(1, int(floor(float(progress) * (float(worker.speedStat) / 100.0))))
 
 	var previousEffort := int(item.get("effort_remaining", 0))
 	item.set("effort_remaining", maxi(0, previousEffort - progress))
