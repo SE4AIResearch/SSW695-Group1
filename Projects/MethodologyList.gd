@@ -10,8 +10,8 @@ var methods = [
 "Heavy documentation",
 "Fixed timeline"
 ],
-"sprintAmount":0,
-"sprintLength":0,
+"sprintAmount":2,
+"sprintLength":1,
 "sprintMetricAmount":0,
 "randomEventChance":0
 },
@@ -30,14 +30,6 @@ var methods = [
 "randomEventChance":0
 },
 {
-"name":"Hybrid",
-"description":"",
-"sprintAmount":0,
-"sprintLength":0,
-"sprintMetricAmount":0,
-"randomEventChance":0
-},
-{
 "name":"V-Model",
 "description":"",
 "keywords":[
@@ -46,8 +38,8 @@ var methods = [
 "Test-Driven Phases",
 "Verification and Validation"
 ],
-"sprintAmount":0,
-"sprintLength":0,
+"sprintAmount":1,
+"sprintLength":1,
 "sprintMetricAmount":0,
 "randomEventChance":0
 },
@@ -60,8 +52,8 @@ var methods = [
 "Prototyping",
 "High complexity"
 ],
-"sprintAmount":0,
-"sprintLength":0,
+"sprintAmount":2,
+"sprintLength":2,
 "sprintMetricAmount":0,
 "randomEventChance":0
 }
