@@ -21,6 +21,11 @@ const LOOP_PLANNING_WEEK := "planning_week"
 const LOOP_ACTIVE_WEEK := "active_week"
 const LOOP_RESOLVING_WEEK := "resolving_week"
 const OFFICE_CAPACITY_BY_TIER := [6, 8, 10, 12, 14]
+const DESKTOP_PC_SCENE_PROP_KEY := "desktop_pc"
+const DESKTOP_PC_SKILL_MULTIPLIER := 1.05
+const DESKTOP_PC_BOOST_APPLIED_META_KEY := "desktop_pc_skill_boost_applied"
+const DESKTOP_PC_BASE_FRONTEND_META_KEY := "desktop_pc_base_frontend"
+const DESKTOP_PC_BASE_BACKEND_META_KEY := "desktop_pc_base_backend"
 const COFFEE_MACHINE_SCENE_PROP_KEY := "coffee_machine"
 const COFFEE_MACHINE_STAMINA_MULTIPLIER := 1.1
 const COFFEE_MACHINE_BOOST_APPLIED_META_KEY := "coffee_machine_stamina_boost_applied"
@@ -625,12 +630,20 @@ func _normalize_upgrade_record(upgrade_data: Dictionary) -> Dictionary:
 	return normalized_upgrade
 
 func _apply_standard_upgrade_purchase_effects(upgrade_data: Dictionary) -> void:
+	if _is_desktop_pc_upgrade(upgrade_data):
+		_apply_desktop_pc_skill_boost_to_all_workers()
 	if _is_coffee_machine_upgrade(upgrade_data):
 		_apply_coffee_machine_stamina_boost_to_all_workers()
 
 func _apply_active_upgrade_effects_to_worker(worker) -> void:
+	if _has_active_upgrade_with_scene_prop_key(DESKTOP_PC_SCENE_PROP_KEY):
+		_apply_worker_desktop_pc_boost(worker, DESKTOP_PC_SKILL_MULTIPLIER)
 	if _has_active_upgrade_with_scene_prop_key(COFFEE_MACHINE_SCENE_PROP_KEY):
 		_apply_worker_stamina_boost(worker, COFFEE_MACHINE_STAMINA_MULTIPLIER)
+
+func _apply_desktop_pc_skill_boost_to_all_workers() -> void:
+	for worker in workers:
+		_apply_worker_desktop_pc_boost(worker, DESKTOP_PC_SKILL_MULTIPLIER)
 
 func _apply_coffee_machine_stamina_boost_to_all_workers() -> void:
 	for worker in workers:
@@ -644,6 +657,23 @@ func _has_active_upgrade_with_scene_prop_key(scene_prop_key: String) -> bool:
 
 func _is_coffee_machine_upgrade(upgrade_data: Dictionary) -> bool:
 	return str(upgrade_data.get("scene_prop_key", "")) == COFFEE_MACHINE_SCENE_PROP_KEY
+
+func _is_desktop_pc_upgrade(upgrade_data: Dictionary) -> bool:
+	return str(upgrade_data.get("scene_prop_key", "")) == DESKTOP_PC_SCENE_PROP_KEY
+
+func _apply_worker_desktop_pc_boost(worker, multiplier: float) -> void:
+	if worker == null:
+		return
+	if bool(worker.get_meta(DESKTOP_PC_BOOST_APPLIED_META_KEY, false)):
+		return
+	if not worker.has_meta(DESKTOP_PC_BASE_FRONTEND_META_KEY):
+		worker.set_meta(DESKTOP_PC_BASE_FRONTEND_META_KEY, int(worker.frontEndStat))
+	if not worker.has_meta(DESKTOP_PC_BASE_BACKEND_META_KEY):
+		worker.set_meta(DESKTOP_PC_BASE_BACKEND_META_KEY, int(worker.backEndStat))
+
+	worker.frontEndStat = max(0, int(round(float(worker.get_meta(DESKTOP_PC_BASE_FRONTEND_META_KEY)) * multiplier)))
+	worker.backEndStat = max(0, int(round(float(worker.get_meta(DESKTOP_PC_BASE_BACKEND_META_KEY)) * multiplier)))
+	worker.set_meta(DESKTOP_PC_BOOST_APPLIED_META_KEY, true)
 
 func _apply_worker_stamina_boost(worker, multiplier: float) -> void:
 	if worker == null:
