@@ -545,7 +545,7 @@ func _resolve_assignment(worker, item: Dictionary) -> void:
 	var progress := workerSkill
 	if not _worker_is_specialist_for_item(worker, item):
 		progress = int(floor(progress * 0.5))
-	progress = int(floor(float(progress) * (float(worker.speedStat) / 100.0)))
+	progress = maxi(1, int(floor(float(progress) * (float(worker.speedStat) / 100.0))))
 
 	var previousEffort := int(item.get("effort_remaining", 0))
 	item.set("effort_remaining", maxi(0, previousEffort - progress))
