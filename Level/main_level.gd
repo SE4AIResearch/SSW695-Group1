@@ -49,7 +49,40 @@ func _ready() -> void:
 	setupUpgradeVisuals()
 	PlayerTool.levelLoaded.emit()
 func initializeSave():
-	pass
+	if PlayerTool.projectName == "":
+		return
+	
+	var projectList = load("res://Projects/projectList.gd").new()
+	var projectItem = preload("res://Projects/projectBase.tscn")
+	var project_data: Dictionary = {}
+	
+	for p in projectList.projects:
+		if p.name == PlayerTool.projectName:
+			project_data = p
+			break
+	
+	var project_node = projectItem.instantiate()
+	project_node.projectName = PlayerTool.projectName
+	project_node.clientName = PlayerTool.clientName
+	project_node.sprintAmount = PlayerTool.sprintAmount
+	project_node.sprintLength = PlayerTool.sprintLength
+	project_node.projectDifficulty = PlayerTool.projectRatedDifficulty
+	project_node.methodology = PlayerTool.methodology
+	project_node.eventChance = PlayerTool.eventChance
+	
+	if project_node.methodology.is_empty() and not project_data.is_empty():
+		project_node.methodology = {"name": project_data.get("preferredMethodology", "Standard")}
+	
+	if not project_data.is_empty():
+		project_node.frontEndProjectMin = project_data.get("frontEndMetrics", {}).size()
+		project_node.backEndProjectMin = project_data.get("backEndMetrics", {}).size()
+		project_node.documentingProjectMin = project_data.get("documentingMetrics", {}).size()
+	
+	PlayerTool.project = project_node
+	PlayerTool.projectSelected.emit()
+	PlayerTool.statsChanged.emit()
+	PlayerTool.backlogUpdated.emit()
+	PlayerTool.loopStateChanged.emit()
 
 func setupDeskVisuals():
 	_ensure_office_slots()
@@ -178,8 +211,4 @@ func rollEvent():
 	if chance <= PlayerTool.project.eventChance: $UI.startEvent()
 	# Demo override: always trigger a random event each week.
 	# $UI.startEvent()
-	pass
-
-func checkProjectCompletion():
-
 	pass

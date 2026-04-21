@@ -35,7 +35,13 @@ const MIN_WORKER_STAMINA := 1
 var level
 
 var project: Node
+var methodology: Dictionary = {}
+var projectName: String = ""
+var clientName: String = ""
+var sprintLength: int = 0
+var sprintAmount: int = 0
 var projectRatedDifficulty: float
+var eventChance: float = 0.45
 var metrics = {
 	"frontEnd": 0,
 	"backEnd": 0,
@@ -51,6 +57,7 @@ var projSprint: int = 0
 var FEBacklogStep: int = 0
 var BEBacklogStep: int = 0
 var docBacklogStep: int = 0
+var totalEvents: int = 0
 
 var teamRank: int = 1
 var workers: Array = []
@@ -80,8 +87,6 @@ func initializeNewSave():
 	var freeWorker2 = PersonConstructor.generateWorker(PersonConstructor.getStartingWorkerStats(1))
 	$workerHoldover.add_child(freeWorker1)
 	$workerHoldover.add_child(freeWorker2)
-	freeWorker1.scale = Vector2(2.5, 2.5)
-	freeWorker2.scale = Vector2(2.5, 2.5)
 	newHire(freeWorker1)
 	newHire(freeWorker2)
 
@@ -111,6 +116,10 @@ func changeMetricByName(metricName: String, amount: int) -> void:
 
 func resetData():
 	project = null
+	projectName = ""
+	clientName = ""
+	sprintLength = 0
+	sprintAmount = 0
 	projectRatedDifficulty = 0
 	projectAmount = 0
 	completed_project_count = 0
@@ -140,6 +149,7 @@ func resetData():
 	weekTime = 0
 	projWeek = 0
 	projSprint = 0
+	totalEvents = 0
 	FEBacklogStep = 0
 	BEBacklogStep = 0
 	docBacklogStep = 0
@@ -156,6 +166,12 @@ func resetData():
 func resetProjectStats():
 	projectRatedDifficulty = 0
 	project = null
+	methodology = {}
+	projectName = ""
+	clientName = ""
+	sprintLength = 0
+	sprintAmount = 0
+	eventChance = 0.45
 	metrics = {
 		"frontEnd": 0,
 		"backEnd": 0,
@@ -172,6 +188,7 @@ func resetProjectStats():
 	sprintGoal = {}
 	shouldShowWeekResultsModal = false
 	weekTime = 0
+	totalEvents = 0
 	projWeek = 0
 	projSprint = 0
 	FEBacklogStep = 0
@@ -245,7 +262,13 @@ func _find_project_choice(all_projects: Array, project_name: String) -> Dictiona
 func newProject(newProject) -> void:
 	resetProjectStats()
 	project = newProject
+	methodology = newProject.methodology
+	projectName = newProject.projectName
+	clientName = newProject.clientName
+	sprintLength = int(newProject.sprintLength)
+	sprintAmount = int(newProject.sprintAmount)
 	projectRatedDifficulty = float(newProject.projectDifficulty)
+	eventChance = float(newProject.eventChance)
 	projWeek = 1
 	projSprint = 1
 	projectAmount += 1
@@ -260,6 +283,7 @@ func newProject(newProject) -> void:
 func newHire(worker) -> bool:
 	if workers.size() >= max_worker_capacity:
 		return false
+	worker.scale = Vector2(2.5, 2.5)
 	_apply_active_upgrade_effects_to_worker(worker)
 	worker.name = worker.personName
 	workers.append(worker)
@@ -559,10 +583,13 @@ func _worker_is_specialist_for_item(worker, item: Dictionary) -> bool:
 
 func earnSprintMoney():
 	if project != null:
-		addCurrency(int((30 * project.projectDifficulty) + (5 * projectAmount) + (50 * (teamRank - 1))))
+		addCurrency(floorf((30 * project.projectDifficulty) + (5 * projectAmount) + (50 * (teamRank - 1))))
 
 func earnProjectMoney(SatisfactionAmount):
-	addCurrency((int((500 * projectRatedDifficulty) + (25 * projectAmount) + (650 * (teamRank - 1))))*SatisfactionAmount)
+	addCurrency(floorf((500 * projectRatedDifficulty) + (25 * projectAmount) + (650 * (teamRank - 1))*SatisfactionAmount))
+
+func returnSprintMoney(SatisfactionAmount):
+	return floorf(((500 * projectRatedDifficulty) + (25 * projectAmount) + (650 * (teamRank - 1)))*SatisfactionAmount)
 
 func get_office_capacity_for_tier(tier: int) -> int:
 	var clamped_tier := clampi(tier, 0, OFFICE_CAPACITY_BY_TIER.size() - 1)

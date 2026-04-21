@@ -1,0 +1,18 @@
+[gd_scene format=3 uid="uid://bdor3j8upail1"]
+
+[ext_resource type="Script" uid="uid://mja0ket2pow2" path="res://UI/MainMenu/Load/loadItem/load_item.gd" id="1_se0s0"]
+
+[node name="LoadItem" type="Button" unique_id=1589395991]
+custom_minimum_size = Vector2(200, 150)
+offset_right = 200.0
+offset_bottom = 150.0
+script = ExtResource("1_se0s0")
+
+[node name="saveInfo" type="RichTextLabel" parent="." unique_id=87130826]
+layout_mode = 0
+offset_right = 200.0
+offset_bottom = 150.0
+mouse_filter = 2
+bbcode_enabled = true
+
+[connection signal="pressed" from="." to="." method="_on_pressed"]

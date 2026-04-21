@@ -128,4 +128,4 @@ func startEvent():
 	createMenu(randomEventMenu.instantiate())
 
 func runProjectCompletion():
-	createMenu(projectCompletionMenu)
+	createMenu(projectCompletionMenu.instantiate())
