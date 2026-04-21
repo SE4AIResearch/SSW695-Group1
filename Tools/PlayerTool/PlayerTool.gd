@@ -31,6 +31,7 @@ const COFFEE_MACHINE_STAMINA_MULTIPLIER := 1.1
 const COFFEE_MACHINE_BOOST_APPLIED_META_KEY := "coffee_machine_stamina_boost_applied"
 const COFFEE_MACHINE_BASE_STAMINA_META_KEY := "coffee_machine_base_stamina"
 const MIN_WORKER_STAMINA := 1
+const WORKER_LEVEL_SCALE := Vector2(2.5, 2.5)
 
 var level
 
@@ -283,14 +284,16 @@ func newProject(newProject) -> void:
 func newHire(worker) -> bool:
 	if workers.size() >= max_worker_capacity:
 		return false
-	worker.scale = Vector2(2.5, 2.5)
 	_apply_active_upgrade_effects_to_worker(worker)
 	worker.name = worker.personName
 	workers.append(worker)
-	if worker.get_parent() != null:
-		worker.reparent($workerHoldover)
-	else:
+	var worker_parent: Node = worker.get_parent()
+	if worker_parent == null:
 		$workerHoldover.add_child(worker)
+	elif worker_parent != $workerHoldover:
+		worker.reparent($workerHoldover, false)
+	worker.scale = WORKER_LEVEL_SCALE
+	worker.position = Vector2.ZERO
 	hireSelected.emit()
 	return true
 
