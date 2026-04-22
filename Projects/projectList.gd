@@ -126,8 +126,8 @@ var constraints = [
 "frontEndScaling":1.2,
 "backEndScaling":.2,
 "documentingScaling":.1,
-"sprintAmount":1,
-"sprintLength":2,
+"sprintAmount":0,
+"sprintLength":1,
 "sprintMetricAmount":0,
 "randomEventChance":.3
 },
@@ -144,8 +144,8 @@ var constraints = [
 "frontEndScaling":1.1,
 "backEndScaling":1.1,
 "documentingScaling":1.3,
-"sprintAmount":2,
-"sprintLength":2,
+"sprintAmount":0,
+"sprintLength":1,
 "sprintMetricAmount":1,
 "randomEventChance":1.5
 },
@@ -159,8 +159,8 @@ var constraints = [
 "frontEndScaling":1,
 "backEndScaling":1,
 "documentingScaling":1.1,
-"sprintAmount":1,
-"sprintLength":3,
+"sprintAmount":0,
+"sprintLength":1,
 "sprintMetricAmount":1,
 "randomEventChance":1.2
 
@@ -174,7 +174,7 @@ var constraints = [
 "frontEndScaling":1.4,
 "backEndScaling":1.4,
 "documentingScaling":1,
-"sprintAmount":1,
+"sprintAmount":0,
 "sprintLength":1,
 "sprintMetricAmount":1,
 "randomEventChance":1.1
@@ -190,7 +190,7 @@ var constraints = [
 "backEndScaling":1,
 "documentingScaling":1.5,
 "sprintAmount":1,
-"sprintLength":1,
+"sprintLength":0,
 "sprintMetricAmount":1,
 "randomEventChance":1.1
 },
@@ -214,8 +214,8 @@ var constraints = [
 "frontEndScaling":1.4,
 "backEndScaling":1.4,
 "documentingScaling":1.3,
-"sprintAmount":2,
-"sprintLength":3,
+"sprintAmount":0,
+"sprintLength":2,
 "sprintMetricAmount":1,
 "randomEventChance":0.5
 }

@@ -25,16 +25,9 @@ func _ready() -> void:
 
 func _on_new_game_button_pressed() -> void:
 	AudioManager.play_sfx("paper_rustle")
-	var saves = SaveTool.get_save_list()
-	var new_name = "playerSave"
-	var counter = 1
-	if not SaveTool.should_reuse_default_new_game_slot():
-		while new_name in saves:
-			new_name = "playerSave_" + str(counter)
-			counter += 1
-	
-	SaveTool.create_new_save(new_name)
-	get_tree().change_scene_to_file("res://Level/mainLevel.tscn")
+	$UI/Load.is_new_game_selection = true
+	$UI/Load.update_save_buttons()
+	setupMenu($UI/Load)
 
 func setupMenu(menu):
 	_position_back_button(menu)
@@ -47,6 +40,8 @@ func setupMenu(menu):
 
 func _on_load_data_button_pressed() -> void:
 	AudioManager.play_sfx("paper_rustle")
+	$UI/Load.is_new_game_selection = false
+	$UI/Load.update_save_buttons()
 	setupMenu($UI/Load)
 
 func _on_settings_button_pressed() -> void:
