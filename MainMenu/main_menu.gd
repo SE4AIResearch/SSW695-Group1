@@ -21,8 +21,10 @@ func _enter_tree() -> void:
 func _ready() -> void:
 	if not $UI/LearningCenter.close_requested.is_connected(_on_learning_center_close_requested):
 		$UI/LearningCenter.close_requested.connect(_on_learning_center_close_requested)
+	AudioManager.play_music("main_menu")
 
 func _on_new_game_button_pressed() -> void:
+	AudioManager.play_sfx("paper_rustle")
 	var saves = SaveTool.get_save_list()
 	var new_name = "playerSave"
 	var counter = 1
@@ -43,9 +45,16 @@ func setupMenu(menu):
 	$Logo.visible = false
 	pass
 
-func _on_load_data_button_pressed() -> void:setupMenu($UI/Load)
-func _on_settings_button_pressed() -> void:setupMenu($UI/Settings)
+func _on_load_data_button_pressed() -> void:
+	AudioManager.play_sfx("paper_rustle")
+	setupMenu($UI/Load)
+
+func _on_settings_button_pressed() -> void:
+	AudioManager.play_sfx("paper_rustle")
+	setupMenu($UI/Settings)
+
 func _on_learning_center_button_pressed() -> void:
+	AudioManager.play_sfx("paper_rustle")
 	currentMenu = $UI/LearningCenter
 	if currentMenu.has_method("reset_state"):
 		currentMenu.reset_state()
@@ -53,9 +62,13 @@ func _on_learning_center_button_pressed() -> void:
 	$UI/Back.visible = false
 	$UI/MainButtons.visible = false
 	$Logo.visible = false
-func _on_quit_button_pressed() -> void: get_tree().quit()
-	
+
+func _on_quit_button_pressed() -> void:
+	AudioManager.play_sfx("paper_rustle")
+	get_tree().quit()
+
 func _on_back_pressed() -> void:
+	AudioManager.play_sfx("paper_rustle")
 	currentMenu.visible = false
 	$UI/Back.visible = false
 	_position_back_button(null)

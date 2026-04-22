@@ -79,12 +79,15 @@ func hireSelected(worker, hire_cost: int) -> void:
 	var result_message := str(result.get("reason", ""))
 
 	if not bool(result.get("ok", false)) and _is_insufficient_funds_message(result_message):
+		AudioManager.play_sfx("buzzer_error")
 		_show_insufficient_funds_popup(result_message)
 		return
 
 	if not bool(result.get("ok", false)):
+		AudioManager.play_sfx("buzzer_error")
 		checkIfMaxHire()
 		return
+	AudioManager.play_sfx("cash_register")
 	for child in $Hires.get_children(): 
 		if worker != child.heldWorker: child.heldWorker.queue_free()
 		child.queue_free()
