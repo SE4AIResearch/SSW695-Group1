@@ -8,6 +8,7 @@ var BacklogMenu = load("res://UI/InGame/Backlog/Backlog.tscn")
 var ProjectSetupMenu = load("res://UI/InGame/ProjectSetup/ProjectSetup.tscn")
 var randomEventMenu = load("res://UI/InGame/RandomEvent/RandomEvent.tscn")
 var projectCompletionMenu = load("res://UI/InGame/ProjectCompletion/ProjectCompletion.tscn")
+var TutorialModal: PackedScene = preload("res://UI/InGame/TutorialModal/TutorialModal.tscn")
 var pcMode = false
 
 
@@ -17,6 +18,7 @@ func _ready() -> void:
 	PlayerTool.connect("deadlineReached",toggleProjectButtons)
 	toggleProjectButtons()
 	PlayerTool.projectCompleted.connect(runProjectCompletion)
+	call_deferred("show_office_intro_tutorial")
 	
 func _physics_process(delta: float) -> void: pass
 
@@ -129,3 +131,23 @@ func startEvent():
 
 func runProjectCompletion():
 	createMenu(projectCompletionMenu.instantiate())
+
+func show_office_intro_tutorial() -> void:
+	_show_tutorial(
+		"office_intro",
+		"Welcome",
+		"Welcome to Software Development Tycoon. Here is your office! Click the computer to get started on your project management journey."
+	)
+
+func _show_tutorial(tutorial_key: String, title: String, message: String) -> void:
+	if !PlayerTool.should_show_tutorial(tutorial_key):
+		return
+
+	var modal: TutorialModalPanel = TutorialModal.instantiate() as TutorialModalPanel
+	add_child(modal)
+	modal.setup(title, message)
+	modal.dismissed.connect(_on_tutorial_dismissed.bind(tutorial_key))
+
+func _on_tutorial_dismissed(tutorial_key: String) -> void:
+	PlayerTool.mark_tutorial_seen(tutorial_key)
+	SaveTool.savePlayerData()

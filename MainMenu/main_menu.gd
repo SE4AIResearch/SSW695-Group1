@@ -26,9 +26,10 @@ func _on_new_game_button_pressed() -> void:
 	var saves = SaveTool.get_save_list()
 	var new_name = "playerSave"
 	var counter = 1
-	while new_name in saves:
-		new_name = "playerSave_" + str(counter)
-		counter += 1
+	if not SaveTool.should_reuse_default_new_game_slot():
+		while new_name in saves:
+			new_name = "playerSave_" + str(counter)
+			counter += 1
 	
 	SaveTool.create_new_save(new_name)
 	get_tree().change_scene_to_file("res://Level/mainLevel.tscn")

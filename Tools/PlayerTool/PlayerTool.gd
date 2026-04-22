@@ -79,6 +79,7 @@ var backlogItems: Array = []
 var pendingProjectSummary: Dictionary = {}
 var sprintGoal: Dictionary = {}
 var shouldShowWeekResultsModal: bool = false
+var tutorial_seen: Dictionary = {}
 
 var _backlogItemIdCounter: int = 0
 
@@ -90,6 +91,22 @@ func initializeNewSave():
 	$workerHoldover.add_child(freeWorker2)
 	newHire(freeWorker1)
 	newHire(freeWorker2)
+
+func set_new_player_tutorials_enabled(enabled: bool) -> void:
+	tutorial_seen = _default_tutorial_seen(not enabled)
+
+func should_show_tutorial(tutorial_key: String) -> bool:
+	return !bool(tutorial_seen.get(tutorial_key, true))
+
+func mark_tutorial_seen(tutorial_key: String) -> void:
+	tutorial_seen[tutorial_key] = true
+
+func _default_tutorial_seen(seen: bool = true) -> Dictionary:
+	return {
+		"office_intro": seen,
+		"methodology_intro": seen,
+		"hiring_intro": seen,
+	}
 
 # Type : 0 = Front End | 1 = Back End | 2 = Documenting | 3 = Reliability | 4 = Stakeholder Satisfaction
 func changeProjectStats(type, amount):
@@ -147,6 +164,7 @@ func resetData():
 	pendingProjectSummary = {}
 	sprintGoal = {}
 	shouldShowWeekResultsModal = false
+	tutorial_seen = _default_tutorial_seen(true)
 	weekTime = 0
 	projWeek = 0
 	projSprint = 0

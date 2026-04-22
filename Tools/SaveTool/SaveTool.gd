@@ -5,6 +5,7 @@ const SaveDirectory = "user://saves/"
 
 var current_save_name: String = "playerSave"
 var save_list: Array = []
+var next_new_game_uses_tutorial: bool = false
 
 func _ready():
 	print(OS.get_data_dir())
@@ -13,9 +14,11 @@ func _ready():
 	
 	# Default to the last-used save, or "playerSave" if none exists.
 	if save_list.is_empty():
+		next_new_game_uses_tutorial = true
 		_register_save("playerSave")
 	else:
 		current_save_name = save_list[0]
+		next_new_game_uses_tutorial = _is_uninitialized_default_save_list()
 	
 	if not PlayerTool.weekResolved.is_connected(savePlayerData):
 		PlayerTool.weekResolved.connect(savePlayerData)
@@ -44,9 +47,20 @@ func _save_save_list():
 func get_save_list() -> Array:
 	return save_list
 
+func should_reuse_default_new_game_slot() -> bool:
+	return next_new_game_uses_tutorial and _is_uninitialized_default_save_list()
+
 func create_new_save(saveName: String):
-	_register_save(saveName)
-	initializeNewPlayerData()
+	var use_tutorial: bool = next_new_game_uses_tutorial or (saveName == "playerSave" and !FileAccess.file_exists(get_save_path(saveName)))
+	if saveName in save_list:
+		current_save_name = saveName
+	else:
+		_register_save(saveName)
+	initializeNewPlayerData(use_tutorial)
+	next_new_game_uses_tutorial = false
+
+func _is_uninitialized_default_save_list() -> bool:
+	return save_list.size() == 1 and save_list[0] == "playerSave" and !FileAccess.file_exists(get_save_path("playerSave"))
 
 func _register_save(saveName: String):
 	if saveName in save_list:
@@ -105,8 +119,10 @@ func get_save_summary(saveName: String) -> Dictionary:
 	
 	return summary
 
-func initializeNewPlayerData():
+func initializeNewPlayerData(use_tutorial: bool = false):
 	PlayerTool.initializeNewSave()
+	PlayerTool.set_new_player_tutorials_enabled(use_tutorial)
+	PlayerTool.has_viewed_methodology_learning_center = !use_tutorial
 	savePlayerData()
 
 func loadPlayerData(saveName: String = current_save_name):
@@ -164,6 +180,10 @@ func loadPlayerData(saveName: String = current_save_name):
 	PlayerTool.pendingProjectSummary = saveData.get_value("GameState", "pendingProjectSummary", {})
 	PlayerTool.sprintGoal = saveData.get_value("GameState", "sprintGoal", {})
 	PlayerTool.shouldShowWeekResultsModal = saveData.get_value("GameState", "shouldShowWeekResultsModal", false)
+	if saveData.has_section_key("GameState", "tutorial_seen"):
+		PlayerTool.tutorial_seen = saveData.get_value("GameState", "tutorial_seen", PlayerTool._default_tutorial_seen(true)) as Dictionary
+	else:
+		PlayerTool.set_new_player_tutorials_enabled(false)
 	
 	PlayerTool.upgrades = saveData.get_value("Lists", "upgrades", [])
 	
@@ -212,6 +232,7 @@ func savePlayerData():
 	saveData.set_value("GameState", "pendingProjectSummary", PlayerTool.pendingProjectSummary)
 	saveData.set_value("GameState", "sprintGoal", PlayerTool.sprintGoal)
 	saveData.set_value("GameState", "shouldShowWeekResultsModal", PlayerTool.shouldShowWeekResultsModal)
+	saveData.set_value("GameState", "tutorial_seen", PlayerTool.tutorial_seen)
 	
 	# Lists
 	saveData.set_value("Lists", "upgrades", PlayerTool.upgrades)
