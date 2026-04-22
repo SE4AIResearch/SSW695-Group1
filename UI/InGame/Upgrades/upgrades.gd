@@ -331,11 +331,16 @@ func _on_upgrade_purchase_requested(upgrade_data: Dictionary) -> void:
 
 	var result_message := str(result.get("reason", "Upgrades"))
 	if not bool(result.get("ok", false)) and _is_insufficient_funds_message(result_message):
+		AudioManager.play_sfx("buzzer_error")
 		_show_insufficient_funds_popup(result_message)
 		return
 
 	if not bool(result.get("ok", false)):
+		AudioManager.play_sfx("buzzer_error")
 		_populate_columns()
+		return
+
+	AudioManager.play_sfx("cash_register")
 
 func _show_insufficient_funds_popup(message: String) -> void:
 	insufficient_funds_message = message

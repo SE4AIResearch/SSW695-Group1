@@ -55,7 +55,8 @@ func work():
 				resting = true
 				$staminaBar.tint_under = restingColor
 				$staminaBar.tint_progress = restingColor
-				
+				AudioManager.notify_worker_stamina_depleted()
+
 		true:
 			$staminaBar.value += 5
 			if $staminaBar.value >= staminaStat:
@@ -63,6 +64,11 @@ func work():
 				$staminaBar.tint_under = workingColor
 				$staminaBar.tint_progress = workingColor
 				resting = false
+				AudioManager.notify_worker_resting_ended()
+
+func _exit_tree() -> void:
+	if resting:
+		AudioManager.notify_worker_resting_ended()
 
 func set_progress_bars_visible(should_show: bool) -> void:
 	progress_bars_visible = should_show
