@@ -10,7 +10,7 @@ Players will:
 
 * Manage one software project at a time
 * Make sprint-based decisions
-* Choose between methodologies such as Agile, Waterfall, and Hybrid
+* Choose between methodologies such as Agile, Waterfall, V-Model, and Spiral
 * Allocate resources and manage risks
 * Track project outcomes through cost, schedule, quality, and stakeholder satisfaction metrics
 
@@ -25,7 +25,7 @@ Players will:
 
 * Single-player simulation gameplay
 * Sprint-based planning and management
-* Methodology selection (Agile, Waterfall, Hybrid)
+* Methodology selection (Agile, Waterfall, V-Model, Spiral)
 * Risk and resource management systems
 * Performance scoring based on key project metrics
 * Simplified but realistic project management scenarios

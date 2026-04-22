@@ -1,10 +1,17 @@
 extends Node2D
 
+const FE_COLOR := Color(0.82258534, 0.14166427, 0, 1)
+const BE_COLOR := Color(0.0, 0.59539217, 0.76481044, 1)
+const DOC_COLOR := Color(0.0, 0.7839653, 0.19948468, 1)
+const REL_COLOR := Color(1.0, 1.0, 0.17254902, 1.0)
+const SAT_COLOR := Color(0.95, 0.75, 0.15, 1.0)
 
-# Called when the node enters the scene tree for the first time.
-func _ready() -> void: calculateCompletion()
 
-func calculateCompletion():
+func _ready() -> void:
+	calculateCompletion()
+
+
+func calculateCompletion() -> void:
 	prepMenu()
 	calculateStakeholderSatisfaction()
 		

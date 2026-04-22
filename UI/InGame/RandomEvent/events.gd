@@ -122,11 +122,6 @@ var project_events = {
 		"outcome_summary":"Stakeholder Satisfaction improved because Agile made it easier to react to partner feedback without freezing the plan.",
 		"teaching_message":"Agile fits this situation well because customer-facing changes can be absorbed into the next increment instead of treated as a project disruption."
 	},
-	"Hybrid":{
-		"metric_deltas":{"stakeholderSatisfaction":1,"reliability":1},
-		"outcome_summary":"Stakeholder Satisfaction improved slightly, but the change still created planning friction.",
-		"teaching_message":"Hybrid can handle this, but not as smoothly as a process built around rapid iteration."
-	},
 	"Waterfall":{
 		"metric_deltas":{"stakeholderSatisfaction":-4,"reliability":0},
 		"outcome_summary":"Stakeholder Satisfaction fell because the requested change arrived after the plan had already hardened.",
@@ -168,11 +163,6 @@ var project_events = {
 		"metric_deltas":{"reliability":1},
 		"outcome_summary":"Reliability improved because the team had already been iterating and could react quickly to the surge.",
 		"teaching_message":"Agile did not remove the problem, but it shortened the feedback and response loop."
-	},
-	"Hybrid":{
-		"metric_deltas":{"reliability":0},
-		"outcome_summary":"Reliability improved slightly, but the mixed process still carried some coordination overhead.",
-		"teaching_message":"Hybrid handled the surge better than Waterfall, but slower than a highly adaptive team."
 	},
 	"Waterfall":{
 		"metric_deltas":{"reliability":0,"stakeholderSatisfaction":-2},
@@ -291,80 +281,6 @@ var project_events = {
 "description":"Feedback from a clinical trial indicates that the operator interface is difficult to read under bright operating room lights. What do you do?",
 "choices":["Redesign the display with high-contrast medical-grade visuals","Add a brightness and contrast adjustment setting","Provide anti-glare screen covers as a hardware solution"],
 "outcomes":[{"frontEnd":3,"reliability":1},{"frontEnd":2,"reliability":1},{"frontEnd":1,"reliability":0}]
-}
-],
-"Banking System Upgrade":[
-{
-"name":"fraudDetectionFalseFlags",
-"type":"BackEnd",
-"description":"The fraud detection module is flagging legitimate transactions, causing customer complaints and account freezes. How do you handle this?",
-"choices":["Retrain the fraud model with updated transaction data","Adjust the detection thresholds to reduce false positives","Add a manual review queue for flagged transactions"],
-"outcomes":[{"backEnd":3,"reliability":1},{"backEnd":2,"reliability":1},{"backEnd":1,"frontEnd":1,"reliability":1}]
-},
-{
-"name":"mobileAppCrashReports",
-"type":"FrontEnd",
-"description":"Users are reporting frequent crashes on the mobile banking app, particularly on older devices. What do you do?",
-"choices":["Optimize the app for performance across all supported devices","Drop support for the oldest devices and focus on stability","Add crash reporting and fix the top 3 crash causes"],
-"outcomes":[{"frontEnd":3,"reliability":1},{"frontEnd":-1,"reliability":0},{"frontEnd":2,"reliability":1}]
-},
-{
-"name":"complianceRegulationChange",
-"type":"Documenting",
-"description":"A new banking regulation has been issued that requires changes to your audit trail and transaction logging. The deadline is tight. What is your plan?",
-"choices":["Halt feature development and address compliance immediately","Integrate compliance changes into the current sprint alongside features","Document the requirement and plan it for the next sprint"],
-"outcomes":[{"documenting":3,"backEnd":1,"reliability":1},{"documenting":1,"backEnd":1,"reliability":1},{"documenting":-1,"reliability":0}]
-},
-{
-"name":"biometricLoginIssues",
-"type":"FrontEnd",
-"description":"The biometric login feature is failing for a significant percentage of users. Fingerprint and face recognition are inconsistent across devices. What do you do?",
-"choices":["Rebuild the biometric integration with a more reliable SDK","Add a fallback PIN/password option alongside biometrics","Limit biometric login to tested and verified device models"],
-"outcomes":[{"frontEnd":3,"reliability":1},{"frontEnd":2,"backEnd":1,"reliability":1},{"frontEnd":1,"reliability":0}]
-},
-{
-"name":"thirdPartyGatewayDeprecation",
-"type":"BackEnd",
-"description":"Your third-party payment gateway has announced it will deprecate its current API version in 60 days. Migration is required. How do you respond?",
-"choices":["Start the migration immediately to the new API","Plan the migration for the next sprint with proper testing","Explore alternative payment gateway providers"],
-"outcomes":[{"backEnd":3,"reliability":1},{"backEnd":2,"documenting":1,"reliability":1},{"backEnd":1,"reliability":0}]
-}
-],
-"ERP Rollout":[
-{
-"name":"dataMigrationCorruption",
-"type":"BackEnd",
-"description":"During a test migration, some inventory records were corrupted, resulting in incorrect stock counts. The warehouse team is alarmed. What do you do?",
-"choices":["Rebuild the migration pipeline with validation checks","Run the migration again with a rollback plan ready","Manually correct the corrupted records and proceed"],
-"outcomes":[{"backEnd":3,"documenting":1,"reliability":1},{"backEnd":2,"reliability":1},{"reliability":0}]
-},
-{
-"name":"dashboardRedesignRequest",
-"type":"FrontEnd",
-"description":"After reviewing the first version of the finance dashboard, the CFO says the layout is confusing and wants a completely different view. What do you do?",
-"choices":["Redesign the dashboard based on the CFO's feedback","Iterate with minor adjustments and get confirmation","Push back and explain the rationale behind the current design"],
-"outcomes":[{"frontEnd":3,"reliability":1},{"frontEnd":2,"reliability":1},{"frontEnd":-1,"reliability":0}]
-},
-{
-"name":"vendorIntegrationFailure",
-"type":"BackEnd",
-"description":"The integration with a key vendor's system is failing intermittently, blocking purchase orders from being processed. What is your approach?",
-"choices":["Work with the vendor to debug and fix the integration","Build a queue system to retry failed transactions","Implement manual fallback procedures until the fix is ready"],
-"outcomes":[{"backEnd":3,"reliability":1},{"backEnd":2,"reliability":1},{"documenting":2,"reliability":1}]
-},
-{
-"name":"permissionModelOverhaul",
-"type":"Documenting",
-"description":"The IT department reports that the current permission model does not match the company's organizational structure. Employees have incorrect access levels. What do you do?",
-"choices":["Redefine the entire role and permission structure","Fix the critical access violations and document the rest","Conduct a full access audit and update documentation first"],
-"outcomes":[{"backEnd":2,"documenting":1,"reliability":1},{"backEnd":2,"reliability":1},{"documenting":3,"reliability":1}]
-},
-{
-"name":"cutoverPlanRisk",
-"type":"Documenting",
-"description":"The go-live date is approaching but the cutover plan has not been tested. The warehouse team is nervous about switching from the old system. What do you do?",
-"choices":["Run a full dress rehearsal of the cutover this sprint","Create a detailed written cutover plan with rollback steps","Delay the go-live date to allow more preparation time"],
-"outcomes":[{"documenting":2,"backEnd":1,"reliability":1},{"documenting":3,"reliability":1},{"documenting":-1,"reliability":0}]
 }
 ],
 "Hospital Appointment Booking System":[
