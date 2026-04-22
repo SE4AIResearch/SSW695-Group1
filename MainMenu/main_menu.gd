@@ -10,28 +10,20 @@ var postIt2Sprites = ["res://UI/Theme/MainMenu/postIt2.png","res://UI/Theme/Main
 
 func _process(delta: float) -> void: pass
 
-func _enter_tree() -> void:
+func _ready() -> void:
+	if not $UI/LearningCenter.close_requested.is_connected(_on_learning_center_close_requested):
+		$UI/LearningCenter.close_requested.connect(_on_learning_center_close_requested)
+	
 	setButtonVisual($UI/MainButtons/newGameButton)
 	setButtonVisual($UI/MainButtons/loadDataButton)
 	setButtonVisual($UI/MainButtons/settingsButton)
 	setButtonVisual($UI/MainButtons/learningCenterButton)
 	setButtonVisual($UI/MainButtons/QuitButton)
-	pass
-
-func _ready() -> void:
-	if not $UI/LearningCenter.close_requested.is_connected(_on_learning_center_close_requested):
-		$UI/LearningCenter.close_requested.connect(_on_learning_center_close_requested)
 
 func _on_new_game_button_pressed() -> void:
-	var saves = SaveTool.get_save_list()
-	var new_name = "playerSave"
-	var counter = 1
-	while new_name in saves:
-		new_name = "playerSave_" + str(counter)
-		counter += 1
-	
-	SaveTool.create_new_save(new_name)
-	get_tree().change_scene_to_file("res://Level/mainLevel.tscn")
+	$UI/Load.is_new_game_selection = true
+	$UI/Load.update_save_buttons()
+	setupMenu($UI/Load)
 
 func setupMenu(menu):
 	_position_back_button(menu)
@@ -42,7 +34,10 @@ func setupMenu(menu):
 	$Logo.visible = false
 	pass
 
-func _on_load_data_button_pressed() -> void:setupMenu($UI/Load)
+func _on_load_data_button_pressed() -> void:
+	$UI/Load.is_new_game_selection = false
+	$UI/Load.update_save_buttons()
+	setupMenu($UI/Load)
 func _on_settings_button_pressed() -> void:setupMenu($UI/Settings)
 func _on_learning_center_button_pressed() -> void:
 	currentMenu = $UI/LearningCenter

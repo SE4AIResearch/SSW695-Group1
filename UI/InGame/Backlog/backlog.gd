@@ -17,6 +17,17 @@ func refreshBoard() -> void:
 	_refreshItems()
 	updateHeader()
 
+func addBacklogItem():
+#	for i in range(PlayerTool.project.frontEndMetrics.size()):
+#		newBEItem(PlayerTool.project.frontEndMetrics.get(i),0)
+#	for i in range(PlayerTool.project.backEndMetrics.size()):
+#		newBEItem(PlayerTool.project.backEndMetrics.get(i),1)
+#	for i in range(PlayerTool.project.documentingMetrics.size()):
+#		newBEItem(PlayerTool.project.documentingMetrics.get(i),2)
+#		
+	pass
+
+
 func _refreshWorkers() -> void:
 	for child in $WorkersScroll/Workers.get_children():
 		child.queue_free()

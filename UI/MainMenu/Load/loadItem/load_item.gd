@@ -12,7 +12,6 @@ var total_sprints: int = 0
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
-	pressed.connect(_on_pressed)
 	if save_name != "":
 		var info_text = "[center]Currency: " + str(currency) + "\n"
 		info_text += "Projects: " + str(completed_projects) + "\n"
