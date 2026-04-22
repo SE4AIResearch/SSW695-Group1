@@ -10,8 +10,8 @@ var methods = [
 "Heavy documentation",
 "Fixed timeline"
 ],
-"sprintAmount":0,
-"sprintLength":0,
+"sprintAmount":2,
+"sprintLength":1,
 "sprintMetricAmount":0,
 "randomEventChance":0
 },
@@ -38,8 +38,8 @@ var methods = [
 "Test-Driven Phases",
 "Verification and Validation"
 ],
-"sprintAmount":0,
-"sprintLength":0,
+"sprintAmount":1,
+"sprintLength":1,
 "sprintMetricAmount":0,
 "randomEventChance":0
 },
@@ -52,8 +52,8 @@ var methods = [
 "Prototyping",
 "High complexity"
 ],
-"sprintAmount":0,
-"sprintLength":0,
+"sprintAmount":2,
+"sprintLength":2,
 "sprintMetricAmount":0,
 "randomEventChance":0
 }

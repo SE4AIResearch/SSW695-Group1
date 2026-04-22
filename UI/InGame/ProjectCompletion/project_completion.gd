@@ -14,64 +14,48 @@ func _ready() -> void:
 func calculateCompletion() -> void:
 	prepMenu()
 	calculateStakeholderSatisfaction()
-	calculateCurrencyEarned()
+		
 
+func prepMenu():
+	$ProjectInfo.text = "Project Name: "+PlayerTool.project.projectName + "\nClient: " + PlayerTool.project.clientName 
+	pass
 
-func prepMenu() -> void:
-	var project_node = PlayerTool.project
-	var fe_min: int = 1
-	var be_min: int = 1
-	var doc_min: int = 1
+func calculateStakeholderSatisfaction():
+	var frontEndRanking: float
+	match PlayerTool.metrics.get("frontEnd") == 0:
+		true: frontEndRanking = 0
+		false: frontEndRanking = PlayerTool.metrics.get("frontEnd")/PlayerTool.project.frontEndProjectMin
+	var backEndRanking: float
+	match PlayerTool.metrics.get("backEnd") == 0:
+		true: backEndRanking = 0
+		false: backEndRanking = PlayerTool.metrics.get("backEnd")/PlayerTool.project.backEndProjectMin
+	var documentationRanking: float
+	match PlayerTool.metrics.get("documenting") == 0:
+		true: documentationRanking = 0
+		false: documentationRanking = PlayerTool.metrics.get("documenting")/PlayerTool.project.documentingProjectMin
+	var reliabilityRanking: float
+	match PlayerTool.metrics.get("reliability") == 0:
+		true: reliabilityRanking = 0
+		false: reliabilityRanking = PlayerTool.metrics.get("reliability")/ PlayerTool.totalEvents
+	PlayerTool.metrics.set("stakeholderSatisfaction",frontEndRanking + backEndRanking + documentationRanking + reliabilityRanking)
+	var stakeholderSatisfactionMax = 4
+	$FERating.value = PlayerTool.metrics.get("frontEnd")
+	$FERating.max_value = PlayerTool.project.frontEndProjectMin
+	$BERating.value = PlayerTool.metrics.get("backEnd")
+	$BERating.max_value = PlayerTool.project.backEndProjectMin
+	$DocRating.value = PlayerTool.metrics.get("documenting")
+	$DocRating.max_value = PlayerTool.project.documentingProjectMin
+	$ReliabilityRating.value = PlayerTool.metrics.get("reliability")
+	$ReliabilityRating.max_value = PlayerTool.totalEvents
+	$SSRating.value = PlayerTool.metrics.get("stakeholderSatisfaction")
+	$SSRating.max_value = stakeholderSatisfactionMax
+	calculateCurrencyEarned(PlayerTool.metrics.get("stakeholderSatisfaction"))
+	pass
 
-	if project_node != null:
-		$ProjectInfo.text = "Project Name: %s\nClient: %s" % [
-			str(project_node.projectName),
-			str(project_node.clientName)
-		]
-		fe_min = maxi(1, int(project_node.frontEndProjectMin))
-		be_min = maxi(1, int(project_node.backEndProjectMin))
-		doc_min = maxi(1, int(project_node.documentingProjectMin))
-	else:
-		$ProjectInfo.text = "Project Name: -\nClient: -"
-
-	_setup_bar($FERating, fe_min, int(PlayerTool.metrics.get("frontEnd", 0)), FE_COLOR)
-	_setup_bar($BERating, be_min, int(PlayerTool.metrics.get("backEnd", 0)), BE_COLOR)
-	_setup_bar($DocRating, doc_min, int(PlayerTool.metrics.get("documenting", 0)), DOC_COLOR)
-	_setup_bar($ReliabilityRating, 100, int(PlayerTool.metrics.get("reliability", 0)), REL_COLOR)
-
-
-func calculateStakeholderSatisfaction() -> void:
-	var satisfaction_value: int = int(PlayerTool.metrics.get("stakeholderSatisfaction", 0))
-	_setup_bar($"Stakeholder Satisfaction", 100, satisfaction_value, SAT_COLOR)
-
-
-func calculateCurrencyEarned() -> void:
-	var satisfaction_ratio: float = clampf(
-		float(PlayerTool.metrics.get("stakeholderSatisfaction", 0)) / 100.0,
-		0.0,
-		1.0
-	)
-	var difficulty: float = float(PlayerTool.projectRatedDifficulty)
-	var project_count: int = int(PlayerTool.projectAmount)
-	var team_rank: int = int(PlayerTool.teamRank)
-	var base_amount: float = (500.0 * difficulty) \
-		+ (25.0 * float(project_count)) \
-		+ (650.0 * float(team_rank - 1))
-	var earned: int = maxi(0, int(round(base_amount * satisfaction_ratio)))
-
-	if earned > 0:
-		PlayerTool.addCurrency(earned)
-
-	$CurrencyGained.text = "Currency Earned: $%d" % earned
-
-
-func _setup_bar(bar: TextureProgressBar, max_value_amount: int, current_value: int, color: Color) -> void:
-	if bar == null:
-		return
-	bar.max_value = max(1, max_value_amount)
-	bar.value = clampi(current_value, 0, int(bar.max_value))
-	bar.tint_progress = color
-
-
-func _on_continue_pressed() -> void:
-	get_parent().get_parent().endMenu()
+func calculateCurrencyEarned(satisfactionAmount: float):
+	var percentageEarned = satisfactionAmount/4
+	PlayerTool.earnProjectMoney(percentageEarned)
+	$CurrencyAmount.text = "$" + str(PlayerTool.returnSprintMoney(percentageEarned))
+	PlayerTool.completed_project_count += 1
+	PlayerTool.resetProjectStats()
+	pass

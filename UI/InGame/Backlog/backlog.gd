@@ -4,7 +4,7 @@ var backlogItem = preload("res://UI/InGame/Backlog/BacklogItem/BacklogItem.tscn"
 var backlogWorkerItem = preload("res://UI/InGame/Backlog/BacklogWorkerItem/BacklogWorkerItem.tscn")
 
 var selectedWorker: Node
-var status_message := ""
+var status_message: String = ""
 
 func _ready() -> void:
 	PlayerTool.backlogUpdated.connect(refreshBoard)
@@ -20,14 +20,15 @@ func refreshBoard() -> void:
 func _refreshWorkers() -> void:
 	for child in $WorkersScroll/Workers.get_children():
 		child.queue_free()
-	var readOnly := PlayerTool.loopPhase != PlayerTool.LOOP_PLANNING_WEEK
+	var readOnly: bool = PlayerTool.loopPhase != PlayerTool.LOOP_PLANNING_WEEK
 	for worker in PlayerTool.workers:
 		var newWorker = backlogWorkerItem.instantiate()
 		newWorker.createWorkerItem(worker)
 		newWorker.disabled = readOnly
+		newWorker.setBusyStatus(PlayerTool.selectedAssignments.has(worker.personName))
 		var assignmentId = PlayerTool.selectedAssignments.get(worker.personName, null)
 		if assignmentId != null:
-			var item := PlayerTool.getBacklogItemById(int(assignmentId))
+			var item: Dictionary = PlayerTool.getBacklogItemById(int(assignmentId))
 			if not item.is_empty():
 				newWorker.setAssignmentLabel("Assigned: " + str(item.get("name", "")))
 		newWorker.WorkerSelected.connect(workerSelected)
@@ -45,7 +46,7 @@ func _refreshItems() -> void:
 		var newItem = backlogItem.instantiate()
 		newItem.prepItem(item)
 		newItem.MetricChosen.connect(backlogSelected)
-		var readOnly := PlayerTool.loopPhase != PlayerTool.LOOP_PLANNING_WEEK
+		var readOnly: bool = PlayerTool.loopPhase != PlayerTool.LOOP_PLANNING_WEEK
 		match str(item.get("status", "backlog")):
 			"done":
 				newItem.disabled = true
@@ -58,7 +59,7 @@ func _refreshItems() -> void:
 				_add_control_to_column($BacklogScroll/Backlog, newItem)
 
 func _add_control_to_column(column: VBoxContainer, newItem: Control) -> void:
-	var itemWrapper := CenterContainer.new()
+	var itemWrapper: CenterContainer = CenterContainer.new()
 	itemWrapper.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	itemWrapper.add_child(newItem)
 	column.add_child(itemWrapper)
@@ -69,12 +70,12 @@ func updateHeader() -> void:
 		$FeedbackLabel.text = _format_feedback_message("Open the PC to choose a new project.")
 		$AdvanceWeekButton.disabled = true
 		return
-	var sprintTitle := str(PlayerTool.sprintGoal.get("title", "Sprint %d" % PlayerTool.projSprint))
+	var sprintTitle: String = str(PlayerTool.sprintGoal.get("title", "Sprint %d" % PlayerTool.projSprint))
 	$CurrentSprintLabel.text = sprintTitle + " | Week %d/%d" % [PlayerTool.projWeek, PlayerTool.project.sprintLength]
 	if PlayerTool.loopPhase == PlayerTool.LOOP_ACTIVE_WEEK:
 		status_message = "Week in progress. Assignments are locked until the timer ends."
 	elif status_message == "" or status_message == "Week in progress. Assignments are locked until the timer ends.":
-		status_message = "Assign workers to backlog items, then advance the week."
+		status_message = "Assign workers to backlog items, or advance the week when ready."
 	$FeedbackLabel.text = _format_feedback_message(status_message)
 	$AdvanceWeekButton.disabled = PlayerTool.loopPhase != PlayerTool.LOOP_PLANNING_WEEK or not PlayerTool.canAdvanceWeek()
 
@@ -86,7 +87,7 @@ func backlogSelected(metricButton):
 		_set_status_message("Select a worker first, then click a backlog card to assign them.")
 		return
 	var workerButton = selectedWorker
-	var result := PlayerTool.assignWorkerToItem(workerButton.heldWorker.personName, int(metricButton.heldItem.get("id", -1)))
+	var result: Dictionary = PlayerTool.assignWorkerToItem(workerButton.heldWorker.personName, int(metricButton.heldItem.get("id", -1)))
 	_set_status_message(str(result.get("reason", "")))
 	if result.get("ok", false):
 		if workerButton != null and is_instance_valid(workerButton):
@@ -101,6 +102,12 @@ func workerSelected(workerButton):
 		selectedWorker = null
 		_set_status_message("Week in progress. Assignments are locked until the timer ends.")
 		return
+	if workerButton.isBusy:
+		var workerName: String = workerButton.heldWorker.personName
+		PlayerTool.unassignWorker(workerName)
+		selectedWorker = null
+		_set_status_message("%s is now free." % workerName)
+		return
 	if selectedWorker != null and selectedWorker != workerButton:
 		selectedWorker.button_pressed = false
 	if workerButton.button_pressed:
@@ -108,11 +115,11 @@ func workerSelected(workerButton):
 		_set_status_message("Selected %s. Click a backlog or in-progress card to assign them this week." % workerButton.heldWorker.personName)
 	else:
 		selectedWorker = null
-		_set_status_message("Assign workers to backlog items, then advance the week.")
+		_set_status_message("Assign workers to backlog items, or advance the week when ready.")
 
 func _on_advance_week_button_pressed() -> void:
 	if not PlayerTool.canAdvanceWeek():
-		_set_status_message("Assign at least one worker before advancing the week.")
+		_set_status_message("You can only advance during sprint planning.")
 		return
 	if PlayerTool.startWeek():
 		get_parent().get_parent().endMenu()

@@ -40,6 +40,8 @@ func _ready() -> void:
 	set_progress_bars_visible(progress_bars_visible)
 	
 func _on_hover_area_mouse_entered() -> void:
+	if get_tree().paused:
+		return
 	hover_started.emit(self)
 
 func _on_hover_area_mouse_exited() -> void:

@@ -3,6 +3,7 @@ extends Node2D
 const PCWindowLayout = preload("res://UI/InGame/PCWindow/pc_window_layout.gd")
 
 var hireItem = preload("res://UI/InGame/Hiring/HireItem/HireItem.tscn")
+var TutorialModal: PackedScene = preload("res://UI/InGame/TutorialModal/TutorialModal.tscn")
 var insufficient_funds_message := ""
 
 func _ready() -> void:
@@ -10,6 +11,7 @@ func _ready() -> void:
 	_apply_content_layout()
 	_hide_insufficient_funds_popup()
 	checkIfMaxHire()
+	call_deferred("_show_hiring_tutorial")
 
 func _process(delta: float) -> void:
 	var budget = int($BudgetSlider.value)
@@ -141,3 +143,31 @@ func _layout_insufficient_funds_popup() -> void:
 	$InsufficientFundsModal/MessagePanel.offset_top = frame_top + (frame_height - popup_height) / 2.0
 	$InsufficientFundsModal/MessagePanel.offset_right = $InsufficientFundsModal/MessagePanel.offset_left + popup_width
 	$InsufficientFundsModal/MessagePanel.offset_bottom = $InsufficientFundsModal/MessagePanel.offset_top + popup_height
+
+func _show_hiring_tutorial() -> void:
+	_show_tutorial(
+		"hiring_intro",
+		"Hiring",
+		"Slide the budget bar before searching. A bigger budget helps you find more skilled workers, but hiring them costs more."
+	)
+
+func _show_tutorial(tutorial_key: String, title: String, message: String) -> void:
+	if !PlayerTool.should_show_tutorial(tutorial_key):
+		return
+
+	var modal: TutorialModalPanel = TutorialModal.instantiate() as TutorialModalPanel
+	_get_tutorial_modal_parent().add_child(modal)
+	modal.setup(title, message)
+	modal.dismissed.connect(_on_tutorial_dismissed.bind(tutorial_key))
+
+func _on_tutorial_dismissed(tutorial_key: String) -> void:
+	PlayerTool.mark_tutorial_seen(tutorial_key)
+	SaveTool.savePlayerData()
+
+func _get_tutorial_modal_parent() -> Node:
+	var scene_root: Node = get_tree().current_scene
+	if scene_root != null:
+		var ui_layer: Node = scene_root.get_node_or_null("UI")
+		if ui_layer != null:
+			return ui_layer
+	return self
