@@ -38,6 +38,17 @@ script = ExtResource("1_5fg85")
 position = Vector2(43, 55)
 scale = Vector2(2, 2)
 
+[node name="StatusLabel" type="Label" parent="."]
+offset_left = 155.0
+offset_top = 2.0
+offset_right = 200.0
+offset_bottom = 18.0
+mouse_filter = 2
+theme_override_colors/font_color = Color(0.2, 0.78, 0.36, 1)
+theme_override_font_sizes/font_size = 10
+text = "FREE"
+horizontal_alignment = 1
+
 [node name="textParent" type="Node2D" parent="." unique_id=1862655238]
 position = Vector2(11.999998, 25)
 scale = Vector2(0.215, 0.215)

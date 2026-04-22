@@ -5,6 +5,7 @@
 [ext_resource type="Texture2D" uid="uid://cuyr4sv3sto4b" path="res://UI/Theme/PCTheme/button/slimButtonPressed.png" id="2_r8yt8"]
 [ext_resource type="Texture2D" uid="uid://b8snwl2q3qflg" path="res://UI/Theme/PCTheme/button/slimButtonHeld.png" id="3_3nkee"]
 [ext_resource type="Texture2D" uid="uid://2jvaulftw7b6" path="res://UI/Theme/PCTheme/button/slimButtonDisabled.png" id="4_0iwd3"]
+[ext_resource type="PackedScene" uid="uid://doy5ib16ee1oa" path="res://Person/Person.tscn" id="5_0iwd3"]
 
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_y8yop"]
 texture = ExtResource("1_pb3br")
@@ -65,5 +66,10 @@ scroll_active = false
 horizontal_alignment = 1
 vertical_alignment = 1
 autowrap_mode = 3
+
+[node name="assignedWorkerPreview" parent="." instance=ExtResource("5_0iwd3")]
+visible = false
+position = Vector2(28, 38)
+scale = Vector2(1.25, 1.25)
 
 [connection signal="pressed" from="." to="." method="_on_pressed"]
