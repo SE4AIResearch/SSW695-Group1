@@ -369,7 +369,7 @@ func addScore(amount: int) -> void:
 	scoreChanged.emit()
 
 func canAdvanceWeek() -> bool:
-	return project != null and loopPhase == LOOP_PLANNING_WEEK and not selectedAssignments.is_empty()
+	return project != null and loopPhase == LOOP_PLANNING_WEEK
 
 func isWeekActive() -> bool:
 	return project != null and loopPhase == LOOP_ACTIVE_WEEK

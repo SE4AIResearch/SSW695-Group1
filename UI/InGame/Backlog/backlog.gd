@@ -74,7 +74,7 @@ func updateHeader() -> void:
 	if PlayerTool.loopPhase == PlayerTool.LOOP_ACTIVE_WEEK:
 		status_message = "Week in progress. Assignments are locked until the timer ends."
 	elif status_message == "" or status_message == "Week in progress. Assignments are locked until the timer ends.":
-		status_message = "Assign workers to backlog items, then advance the week."
+		status_message = "Assign workers to backlog items, or advance the week when ready."
 	$FeedbackLabel.text = _format_feedback_message(status_message)
 	$AdvanceWeekButton.disabled = PlayerTool.loopPhase != PlayerTool.LOOP_PLANNING_WEEK or not PlayerTool.canAdvanceWeek()
 
@@ -108,11 +108,11 @@ func workerSelected(workerButton):
 		_set_status_message("Selected %s. Click a backlog or in-progress card to assign them this week." % workerButton.heldWorker.personName)
 	else:
 		selectedWorker = null
-		_set_status_message("Assign workers to backlog items, then advance the week.")
+		_set_status_message("Assign workers to backlog items, or advance the week when ready.")
 
 func _on_advance_week_button_pressed() -> void:
 	if not PlayerTool.canAdvanceWeek():
-		_set_status_message("Assign at least one worker before advancing the week.")
+		_set_status_message("You can only advance during sprint planning.")
 		return
 	if PlayerTool.startWeek():
 		get_parent().get_parent().endMenu()
