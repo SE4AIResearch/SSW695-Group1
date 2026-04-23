@@ -50,7 +50,7 @@ func _on_hover_area_mouse_exited() -> void:
 func work():
 	match resting:
 		false:
-			if PlayerTool.project != null:
+			if PlayerTool.project != null && PlayerTool.isWeekActive():
 				$staminaBar.value -= 1
 				if $staminaBar.value <= 0:
 					resting = true
