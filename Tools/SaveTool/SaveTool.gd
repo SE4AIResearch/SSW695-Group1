@@ -2,13 +2,22 @@ extends Node
 
 const SaveListPath = "user://saves.cfg"
 const SaveDirectory = "user://saves/"
+const SaveSlots = ["Save Slot 1", "Save Slot 2", "Save Slot 3"]
 
-var current_save_name: String = ""
-var save_list: Array = ["Save Slot 1", "Save Slot 2", "Save Slot 3"]
+var current_save_name: String = "Save Slot 1"
+var save_list: Array = SaveSlots.duplicate()
+var next_new_game_uses_tutorial: bool = false
 
 func _ready():
 	print(OS.get_data_dir())
 	_ensure_save_directory_exists()
+	var legacy_save_list = _load_legacy_save_list()
+	legacy_save_list.append_array(_find_unlisted_legacy_saves(legacy_save_list))
+	_migrate_legacy_saves(legacy_save_list)
+	save_list = SaveSlots.duplicate()
+	_save_save_list()
+	next_new_game_uses_tutorial = not _has_any_existing_save()
+	current_save_name = _first_existing_save_name()
 	
 	if not PlayerTool.weekResolved.is_connected(savePlayerData):
 		PlayerTool.weekResolved.connect(savePlayerData)
@@ -17,20 +26,116 @@ func _ensure_save_directory_exists():
 	if not DirAccess.dir_exists_absolute(SaveDirectory):
 		DirAccess.make_dir_absolute(SaveDirectory)
 
+func _load_legacy_save_list() -> Array:
+	if not FileAccess.file_exists(SaveListPath):
+		return []
+	
+	var listFile = ConfigFile.new()
+	var err = listFile.load(SaveListPath)
+	if err == OK:
+		return listFile.get_value("Saves", "list", [])
+
+	return []
+
+
+func _find_unlisted_legacy_saves(legacy_save_list: Array) -> Array:
+	var unlisted_saves = []
+	var dir = DirAccess.open(SaveDirectory)
+	if dir == null:
+		return unlisted_saves
+
+	dir.list_dir_begin()
+	var file_name = dir.get_next()
+	while file_name != "":
+		if not dir.current_is_dir() and file_name.get_extension() == "cfg":
+			var save_name = file_name.get_basename()
+			if save_name not in SaveSlots and save_name not in legacy_save_list and save_name not in unlisted_saves:
+				unlisted_saves.append(save_name)
+		file_name = dir.get_next()
+
+	unlisted_saves.sort()
+	return unlisted_saves
+
+
+func _migrate_legacy_saves(legacy_save_list: Array) -> void:
+	var slot_index = 0
+	for legacy_save_name in legacy_save_list:
+		if legacy_save_name in SaveSlots:
+			continue
+
+		var legacy_path = get_save_path(legacy_save_name)
+		if not FileAccess.file_exists(legacy_path):
+			continue
+
+		while slot_index < SaveSlots.size() and FileAccess.file_exists(get_save_path(SaveSlots[slot_index])):
+			slot_index += 1
+
+		if slot_index >= SaveSlots.size():
+			return
+
+		if _copy_save_file(legacy_path, get_save_path(SaveSlots[slot_index])):
+			slot_index += 1
+
+
+func _copy_save_file(source_path: String, target_path: String) -> bool:
+	var source_file = FileAccess.open(source_path, FileAccess.READ)
+	if source_file == null:
+		return false
+
+	var target_file = FileAccess.open(target_path, FileAccess.WRITE)
+	if target_file == null:
+		return false
+
+	target_file.store_buffer(source_file.get_buffer(source_file.get_length()))
+	return true
+
+func _save_save_list():
+	var listFile = ConfigFile.new()
+	listFile.set_value("Saves", "list", SaveSlots)
+	listFile.save(SaveListPath)
+
 func get_save_list() -> Array:
-	return save_list
+	return SaveSlots.duplicate()
+
+func should_reuse_default_new_game_slot() -> bool:
+	return next_new_game_uses_tutorial
 
 func create_new_save(saveName: String):
+	if saveName not in SaveSlots:
+		push_warning("Unknown save slot: " + saveName)
+		return
+
+	var use_tutorial: bool = next_new_game_uses_tutorial
 	current_save_name = saveName
-	initializeNewPlayerData()
+	initializeNewPlayerData(use_tutorial)
+	next_new_game_uses_tutorial = false
 
 func delete_save(saveName: String):
+	if saveName not in SaveSlots:
+		push_warning("Unknown save slot: " + saveName)
+		return
+
 	var path = get_save_path(saveName)
 	if FileAccess.file_exists(path):
 		DirAccess.remove_absolute(path)
 
+	if current_save_name == saveName:
+		current_save_name = _first_existing_save_name()
+
 func get_save_path(saveName: String) -> String:
 	return SaveDirectory + saveName + ".cfg"
+
+func _has_any_existing_save() -> bool:
+	for saveName in SaveSlots:
+		if FileAccess.file_exists(get_save_path(saveName)):
+			return true
+	return false
+
+func _first_existing_save_name() -> String:
+	for saveName in SaveSlots:
+		if FileAccess.file_exists(get_save_path(saveName)):
+			return saveName
+	return SaveSlots[0]
 	
 func get_save_summary(saveName: String) -> Dictionary:
 	var path = get_save_path(saveName)
@@ -64,11 +169,13 @@ func get_save_summary(saveName: String) -> Dictionary:
 	
 	return summary
 
-func initializeNewPlayerData():
+func initializeNewPlayerData(use_tutorial: bool = false):
 	PlayerTool.initializeNewSave()
+	PlayerTool.set_new_player_tutorials_enabled(use_tutorial)
+	PlayerTool.has_viewed_methodology_learning_center = !use_tutorial
 	savePlayerData()
 
-func loadPlayerData(saveName: String):
+func loadPlayerData(saveName: String = current_save_name):
 	current_save_name = saveName
 	var path = get_save_path(saveName)
 	
@@ -123,6 +230,10 @@ func loadPlayerData(saveName: String):
 	PlayerTool.pendingProjectSummary = saveData.get_value("GameState", "pendingProjectSummary", {})
 	PlayerTool.sprintGoal = saveData.get_value("GameState", "sprintGoal", {})
 	PlayerTool.shouldShowWeekResultsModal = saveData.get_value("GameState", "shouldShowWeekResultsModal", false)
+	if saveData.has_section_key("GameState", "tutorial_seen"):
+		PlayerTool.tutorial_seen = saveData.get_value("GameState", "tutorial_seen", PlayerTool._default_tutorial_seen(true)) as Dictionary
+	else:
+		PlayerTool.set_new_player_tutorials_enabled(false)
 	
 	PlayerTool.upgrades = saveData.get_value("Lists", "upgrades", [])
 	
@@ -171,6 +282,7 @@ func savePlayerData():
 	saveData.set_value("GameState", "pendingProjectSummary", PlayerTool.pendingProjectSummary)
 	saveData.set_value("GameState", "sprintGoal", PlayerTool.sprintGoal)
 	saveData.set_value("GameState", "shouldShowWeekResultsModal", PlayerTool.shouldShowWeekResultsModal)
+	saveData.set_value("GameState", "tutorial_seen", PlayerTool.tutorial_seen)
 	
 	# Lists
 	saveData.set_value("Lists", "upgrades", PlayerTool.upgrades)

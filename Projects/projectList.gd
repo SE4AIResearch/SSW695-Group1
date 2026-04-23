@@ -59,34 +59,6 @@ var projects = [
 "backEndMetrics":{0:"Real-time sensor data processing",1:"Alarm trigger and safety logic",2:"Device state machine controller",3:"Data logging for clinical records",4:"Failsafe and recovery routines"},
 "documentingMetrics":{0:"Regulatory compliance documentation",1:"Requirements traceability matrix",2:"Verification and validation report",3:"Safety risk analysis document",4:"Clinical usage manual"}
 },
-{
-"name":"Banking System Upgrade",
-"description":"Upgrade the core banking system and mobile app for a bank. Core transaction logic must be stable and documented, while mobile UI iterates based on usability tests.",
-"frontEndScalar":1.3,
-"backEndScalar":1.5,
-"documentingScalar":1.2,
-"baseSprintAmount":2,
-"baseSprintLength":2,
-"baseSprintMetricAmount":3,
-"preferredMethodology":"Spiral",
-"frontEndMetrics":{0:"Mobile account dashboard",1:"Transaction history view",2:"Fund transfer interface",3:"Push notification preferences",4:"Biometric login screen"},
-"backEndMetrics":{0:"Core transaction processing engine",1:"Fraud detection module",2:"Audit trail and compliance logging",3:"Third-party payment gateway integration",4:"Account security and encryption"},
-"documentingMetrics":{0:"Security compliance documentation",1:"API integration guide",2:"Rollout and migration plan",3:"Incident response procedures"}
-},
-{
-"name":"ERP Rollout",
-"description":"Roll out an ERP system for a manufacturing company. Core workflows must be defined early, while dashboards and reports iterate as leaders review them.",
-"frontEndScalar":1.2,
-"backEndScalar":1.4,
-"documentingScalar":1.3,
-"baseSprintAmount":2,
-"baseSprintLength":2,
-"baseSprintMetricAmount":3,
-"preferredMethodology":"Spiral",
-"frontEndMetrics":{0:"Inventory management dashboard",1:"Purchase order interface",2:"Sales reporting views",3:"Finance and accounting panels",4:"Warehouse tracking display"},
-"backEndMetrics":{0:"Core data model and permissions engine",1:"Inventory and warehouse logic",2:"Purchasing and vendor integration",3:"Financial transaction processing",4:"Data migration pipeline"},
-"documentingMetrics":{0:"Data dictionary and schema documentation",1:"User role and permission guide",2:"Migration and cutover plan",3:"Vendor integration specifications"}
-},
 # ============ V-MODEL PROJECTS ============
 {
 "name":"Hospital Appointment Booking System",

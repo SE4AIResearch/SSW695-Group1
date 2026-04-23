@@ -14,7 +14,7 @@ const UPGRADE_COLUMNS := [
 		"title": "Hardware",
 		"color": Color("102550"),
 		"items": [
-			{"tier": 1, "name": "Desktop PC", "description": "+5% Frontend", "cost": 100, "locked": false},
+			{"tier": 1, "name": "Desktop PC", "description": "+5% Frontend, +5% Backend", "cost": 100, "locked": false, "scene_prop_key": "desktop_pc"},
 			{"tier": 2, "name": "Dual Monitor Setup", "description": "+5% Frontend, +5% Documentation", "cost": 250, "locked": true},
 			{"tier": 3, "name": "Database Upgrades", "description": "+10% Backend", "cost": 500, "locked": true},
 			{"tier": 4, "name": "High-End Workstation", "description": "+10% Frontend, +10% Backend", "cost": 1000, "locked": true}
@@ -331,11 +331,16 @@ func _on_upgrade_purchase_requested(upgrade_data: Dictionary) -> void:
 
 	var result_message := str(result.get("reason", "Upgrades"))
 	if not bool(result.get("ok", false)) and _is_insufficient_funds_message(result_message):
+		AudioManager.play_sfx("buzzer_error")
 		_show_insufficient_funds_popup(result_message)
 		return
 
 	if not bool(result.get("ok", false)):
+		AudioManager.play_sfx("buzzer_error")
 		_populate_columns()
+		return
+
+	AudioManager.play_sfx("cash_register")
 
 func _show_insufficient_funds_popup(message: String) -> void:
 	insufficient_funds_message = message
