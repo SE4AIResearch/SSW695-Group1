@@ -50,12 +50,13 @@ func _on_hover_area_mouse_exited() -> void:
 func work():
 	match resting:
 		false:
-			$staminaBar.value -= 1
-			if $staminaBar.value <= 0:
-				resting = true
-				$staminaBar.tint_under = restingColor
-				$staminaBar.tint_progress = restingColor
-				AudioManager.notify_worker_stamina_depleted()
+			if PlayerTool.project != null:
+				$staminaBar.value -= 1
+				if $staminaBar.value <= 0:
+					resting = true
+					$staminaBar.tint_under = restingColor
+					$staminaBar.tint_progress = restingColor
+					AudioManager.notify_worker_stamina_depleted()
 
 		true:
 			$staminaBar.value += 5
