@@ -192,6 +192,14 @@ func _apply_metric_deltas(metricDeltas) -> void:
 		PlayerTool.changeMetricByName(str(metricKey), int(metricDeltas.get(metricKey, 0)))
 
 func evaluateChoice(choiceIndex: int) -> String:
+	var chosenOutcome = choiceOutcomes[choiceIndex]
+	if chosenOutcome is Dictionary and chosenOutcome.has("reliability"):
+		var rel = int(chosenOutcome["reliability"])
+		if rel == 1:
+			return "good"
+		elif rel == 0:
+			return "bad"
+
 	var scores = []
 	for outcome in choiceOutcomes:
 		if outcome is Dictionary:

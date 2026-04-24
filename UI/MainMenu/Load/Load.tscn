@@ -98,10 +98,10 @@ theme_override_colors/default_color = Color(0, 0, 0, 1)
 bbcode_enabled = true
 
 [node name="delete1" type="Button" parent="." unique_id=1597029799]
-offset_left = 70.0
-offset_top = 439.0
-offset_right = 310.0
-offset_bottom = 519.0
+offset_left = 95.0
+offset_top = 435.0
+offset_right = 335.0
+offset_bottom = 515.0
 theme_override_styles/normal = SubResource("StyleBoxTexture_nmjlg")
 theme_override_styles/pressed = SubResource("StyleBoxTexture_ckiq4")
 theme_override_styles/hover = SubResource("StyleBoxTexture_lc2nn")
@@ -109,10 +109,10 @@ theme_override_styles/disabled = SubResource("StyleBoxTexture_kbr38")
 text = "Delete"
 
 [node name="delete2" type="Button" parent="." unique_id=1767009448]
-offset_left = 474.0
-offset_top = 477.0
-offset_right = 714.0
-offset_bottom = 557.0
+offset_left = 477.0
+offset_top = 472.0
+offset_right = 717.0
+offset_bottom = 552.0
 theme_override_styles/normal = SubResource("StyleBoxTexture_nmjlg")
 theme_override_styles/pressed = SubResource("StyleBoxTexture_ckiq4")
 theme_override_styles/hover = SubResource("StyleBoxTexture_lc2nn")
@@ -120,10 +120,10 @@ theme_override_styles/disabled = SubResource("StyleBoxTexture_kbr38")
 text = "Delete"
 
 [node name="delete3" type="Button" parent="." unique_id=119466252]
-offset_left = 810.0
-offset_top = 415.0
-offset_right = 1050.0
-offset_bottom = 495.0
+offset_left = 835.0
+offset_top = 401.0
+offset_right = 1075.0
+offset_bottom = 481.0
 theme_override_styles/normal = SubResource("StyleBoxTexture_nmjlg")
 theme_override_styles/pressed = SubResource("StyleBoxTexture_ckiq4")
 theme_override_styles/hover = SubResource("StyleBoxTexture_lc2nn")
