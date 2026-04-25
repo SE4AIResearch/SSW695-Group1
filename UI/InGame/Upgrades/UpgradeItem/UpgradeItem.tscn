@@ -65,6 +65,7 @@ layout_mode = 2
 custom_minimum_size = Vector2(74, 0)
 theme_override_font_sizes/font_size = 10
 text = "LOCKED"
+horizontal_alignment = 2
 
 [node name="UpgradeName" type="Label" parent="MarginContainer/VBoxContainer" unique_id=1943363255]
 layout_mode = 2
