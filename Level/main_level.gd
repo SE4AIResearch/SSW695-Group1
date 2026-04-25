@@ -71,7 +71,6 @@ func setupDeskVisuals():
 		var worker_y := DESKTOP_PC_WORKER_Y_OFFSET if has_desktop_pc else 0
 		worker.position = Vector2(0, worker_y)
 		workerCount += 1
-		pass
 
 func _get_computer_sprite_frames(use_desktop: bool) -> SpriteFrames:
 	if use_desktop:
