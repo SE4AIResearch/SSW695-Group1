@@ -147,15 +147,19 @@ func toggleProjectButtons():
 	$BacklogButton.disabled = !hasProject
 
 func startEvent():
-	get_tree().paused = true
-	$randomEventRinger.play("ringing")
-	$randomEventRinger/ringerAudio.play()
-	await $randomEventRinger/ringerAudio.finished
-	$randomEventRinger.play("idle")
-	createMenu(randomEventMenu.instantiate())
+	if $NewMenu.get_child_count() == 0:
+		get_tree().paused = true
+		$randomEventRinger.play("ringing")
+		$randomEventRinger/ringerAudio.play()
+		await $randomEventRinger/ringerAudio.finished
+		$randomEventRinger.play("idle")
+		createMenu(randomEventMenu.instantiate())
 
 func runProjectCompletion():
 	createMenu(projectCompletionMenu.instantiate())
+
+
+func _on_button_pressed() -> void: runProjectCompletion()
 
 func show_office_intro_tutorial() -> void:
 	_show_tutorial(
