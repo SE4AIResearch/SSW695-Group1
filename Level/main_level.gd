@@ -20,11 +20,17 @@ const PLACED_UPGRADE_VISUALS := {
 	}
 }
 
+const DESKTOP_PC_WORKER_Y_OFFSET := -15
+
+var _laptop_sprite_frames: SpriteFrames = null
+var _desktop_sprite_frames: SpriteFrames = null
+
 func _ready() -> void:
 	TimeTool.weekPassed.connect(rollEvent)
 	PlayerTool.hireSelected.connect(setupDeskVisuals)
 	PlayerTool.officeTierChanged.connect(setupDeskVisuals)
 	PlayerTool.upgradesChanged.connect(setupUpgradeVisuals)
+	PlayerTool.upgradesChanged.connect(setupDeskVisuals)
 	initializeSave()
 	PlayerTool.level = self
 	_ensure_office_slots()
@@ -36,12 +42,15 @@ func initializeSave():
 
 func setupDeskVisuals():
 	_ensure_office_slots()
+	var has_desktop_pc := PlayerTool.has_upgrade("Hardware", 1)
 	var worker_slots := _get_worker_slots()
 	for slot in worker_slots:
 		var slot_index := int(slot.name)
 		var is_visible := slot_index <= PlayerTool.max_worker_capacity
 		slot.visible = is_visible
-		slot.get_node("computer").animation = "off"
+		var computer := slot.get_node("computer") as AnimatedSprite2D
+		computer.sprite_frames = _get_computer_sprite_frames(has_desktop_pc)
+		computer.animation = "off"
 
 	var workerCount = 1
 	for worker in PlayerTool.workers:
@@ -52,13 +61,39 @@ func setupDeskVisuals():
 			worker.hover_started.connect(_on_worker_hover_started)
 		if not worker.hover_ended.is_connected(_on_worker_hover_ended):
 			worker.hover_ended.connect(_on_worker_hover_ended)
-		var desk = $Level/workers.get_node(str(workerCount)).get_node("worker")
-		$Level/workers.get_node(str(workerCount)).get_node("computer").animation = "on"
+		var slot_node := $Level/workers.get_node(str(workerCount))
+		var desk = slot_node.get_node("worker")
+		var computer := slot_node.get_node("computer") as AnimatedSprite2D
+		computer.sprite_frames = _get_computer_sprite_frames(has_desktop_pc)
+		computer.animation = "on"
 		if desk.get_child_count() == 0:
 			worker.reparent(desk)
-		worker.position = Vector2(0,0)
+		var worker_y := DESKTOP_PC_WORKER_Y_OFFSET if has_desktop_pc else 0
+		worker.position = Vector2(0, worker_y)
 		workerCount += 1
 		pass
+
+func _get_computer_sprite_frames(use_desktop: bool) -> SpriteFrames:
+	if use_desktop:
+		if _desktop_sprite_frames == null:
+			_desktop_sprite_frames = SpriteFrames.new()
+			_desktop_sprite_frames.add_animation("on")
+			_desktop_sprite_frames.set_animation_loop("on", false)
+			_desktop_sprite_frames.add_frame("on", load("res://UI/Theme/MainLevel/computer/desktop/on.png"), 1.0)
+			_desktop_sprite_frames.add_animation("off")
+			_desktop_sprite_frames.set_animation_loop("off", false)
+			_desktop_sprite_frames.add_frame("off", load("res://UI/Theme/MainLevel/computer/desktop/off.png"), 1.0)
+		return _desktop_sprite_frames
+	else:
+		if _laptop_sprite_frames == null:
+			_laptop_sprite_frames = SpriteFrames.new()
+			_laptop_sprite_frames.add_animation("on")
+			_laptop_sprite_frames.set_animation_loop("on", false)
+			_laptop_sprite_frames.add_frame("on", load("res://UI/Theme/MainLevel/computer/laptop/on.png"), 1.0)
+			_laptop_sprite_frames.add_animation("off")
+			_laptop_sprite_frames.set_animation_loop("off", false)
+			_laptop_sprite_frames.add_frame("off", load("res://UI/Theme/MainLevel/computer/laptop/off.png"), 1.0)
+		return _laptop_sprite_frames
 
 func _ensure_office_slots() -> void:
 	var workers_node: Node = $Level/workers
