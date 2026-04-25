@@ -21,10 +21,14 @@ extends Node
 ##
 
 signal music_changed(track_key: String)
+signal volume_changed(channel: String, value: float)
 
 const MUSIC_DIR := "res://Audio/Music/"
 const SFX_DIR := "res://Audio/SFX/"
 const AMBIENT_DIR := "res://Audio/Ambient/"
+const AUDIO_SETTINGS_PATH := "user://audio_settings.cfg"
+const AUDIO_SETTINGS_SECTION := "Audio"
+const VOLUME_CHANNELS: Array[String] = ["master", "music", "sfx", "ambient"]
 
 const SFX_POOL_SIZE := 8
 const SUPPORTED_EXTENSIONS: Array[String] = [".mp3", ".ogg", ".wav"]
@@ -84,6 +88,7 @@ var _resting_workers: int = 0
 
 func _ready() -> void:
 	process_mode = Node.PROCESS_MODE_ALWAYS
+	load_volume_settings()
 
 	_music_player = _make_player("MusicPlayer")
 	add_child(_music_player)
@@ -171,6 +176,71 @@ func notify_worker_resting_ended() -> void:
 	_refresh_gibberish()
 
 
+func set_volume(channel: String, value: float, save: bool = true) -> void:
+	var normalized_channel := channel.strip_edges().to_lower()
+	if not VOLUME_CHANNELS.has(normalized_channel):
+		push_warning("Unknown audio volume channel: " + channel)
+		return
+
+	var clamped_value := clampf(value, 0.0, 1.0)
+	match normalized_channel:
+		"master":
+			master_volume = clamped_value
+		"music":
+			music_volume = clamped_value
+		"sfx":
+			sfx_volume = clamped_value
+		"ambient":
+			ambient_volume = clamped_value
+
+	_refresh_audio_player_volumes()
+	volume_changed.emit(normalized_channel, clamped_value)
+	if save:
+		save_volume_settings()
+
+
+func get_volume(channel: String) -> float:
+	match channel.strip_edges().to_lower():
+		"master":
+			return master_volume
+		"music":
+			return music_volume
+		"sfx":
+			return sfx_volume
+		"ambient":
+			return ambient_volume
+	return 0.0
+
+
+func get_volume_settings() -> Dictionary:
+	return {
+		"master": master_volume,
+		"music": music_volume,
+		"sfx": sfx_volume,
+		"ambient": ambient_volume,
+	}
+
+
+func load_volume_settings() -> void:
+	var config := ConfigFile.new()
+	var err := config.load(AUDIO_SETTINGS_PATH)
+	if err != OK:
+		_refresh_audio_player_volumes()
+		return
+
+	for channel in VOLUME_CHANNELS:
+		var current_value := get_volume(channel)
+		var saved_value = config.get_value(AUDIO_SETTINGS_SECTION, channel, current_value)
+		set_volume(channel, _coerce_volume(saved_value, current_value), false)
+
+
+func save_volume_settings() -> void:
+	var config := ConfigFile.new()
+	for channel in VOLUME_CHANNELS:
+		config.set_value(AUDIO_SETTINGS_SECTION, channel, get_volume(channel))
+	config.save(AUDIO_SETTINGS_PATH)
+
+
 # ============================================================
 #  Internal
 # ============================================================
@@ -180,6 +250,20 @@ func _make_player(player_name: String) -> AudioStreamPlayer:
 	p.name = player_name
 	p.process_mode = Node.PROCESS_MODE_ALWAYS
 	return p
+
+
+func _refresh_audio_player_volumes() -> void:
+	if _music_player != null:
+		_music_player.volume_db = _music_db()
+	if _gibberish_player != null:
+		_gibberish_player.volume_db = _ambient_db()
+
+
+func _coerce_volume(value, fallback: float) -> float:
+	var value_type := typeof(value)
+	if value_type != TYPE_FLOAT and value_type != TYPE_INT:
+		return clampf(fallback, 0.0, 1.0)
+	return clampf(float(value), 0.0, 1.0)
 
 
 func _play_oneshot(category: String, key: String, volume_db: float, pitch_random: float) -> void:
