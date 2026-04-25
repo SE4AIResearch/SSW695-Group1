@@ -33,6 +33,11 @@ const PLACED_UPGRADE_VISUALS := {
 		"texture_path": "res://UI/Theme/MainLevel/coffee/coffee_machine.png",
 		"position": Vector2(600, 285),
 		"scale": Vector2(4, 4),
+	},
+	"air_conditioner": {
+		"texture_path": "res://UI/Theme/MainLevel/AC_Unit/AC_Unit.png",
+		"position": Vector2(430, 125),
+		"scale": Vector2(4, 4),
 	}
 }
 

@@ -37,9 +37,9 @@ const UPGRADE_COLUMNS := [
 		"color": Color("3a2618"),
 		"items": [
 			{"tier": 1, "name": "Coffee Machine", "description": "+10% Stamina", "cost": 75, "locked": false, "scene_prop_key": "coffee_machine"},
-			{"tier": 2, "name": "Ergonomic Chairs", "description": "+5% Documentation, +5% Reliability", "cost": 200, "locked": true},
-			{"tier": 3, "name": "Standing Desks", "description": "+5% Frontend, +5% Backend", "cost": 450, "locked": true},
-			{"tier": 4, "name": "Air Conditioner", "description": "+10% Reliability", "cost": 900, "locked": true}
+			{"tier": 2, "name": "Air Conditioner", "description": "+10% Reliability", "cost": 150, "locked": true, "scene_prop_key": "air_conditioner"},
+			{"tier": 3, "name": "Ergonomic Chairs", "description": "+5% Documentation, +5% Reliability", "cost": 200, "locked": true},
+			{"tier": 4, "name": "Standing Desks", "description": "+5% Frontend, +5% Backend", "cost": 450, "locked": true}
 		]
 	}
 ]

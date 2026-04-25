@@ -156,7 +156,7 @@ func resetData():
 	completedMetrics = []
 	workers = []
 	upgrades = []
-	currency = 100.0
+	currency = 300.0
 	score = 0
 	weekResults = {}
 	selectedAssignments = {}
