@@ -157,6 +157,9 @@ func startEvent():
 func runProjectCompletion():
 	createMenu(projectCompletionMenu.instantiate())
 
+
+func _on_button_pressed() -> void: runProjectCompletion()
+
 func show_office_intro_tutorial() -> void:
 	_show_tutorial(
 		"office_intro",
