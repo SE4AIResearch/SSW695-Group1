@@ -381,7 +381,6 @@ offset_left = 975.0
 offset_top = 390.0
 offset_right = 1106.0
 offset_bottom = 417.0
-mouse_filter = 2
 text = "Currency: $0.00"
 metadata/_edit_use_anchors_ = true
 

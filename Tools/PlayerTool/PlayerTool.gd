@@ -21,16 +21,28 @@ const LOOP_PLANNING_WEEK := "planning_week"
 const LOOP_ACTIVE_WEEK := "active_week"
 const LOOP_RESOLVING_WEEK := "resolving_week"
 const OFFICE_CAPACITY_BY_TIER := [6, 8, 10, 12, 14]
+const DESKTOP_PC_SCENE_PROP_KEY := "desktop_pc"
+const DESKTOP_PC_SKILL_MULTIPLIER := 1.05
+const DESKTOP_PC_BOOST_APPLIED_META_KEY := "desktop_pc_skill_boost_applied"
+const DESKTOP_PC_BASE_FRONTEND_META_KEY := "desktop_pc_base_frontend"
+const DESKTOP_PC_BASE_BACKEND_META_KEY := "desktop_pc_base_backend"
 const COFFEE_MACHINE_SCENE_PROP_KEY := "coffee_machine"
 const COFFEE_MACHINE_STAMINA_MULTIPLIER := 1.1
 const COFFEE_MACHINE_BOOST_APPLIED_META_KEY := "coffee_machine_stamina_boost_applied"
 const COFFEE_MACHINE_BASE_STAMINA_META_KEY := "coffee_machine_base_stamina"
 const MIN_WORKER_STAMINA := 1
+const WORKER_LEVEL_SCALE := Vector2(2.5, 2.5)
 
 var level
 
 var project: Node
+var methodology: Dictionary = {}
+var projectName: String = ""
+var clientName: String = ""
+var sprintLength: int = 0
+var sprintAmount: int = 0
 var projectRatedDifficulty: float
+var eventChance: float = 0.45
 var metrics = {
 	"frontEnd": 0,
 	"backEnd": 0,
@@ -46,6 +58,7 @@ var projSprint: int = 0
 var FEBacklogStep: int = 0
 var BEBacklogStep: int = 0
 var docBacklogStep: int = 0
+var totalEvents: int = 0
 
 var teamRank: int = 1
 var workers: Array = []
@@ -66,6 +79,7 @@ var backlogItems: Array = []
 var pendingProjectSummary: Dictionary = {}
 var sprintGoal: Dictionary = {}
 var shouldShowWeekResultsModal: bool = false
+var tutorial_seen: Dictionary = {}
 
 var _backlogItemIdCounter: int = 0
 
@@ -75,10 +89,24 @@ func initializeNewSave():
 	var freeWorker2 = PersonConstructor.generateWorker(PersonConstructor.getStartingWorkerStats(1))
 	$workerHoldover.add_child(freeWorker1)
 	$workerHoldover.add_child(freeWorker2)
-	freeWorker1.scale = Vector2(2.5, 2.5)
-	freeWorker2.scale = Vector2(2.5, 2.5)
 	newHire(freeWorker1)
 	newHire(freeWorker2)
+
+func set_new_player_tutorials_enabled(enabled: bool) -> void:
+	tutorial_seen = _default_tutorial_seen(not enabled)
+
+func should_show_tutorial(tutorial_key: String) -> bool:
+	return !bool(tutorial_seen.get(tutorial_key, true))
+
+func mark_tutorial_seen(tutorial_key: String) -> void:
+	tutorial_seen[tutorial_key] = true
+
+func _default_tutorial_seen(seen: bool = true) -> Dictionary:
+	return {
+		"office_intro": seen,
+		"methodology_intro": seen,
+		"hiring_intro": seen,
+	}
 
 # Type : 0 = Front End | 1 = Back End | 2 = Documenting | 3 = Reliability | 4 = Stakeholder Satisfaction
 func changeProjectStats(type, amount):
@@ -106,6 +134,10 @@ func changeMetricByName(metricName: String, amount: int) -> void:
 
 func resetData():
 	project = null
+	projectName = ""
+	clientName = ""
+	sprintLength = 0
+	sprintAmount = 0
 	projectRatedDifficulty = 0
 	projectAmount = 0
 	completed_project_count = 0
@@ -132,9 +164,11 @@ func resetData():
 	pendingProjectSummary = {}
 	sprintGoal = {}
 	shouldShowWeekResultsModal = false
+	tutorial_seen = _default_tutorial_seen(true)
 	weekTime = 0
 	projWeek = 0
 	projSprint = 0
+	totalEvents = 0
 	FEBacklogStep = 0
 	BEBacklogStep = 0
 	docBacklogStep = 0
@@ -151,6 +185,12 @@ func resetData():
 func resetProjectStats():
 	projectRatedDifficulty = 0
 	project = null
+	methodology = {}
+	projectName = ""
+	clientName = ""
+	sprintLength = 0
+	sprintAmount = 0
+	eventChance = 0.45
 	metrics = {
 		"frontEnd": 0,
 		"backEnd": 0,
@@ -167,6 +207,7 @@ func resetProjectStats():
 	sprintGoal = {}
 	shouldShowWeekResultsModal = false
 	weekTime = 0
+	totalEvents = 0
 	projWeek = 0
 	projSprint = 0
 	FEBacklogStep = 0
@@ -240,7 +281,13 @@ func _find_project_choice(all_projects: Array, project_name: String) -> Dictiona
 func newProject(newProject) -> void:
 	resetProjectStats()
 	project = newProject
+	methodology = newProject.methodology
+	projectName = newProject.projectName
+	clientName = newProject.clientName
+	sprintLength = int(newProject.sprintLength)
+	sprintAmount = int(newProject.sprintAmount)
 	projectRatedDifficulty = float(newProject.projectDifficulty)
+	eventChance = float(newProject.eventChance)
 	projWeek = 1
 	projSprint = 1
 	projectAmount += 1
@@ -258,10 +305,13 @@ func newHire(worker) -> bool:
 	_apply_active_upgrade_effects_to_worker(worker)
 	worker.name = worker.personName
 	workers.append(worker)
-	if worker.get_parent() != null:
-		worker.reparent($workerHoldover)
-	else:
+	var worker_parent: Node = worker.get_parent()
+	if worker_parent == null:
 		$workerHoldover.add_child(worker)
+	elif worker_parent != $workerHoldover:
+		worker.reparent($workerHoldover, false)
+	worker.scale = WORKER_LEVEL_SCALE
+	worker.position = Vector2.ZERO
 	hireSelected.emit()
 	return true
 
@@ -337,7 +387,7 @@ func addScore(amount: int) -> void:
 	scoreChanged.emit()
 
 func canAdvanceWeek() -> bool:
-	return project != null and loopPhase == LOOP_PLANNING_WEEK and not selectedAssignments.is_empty()
+	return project != null and loopPhase == LOOP_PLANNING_WEEK
 
 func isWeekActive() -> bool:
 	return project != null and loopPhase == LOOP_ACTIVE_WEEK
@@ -513,9 +563,10 @@ func _prepare_sprint_context(sprintNumber: int) -> void:
 func _resolve_assignment(worker, item: Dictionary) -> void:
 	var metricKey := str(item.get("required_skill", "frontEnd"))
 	var workerSkill := _get_worker_skill(worker, metricKey)
-	var progress := maxi(1, workerSkill)
-	if not _worker_is_specialist_for_item(worker, item):
-		progress = maxi(1, int(floor(progress * 0.5)))
+	var progress := workerSkill
+	# if not _worker_is_specialist_for_item(worker, item):
+	# 	progress = int(floor(progress * 0.5))
+	progress = maxi(1, int(floor(float(progress) * (float(worker.speedStat) / 100.0))))
 
 	var previousEffort := int(item.get("effort_remaining", 0))
 	item.set("effort_remaining", maxi(0, previousEffort - progress))
@@ -554,10 +605,13 @@ func _worker_is_specialist_for_item(worker, item: Dictionary) -> bool:
 
 func earnSprintMoney():
 	if project != null:
-		addCurrency(int((30 * project.projectDifficulty) + (5 * projectAmount) + (50 * (teamRank - 1))))
+		addCurrency(floorf((30 * project.projectDifficulty) + (5 * projectAmount) + (50 * (teamRank - 1))))
 
 func earnProjectMoney(SatisfactionAmount):
-	addCurrency((int((500 * projectRatedDifficulty) + (25 * projectAmount) + (650 * (teamRank - 1))))*SatisfactionAmount)
+	addCurrency(floorf((500 * projectRatedDifficulty) + (25 * projectAmount) + (650 * (teamRank - 1))*SatisfactionAmount))
+
+func returnSprintMoney(SatisfactionAmount):
+	return floorf(((500 * projectRatedDifficulty) + (25 * projectAmount) + (650 * (teamRank - 1)))*SatisfactionAmount)
 
 func get_office_capacity_for_tier(tier: int) -> int:
 	var clamped_tier := clampi(tier, 0, OFFICE_CAPACITY_BY_TIER.size() - 1)
@@ -625,12 +679,20 @@ func _normalize_upgrade_record(upgrade_data: Dictionary) -> Dictionary:
 	return normalized_upgrade
 
 func _apply_standard_upgrade_purchase_effects(upgrade_data: Dictionary) -> void:
+	if _is_desktop_pc_upgrade(upgrade_data):
+		_apply_desktop_pc_skill_boost_to_all_workers()
 	if _is_coffee_machine_upgrade(upgrade_data):
 		_apply_coffee_machine_stamina_boost_to_all_workers()
 
 func _apply_active_upgrade_effects_to_worker(worker) -> void:
+	if _has_active_upgrade_with_scene_prop_key(DESKTOP_PC_SCENE_PROP_KEY):
+		_apply_worker_desktop_pc_boost(worker, DESKTOP_PC_SKILL_MULTIPLIER)
 	if _has_active_upgrade_with_scene_prop_key(COFFEE_MACHINE_SCENE_PROP_KEY):
 		_apply_worker_stamina_boost(worker, COFFEE_MACHINE_STAMINA_MULTIPLIER)
+
+func _apply_desktop_pc_skill_boost_to_all_workers() -> void:
+	for worker in workers:
+		_apply_worker_desktop_pc_boost(worker, DESKTOP_PC_SKILL_MULTIPLIER)
 
 func _apply_coffee_machine_stamina_boost_to_all_workers() -> void:
 	for worker in workers:
@@ -644,6 +706,23 @@ func _has_active_upgrade_with_scene_prop_key(scene_prop_key: String) -> bool:
 
 func _is_coffee_machine_upgrade(upgrade_data: Dictionary) -> bool:
 	return str(upgrade_data.get("scene_prop_key", "")) == COFFEE_MACHINE_SCENE_PROP_KEY
+
+func _is_desktop_pc_upgrade(upgrade_data: Dictionary) -> bool:
+	return str(upgrade_data.get("scene_prop_key", "")) == DESKTOP_PC_SCENE_PROP_KEY
+
+func _apply_worker_desktop_pc_boost(worker, multiplier: float) -> void:
+	if worker == null:
+		return
+	if bool(worker.get_meta(DESKTOP_PC_BOOST_APPLIED_META_KEY, false)):
+		return
+	if not worker.has_meta(DESKTOP_PC_BASE_FRONTEND_META_KEY):
+		worker.set_meta(DESKTOP_PC_BASE_FRONTEND_META_KEY, int(worker.frontEndStat))
+	if not worker.has_meta(DESKTOP_PC_BASE_BACKEND_META_KEY):
+		worker.set_meta(DESKTOP_PC_BASE_BACKEND_META_KEY, int(worker.backEndStat))
+
+	worker.frontEndStat = max(0, int(round(float(worker.get_meta(DESKTOP_PC_BASE_FRONTEND_META_KEY)) * multiplier)))
+	worker.backEndStat = max(0, int(round(float(worker.get_meta(DESKTOP_PC_BASE_BACKEND_META_KEY)) * multiplier)))
+	worker.set_meta(DESKTOP_PC_BOOST_APPLIED_META_KEY, true)
 
 func _apply_worker_stamina_boost(worker, multiplier: float) -> void:
 	if worker == null:

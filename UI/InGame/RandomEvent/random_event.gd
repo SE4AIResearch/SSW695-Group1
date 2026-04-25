@@ -90,6 +90,7 @@ func setButtonVisual(menuButton: Button):
 	menuButton.self_modulate = Color(randf_range(.5,1), randf_range(.5,1), randf_range(.5,1))
 
 func initializeEvent():
+	PlayerTool.totalEvents += 1
 	var eventPool: Array = []
 	eventPool.append_array(eventList.general_events)
 	if PlayerTool.project != null and eventList.project_events.has(PlayerTool.project.projectName):
@@ -240,14 +241,15 @@ func showFeedback(outcome, quality: String, eventType: String):
 	var text = "[center]"
 	if outcome is Dictionary and outcome.size() > 0:
 		for key in outcome.keys():
-			var value = outcome[key]
-			var displayName = formatMetricName(key)
-			if value > 0:
-				text += "[color=green]+" + str(value) + " " + displayName + "[/color]\n"
-			elif value < 0:
-				text += "[color=red]" + str(value) + " " + displayName + "[/color]\n"
-			else:
-				text += str(value) + " " + displayName + "\n"
+			if key != "reliability":
+				var value = outcome[key]
+				var displayName = formatMetricName(key)
+				if value > 0:
+					text += "[color=green]+" + str(value) + " " + displayName + "[/color]\n"
+				elif value < 0:
+					text += "[color=red]" + str(value) + " " + displayName + "[/color]\n"
+				else:
+					text += str(value) + " " + displayName + "\n"
 	elif eventType == "Stakeholder" and outcome is Array and outcome.size() >= 3:
 		var labels = ["Sprint Amount", "Sprint Length", "Sprint Metrics"]
 		for i in range(3):
