@@ -344,4 +344,4 @@ func deserializeWorkers(serialized_workers: Array):
 		worker.get_node("noseSprite").modulate = w_data.noseModulate
 		worker.get_node("hairSprite").modulate = w_data.hairModulate
 		
-		PlayerTool.newHire(worker)
+		PlayerTool.newHire(worker, false)

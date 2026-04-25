@@ -14,21 +14,21 @@ const UPGRADE_COLUMNS := [
 		"title": "Hardware",
 		"color": Color("102550"),
 		"items": [
-			{"tier": 1, "name": "Desktop PC", "description": "+5% Frontend, +5% Backend", "cost": 100, "locked": false, "scene_prop_key": "desktop_pc"},
-			{"tier": 2, "name": "Dual Monitor Setup", "description": "+5% Frontend, +5% Documentation", "cost": 250, "locked": true},
-			{"tier": 3, "name": "Database Upgrades", "description": "+10% Backend", "cost": 500, "locked": true},
-			{"tier": 4, "name": "High-End Workstation", "description": "+10% Frontend, +10% Backend", "cost": 1000, "locked": true}
+			{"tier": 1, "name": "Desktop PC", "description": "+5% Frontend, +5% Backend, +20% Speed", "cost": 100, "locked": false, "scene_prop_key": "desktop_pc"},
+			{"tier": 2, "name": "Dual Monitor Setup", "description": "+5% Frontend, +10% Documentation", "cost": 250, "locked": true},
+			{"tier": 3, "name": "Database Upgrades", "description": "+10% Backend, +20% Speed", "cost": 500, "locked": true},
+			{"tier": 4, "name": "High-End Workstation", "description": "+10% Frontend, +10% Backend, +30% Speed", "cost": 1000, "locked": true}
 		]
 	},
 	{
 		"title": "Software",
 		"color": Color("27134a"),
 		"items": [
-			{"tier": 1, "name": "IDE Suite", "description": "+10% Frontend, +10% Backend", "cost": 150, "locked": false},
+			{"tier": 1, "name": "IDE Suite", "description": "+10% Frontend, +10% Backend, +10% Speed", "cost": 150, "locked": false},
 			{"tier": 2, "name": "Version Control Platform", "description": "+15% Frontend, +15% Backend", "cost": 300, "locked": true},
-			{"tier": 3, "name": "Automated Testing Suite", "description": "+20% Backend", "cost": 500, "locked": true},
+			{"tier": 3, "name": "Automated Testing Suite", "description": "+20% Backend, +15% Speed", "cost": 500, "locked": true},
 			{"tier": 4, "name": "CI/CD Pipeline", "description": "+20% Frontend", "cost": 750, "locked": true},
-			{"tier": 5, "name": "AI Assistant", "description": "+15% Frontend, +15% Backend, +15% Documentation", "cost": 1000, "locked": true},
+			{"tier": 5, "name": "AI Assistant", "description": "+15% Frontend, +15% Backend, +15% Documentation, +30% Speed", "cost": 1000, "locked": true},
 			{"tier": 6, "name": "Enterprise Product Suite", "description": "+20% Frontend, +20% Backend, +20% Documentation", "cost": 1500, "locked": true}
 		]
 	},
@@ -36,7 +36,7 @@ const UPGRADE_COLUMNS := [
 		"title": "Quality of Life",
 		"color": Color("3a2618"),
 		"items": [
-			{"tier": 1, "name": "Coffee Machine", "description": "+10% Stamina", "cost": 75, "locked": false, "scene_prop_key": "coffee_machine"},
+			{"tier": 1, "name": "Coffee Machine", "description": "+10% Stamina, +10% Speed", "cost": 75, "locked": false, "scene_prop_key": "coffee_machine"},
 			{"tier": 2, "name": "Air Conditioner", "description": "+20% Stamina", "cost": 150, "locked": true, "scene_prop_key": "air_conditioner"},
 			{"tier": 3, "name": "Ergonomic Chairs", "description": "+5% Documentation, +15% Stamina", "cost": 200, "locked": true},
 			{"tier": 4, "name": "Standing Desks", "description": "+15% Documentation, +15% Stamina", "cost": 450, "locked": true}
