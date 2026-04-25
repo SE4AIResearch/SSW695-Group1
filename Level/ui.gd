@@ -173,13 +173,21 @@ func show_office_intro_tutorial() -> void:
 		"Welcome to Software Development Tycoon. Here is your office! Click the computer to get started on your project management journey."
 	)
 
-func _show_tutorial(tutorial_key: String, title: String, message: String) -> void:
+func show_kanban_exit_tutorial() -> void:
+	_show_tutorial(
+		"kanban_exit_intro",
+		"Week Started",
+		"Your workers will now make progress on their assigned backlog items. Watch stamina during the week.",
+		true
+	)
+
+func _show_tutorial(tutorial_key: String, title: String, message: String, show_stamina_examples: bool = false) -> void:
 	if !PlayerTool.should_show_tutorial(tutorial_key):
 		return
 
 	var modal: TutorialModalPanel = TutorialModal.instantiate() as TutorialModalPanel
 	add_child(modal)
-	modal.setup(title, message)
+	modal.setup(title, message, "OK", show_stamina_examples)
 	modal.dismissed.connect(_on_tutorial_dismissed.bind(tutorial_key))
 
 func _on_tutorial_dismissed(tutorial_key: String) -> void:

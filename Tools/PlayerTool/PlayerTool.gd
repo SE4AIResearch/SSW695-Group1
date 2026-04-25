@@ -120,6 +120,7 @@ func _default_tutorial_seen(seen: bool = true) -> Dictionary:
 		"office_intro": seen,
 		"methodology_intro": seen,
 		"hiring_intro": seen,
+		"kanban_exit_intro": seen,
 	}
 
 # Type : 0 = Front End | 1 = Back End | 2 = Documenting | 3 = Reliability | 4 = Stakeholder Satisfaction
@@ -170,7 +171,7 @@ func resetData():
 	completedMetrics = []
 	workers = []
 	upgrades = []
-	currency = 300.0
+	currency = 0.0
 	score = 0
 	weekResults = {}
 	selectedAssignments = {}
@@ -464,6 +465,11 @@ func resolveWeek() -> bool:
 func assignWorkerToItem(workerName: String, itemId: int) -> Dictionary:
 	if project == null or loopPhase != LOOP_PLANNING_WEEK:
 		return {"ok": false, "reason": "You can only assign work while planning the week."}
+	var worker = getWorkerByName(workerName)
+	if worker == null:
+		return {"ok": false, "reason": "That worker no longer exists."}
+	if bool(worker.get("resting")):
+		return {"ok": false, "reason": "%s is resting until their stamina is full." % workerName}
 	var item := getBacklogItemById(itemId)
 	if item.is_empty():
 		return {"ok": false, "reason": "That backlog item no longer exists."}

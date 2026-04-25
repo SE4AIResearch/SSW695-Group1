@@ -6,6 +6,8 @@
 [ext_resource type="Texture2D" path="res://UI/Theme/PCTheme/button/slimButtonPressed.png" id="4_ok_pressed"]
 [ext_resource type="Texture2D" path="res://UI/Theme/PCTheme/button/slimButtonHeld.png" id="5_ok_hover"]
 [ext_resource type="Texture2D" path="res://UI/Theme/PCTheme/button/slimButtonDisabled.png" id="6_ok_disabled"]
+[ext_resource type="Texture2D" path="res://UI/Theme/worker/staminaBarBorder.png" id="7_stamina_border"]
+[ext_resource type="Texture2D" path="res://UI/Theme/worker/staminaBarProgress.png" id="8_stamina_progress"]
 
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_ok"]
 texture = ExtResource("3_ok")
@@ -88,6 +90,67 @@ horizontal_alignment = 1
 vertical_alignment = 1
 autowrap_mode = 2
 text = "Welcome."
+
+[node name="StaminaExamples" type="Control" parent="MessagePanel"]
+visible = false
+offset_left = 56.0
+offset_top = 172.0
+offset_right = 524.0
+offset_bottom = 292.0
+
+[node name="Header" type="Label" parent="MessagePanel/StaminaExamples"]
+offset_right = 468.0
+offset_bottom = 24.0
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+text = "Worker stamina"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="WorkingBar" type="TextureProgressBar" parent="MessagePanel/StaminaExamples"]
+offset_left = 46.0
+offset_top = 36.0
+offset_right = 194.0
+offset_bottom = 62.0
+max_value = 100.0
+value = 100.0
+rounded = true
+texture_under = ExtResource("7_stamina_border")
+texture_progress = ExtResource("8_stamina_progress")
+tint_under = Color(0.92116153, 0.9704216, 0, 1)
+tint_progress = Color(0.92116153, 0.9704216, 0, 1)
+
+[node name="WorkingLabel" type="Label" parent="MessagePanel/StaminaExamples"]
+offset_left = 210.0
+offset_top = 30.0
+offset_right = 468.0
+offset_bottom = 68.0
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+text = "Yellow: working, stamina ticks down"
+vertical_alignment = 1
+autowrap_mode = 2
+
+[node name="RecoveringBar" type="TextureProgressBar" parent="MessagePanel/StaminaExamples"]
+offset_left = 46.0
+offset_top = 80.0
+offset_right = 194.0
+offset_bottom = 106.0
+max_value = 100.0
+value = 100.0
+rounded = true
+texture_under = ExtResource("7_stamina_border")
+texture_progress = ExtResource("8_stamina_progress")
+tint_under = Color(0.017259976, 0.4440687, 0.8440869, 1)
+tint_progress = Color(0.017259976, 0.4440687, 0.8440869, 1)
+
+[node name="RecoveringLabel" type="Label" parent="MessagePanel/StaminaExamples"]
+offset_left = 210.0
+offset_top = 74.0
+offset_right = 468.0
+offset_bottom = 112.0
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+text = "Blue: recovering until full"
+vertical_alignment = 1
+autowrap_mode = 2
 
 [node name="OkButton" type="Button" parent="MessagePanel"]
 offset_left = 170.0

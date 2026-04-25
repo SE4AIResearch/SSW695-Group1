@@ -24,8 +24,9 @@ func _refreshWorkers() -> void:
 	for worker in PlayerTool.workers:
 		var newWorker = backlogWorkerItem.instantiate()
 		newWorker.createWorkerItem(worker)
-		newWorker.disabled = readOnly
-		newWorker.setBusyStatus(PlayerTool.selectedAssignments.has(worker.personName))
+		var is_resting := bool(worker.get("resting"))
+		newWorker.disabled = readOnly or is_resting
+		newWorker.setWorkerStatus(PlayerTool.selectedAssignments.has(worker.personName), is_resting)
 		var assignmentId = PlayerTool.selectedAssignments.get(worker.personName, null)
 		if assignmentId != null:
 			var item: Dictionary = PlayerTool.getBacklogItemById(int(assignmentId))
@@ -102,6 +103,11 @@ func workerSelected(workerButton):
 		selectedWorker = null
 		_set_status_message("Week in progress. Assignments are locked until the timer ends.")
 		return
+	if workerButton.isResting:
+		workerButton.button_pressed = false
+		selectedWorker = null
+		_set_status_message("%s is resting until their stamina is full." % workerButton.heldWorker.personName)
+		return
 	if workerButton.isBusy:
 		var workerName: String = workerButton.heldWorker.personName
 		PlayerTool.unassignWorker(workerName)
@@ -122,7 +128,9 @@ func _on_advance_week_button_pressed() -> void:
 		_set_status_message("You can only advance during sprint planning.")
 		return
 	if PlayerTool.startWeek():
-		get_parent().get_parent().endMenu()
+		var ui = get_parent().get_parent()
+		ui.endMenu()
+		ui.call_deferred("show_kanban_exit_tutorial")
 
 func _on_pc_back_pressed() -> void:
 	get_parent().get_parent().endMenu()

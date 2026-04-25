@@ -5,9 +5,11 @@ signal dismissed
 
 const PANEL_WIDTH: float = 580.0
 const PANEL_HEIGHT: float = 288.0
+const STAMINA_PANEL_HEIGHT: float = 404.0
 
 var _previous_pause_state: bool = false
 var _is_dismissing: bool = false
+var _show_stamina_examples: bool = false
 
 func _enter_tree() -> void:
 	process_mode = Node.PROCESS_MODE_ALWAYS
@@ -22,10 +24,12 @@ func _ready() -> void:
 		$MessagePanel/OkButton.gui_input.connect(_on_ok_button_gui_input)
 	_layout_modal()
 
-func setup(title: String, message: String, button_text: String = "OK") -> void:
+func setup(title: String, message: String, button_text: String = "OK", show_stamina_examples: bool = false) -> void:
+	_show_stamina_examples = show_stamina_examples
 	$MessagePanel/Title.text = title
 	$MessagePanel/Message.text = message
 	$MessagePanel/OkButton.text = button_text
+	$MessagePanel/StaminaExamples.visible = _show_stamina_examples
 	_layout_modal()
 
 func _notification(what: int) -> void:
@@ -50,10 +54,24 @@ func _layout_modal() -> void:
 	$Overlay.offset_right = viewport_size.x
 	$Overlay.offset_bottom = viewport_size.y
 
+	var panel_height := STAMINA_PANEL_HEIGHT if _show_stamina_examples else PANEL_HEIGHT
+
 	$MessagePanel.offset_left = (viewport_size.x - PANEL_WIDTH) / 2.0
-	$MessagePanel.offset_top = (viewport_size.y - PANEL_HEIGHT) / 2.0
+	$MessagePanel.offset_top = (viewport_size.y - panel_height) / 2.0
 	$MessagePanel.offset_right = $MessagePanel.offset_left + PANEL_WIDTH
-	$MessagePanel.offset_bottom = $MessagePanel.offset_top + PANEL_HEIGHT
+	$MessagePanel.offset_bottom = $MessagePanel.offset_top + panel_height
+	$MessagePanel/BackgroundFill.offset_bottom = panel_height - 18.0
+
+	if _show_stamina_examples:
+		$MessagePanel/Message.offset_top = 76.0
+		$MessagePanel/Message.offset_bottom = 166.0
+		$MessagePanel/OkButton.offset_top = 312.0
+		$MessagePanel/OkButton.offset_bottom = 392.0
+	else:
+		$MessagePanel/Message.offset_top = 84.0
+		$MessagePanel/Message.offset_bottom = 188.0
+		$MessagePanel/OkButton.offset_top = 196.0
+		$MessagePanel/OkButton.offset_bottom = 276.0
 
 func _on_ok_button_pressed() -> void:
 	_dismiss()
