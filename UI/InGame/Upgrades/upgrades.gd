@@ -310,13 +310,12 @@ func _build_office_upgrade_display_data(office_item: Dictionary) -> Dictionary:
 		upgrade_data["action_disabled"] = true
 		return upgrade_data
 
-	var requirements_met := current_projects >= required_projects and current_workers >= required_workers
 	upgrade_data["description"] = description
-	upgrade_data["locked"] = not requirements_met
-	upgrade_data["show_lock_label"] = not requirements_met
+	upgrade_data["locked"] = true
+	upgrade_data["show_lock_label"] = true
 	upgrade_data["lock_label"] = "COMING SOON"
-	upgrade_data["action_text"] = "Buy - $%d" % int(upgrade_data.get("cost", 0))
-	upgrade_data["action_disabled"] = not requirements_met
+	upgrade_data["action_text"] = "Coming Soon"
+	upgrade_data["action_disabled"] = true
 	return upgrade_data
 
 func _on_upgrade_purchase_requested(upgrade_data: Dictionary) -> void:
