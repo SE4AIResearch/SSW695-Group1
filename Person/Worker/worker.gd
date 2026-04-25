@@ -19,6 +19,7 @@ var backEndStat: int
 var documentingStat: int
 var speedStat: int
 var staminaStat: int
+var upgradeStatBonuses: Dictionary = {}
 
 var firable: bool = true
 
@@ -40,27 +41,36 @@ func _ready() -> void:
 	set_progress_bars_visible(progress_bars_visible)
 	
 func _on_hover_area_mouse_entered() -> void:
+	if get_tree().paused:
+		return
 	hover_started.emit(self)
 
 func _on_hover_area_mouse_exited() -> void:
 	hover_ended.emit(self)
 
 func work():
-	match resting:
-		false:
-			$staminaBar.value -= 1
-			if $staminaBar.value <= 0:
-				resting = true
-				$staminaBar.tint_under = restingColor
-				$staminaBar.tint_progress = restingColor
-				
-		true:
-			$staminaBar.value += 5
-			if $staminaBar.value >= staminaStat:
-				$staminaBar.value = staminaStat
-				$staminaBar.tint_under = workingColor
-				$staminaBar.tint_progress = workingColor
-				resting = false
+	if PlayerTool.project != null && PlayerTool.isWeekActive():
+		match resting:
+			false:
+					$staminaBar.value -= 2
+					if $staminaBar.value <= 0:
+						resting = true
+						$staminaBar.tint_under = restingColor
+						$staminaBar.tint_progress = restingColor
+						AudioManager.notify_worker_stamina_depleted()
+	
+			true:
+				$staminaBar.value += 6
+				if $staminaBar.value >= staminaStat:
+					$staminaBar.value = staminaStat
+					$staminaBar.tint_under = workingColor
+					$staminaBar.tint_progress = workingColor
+					resting = false
+					AudioManager.notify_worker_resting_ended()
+
+func _exit_tree() -> void:
+	if resting:
+		AudioManager.notify_worker_resting_ended()
 
 func set_progress_bars_visible(should_show: bool) -> void:
 	progress_bars_visible = should_show

@@ -3,6 +3,11 @@ extends Button
 signal WorkerSelected(button)
 
 var heldWorker: Node
+var isBusy: bool = false
+var isResting: bool = false
+const STATUS_BUSY_COLOR: Color = Color(0.96, 0.76, 0.18)
+const STATUS_FREE_COLOR: Color = Color(0.2, 0.78, 0.36)
+const STATUS_RESTING_COLOR: Color = Color(0.017259976, 0.4440687, 0.8440869)
 
 func createWorkerItem(worker):
 	heldWorker = worker
@@ -19,6 +24,19 @@ func createWorkerItem(worker):
 	$textParent/statsLabel.text = "[color=#fc2403]Front End: " + str(worker.frontEndStat) + "[/color] \n [color=#30c4ff]Back End: " + str(worker.backEndStat) + "[/color] \n [color=#03fc41]Documenting: " + str(worker.documentingStat)
 	pass
 
+func setBusyStatus(is_busy: bool) -> void:
+	setWorkerStatus(is_busy, false)
+
+func setWorkerStatus(is_busy: bool, is_resting: bool) -> void:
+	isBusy = is_busy
+	isResting = is_resting
+	if is_resting:
+		$StatusLabel.text = "RESTING"
+		$StatusLabel.add_theme_color_override("font_color", _get_resting_status_color())
+		return
+	$StatusLabel.text = "BUSY" if is_busy else "FREE"
+	$StatusLabel.add_theme_color_override("font_color", STATUS_BUSY_COLOR if is_busy else STATUS_FREE_COLOR)
+
 func setAssignmentLabel(assignmentText: String) -> void:
 	if assignmentText == "":
 		$textParent/nameLabel.text = heldWorker.personName
@@ -30,6 +48,12 @@ func setAssignmentLabel(assignmentText: String) -> void:
 			shortenedAssignment = shortenedAssignment.substr(0, 19) + "..."
 		$textParent/nameLabel.text = heldWorker.personName + "\nOn: " + shortenedAssignment
 
+func _get_resting_status_color() -> Color:
+	if heldWorker != null:
+		var resting_color = heldWorker.get("restingColor")
+		if resting_color is Color:
+			return resting_color
+	return STATUS_RESTING_COLOR
 
 func _on_pressed() -> void:
 	WorkerSelected.emit(self)

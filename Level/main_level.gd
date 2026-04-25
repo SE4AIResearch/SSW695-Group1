@@ -2,6 +2,22 @@ extends Node2D
 
 @onready var worker_details = $UI/WorkerDetails
 
+const DESK_COMPUTER_VISUALS := {
+	"default": {
+		"textures": {
+			"off": "res://UI/Theme/MainLevel/computer/laptop/off.png",
+			"on": "res://UI/Theme/MainLevel/computer/laptop/on.png",
+		},
+		"position": Vector2(0, -48),
+	},
+	"desktop_pc": {
+		"textures": {
+			"off": "res://UI/Theme/MainLevel/computer/desktop/off.png",
+			"on": "res://UI/Theme/MainLevel/computer/desktop/on.png",
+		},
+		"position": Vector2(0, -60),
+	},
+}
 const EXTRA_OFFICE_SLOT_POSITIONS := {
 	7: Vector2(231, 243),
 	8: Vector2(452, 243),
@@ -17,13 +33,21 @@ const PLACED_UPGRADE_VISUALS := {
 		"texture_path": "res://UI/Theme/MainLevel/coffee/coffee_machine.png",
 		"position": Vector2(600, 285),
 		"scale": Vector2(4, 4),
+	},
+	"air_conditioner": {
+		"texture_path": "res://UI/Theme/MainLevel/AC_Unit/AC_Unit.png",
+		"position": Vector2(430, 125),
+		"scale": Vector2(4, 4),
 	}
 }
+
+const DESKTOP_PC_WORKER_Y_OFFSET := -15
 
 func _ready() -> void:
 	TimeTool.weekPassed.connect(rollEvent)
 	PlayerTool.hireSelected.connect(setupDeskVisuals)
 	PlayerTool.officeTierChanged.connect(setupDeskVisuals)
+	PlayerTool.upgradesChanged.connect(setupDeskVisuals)
 	PlayerTool.upgradesChanged.connect(setupUpgradeVisuals)
 	initializeSave()
 	PlayerTool.level = self
@@ -32,16 +56,53 @@ func _ready() -> void:
 	setupUpgradeVisuals()
 	PlayerTool.levelLoaded.emit()
 func initializeSave():
-	pass
+	if PlayerTool.projectName == "":
+		return
+	
+	var projectList = load("res://Projects/projectList.gd").new()
+	var projectItem = preload("res://Projects/projectBase.tscn")
+	var project_data: Dictionary = {}
+	
+	for p in projectList.projects:
+		if p.name == PlayerTool.projectName:
+			project_data = p
+			break
+	
+	var project_node = projectItem.instantiate()
+	project_node.projectName = PlayerTool.projectName
+	project_node.clientName = PlayerTool.clientName
+	project_node.sprintAmount = PlayerTool.sprintAmount
+	project_node.sprintLength = PlayerTool.sprintLength
+	project_node.projectDifficulty = PlayerTool.projectRatedDifficulty
+	project_node.methodology = PlayerTool.methodology
+	project_node.eventChance = PlayerTool.eventChance
+	
+	if project_node.methodology.is_empty() and not project_data.is_empty():
+		project_node.methodology = {"name": project_data.get("preferredMethodology", "Standard")}
+	
+	if not project_data.is_empty():
+		project_node.frontEndProjectMin = project_data.get("frontEndMetrics", {}).size()
+		project_node.backEndProjectMin = project_data.get("backEndMetrics", {}).size()
+		project_node.documentingProjectMin = project_data.get("documentingMetrics", {}).size()
+	
+	PlayerTool.project = project_node
+	PlayerTool.projectSelected.emit()
+	PlayerTool.statsChanged.emit()
+	PlayerTool.backlogUpdated.emit()
+	PlayerTool.loopStateChanged.emit()
 
 func setupDeskVisuals():
 	_ensure_office_slots()
+	var computer_visual_config := _get_active_desk_computer_visual_config()
+	var has_desktop_pc := _is_desktop_pc_config(computer_visual_config)
 	var worker_slots := _get_worker_slots()
 	for slot in worker_slots:
 		var slot_index := int(slot.name)
 		var is_visible := slot_index <= PlayerTool.max_worker_capacity
 		slot.visible = is_visible
-		slot.get_node("computer").animation = "off"
+		var computer := slot.get_node("computer") as AnimatedSprite2D
+		_apply_desk_computer_visual_config(computer, computer_visual_config)
+		computer.animation = "off"
 
 	var workerCount = 1
 	for worker in PlayerTool.workers:
@@ -52,13 +113,15 @@ func setupDeskVisuals():
 			worker.hover_started.connect(_on_worker_hover_started)
 		if not worker.hover_ended.is_connected(_on_worker_hover_ended):
 			worker.hover_ended.connect(_on_worker_hover_ended)
-		var desk = $Level/workers.get_node(str(workerCount)).get_node("worker")
-		$Level/workers.get_node(str(workerCount)).get_node("computer").animation = "on"
+		var worker_slot := $Level/workers.get_node(str(workerCount))
+		var desk = worker_slot.get_node("worker")
+		var computer := worker_slot.get_node("computer") as AnimatedSprite2D
+		computer.animation = "on"
 		if desk.get_child_count() == 0:
 			worker.reparent(desk)
-		worker.position = Vector2(0,0)
+		var worker_y := DESKTOP_PC_WORKER_Y_OFFSET if has_desktop_pc else 0
+		worker.position = Vector2(0, worker_y)
 		workerCount += 1
-		pass
 
 func _ensure_office_slots() -> void:
 	var workers_node: Node = $Level/workers
@@ -119,6 +182,35 @@ func _get_worker_slots() -> Array:
 	worker_slots.sort_custom(func(a, b): return int(a.name) < int(b.name))
 	return worker_slots
 
+func _get_active_desk_computer_visual_config() -> Dictionary:
+	for upgrade in PlayerTool.upgrades:
+		var scene_prop_key := str(upgrade.get("scene_prop_key", ""))
+		if DESK_COMPUTER_VISUALS.has(scene_prop_key):
+			return DESK_COMPUTER_VISUALS[scene_prop_key]
+	return DESK_COMPUTER_VISUALS["default"]
+
+func _is_desktop_pc_config(visual_config: Dictionary) -> bool:
+	return visual_config == DESK_COMPUTER_VISUALS.get("desktop_pc", {})
+
+func _apply_desk_computer_visual_config(computer: AnimatedSprite2D, visual_config: Dictionary) -> void:
+	if computer == null:
+		return
+
+	computer.position = visual_config.get("position", Vector2(0, -48))
+	var texture_paths: Dictionary = visual_config.get("textures", {})
+	var sprite_frames := SpriteFrames.new()
+	sprite_frames.add_animation("off")
+	sprite_frames.set_animation_loop("off", false)
+	sprite_frames.set_animation_speed("off", 5.0)
+	sprite_frames.add_frame("off", load(str(texture_paths.get("off", ""))))
+
+	sprite_frames.add_animation("on")
+	sprite_frames.set_animation_loop("on", false)
+	sprite_frames.set_animation_speed("on", 5.0)
+	sprite_frames.add_frame("on", load(str(texture_paths.get("on", ""))))
+
+	computer.sprite_frames = sprite_frames
+
 func _on_worker_hover_started(worker) -> void:
 	worker_details.show_worker(worker)
 
@@ -126,12 +218,11 @@ func _on_worker_hover_ended(worker) -> void:
 	worker_details.hide_worker()
 
 func rollEvent():
-	var chance = randf_range(0,1)
-	if chance <= PlayerTool.project.eventChance: $UI.startEvent()
+	if PlayerTool.project == null:
+		return
+	if PlayerTool.project.projectName == "":
+		return
+	if randf_range(0,1) <= PlayerTool.project.eventChance:
+		$UI.startEvent()
 	# Demo override: always trigger a random event each week.
 	# $UI.startEvent()
-	pass
-
-func checkProjectCompletion():
-
-	pass

@@ -8,6 +8,7 @@ var BacklogMenu = load("res://UI/InGame/Backlog/Backlog.tscn")
 var ProjectSetupMenu = load("res://UI/InGame/ProjectSetup/ProjectSetup.tscn")
 var randomEventMenu = load("res://UI/InGame/RandomEvent/RandomEvent.tscn")
 var projectCompletionMenu = load("res://UI/InGame/ProjectCompletion/ProjectCompletion.tscn")
+var TutorialModal: PackedScene = preload("res://UI/InGame/TutorialModal/TutorialModal.tscn")
 var pcMode = false
 
 
@@ -17,6 +18,14 @@ func _ready() -> void:
 	PlayerTool.connect("deadlineReached",toggleProjectButtons)
 	toggleProjectButtons()
 	PlayerTool.projectCompleted.connect(runProjectCompletion)
+	call_deferred("show_office_intro_tutorial")
+	AudioManager.reset_resting_workers()
+	AudioManager.play_music("gameplay")
+	AudioManager.start_random_ambient()
+
+func _exit_tree() -> void:
+	AudioManager.stop_random_ambient()
+	AudioManager.reset_resting_workers()
 	
 func _physics_process(delta: float) -> void: pass
 
@@ -28,8 +37,13 @@ func _on_pause_button_pressed() -> void:
 	$Pause.visible = true
 	pass
 
-func _on_back_button_pressed() -> void: endMenu()
-func _on_pc_back_pressed() -> void: endMenu()
+func _on_back_button_pressed() -> void:
+	AudioManager.play_sfx("paper_rustle")
+	endMenu()
+
+func _on_pc_back_pressed() -> void:
+	AudioManager.play_sfx("pc_click")
+	endMenu()
 
 func endMenu():
 	if currentMenu != null and is_instance_valid(currentMenu):
@@ -52,20 +66,31 @@ func newProject():
 	_on_pc_power_pressed()
 	createMenu(BacklogMenu.instantiate())
 
-func _on_upgrades_button_pressed() -> void: createMenu(UpgradesMenu.instantiate())
+func _on_upgrades_button_pressed() -> void:
+	AudioManager.play_sfx("pc_click")
+	createMenu(UpgradesMenu.instantiate())
 
 func _on_project_metrics_button_pressed() -> void:
+	AudioManager.play_sfx("pc_click")
 	var metricsMenu = ProjectMetricsMenu.instantiate()
 	metricsMenu.getCurrentMetrics(PlayerTool.project, PlayerTool.metrics)
 	createMenu(metricsMenu)
 
-func _on_hiring_button_pressed() -> void: createMenu(HiringMenu.instantiate())
+func _on_hiring_button_pressed() -> void:
+	AudioManager.play_sfx("pc_click")
+	createMenu(HiringMenu.instantiate())
 
-func _on_backlog_button_pressed() -> void: createMenu(BacklogMenu.instantiate())
+func _on_backlog_button_pressed() -> void:
+	AudioManager.play_sfx("paper_rustle")
+	createMenu(BacklogMenu.instantiate())
 
-func _on_project_start_menu_pressed() -> void: createMenu(ProjectSetupMenu.instantiate())
+func _on_project_start_menu_pressed() -> void:
+	AudioManager.play_sfx("pc_click")
+	createMenu(ProjectSetupMenu.instantiate())
 
-func _on_random_event_button_pressed() -> void: createMenu(randomEventMenu.instantiate())
+func _on_random_event_button_pressed() -> void:
+	AudioManager.play_sfx("pc_click")
+	createMenu(randomEventMenu.instantiate())
 
 func createMenu(menu):
 	if currentMenu != null and is_instance_valid(currentMenu):
@@ -85,6 +110,7 @@ func createMenu(menu):
 func _on_pc_pressed() -> void:
 	#Insert code of screen lerping in size and position to the middle of the screen
 	#and showing the PC Buttons when completed
+	AudioManager.play_sfx("pc_click")
 	pcMode = true
 	get_tree().paused = true
 	$PCStats.visible = false
@@ -103,6 +129,7 @@ func _on_pc_pressed() -> void:
 	
 func _on_pc_power_pressed() -> void:
 	#Insert code of screen lerping in size and position to the original PC location and render buttons invisible
+	AudioManager.play_sfx("pc_click")
 	pcMode = false
 	get_tree().paused = false
 	$PCStats.visible = true
@@ -120,12 +147,49 @@ func toggleProjectButtons():
 	$BacklogButton.disabled = !hasProject
 
 func startEvent():
+	if PlayerTool.project == null or $NewMenu.get_child_count() != 0:
+		return
 	get_tree().paused = true
 	$randomEventRinger.play("ringing")
 	$randomEventRinger/ringerAudio.play()
 	await $randomEventRinger/ringerAudio.finished
 	$randomEventRinger.play("idle")
+	if PlayerTool.project == null or $NewMenu.get_child_count() != 0:
+		if $NewMenu.get_child_count() == 0:
+			get_tree().paused = false
+		return
 	createMenu(randomEventMenu.instantiate())
 
 func runProjectCompletion():
-	createMenu(projectCompletionMenu)
+	createMenu(projectCompletionMenu.instantiate())
+
+
+func _on_button_pressed() -> void: runProjectCompletion()
+
+func show_office_intro_tutorial() -> void:
+	_show_tutorial(
+		"office_intro",
+		"Welcome",
+		"Welcome to Software Development Tycoon. Here is your office! Click the computer to get started on your project management journey."
+	)
+
+func show_kanban_exit_tutorial() -> void:
+	_show_tutorial(
+		"kanban_exit_intro",
+		"Week Started",
+		"Your workers will now make progress on their assigned backlog items. Watch stamina during the week.",
+		true
+	)
+
+func _show_tutorial(tutorial_key: String, title: String, message: String, show_stamina_examples: bool = false) -> void:
+	if !PlayerTool.should_show_tutorial(tutorial_key):
+		return
+
+	var modal: TutorialModalPanel = TutorialModal.instantiate() as TutorialModalPanel
+	add_child(modal)
+	modal.setup(title, message, "OK", show_stamina_examples)
+	modal.dismissed.connect(_on_tutorial_dismissed.bind(tutorial_key))
+
+func _on_tutorial_dismissed(tutorial_key: String) -> void:
+	PlayerTool.mark_tutorial_seen(tutorial_key)
+	SaveTool.savePlayerData()

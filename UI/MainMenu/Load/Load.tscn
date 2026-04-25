@@ -1,10 +1,138 @@
 [gd_scene format=3 uid="uid://cdg43iwue2amo"]
 
-[node name="Load" type="Node2D" unique_id=716804035]
+[ext_resource type="Script" uid="uid://c8trwhllbgfsl" path="res://UI/MainMenu/Load/load.gd" id="1_icmcq"]
+[ext_resource type="Texture2D" uid="uid://c7y8067tc7g0c" path="res://UI/Theme/MainMenu/postIt2.png" id="2_axtlr"]
+[ext_resource type="Texture2D" uid="uid://ckmuyspbg5gn" path="res://UI/Theme/MainMenu/postIt2Select.png" id="3_nuoj5"]
+[ext_resource type="Texture2D" uid="uid://duuify0i2x8xh" path="res://UI/Theme/MainMenu/postIt2Hover.png" id="4_t5o2w"]
+[ext_resource type="Texture2D" uid="uid://d8dehtrlftc1" path="res://UI/Theme/MainMenu/postIt2Disabled.png" id="5_tyru1"]
+[ext_resource type="Texture2D" uid="uid://drwt4l4mwiboc" path="res://UI/Theme/PCTheme/button/slimButton.png" id="6_hm5qx"]
+[ext_resource type="Texture2D" uid="uid://cuyr4sv3sto4b" path="res://UI/Theme/PCTheme/button/slimButtonPressed.png" id="7_ynyg2"]
+[ext_resource type="Texture2D" uid="uid://b8snwl2q3qflg" path="res://UI/Theme/PCTheme/button/slimButtonHeld.png" id="8_wt7gr"]
+[ext_resource type="Texture2D" uid="uid://2jvaulftw7b6" path="res://UI/Theme/PCTheme/button/slimButtonDisabled.png" id="9_3mybm"]
 
-[node name="VBoxContainer" type="VBoxContainer" parent="." unique_id=67788578]
-offset_left = 344.0
-offset_top = 90.0
-offset_right = 831.0
-offset_bottom = 541.0
-alignment = 1
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_gtpok"]
+texture = ExtResource("2_axtlr")
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_1oqnx"]
+texture = ExtResource("3_nuoj5")
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_tyru1"]
+texture = ExtResource("4_t5o2w")
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_hm5qx"]
+texture = ExtResource("5_tyru1")
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_nmjlg"]
+texture = ExtResource("6_hm5qx")
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_ckiq4"]
+texture = ExtResource("7_ynyg2")
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_lc2nn"]
+texture = ExtResource("8_wt7gr")
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_kbr38"]
+texture = ExtResource("9_3mybm")
+
+[node name="Load" type="Node2D" unique_id=716804035]
+script = ExtResource("1_icmcq")
+
+[node name="saveButton1" type="Button" parent="." unique_id=505431255]
+offset_left = 91.0
+offset_top = 138.0
+offset_right = 379.0
+offset_bottom = 426.0
+theme_override_styles/normal = SubResource("StyleBoxTexture_gtpok")
+theme_override_styles/pressed = SubResource("StyleBoxTexture_1oqnx")
+theme_override_styles/hover = SubResource("StyleBoxTexture_tyru1")
+theme_override_styles/disabled = SubResource("StyleBoxTexture_hm5qx")
+
+[node name="saveInfo" type="RichTextLabel" parent="saveButton1" unique_id=546765434]
+layout_mode = 0
+offset_left = 54.0
+offset_top = 63.0
+offset_right = 243.0
+offset_bottom = 288.0
+mouse_filter = 2
+theme_override_colors/default_color = Color(0, 0, 0, 1)
+bbcode_enabled = true
+
+[node name="saveButton2" type="Button" parent="." unique_id=1423600906]
+offset_left = 468.0
+offset_top = 177.0
+offset_right = 756.0
+offset_bottom = 465.0
+theme_override_styles/normal = SubResource("StyleBoxTexture_gtpok")
+theme_override_styles/pressed = SubResource("StyleBoxTexture_1oqnx")
+theme_override_styles/hover = SubResource("StyleBoxTexture_tyru1")
+theme_override_styles/disabled = SubResource("StyleBoxTexture_hm5qx")
+
+[node name="saveInfo" type="RichTextLabel" parent="saveButton2" unique_id=1197070749]
+layout_mode = 0
+offset_left = 54.0
+offset_top = 63.0
+offset_right = 243.0
+offset_bottom = 288.0
+mouse_filter = 2
+theme_override_colors/default_color = Color(0, 0, 0, 1)
+bbcode_enabled = true
+
+[node name="saveButton3" type="Button" parent="." unique_id=1075831825]
+offset_left = 824.0
+offset_top = 107.0
+offset_right = 1112.0
+offset_bottom = 395.0
+theme_override_styles/normal = SubResource("StyleBoxTexture_gtpok")
+theme_override_styles/pressed = SubResource("StyleBoxTexture_1oqnx")
+theme_override_styles/hover = SubResource("StyleBoxTexture_tyru1")
+theme_override_styles/disabled = SubResource("StyleBoxTexture_hm5qx")
+
+[node name="saveInfo" type="RichTextLabel" parent="saveButton3" unique_id=1733955416]
+layout_mode = 0
+offset_left = 54.0
+offset_top = 63.0
+offset_right = 243.0
+offset_bottom = 288.0
+mouse_filter = 2
+theme_override_colors/default_color = Color(0, 0, 0, 1)
+bbcode_enabled = true
+
+[node name="delete1" type="Button" parent="." unique_id=1597029799]
+offset_left = 95.0
+offset_top = 435.0
+offset_right = 335.0
+offset_bottom = 515.0
+theme_override_styles/normal = SubResource("StyleBoxTexture_nmjlg")
+theme_override_styles/pressed = SubResource("StyleBoxTexture_ckiq4")
+theme_override_styles/hover = SubResource("StyleBoxTexture_lc2nn")
+theme_override_styles/disabled = SubResource("StyleBoxTexture_kbr38")
+text = "Delete"
+
+[node name="delete2" type="Button" parent="." unique_id=1767009448]
+offset_left = 477.0
+offset_top = 472.0
+offset_right = 717.0
+offset_bottom = 552.0
+theme_override_styles/normal = SubResource("StyleBoxTexture_nmjlg")
+theme_override_styles/pressed = SubResource("StyleBoxTexture_ckiq4")
+theme_override_styles/hover = SubResource("StyleBoxTexture_lc2nn")
+theme_override_styles/disabled = SubResource("StyleBoxTexture_kbr38")
+text = "Delete"
+
+[node name="delete3" type="Button" parent="." unique_id=119466252]
+offset_left = 835.0
+offset_top = 401.0
+offset_right = 1075.0
+offset_bottom = 481.0
+theme_override_styles/normal = SubResource("StyleBoxTexture_nmjlg")
+theme_override_styles/pressed = SubResource("StyleBoxTexture_ckiq4")
+theme_override_styles/hover = SubResource("StyleBoxTexture_lc2nn")
+theme_override_styles/disabled = SubResource("StyleBoxTexture_kbr38")
+text = "Delete"
+
+[connection signal="pressed" from="saveButton1" to="." method="_on_save_button_1_pressed"]
+[connection signal="pressed" from="saveButton2" to="." method="_on_save_button_2_pressed"]
+[connection signal="pressed" from="saveButton3" to="." method="_on_save_button_3_pressed"]
+[connection signal="pressed" from="delete1" to="." method="_on_delete_1_pressed"]
+[connection signal="pressed" from="delete2" to="." method="_on_delete_2_pressed"]
+[connection signal="pressed" from="delete3" to="." method="_on_delete_3_pressed"]

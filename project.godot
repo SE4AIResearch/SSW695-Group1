@@ -22,10 +22,11 @@ SaveTool="*uid://ceqm1ltehlafn"
 TimeTool="*uid://ch3prtp0hjnxa"
 NumberVisualizer="*uid://cvghhtgb17hcm"
 PlayerTool="*uid://b4ab01cuo5f4k"
+AudioManager="*res://Tools/AudioManager/AudioManager.gd"
 
 [display]
 
-window/stretch/mode="viewport"
+window/stretch/mode="canvas_items"
 window/snap/snap_2d_transforms_to_pixel=true
 
 [dotnet]

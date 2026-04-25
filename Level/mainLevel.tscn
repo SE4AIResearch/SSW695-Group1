@@ -22,6 +22,7 @@
 [ext_resource type="Texture2D" uid="uid://bv1wdylubep72" path="res://UI/Theme/Back/backPressed.png" id="9_5o0fy"]
 [ext_resource type="Script" uid="uid://cl6r473skkxqf" path="res://Level/calendar.gd" id="9_ce85j"]
 [ext_resource type="Texture2D" uid="uid://df0nfm3f5alcg" path="res://UI/Theme/MainLevel/RandomEvent/RandomEventRinging2.png" id="9_qbsll"]
+[ext_resource type="FontFile" uid="uid://b0lji18tmt8ua" path="res://UI/Theme/Fonts/jakes-writing-font/Jakeswriting-P2Zr.ttf" id="10_62x8c"]
 [ext_resource type="Texture2D" uid="uid://b8mmjep4nbkf4" path="res://UI/Theme/Back/backHover.png" id="10_adavl"]
 [ext_resource type="Texture2D" uid="uid://bljlfsy1s2b6v" path="res://UI/Theme/MainLevel/RandomEvent/RandomEventRinging1.png" id="10_khv2s"]
 [ext_resource type="Texture2D" uid="uid://du1kpy7dje0d8" path="res://UI/Theme/MainLevel/date/progressBar.png" id="10_skrj4"]
@@ -280,6 +281,9 @@ offset_left = -53.157883
 offset_top = -50.000008
 offset_right = -1.0526276
 offset_bottom = -21.052639
+theme_override_fonts/normal_font = ExtResource("10_62x8c")
+theme_override_fonts/bold_font = ExtResource("10_62x8c")
+theme_override_font_sizes/normal_font_size = 22
 bbcode_enabled = true
 text = "Sprint:"
 vertical_alignment = 1
@@ -289,6 +293,9 @@ offset_left = -1.0526333
 offset_top = -50.000008
 offset_right = 53.157906
 offset_bottom = -21.052639
+theme_override_fonts/normal_font = ExtResource("10_62x8c")
+theme_override_fonts/bold_font = ExtResource("10_62x8c")
+theme_override_font_sizes/normal_font_size = 26
 bbcode_enabled = true
 text = "0/0"
 horizontal_alignment = 2
@@ -300,6 +307,9 @@ offset_top = -21.052643
 offset_right = -4.736847
 offset_bottom = 13.157883
 theme_override_colors/default_color = Color(0, 0, 0, 1)
+theme_override_fonts/normal_font = ExtResource("10_62x8c")
+theme_override_fonts/bold_font = ExtResource("10_62x8c")
+theme_override_font_sizes/normal_font_size = 22
 bbcode_enabled = true
 text = "Week:"
 vertical_alignment = 1
@@ -310,9 +320,25 @@ offset_top = -21.052643
 offset_right = 53.157913
 offset_bottom = 13.157883
 theme_override_colors/default_color = Color(0, 0, 0, 1)
+theme_override_fonts/normal_font = ExtResource("10_62x8c")
+theme_override_fonts/bold_font = ExtResource("10_62x8c")
+theme_override_font_sizes/normal_font_size = 26
 bbcode_enabled = true
 text = "0/0"
 horizontal_alignment = 2
+vertical_alignment = 1
+
+[node name="weekStatus" type="RichTextLabel" parent="UI/Calendar/TextParent" unique_id=647893365]
+offset_left = -55.263184
+offset_top = 18.421043
+offset_right = 55.263123
+offset_bottom = 52.63157
+theme_override_colors/default_color = Color(0, 0, 0, 1)
+theme_override_fonts/normal_font = ExtResource("10_62x8c")
+theme_override_fonts/bold_font = ExtResource("10_62x8c")
+theme_override_font_sizes/normal_font_size = 18
+bbcode_enabled = true
+horizontal_alignment = 1
 vertical_alignment = 1
 
 [node name="weekBar" type="TextureProgressBar" parent="UI/Calendar" unique_id=1335137699]
@@ -381,7 +407,6 @@ offset_left = 975.0
 offset_top = 390.0
 offset_right = 1106.0
 offset_bottom = 417.0
-mouse_filter = 2
 text = "Currency: $0.00"
 metadata/_edit_use_anchors_ = true
 
@@ -550,6 +575,14 @@ metadata/_edit_use_anchors_ = true
 [node name="Pause" parent="UI" unique_id=1977347548 instance=ExtResource("8_5ay6t")]
 visible = false
 
+[node name="Button" type="Button" parent="UI" unique_id=180667150]
+visible = false
+offset_left = 12.0
+offset_top = 608.0
+offset_right = 173.0
+offset_bottom = 639.0
+text = "Project Completion "
+
 [node name="Camera2D" type="Camera2D" parent="." unique_id=1819020716]
 position = Vector2(576, 324)
 
@@ -564,3 +597,4 @@ script = ExtResource("5_f8h88")
 [connection signal="pressed" from="UI/PCButtons/PCPower" to="UI" method="_on_pc_power_pressed"]
 [connection signal="pressed" from="UI/BackButton" to="UI" method="_on_back_button_pressed"]
 [connection signal="pressed" from="UI/PauseButton" to="UI" method="_on_pause_button_pressed"]
+[connection signal="pressed" from="UI/Button" to="UI" method="_on_button_pressed"]

@@ -106,22 +106,3 @@ scale = Vector2(4, 4)
 texture_under = ExtResource("3_vear5")
 texture_progress = ExtResource("4_5q15i")
 tint_progress = Color(1, 1, 0.17254902, 1)
-
-[node name="stakeholderSatisfactionLabel" type="Label" parent="." unique_id=1615798467]
-offset_left = 159.0
-offset_top = 528.0
-offset_right = 356.0
-offset_bottom = 558.0
-text = "Stakeholder Satisfaction: "
-horizontal_alignment = 1
-vertical_alignment = 1
-
-[node name="stakeholderSatisfactionBar" type="TextureProgressBar" parent="." unique_id=1833654546]
-offset_left = 366.0
-offset_top = 514.0
-offset_right = 430.0
-offset_bottom = 530.0
-scale = Vector2(4, 4)
-texture_under = ExtResource("3_vear5")
-texture_progress = ExtResource("4_5q15i")
-tint_progress = Color(2.117753e-06, 0.7839653, 0.19948468, 1)

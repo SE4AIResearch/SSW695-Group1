@@ -90,6 +90,7 @@ func setButtonVisual(menuButton: Button):
 	menuButton.self_modulate = Color(randf_range(.5,1), randf_range(.5,1), randf_range(.5,1))
 
 func initializeEvent():
+	PlayerTool.totalEvents += 1
 	var eventPool: Array = []
 	eventPool.append_array(eventList.general_events)
 	if PlayerTool.project != null and eventList.project_events.has(PlayerTool.project.projectName):
@@ -166,7 +167,9 @@ func processChoice(choiceIndex: int):
 		"FrontEnd", "BackEnd", "Documenting":
 			_apply_metric_deltas(outcome)
 		"Stakeholder":
-			if outcome is Array and outcome.size() >= 3:
+			if PlayerTool.project == null:
+				pass
+			elif outcome is Array and outcome.size() >= 3:
 				PlayerTool.project.sprintAmount += int(outcome[0])
 				PlayerTool.project.sprintLength += int(outcome[1])
 				PlayerTool.project.sprintMetricAmount += int(outcome[2])
@@ -191,6 +194,14 @@ func _apply_metric_deltas(metricDeltas) -> void:
 		PlayerTool.changeMetricByName(str(metricKey), int(metricDeltas.get(metricKey, 0)))
 
 func evaluateChoice(choiceIndex: int) -> String:
+	var chosenOutcome = choiceOutcomes[choiceIndex]
+	if chosenOutcome is Dictionary and chosenOutcome.has("reliability"):
+		var rel = int(chosenOutcome["reliability"])
+		if rel == 1:
+			return "good"
+		elif rel == 0:
+			return "bad"
+
 	var scores = []
 	for outcome in choiceOutcomes:
 		if outcome is Dictionary:
@@ -240,14 +251,15 @@ func showFeedback(outcome, quality: String, eventType: String):
 	var text = "[center]"
 	if outcome is Dictionary and outcome.size() > 0:
 		for key in outcome.keys():
-			var value = outcome[key]
-			var displayName = formatMetricName(key)
-			if value > 0:
-				text += "[color=green]+" + str(value) + " " + displayName + "[/color]\n"
-			elif value < 0:
-				text += "[color=red]" + str(value) + " " + displayName + "[/color]\n"
-			else:
-				text += str(value) + " " + displayName + "\n"
+			if key != "reliability":
+				var value = outcome[key]
+				var displayName = formatMetricName(key)
+				if value > 0:
+					text += "[color=green]+" + str(value) + " " + displayName + "[/color]\n"
+				elif value < 0:
+					text += "[color=red]" + str(value) + " " + displayName + "[/color]\n"
+				else:
+					text += str(value) + " " + displayName + "\n"
 	elif eventType == "Stakeholder" and outcome is Array and outcome.size() >= 3:
 		var labels = ["Sprint Amount", "Sprint Length", "Sprint Metrics"]
 		for i in range(3):

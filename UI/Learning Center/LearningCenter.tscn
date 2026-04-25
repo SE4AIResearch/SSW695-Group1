@@ -12,15 +12,6 @@
 [ext_resource type="Texture2D" uid="uid://fi7cm2jdqiqa" path="res://UI/Theme/PCTheme/arrow/nextHover.png" id="10_pehpa"]
 [ext_resource type="Texture2D" uid="uid://ckh4yuj22ffnl" path="res://UI/Theme/PCTheme/arrow/nextDisabled.png" id="11_vw6wv"]
 
-[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_40kxx"]
-texture = ExtResource("3_urb25")
-
-[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_s0rqm"]
-texture = ExtResource("4_iymme")
-
-[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_dlx5r"]
-texture = ExtResource("5_3gx42")
-
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_va0p5"]
 texture = ExtResource("8_3gx42")
 
@@ -32,6 +23,15 @@ texture = ExtResource("10_pehpa")
 
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_112x7"]
 texture = ExtResource("11_vw6wv")
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_40kxx"]
+texture = ExtResource("3_urb25")
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_s0rqm"]
+texture = ExtResource("4_iymme")
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_dlx5r"]
+texture = ExtResource("5_3gx42")
 
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_iymme"]
 texture = ExtResource("8_3gx42")
@@ -218,7 +218,10 @@ offset_left = 429.0
 offset_top = 148.0
 offset_right = 1081.0
 offset_bottom = 560.0
+mouse_filter = 2
+bbcode_enabled = true
 
+[connection signal="pressed" from="BackButton" to="." method="_on_back_button_pressed"]
 [connection signal="pressed" from="Categories/ScrollContainer/VBoxContainer/SDLC Overview" to="." method="_on_sdlc_overview_pressed"]
 [connection signal="pressed" from="Categories/ScrollContainer/VBoxContainer/Agile" to="." method="_on_agile_pressed"]
 [connection signal="pressed" from="Categories/ScrollContainer/VBoxContainer/Waterfall" to="." method="_on_waterfall_pressed"]
@@ -228,7 +231,6 @@ offset_bottom = 560.0
 [connection signal="pressed" from="Categories/ScrollContainer/VBoxContainer/StakeholderManagement" to="." method="_on_stakeholder_management_pressed"]
 [connection signal="pressed" from="Categories/ScrollContainer/VBoxContainer/SprintPlanningBasics" to="." method="_on_sprint_planning_basics_pressed"]
 [connection signal="pressed" from="Categories/ScrollContainer/VBoxContainer/RiskManagement" to="." method="_on_risk_management_pressed"]
-[connection signal="pressed" from="BackButton" to="." method="_on_back_button_pressed"]
 [connection signal="pressed" from="Page/previousButton" to="." method="_on_previous_button_pressed"]
 [connection signal="pressed" from="Page/nextButton" to="." method="_on_next_button_pressed"]
 [connection signal="pressed" from="Page/ReturnToLCMenu" to="." method="_on_return_to_lc_menu_pressed"]

@@ -7,6 +7,7 @@ var projectItem = preload("res://Projects/projectBase.tscn")
 var methodItem = preload("res://UI/InGame/ProjectSetup/MethodItem/MethodItem.tscn")
 var methodList = load("res://Projects/MethodologyList.gd").new()
 var projectChoiceItem = preload("res://UI/InGame/ProjectSetup/ProjectItem/ProjectItem.tscn")
+var TutorialModal: PackedScene = preload("res://UI/InGame/TutorialModal/TutorialModal.tscn")
 
 const PROJECT_CHOICES_HEIGHT := 305.0
 const LEARN_MORE_BUTTON_WIDTH := 160.0
@@ -172,6 +173,7 @@ func generateMetricsChoices():
 		pass
 	_layout_method_cards($MethodologyChoose/ScrollContainer.offset_right - $MethodologyChoose/ScrollContainer.offset_left)
 	_update_confirm_button_state()
+	call_deferred("_show_methodology_tutorial")
 	pass
 
 func methodSelected(chosenMetric, chosenButton: Button):
@@ -247,3 +249,31 @@ func _reset_learning_center() -> void:
 
 func _on_learning_center_close_requested() -> void:
 	_hide_learning_center()
+
+func _show_methodology_tutorial() -> void:
+	_show_tutorial(
+		"methodology_intro",
+		"Project Methodology",
+		"Before finalizing your choice, open Learn More to compare the methodologies. The right process can make the whole project easier to manage."
+	)
+
+func _show_tutorial(tutorial_key: String, title: String, message: String) -> void:
+	if !PlayerTool.should_show_tutorial(tutorial_key):
+		return
+
+	var modal: TutorialModalPanel = TutorialModal.instantiate() as TutorialModalPanel
+	_get_tutorial_modal_parent().add_child(modal)
+	modal.setup(title, message)
+	modal.dismissed.connect(_on_tutorial_dismissed.bind(tutorial_key))
+
+func _on_tutorial_dismissed(tutorial_key: String) -> void:
+	PlayerTool.mark_tutorial_seen(tutorial_key)
+	SaveTool.savePlayerData()
+
+func _get_tutorial_modal_parent() -> Node:
+	var scene_root: Node = get_tree().current_scene
+	if scene_root != null:
+		var ui_layer: Node = scene_root.get_node_or_null("UI")
+		if ui_layer != null:
+			return ui_layer
+	return self
