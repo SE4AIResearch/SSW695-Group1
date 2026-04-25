@@ -48,24 +48,24 @@ func _on_hover_area_mouse_exited() -> void:
 	hover_ended.emit(self)
 
 func work():
-	match resting:
-		false:
-			if PlayerTool.project != null && PlayerTool.isWeekActive():
-				$staminaBar.value -= 1
-				if $staminaBar.value <= 0:
-					resting = true
-					$staminaBar.tint_under = restingColor
-					$staminaBar.tint_progress = restingColor
-					AudioManager.notify_worker_stamina_depleted()
-
-		true:
-			$staminaBar.value += 5
-			if $staminaBar.value >= staminaStat:
-				$staminaBar.value = staminaStat
-				$staminaBar.tint_under = workingColor
-				$staminaBar.tint_progress = workingColor
-				resting = false
-				AudioManager.notify_worker_resting_ended()
+	if PlayerTool.project != null && PlayerTool.isWeekActive():
+		match resting:
+			false:
+					$staminaBar.value -= 2
+					if $staminaBar.value <= 0:
+						resting = true
+						$staminaBar.tint_under = restingColor
+						$staminaBar.tint_progress = restingColor
+						AudioManager.notify_worker_stamina_depleted()
+	
+			true:
+				$staminaBar.value += 6
+				if $staminaBar.value >= staminaStat:
+					$staminaBar.value = staminaStat
+					$staminaBar.tint_under = workingColor
+					$staminaBar.tint_progress = workingColor
+					resting = false
+					AudioManager.notify_worker_resting_ended()
 
 func _exit_tree() -> void:
 	if resting:
