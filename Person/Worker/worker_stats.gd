@@ -7,6 +7,13 @@ const DEFAULT_WORKER_STATS := {
 	"speed": 100,
 	"stamina": 100,
 }
+const DEFAULT_UPGRADE_STAT_BONUSES := {
+	"front_end": 0.0,
+	"back_end": 0.0,
+	"documenting": 0.0,
+	"speed": 0.0,
+	"stamina": 0.0,
+}
 
 # Change this for testing to force starter workers into a specific tier.
 const STARTING_WORKER_TIER := 1
@@ -132,6 +139,9 @@ const UPPER_HALF_UPPER_VALUE_CHANCE := 0.7
 static func get_default_worker_stats() -> Dictionary:
 	return DEFAULT_WORKER_STATS.duplicate(true)
 
+static func get_default_upgrade_stat_bonuses() -> Dictionary:
+	return DEFAULT_UPGRADE_STAT_BONUSES.duplicate(true)
+
 static func get_starting_worker_stats(_worker_index: int) -> Dictionary:
 	return roll_worker_stats_for_tier(STARTING_WORKER_TIER)
 
@@ -206,3 +216,4 @@ static func apply_to_worker(worker, stats: Dictionary = {}) -> void:
 	worker.documentingStat = resolved_stats["documenting"]
 	worker.speedStat = resolved_stats["speed"]
 	worker.staminaStat = resolved_stats["stamina"]
+	worker.upgradeStatBonuses = get_default_upgrade_stat_bonuses()

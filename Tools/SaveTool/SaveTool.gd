@@ -3,6 +3,13 @@ extends Node
 const SaveListPath = "user://saves.cfg"
 const SaveDirectory = "user://saves/"
 const SaveSlots = ["Save Slot 1", "Save Slot 2", "Save Slot 3"]
+const DEFAULT_WORKER_UPGRADE_STAT_BONUSES := {
+	"front_end": 0.0,
+	"back_end": 0.0,
+	"documenting": 0.0,
+	"speed": 0.0,
+	"stamina": 0.0,
+}
 
 var current_save_name: String = "Save Slot 1"
 var save_list: Array = SaveSlots.duplicate()
@@ -300,6 +307,7 @@ func serializeWorkers() -> Array:
 			"documentingStat": worker.documentingStat,
 			"speedStat": worker.speedStat,
 			"staminaStat": worker.staminaStat,
+			"upgradeStatBonuses": _normalize_worker_upgrade_bonuses(worker.upgradeStatBonuses),
 			"headSpritePath": worker.headSpritePath,
 			"hairSpritePath": worker.hairSpritePath,
 			"mouthSpritePath": worker.mouthSpritePath,
@@ -328,6 +336,7 @@ func deserializeWorkers(serialized_workers: Array):
 		}
 		var worker = PersonConstructor.generateWorker(stats)
 		worker.personName = w_data.personName
+		worker.upgradeStatBonuses = _normalize_worker_upgrade_bonuses(w_data.get("upgradeStatBonuses", {}))
 		worker.headSpritePath = w_data.headSpritePath
 		worker.hairSpritePath = w_data.hairSpritePath
 		worker.mouthSpritePath = w_data.mouthSpritePath
@@ -345,3 +354,9 @@ func deserializeWorkers(serialized_workers: Array):
 		worker.get_node("hairSprite").modulate = w_data.hairModulate
 		
 		PlayerTool.newHire(worker, false)
+
+func _normalize_worker_upgrade_bonuses(upgrade_stat_bonuses: Dictionary) -> Dictionary:
+	var normalized_bonuses := DEFAULT_WORKER_UPGRADE_STAT_BONUSES.duplicate(true)
+	for stat_key in normalized_bonuses.keys():
+		normalized_bonuses[stat_key] = float(upgrade_stat_bonuses.get(stat_key, 0.0))
+	return normalized_bonuses

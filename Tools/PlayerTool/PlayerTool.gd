@@ -781,11 +781,27 @@ func _apply_worker_stat_multiplier(worker, stat_key: String, multiplier: float) 
 		return
 	var property_name := str(WORKER_UPGRADE_STAT_PROPERTIES.get(stat_key))
 	var current_value := int(worker.get(property_name))
-	var updated_value := maxi(0, int(round(float(current_value) * multiplier)))
+	var updated_value := maxi(0, int(floorf(float(current_value) * multiplier)))
+	_track_worker_upgrade_bonus(worker, stat_key, float(updated_value - current_value))
 	if stat_key == "stamina":
 		_apply_worker_stamina_value(worker, updated_value)
 	else:
 		worker.set(property_name, updated_value)
+
+func _track_worker_upgrade_bonus(worker, stat_key: String, bonus: float) -> void:
+	if bonus <= 0.0:
+		return
+	if typeof(worker.get("upgradeStatBonuses")) != TYPE_DICTIONARY:
+		worker.upgradeStatBonuses = {}
+	_ensure_worker_upgrade_bonus_keys(worker)
+	worker.upgradeStatBonuses[stat_key] = float(worker.upgradeStatBonuses.get(stat_key, 0.0)) + bonus
+
+func _ensure_worker_upgrade_bonus_keys(worker) -> void:
+	if typeof(worker.get("upgradeStatBonuses")) != TYPE_DICTIONARY:
+		worker.upgradeStatBonuses = {}
+	for stat_key in WORKER_UPGRADE_STAT_PROPERTIES.keys():
+		if not worker.upgradeStatBonuses.has(stat_key):
+			worker.upgradeStatBonuses[stat_key] = 0.0
 
 func _apply_worker_stamina_value(worker, updated_stamina: int) -> void:
 	var stamina_bar = worker.get_node_or_null("staminaBar")
