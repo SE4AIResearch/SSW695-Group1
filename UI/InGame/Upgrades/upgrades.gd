@@ -98,6 +98,9 @@ func _ready() -> void:
 	PCWindowLayout.apply(self)
 	_apply_content_layout()
 	_hide_insufficient_funds_popup()
+	update_currency()
+	if not PlayerTool.currencyChanged.is_connected(update_currency):
+		PlayerTool.currencyChanged.connect(update_currency)
 	_populate_columns()
 	if not PlayerTool.officeTierChanged.is_connected(_populate_columns):
 		PlayerTool.officeTierChanged.connect(_populate_columns)
@@ -110,6 +113,11 @@ func _apply_content_layout() -> void:
 	var header_bottom := header_top + HEADER_HEIGHT
 	var content_top := header_bottom + HEADER_TO_CONTENT_GAP
 
+	$Currency.offset_left = PCWindowLayout.WINDOW_LEFT + 40.0
+	$Currency.offset_top = PCWindowLayout.WINDOW_TOP + PCWindowLayout.TITLE_TOP_PADDING
+	$Currency.offset_right = $Currency.offset_left + 220.0
+	$Currency.offset_bottom = $Currency.offset_top + PCWindowLayout.TITLE_HEIGHT
+
 	$HeaderColumns.offset_left = content_rect.position.x + CONTENT_PADDING
 	$HeaderColumns.offset_top = header_top
 	$HeaderColumns.offset_right = content_rect.position.x + content_rect.size.x - CONTENT_PADDING
@@ -119,6 +127,9 @@ func _apply_content_layout() -> void:
 	$ScrollContainer.offset_top = content_top
 	$ScrollContainer.offset_right = content_rect.position.x + content_rect.size.x - CONTENT_PADDING
 	$ScrollContainer.offset_bottom = content_rect.position.y + content_rect.size.y - CONTENT_PADDING
+
+func update_currency() -> void:
+	$Currency.text = "Currency: $%0.2f" % PlayerTool.currency
 
 func _populate_columns() -> void:
 	var header_columns: HBoxContainer = $HeaderColumns

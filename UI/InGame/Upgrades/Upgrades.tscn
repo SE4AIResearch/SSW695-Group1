@@ -59,6 +59,14 @@ text = "Upgrades"
 horizontal_alignment = 1
 vertical_alignment = 1
 
+[node name="Currency" type="Label" parent="."]
+offset_left = 110.0
+offset_top = 100.0
+offset_right = 330.0
+offset_bottom = 138.0
+text = "Currency: $0.00"
+vertical_alignment = 1
+
 [node name="HeaderColumns" type="HBoxContainer" parent="." unique_id=494411287]
 offset_left = 454.0
 offset_top = 92.0
