@@ -167,7 +167,9 @@ func processChoice(choiceIndex: int):
 		"FrontEnd", "BackEnd", "Documenting":
 			_apply_metric_deltas(outcome)
 		"Stakeholder":
-			if outcome is Array and outcome.size() >= 3:
+			if PlayerTool.project == null:
+				pass
+			elif outcome is Array and outcome.size() >= 3:
 				PlayerTool.project.sprintAmount += int(outcome[0])
 				PlayerTool.project.sprintLength += int(outcome[1])
 				PlayerTool.project.sprintMetricAmount += int(outcome[2])

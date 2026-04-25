@@ -423,15 +423,10 @@ func resolveWeek() -> bool:
 	var sprintFinished: bool = projWeek >= int(project.sprintLength)
 	if sprintFinished:
 		if projSprint >= int(project.sprintAmount) or _allBacklogItemsComplete():
+			completed_project_count += 1
 			projectCompleted.emit()
 			deadlineReached.emit()
-			completed_project_count += 1
-			project = null
-			backlogItems = []
-			sprintGoal = {}
-			projWeek = 0
-			projSprint = 0
-			loopPhase = LOOP_NO_PROJECT
+			resetProjectStats()
 		else:
 			earnSprintMoney()
 			sprintComplete.emit()

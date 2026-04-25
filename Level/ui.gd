@@ -147,13 +147,18 @@ func toggleProjectButtons():
 	$BacklogButton.disabled = !hasProject
 
 func startEvent():
-	if $NewMenu.get_child_count() == 0:
-		get_tree().paused = true
-		$randomEventRinger.play("ringing")
-		$randomEventRinger/ringerAudio.play()
-		await $randomEventRinger/ringerAudio.finished
-		$randomEventRinger.play("idle")
-		createMenu(randomEventMenu.instantiate())
+	if PlayerTool.project == null or $NewMenu.get_child_count() != 0:
+		return
+	get_tree().paused = true
+	$randomEventRinger.play("ringing")
+	$randomEventRinger/ringerAudio.play()
+	await $randomEventRinger/ringerAudio.finished
+	$randomEventRinger.play("idle")
+	if PlayerTool.project == null or $NewMenu.get_child_count() != 0:
+		if $NewMenu.get_child_count() == 0:
+			get_tree().paused = false
+		return
+	createMenu(randomEventMenu.instantiate())
 
 func runProjectCompletion():
 	createMenu(projectCompletionMenu.instantiate())
