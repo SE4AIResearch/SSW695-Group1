@@ -104,12 +104,18 @@ jobs:
 
       - name: Package DMG
         run: |
+          set -euxo pipefail
+          DMG_PATH="build/macos/dist/${PRODUCT_SLUG}-${GITHUB_REF_NAME}-macos.dmg"
+          DMG_STAGING_DIR="$(mktemp -d /tmp/${PRODUCT_SLUG}-dmg.XXXXXX)"
+          rm -f "$DMG_PATH"
+          hdiutil detach "/Volumes/${PROJECT_NAME}" -force >/dev/null 2>&1 || true
+          ditto "build/macos/${PRODUCT_SLUG}.app" "${DMG_STAGING_DIR}/${PRODUCT_SLUG}.app"
           hdiutil create \
             -volname "${PROJECT_NAME}" \
-            -srcfolder "build/macos/${PRODUCT_SLUG}.app" \
+            -srcfolder "$DMG_STAGING_DIR" \
             -ov \
             -format UDZO \
-            "build/macos/dist/${PRODUCT_SLUG}-${GITHUB_REF_NAME}-macos.dmg"
+            "$DMG_PATH"
 
       - name: Upload macOS artifact
         uses: actions/upload-artifact@v4
