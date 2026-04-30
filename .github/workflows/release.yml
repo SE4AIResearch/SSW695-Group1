@@ -102,6 +102,15 @@ jobs:
           mkdir -p build/macos/dist
           godot --headless --path . --export-release "GameDevTycoonmacOS" "build/macos/${PRODUCT_SLUG}.app"
 
+      - name: Normalize macOS app signature
+        run: |
+          set -euxo pipefail
+          APP_PATH="build/macos/${PRODUCT_SLUG}.app"
+          codesign --remove-signature "$APP_PATH" || true
+          codesign --force --deep --sign - "$APP_PATH"
+          codesign --verify --deep --strict --verbose=4 "$APP_PATH"
+          spctl --assess --type execute --verbose=4 "$APP_PATH" || true
+
       - name: Package DMG
         run: |
           set -euxo pipefail
