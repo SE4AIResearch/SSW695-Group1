@@ -42,9 +42,13 @@ jobs:
           mkdir -p "$HOME/bin" "$HOME/Library/Application Support/Godot/export_templates/4.6.stable"
           curl -fsSL "https://github.com/godotengine/godot/releases/download/${GODOT_VERSION}/${GODOT_DOWNLOAD_NAME}.zip" -o /tmp/godot.zip
           unzip -q /tmp/godot.zip -d /tmp/godot
-          GODOT_APP_PATH="$(find /tmp/godot -maxdepth 2 -type d -name '*.app' | head -n 1)"
-          test -n "$GODOT_APP_PATH"
-          install "${GODOT_APP_PATH}/Contents/MacOS/Godot" "$HOME/bin/godot"
+          GODOT_BIN="$(find /tmp/godot -type f -path '*/Contents/MacOS/Godot' -print -quit)"
+          if [ -z "$GODOT_BIN" ]; then
+            find /tmp/godot -maxdepth 4 -print | sed -n '1,200p'
+            echo "Unable to locate Godot macOS binary inside extracted archive" >&2
+            exit 1
+          fi
+          install "$GODOT_BIN" "$HOME/bin/godot"
           chmod +x "$HOME/bin/godot"
           curl -fsSL "https://github.com/godotengine/godot/releases/download/${GODOT_VERSION}/${GODOT_TEMPLATES_ARCHIVE}" -o /tmp/godot-templates.tpz
           unzip -q /tmp/godot-templates.tpz -d /tmp/godot-templates
