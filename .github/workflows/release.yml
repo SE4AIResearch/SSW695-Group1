@@ -42,7 +42,9 @@ jobs:
           mkdir -p "$HOME/bin" "$HOME/Library/Application Support/Godot/export_templates/4.6.stable"
           curl -fsSL "https://github.com/godotengine/godot/releases/download/${GODOT_VERSION}/${GODOT_DOWNLOAD_NAME}.zip" -o /tmp/godot.zip
           unzip -q /tmp/godot.zip -d /tmp/godot
-          install "/tmp/godot/${GODOT_DOWNLOAD_NAME}.app/Contents/MacOS/Godot" "$HOME/bin/godot"
+          GODOT_APP_PATH="$(find /tmp/godot -maxdepth 2 -type d -name '*.app' | head -n 1)"
+          test -n "$GODOT_APP_PATH"
+          install "${GODOT_APP_PATH}/Contents/MacOS/Godot" "$HOME/bin/godot"
           chmod +x "$HOME/bin/godot"
           curl -fsSL "https://github.com/godotengine/godot/releases/download/${GODOT_VERSION}/${GODOT_TEMPLATES_ARCHIVE}" -o /tmp/godot-templates.tpz
           unzip -q /tmp/godot-templates.tpz -d /tmp/godot-templates
