@@ -1,0 +1,147 @@
+name: Release
+
+on:
+  push:
+    tags:
+      - "v*"
+
+permissions:
+  contents: write
+
+env:
+  GODOT_VERSION: "4.6-stable"
+  PRODUCT_SLUG: "SoftwareDevelopmentTycoon"
+  PROJECT_NAME: "Software Development Tycoon"
+
+jobs:
+  validate-release:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout tagged commit
+        uses: actions/checkout@v4
+
+      - name: Validate release tag and export presets
+        run: |
+          python3 scripts/ci/validate_release_config.py --release-tag "${GITHUB_REF_NAME}"
+
+  build-macos:
+    needs: validate-release
+    runs-on: macos-latest
+    env:
+      GODOT_DOWNLOAD_NAME: "Godot_v4.6-stable_macos.universal"
+      GODOT_TEMPLATES_ARCHIVE: "Godot_v4.6-stable_export_templates.tpz"
+
+    steps:
+      - name: Checkout tagged commit
+        uses: actions/checkout@v4
+
+      - name: Set up Godot
+        run: |
+          set -euxo pipefail
+          mkdir -p "$HOME/bin" "$HOME/Library/Application Support/Godot/export_templates/4.6.stable"
+          curl -fsSL "https://github.com/godotengine/godot/releases/download/${GODOT_VERSION}/${GODOT_DOWNLOAD_NAME}.zip" -o /tmp/godot.zip
+          unzip -q /tmp/godot.zip -d /tmp/godot
+          install "/tmp/godot/${GODOT_DOWNLOAD_NAME}.app/Contents/MacOS/Godot" "$HOME/bin/godot"
+          chmod +x "$HOME/bin/godot"
+          curl -fsSL "https://github.com/godotengine/godot/releases/download/${GODOT_VERSION}/${GODOT_TEMPLATES_ARCHIVE}" -o /tmp/godot-templates.tpz
+          unzip -q /tmp/godot-templates.tpz -d /tmp/godot-templates
+          cp -R /tmp/godot-templates/templates/. "$HOME/Library/Application Support/Godot/export_templates/4.6.stable/"
+          echo "$HOME/bin" >> "$GITHUB_PATH"
+
+      - name: Stamp release version
+        run: python3 scripts/ci/set_release_version.py --release-tag "${GITHUB_REF_NAME}" --platform macos
+
+      - name: Import project headlessly
+        run: godot --headless --path . --import
+
+      - name: Export macOS app bundle
+        run: |
+          mkdir -p build/macos/dist
+          godot --headless --path . --export-release "GameDevTycoonmacOS" "build/macos/${PRODUCT_SLUG}.app"
+
+      - name: Package DMG
+        run: |
+          hdiutil create \
+            -volname "${PROJECT_NAME}" \
+            -srcfolder "build/macos/${PRODUCT_SLUG}.app" \
+            -ov \
+            -format UDZO \
+            "build/macos/dist/${PRODUCT_SLUG}-${GITHUB_REF_NAME}-macos.dmg"
+
+      - name: Upload macOS artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: macos-release
+          path: build/macos/dist/*.dmg
+
+  build-windows:
+    needs: validate-release
+    runs-on: ubuntu-latest
+    env:
+      GODOT_DOWNLOAD_NAME: "Godot_v4.6-stable_linux.x86_64"
+      GODOT_TEMPLATES_ARCHIVE: "Godot_v4.6-stable_export_templates.tpz"
+
+    steps:
+      - name: Checkout tagged commit
+        uses: actions/checkout@v4
+
+      - name: Set up Godot
+        run: |
+          set -euxo pipefail
+          sudo apt-get update
+          sudo apt-get install -y wine64 zip
+          mkdir -p "$HOME/bin" "$HOME/.local/share/godot/export_templates/4.6.stable"
+          curl -fsSL "https://github.com/godotengine/godot/releases/download/${GODOT_VERSION}/${GODOT_DOWNLOAD_NAME}.zip" -o /tmp/godot.zip
+          unzip -q /tmp/godot.zip -d /tmp/godot
+          install "/tmp/godot/${GODOT_DOWNLOAD_NAME}" "$HOME/bin/godot"
+          chmod +x "$HOME/bin/godot"
+          curl -fsSL "https://github.com/godotengine/godot/releases/download/${GODOT_VERSION}/${GODOT_TEMPLATES_ARCHIVE}" -o /tmp/godot-templates.tpz
+          unzip -q /tmp/godot-templates.tpz -d /tmp/godot-templates
+          cp -R /tmp/godot-templates/templates/. "$HOME/.local/share/godot/export_templates/4.6.stable/"
+          echo "$HOME/bin" >> "$GITHUB_PATH"
+
+      - name: Stamp release version
+        run: python3 scripts/ci/set_release_version.py --release-tag "${GITHUB_REF_NAME}" --platform windows
+
+      - name: Import project headlessly
+        run: godot --headless --path . --import
+
+      - name: Export Windows build
+        run: |
+          mkdir -p build/windows/dist
+          godot --headless --path . --export-release "GameDevTycoonWindows" "build/windows/${PRODUCT_SLUG}.exe"
+
+      - name: Package Windows ZIP
+        run: |
+          cp README.md build/windows/README.txt
+          cd build/windows
+          zip -r "dist/${PRODUCT_SLUG}-${GITHUB_REF_NAME}-windows.zip" "${PRODUCT_SLUG}.exe" "${PRODUCT_SLUG}.pck" README.txt
+
+      - name: Upload Windows artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: windows-release
+          path: build/windows/dist/*.zip
+
+  publish-release:
+    needs:
+      - build-macos
+      - build-windows
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Download release artifacts
+        uses: actions/download-artifact@v4
+        with:
+          path: dist
+
+      - name: Publish GitHub release
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: ${{ github.ref_name }}
+          name: ${{ github.ref_name }}
+          generate_release_notes: true
+          files: |
+            dist/macos-release/*.dmg
+            dist/windows-release/*.zip
