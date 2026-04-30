@@ -42,24 +42,60 @@ jobs:
           mkdir -p "$HOME/bin" "$HOME/Library/Application Support/Godot/export_templates/4.6.stable"
           curl -fsSL "https://github.com/godotengine/godot/releases/download/${GODOT_VERSION}/${GODOT_DOWNLOAD_NAME}.zip" -o /tmp/godot.zip
           unzip -q /tmp/godot.zip -d /tmp/godot
-          GODOT_BIN="$(find /tmp/godot -type f -path '*/Contents/MacOS/Godot' -print -quit)"
-          if [ -z "$GODOT_BIN" ]; then
+          GODOT_APP_PATH="$(find /tmp/godot -type d -name '*.app' -print -quit)"
+          GODOT_BIN="${GODOT_APP_PATH}/Contents/MacOS/Godot"
+          if [ -z "$GODOT_APP_PATH" ] || [ ! -x "$GODOT_BIN" ]; then
             find /tmp/godot -maxdepth 4 -print | sed -n '1,200p'
-            echo "Unable to locate Godot macOS binary inside extracted archive" >&2
+            echo "Unable to locate Godot macOS app bundle or executable inside extracted archive" >&2
             exit 1
           fi
-          install "$GODOT_BIN" "$HOME/bin/godot"
-          chmod +x "$HOME/bin/godot"
+          ln -sf "$GODOT_BIN" "$HOME/bin/godot"
           curl -fsSL "https://github.com/godotengine/godot/releases/download/${GODOT_VERSION}/${GODOT_TEMPLATES_ARCHIVE}" -o /tmp/godot-templates.tpz
           unzip -q /tmp/godot-templates.tpz -d /tmp/godot-templates
           cp -R /tmp/godot-templates/templates/. "$HOME/Library/Application Support/Godot/export_templates/4.6.stable/"
           echo "$HOME/bin" >> "$GITHUB_PATH"
 
+      - name: Inspect macOS Godot bundle
+        run: |
+          set -euxo pipefail
+          GODOT_APP_PATH="$(find /tmp/godot -type d -name '*.app' -print -quit)"
+          GODOT_BIN="${GODOT_APP_PATH}/Contents/MacOS/Godot"
+          echo "GODOT_APP_PATH=$GODOT_APP_PATH"
+          echo "GODOT_BIN=$GODOT_BIN"
+          file "$GODOT_APP_PATH" || true
+          file "$GODOT_BIN" || true
+          codesign -dv "$GODOT_APP_PATH" || true
+          codesign -dv "$GODOT_BIN" || true
+          xattr -lr "$GODOT_APP_PATH" || true
+          xattr -lr "$GODOT_BIN" || true
+
+      - name: Verify macOS Godot launches
+        run: |
+          set -euxo pipefail
+          if ! godot --version; then
+            echo "Godot failed to launch; extracted archive layout follows:" >&2
+            find /tmp/godot -maxdepth 4 -print | sed -n '1,200p'
+            exit 1
+          fi
+
       - name: Stamp release version
         run: python3 scripts/ci/set_release_version.py --release-tag "${GITHUB_REF_NAME}" --platform macos
 
+      - name: Clean tracked editor cache
+        run: |
+          set -euxo pipefail
+          rm -rf .godot
+
       - name: Import project headlessly
-        run: godot --headless --path . --import
+        run: |
+          set -euxo pipefail
+          if ! godot --headless --path . --import; then
+            echo "Primary import failed; rerunning startup probes." >&2
+            godot --headless --path . --quit || true
+            godot --path . --editor --quit-after 1 || true
+            find /tmp/godot -maxdepth 4 -print | sed -n '1,200p'
+            exit 1
+          fi
 
       - name: Export macOS app bundle
         run: |
