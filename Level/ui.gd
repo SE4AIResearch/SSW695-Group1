@@ -69,35 +69,35 @@ func endMenu():
 func newProject():
 	endMenu()
 	_on_pc_power_pressed()
-	createMenu(BacklogMenu.instantiate())
+	createMenu(BacklogMenu.instantiate(),false)
 
 func _on_upgrades_button_pressed() -> void:
 	AudioManager.play_sfx("pc_click")
-	createMenu(UpgradesMenu.instantiate())
+	createMenu(UpgradesMenu.instantiate(),false)
 
 func _on_project_metrics_button_pressed() -> void:
 	AudioManager.play_sfx("pc_click")
 	var metricsMenu = ProjectMetricsMenu.instantiate()
 	metricsMenu.getCurrentMetrics(PlayerTool.project, PlayerTool.metrics)
-	createMenu(metricsMenu)
+	createMenu(metricsMenu,true)
 
 func _on_hiring_button_pressed() -> void:
 	AudioManager.play_sfx("pc_click")
-	createMenu(HiringMenu.instantiate())
+	createMenu(HiringMenu.instantiate(),false)
 
 func _on_backlog_button_pressed() -> void:
 	AudioManager.play_sfx("paper_rustle")
-	createMenu(BacklogMenu.instantiate())
+	createMenu(BacklogMenu.instantiate(),true)
 
 func _on_project_start_menu_pressed() -> void:
 	AudioManager.play_sfx("pc_click")
-	createMenu(ProjectSetupMenu.instantiate())
+	createMenu(ProjectSetupMenu.instantiate(),false)
 
 func _on_random_event_button_pressed() -> void:
 	AudioManager.play_sfx("pc_click")
-	createMenu(randomEventMenu.instantiate())
+	createMenu(randomEventMenu.instantiate(),false)
 
-func createMenu(menu):
+func createMenu(menu,allowBack):
 	if currentMenu != null and is_instance_valid(currentMenu):
 		currentMenu.queue_free()
 	$NewMenu.add_child(menu)
@@ -110,7 +110,8 @@ func createMenu(menu):
 			$PCButtons/UpgradesButton.disabled = true
 			$PCButtons/HiringButton.disabled = true
 			$PCButtons/projectStartMenu.disabled = true
-		false: $BackButton.visible = true
+		false:
+			if allowBack: $BackButton.visible = true
 
 func _on_pc_pressed() -> void:
 	#Insert code of screen lerping in size and position to the middle of the screen
@@ -163,10 +164,10 @@ func startEvent():
 		if $NewMenu.get_child_count() == 0:
 			get_tree().paused = false
 		return
-	createMenu(randomEventMenu.instantiate())
+	createMenu(randomEventMenu.instantiate(),false)
 
 func runProjectCompletion():
-	createMenu(projectCompletionMenu.instantiate())
+	createMenu(projectCompletionMenu.instantiate(),true)
 
 
 func _on_button_pressed() -> void: runProjectCompletion()
