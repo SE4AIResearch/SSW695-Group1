@@ -22,6 +22,7 @@ func _ready() -> void:
 	AudioManager.reset_resting_workers()
 	AudioManager.play_music("gameplay")
 	AudioManager.start_random_ambient()
+	$Pause.resumeSignal.connect(checkRandomEventRinger)
 
 func _exit_tree() -> void:
 	AudioManager.stop_random_ambient()
@@ -33,9 +34,13 @@ func _on_pause_button_pressed() -> void:
 	match get_tree().paused:
 		true: $Pause.resumePaused = true
 		false: $Pause.resumePaused = false
+	if $randomEventRinger/ringerAudio.playing:$randomEventRinger/ringerAudio.stream_paused = true
 	get_tree().paused = true
 	$Pause.visible = true
 	pass
+
+func checkRandomEventRinger(): if $randomEventRinger/ringerAudio.stream_paused: $randomEventRinger/ringerAudio.stream_paused = false
+		
 
 func _on_back_button_pressed() -> void:
 	AudioManager.play_sfx("paper_rustle")

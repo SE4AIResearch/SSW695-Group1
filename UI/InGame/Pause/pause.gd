@@ -2,7 +2,7 @@ extends Node2D
 
 var resumePaused: bool
 var currentMenu: Node
-
+signal resumeSignal
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
 	if not $LearningCenter.close_requested.is_connected(_on_learning_center_close_requested):
@@ -17,6 +17,7 @@ func _process(delta: float) -> void:
 
 
 func _on_resume_pressed() -> void:
+	resumeSignal.emit()
 	get_tree().paused = false
 	self.visible = false
 	match resumePaused:
