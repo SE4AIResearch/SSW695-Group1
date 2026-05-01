@@ -607,9 +607,6 @@ func earnSprintMoney():
 	if project != null:
 		addCurrency(floorf((30 * project.projectDifficulty) + (5 * projectAmount) + (50 * (teamRank - 1))))
 
-func earnProjectMoney(SatisfactionAmount):
-	addCurrency(floorf((500 * projectRatedDifficulty) + (25 * projectAmount) + (650 * (teamRank - 1))*SatisfactionAmount))
-
 func returnSprintMoney(SatisfactionAmount):
 	return floorf(((500 * projectRatedDifficulty) + (25 * projectAmount) + (650 * (teamRank - 1)))*SatisfactionAmount)
 

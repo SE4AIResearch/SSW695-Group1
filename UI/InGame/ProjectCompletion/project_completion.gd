@@ -54,8 +54,9 @@ func calculateStakeholderSatisfaction():
 
 func calculateCurrencyEarned(satisfactionAmount: float):
 	var percentageEarned = satisfactionAmount/4
-	PlayerTool.earnProjectMoney(percentageEarned)
-	$CurrencyAmount.text = "$" + str(PlayerTool.returnSprintMoney(percentageEarned))
+	var amountEarned = PlayerTool.returnSprintMoney(percentageEarned)
+	PlayerTool.addCurrency(amountEarned)
+	$CurrencyAmount.text = "$" + str(amountEarned)
 	PlayerTool.completed_project_count += 1
 	PlayerTool.resetProjectStats()
 	pass
