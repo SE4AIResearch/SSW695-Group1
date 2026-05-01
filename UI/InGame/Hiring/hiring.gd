@@ -15,6 +15,7 @@ func _ready() -> void:
 		PlayerTool.currencyChanged.connect(update_currency)
 	checkIfMaxHire()
 	call_deferred("_show_hiring_tutorial")
+	call_deferred("_auto_search_hires")
 
 func _process(delta: float) -> void:
 	var budget = int($BudgetSlider.value)
@@ -68,6 +69,10 @@ func checkIfMaxHire() -> void:
 	else:
 		$SearchButton.text = "Search Hires (%d/%d)" % [current_workers, max_workers]
 
+
+func _auto_search_hires() -> void:
+	if not $SearchButton.disabled:
+		_on_search_button_pressed()
 
 func _on_search_button_pressed() -> void:
 	if _is_insufficient_funds_popup_visible():
