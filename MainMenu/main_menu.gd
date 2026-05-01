@@ -21,6 +21,8 @@ func _enter_tree() -> void:
 func _ready() -> void:
 	if not $UI/LearningCenter.close_requested.is_connected(_on_learning_center_close_requested):
 		$UI/LearningCenter.close_requested.connect(_on_learning_center_close_requested)
+	if not $UI/Settings.close_requested.is_connected(_on_settings_close_requested):
+		$UI/Settings.close_requested.connect(_on_settings_close_requested)
 	AudioManager.play_music("main_menu")
 
 func _on_new_game_button_pressed() -> void:
@@ -31,7 +33,7 @@ func _on_new_game_button_pressed() -> void:
 
 func setupMenu(menu):
 	_position_back_button(menu)
-	$UI/Back.visible = true
+	$UI/Back.visible = menu != $UI/Settings
 	currentMenu = menu
 	menu.visible = true
 	$UI/MainButtons.visible = false
@@ -80,6 +82,15 @@ func _position_back_button(menu) -> void:
 
 func _on_learning_center_close_requested() -> void:
 	$UI/LearningCenter.visible = false
+	$UI/Back.visible = false
+	_position_back_button(null)
+	$UI/MainButtons.visible = true
+	$Logo.visible = true
+	currentMenu = null
+
+func _on_settings_close_requested() -> void:
+	AudioManager.play_sfx("paper_rustle")
+	$UI/Settings.visible = false
 	$UI/Back.visible = false
 	_position_back_button(null)
 	$UI/MainButtons.visible = true

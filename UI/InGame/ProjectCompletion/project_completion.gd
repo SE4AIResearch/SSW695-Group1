@@ -12,6 +12,10 @@ func _ready() -> void:
 
 
 func calculateCompletion() -> void:
+	if PlayerTool.project == null:
+		$ProjectInfo.text = "No completed project available."
+		$CurrencyAmount.text = "$0"
+		return
 	prepMenu()
 	calculateStakeholderSatisfaction()
 		

@@ -19,6 +19,7 @@ var backEndStat: int
 var documentingStat: int
 var speedStat: int
 var staminaStat: int
+var upgradeStatBonuses: Dictionary = {}
 
 var firable: bool = true
 

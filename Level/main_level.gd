@@ -33,8 +33,15 @@ const PLACED_UPGRADE_VISUALS := {
 		"texture_path": "res://UI/Theme/MainLevel/coffee/coffee_machine.png",
 		"position": Vector2(600, 285),
 		"scale": Vector2(4, 4),
+	},
+	"air_conditioner": {
+		"texture_path": "res://UI/Theme/MainLevel/AC_Unit/AC_Unit.png",
+		"position": Vector2(430, 125),
+		"scale": Vector2(4, 4),
 	}
 }
+
+const DESKTOP_PC_WORKER_Y_OFFSET := -15
 
 func _ready() -> void:
 	TimeTool.weekPassed.connect(rollEvent)
@@ -87,6 +94,7 @@ func initializeSave():
 func setupDeskVisuals():
 	_ensure_office_slots()
 	var computer_visual_config := _get_active_desk_computer_visual_config()
+	var has_desktop_pc := _is_desktop_pc_config(computer_visual_config)
 	var worker_slots := _get_worker_slots()
 	for slot in worker_slots:
 		var slot_index := int(slot.name)
@@ -111,9 +119,9 @@ func setupDeskVisuals():
 		computer.animation = "on"
 		if desk.get_child_count() == 0:
 			worker.reparent(desk)
-		worker.position = Vector2(0,0)
+		var worker_y := DESKTOP_PC_WORKER_Y_OFFSET if has_desktop_pc else 0
+		worker.position = Vector2(0, worker_y)
 		workerCount += 1
-		pass
 
 func _ensure_office_slots() -> void:
 	var workers_node: Node = $Level/workers
@@ -181,6 +189,9 @@ func _get_active_desk_computer_visual_config() -> Dictionary:
 			return DESK_COMPUTER_VISUALS[scene_prop_key]
 	return DESK_COMPUTER_VISUALS["default"]
 
+func _is_desktop_pc_config(visual_config: Dictionary) -> bool:
+	return visual_config == DESK_COMPUTER_VISUALS.get("desktop_pc", {})
+
 func _apply_desk_computer_visual_config(computer: AnimatedSprite2D, visual_config: Dictionary) -> void:
 	if computer == null:
 		return
@@ -207,8 +218,11 @@ func _on_worker_hover_ended(worker) -> void:
 	worker_details.hide_worker()
 
 func rollEvent():
-	if PlayerTool.project.projectName != "":
-		if randf_range(0,1) <= PlayerTool.project.eventChance: $UI.startEvent()
-		# Demo override: always trigger a random event each week.
-		# $UI.startEvent()
-	pass
+	if PlayerTool.project == null:
+		return
+	if PlayerTool.project.projectName == "":
+		return
+	if randf_range(0,1) <= PlayerTool.project.eventChance:
+		$UI.startEvent()
+	# Demo override: always trigger a random event each week.
+	# $UI.startEvent()

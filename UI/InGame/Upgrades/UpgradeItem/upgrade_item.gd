@@ -42,6 +42,7 @@ func setup_upgrade(upgrade_data: Dictionary) -> void:
 	tier_label.text = "TIER %d" % int(upgrade_data.get("tier", 1))
 	lock_label.visible = show_lock_label
 	lock_label.text = lock_text
+	lock_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_RIGHT
 	upgrade_name.text = str(upgrade_data.get("name", "Upgrade"))
 	description_label.text = str(upgrade_data.get("description", ""))
 	action_button.text = action_text

@@ -14,32 +14,32 @@ const UPGRADE_COLUMNS := [
 		"title": "Hardware",
 		"color": Color("102550"),
 		"items": [
-			{"tier": 1, "name": "Desktop PC", "description": "+5% Frontend, +5% Backend", "cost": 100, "locked": false, "scene_prop_key": "desktop_pc"},
-			{"tier": 2, "name": "Dual Monitor Setup", "description": "+5% Frontend, +5% Documentation", "cost": 250, "locked": true},
-			{"tier": 3, "name": "Database Upgrades", "description": "+10% Backend", "cost": 500, "locked": true},
-			{"tier": 4, "name": "High-End Workstation", "description": "+10% Frontend, +10% Backend", "cost": 1000, "locked": true}
+			{"tier": 1, "name": "Desktop PC", "description": "+5% Frontend, +5% Backend, +20% Speed", "cost": 100, "locked": false, "scene_prop_key": "desktop_pc"},
+			{"tier": 2, "name": "Dual Monitor Setup", "description": "+5% Frontend, +10% Documentation", "cost": 250, "locked": true},
+			{"tier": 3, "name": "Database Upgrades", "description": "+10% Backend, +20% Speed", "cost": 500, "locked": true},
+			{"tier": 4, "name": "High-End Workstation", "description": "+10% Frontend, +10% Backend, +30% Speed", "cost": 1000, "locked": true}
 		]
 	},
 	{
 		"title": "Software",
 		"color": Color("27134a"),
 		"items": [
-			{"tier": 1, "name": "IDE Suite", "description": "+10% Frontend, +10% Backend", "cost": 150, "locked": false},
-			{"tier": 2, "name": "Version Control Platform", "description": "+10% Reliability", "cost": 300, "locked": true},
-			{"tier": 3, "name": "Automated Testing Suite", "description": "+15% Reliability", "cost": 500, "locked": true},
-			{"tier": 4, "name": "CI/CD Pipeline", "description": "+10% Reliability, +5% Backend", "cost": 750, "locked": true},
-			{"tier": 5, "name": "AI Assistant", "description": "+5% Frontend, +5% Backend, +10% Documentation", "cost": 1000, "locked": true},
-			{"tier": 6, "name": "Enterprise Product Suite", "description": "+10% Frontend, +10% Backend, +10% Reliability, +10% Documentation, +10% Client Satisfaction", "cost": 1500, "locked": true}
+			{"tier": 1, "name": "IDE Suite", "description": "+10% Frontend, +10% Backend, +10% Speed", "cost": 150, "locked": false},
+			{"tier": 2, "name": "Version Control Platform", "description": "+15% Frontend, +15% Backend", "cost": 300, "locked": true},
+			{"tier": 3, "name": "Automated Testing Suite", "description": "+20% Backend, +15% Speed", "cost": 500, "locked": true},
+			{"tier": 4, "name": "CI/CD Pipeline", "description": "+20% Frontend", "cost": 750, "locked": true},
+			{"tier": 5, "name": "AI Assistant", "description": "+15% Frontend, +15% Backend, +15% Documentation, +30% Speed", "cost": 1000, "locked": true},
+			{"tier": 6, "name": "Enterprise Product Suite", "description": "+20% Frontend, +20% Backend, +20% Documentation", "cost": 1500, "locked": true}
 		]
 	},
 	{
 		"title": "Quality of Life",
 		"color": Color("3a2618"),
 		"items": [
-			{"tier": 1, "name": "Coffee Machine", "description": "+10% Stamina", "cost": 75, "locked": false, "scene_prop_key": "coffee_machine"},
-			{"tier": 2, "name": "Ergonomic Chairs", "description": "+5% Documentation, +5% Reliability", "cost": 200, "locked": true},
-			{"tier": 3, "name": "Standing Desks", "description": "+5% Frontend, +5% Backend", "cost": 450, "locked": true},
-			{"tier": 4, "name": "Air Conditioner", "description": "+10% Reliability", "cost": 900, "locked": true}
+			{"tier": 1, "name": "Coffee Machine", "description": "+10% Stamina, +10% Speed", "cost": 75, "locked": false, "scene_prop_key": "coffee_machine"},
+			{"tier": 2, "name": "Air Conditioner", "description": "+20% Stamina", "cost": 150, "locked": true, "scene_prop_key": "air_conditioner"},
+			{"tier": 3, "name": "Ergonomic Chairs", "description": "+5% Documentation, +15% Stamina", "cost": 200, "locked": true},
+			{"tier": 4, "name": "Standing Desks", "description": "+15% Documentation, +15% Stamina", "cost": 450, "locked": true}
 		]
 	}
 ]
@@ -98,6 +98,9 @@ func _ready() -> void:
 	PCWindowLayout.apply(self)
 	_apply_content_layout()
 	_hide_insufficient_funds_popup()
+	update_currency()
+	if not PlayerTool.currencyChanged.is_connected(update_currency):
+		PlayerTool.currencyChanged.connect(update_currency)
 	_populate_columns()
 	if not PlayerTool.officeTierChanged.is_connected(_populate_columns):
 		PlayerTool.officeTierChanged.connect(_populate_columns)
@@ -110,6 +113,11 @@ func _apply_content_layout() -> void:
 	var header_bottom := header_top + HEADER_HEIGHT
 	var content_top := header_bottom + HEADER_TO_CONTENT_GAP
 
+	$Currency.offset_left = PCWindowLayout.WINDOW_LEFT + 40.0
+	$Currency.offset_top = PCWindowLayout.WINDOW_TOP + PCWindowLayout.TITLE_TOP_PADDING
+	$Currency.offset_right = $Currency.offset_left + 220.0
+	$Currency.offset_bottom = $Currency.offset_top + PCWindowLayout.TITLE_HEIGHT
+
 	$HeaderColumns.offset_left = content_rect.position.x + CONTENT_PADDING
 	$HeaderColumns.offset_top = header_top
 	$HeaderColumns.offset_right = content_rect.position.x + content_rect.size.x - CONTENT_PADDING
@@ -119,6 +127,9 @@ func _apply_content_layout() -> void:
 	$ScrollContainer.offset_top = content_top
 	$ScrollContainer.offset_right = content_rect.position.x + content_rect.size.x - CONTENT_PADDING
 	$ScrollContainer.offset_bottom = content_rect.position.y + content_rect.size.y - CONTENT_PADDING
+
+func update_currency() -> void:
+	$Currency.text = "Currency: $%0.2f" % PlayerTool.currency
 
 func _populate_columns() -> void:
 	var header_columns: HBoxContainer = $HeaderColumns
@@ -305,18 +316,17 @@ func _build_office_upgrade_display_data(office_item: Dictionary) -> Dictionary:
 		upgrade_data["description"] = description
 		upgrade_data["locked"] = true
 		upgrade_data["show_lock_label"] = true
-		upgrade_data["lock_label"] = "LOCKED"
-		upgrade_data["action_text"] = "Locked"
+		upgrade_data["lock_label"] = "COMING SOON"
+		upgrade_data["action_text"] = "Coming Soon"
 		upgrade_data["action_disabled"] = true
 		return upgrade_data
 
-	var requirements_met := current_projects >= required_projects and current_workers >= required_workers
 	upgrade_data["description"] = description
-	upgrade_data["locked"] = not requirements_met
-	upgrade_data["show_lock_label"] = not requirements_met
-	upgrade_data["lock_label"] = "LOCKED"
-	upgrade_data["action_text"] = "Buy - $%d" % int(upgrade_data.get("cost", 0))
-	upgrade_data["action_disabled"] = not requirements_met
+	upgrade_data["locked"] = true
+	upgrade_data["show_lock_label"] = true
+	upgrade_data["lock_label"] = "COMING SOON"
+	upgrade_data["action_text"] = "Coming Soon"
+	upgrade_data["action_disabled"] = true
 	return upgrade_data
 
 func _on_upgrade_purchase_requested(upgrade_data: Dictionary) -> void:

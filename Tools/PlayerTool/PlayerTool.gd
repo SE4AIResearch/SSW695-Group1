@@ -21,15 +21,29 @@ const LOOP_PLANNING_WEEK := "planning_week"
 const LOOP_ACTIVE_WEEK := "active_week"
 const LOOP_RESOLVING_WEEK := "resolving_week"
 const OFFICE_CAPACITY_BY_TIER := [6, 8, 10, 12, 14]
-const DESKTOP_PC_SCENE_PROP_KEY := "desktop_pc"
-const DESKTOP_PC_SKILL_MULTIPLIER := 1.05
-const DESKTOP_PC_BOOST_APPLIED_META_KEY := "desktop_pc_skill_boost_applied"
-const DESKTOP_PC_BASE_FRONTEND_META_KEY := "desktop_pc_base_frontend"
-const DESKTOP_PC_BASE_BACKEND_META_KEY := "desktop_pc_base_backend"
-const COFFEE_MACHINE_SCENE_PROP_KEY := "coffee_machine"
-const COFFEE_MACHINE_STAMINA_MULTIPLIER := 1.1
-const COFFEE_MACHINE_BOOST_APPLIED_META_KEY := "coffee_machine_stamina_boost_applied"
-const COFFEE_MACHINE_BASE_STAMINA_META_KEY := "coffee_machine_base_stamina"
+const WORKER_UPGRADE_STAT_PROPERTIES := {
+	"front_end": "frontEndStat",
+	"back_end": "backEndStat",
+	"documenting": "documentingStat",
+	"speed": "speedStat",
+	"stamina": "staminaStat",
+}
+const LEGACY_STANDARD_UPGRADE_EFFECTS := {
+	"Hardware:1": [{"stat": "front_end", "multiplier": 1.05}, {"stat": "back_end", "multiplier": 1.05}, {"stat": "speed", "multiplier": 1.2}],
+	"Hardware:2": [{"stat": "front_end", "multiplier": 1.05}, {"stat": "documenting", "multiplier": 1.1}],
+	"Hardware:3": [{"stat": "back_end", "multiplier": 1.1}, {"stat": "speed", "multiplier": 1.2}],
+	"Hardware:4": [{"stat": "front_end", "multiplier": 1.1}, {"stat": "back_end", "multiplier": 1.1}, {"stat": "speed", "multiplier": 1.3}],
+	"Software:1": [{"stat": "front_end", "multiplier": 1.1}, {"stat": "back_end", "multiplier": 1.1}, {"stat": "speed", "multiplier": 1.1}],
+	"Software:2": [{"stat": "front_end", "multiplier": 1.15}, {"stat": "back_end", "multiplier": 1.15}],
+	"Software:3": [{"stat": "back_end", "multiplier": 1.2}, {"stat": "speed", "multiplier": 1.15}],
+	"Software:4": [{"stat": "front_end", "multiplier": 1.2}],
+	"Software:5": [{"stat": "front_end", "multiplier": 1.15}, {"stat": "back_end", "multiplier": 1.15}, {"stat": "documenting", "multiplier": 1.15}, {"stat": "speed", "multiplier": 1.3}],
+	"Software:6": [{"stat": "front_end", "multiplier": 1.2}, {"stat": "back_end", "multiplier": 1.2}, {"stat": "documenting", "multiplier": 1.2}],
+	"Quality of Life:1": [{"stat": "stamina", "multiplier": 1.1}, {"stat": "speed", "multiplier": 1.1}],
+	"Quality of Life:2": [{"stat": "stamina", "multiplier": 1.2}],
+	"Quality of Life:3": [{"stat": "documenting", "multiplier": 1.05}, {"stat": "stamina", "multiplier": 1.15}],
+	"Quality of Life:4": [{"stat": "documenting", "multiplier": 1.15}, {"stat": "stamina", "multiplier": 1.15}],
+}
 const MIN_WORKER_STAMINA := 1
 const WORKER_LEVEL_SCALE := Vector2(2.5, 2.5)
 
@@ -106,6 +120,7 @@ func _default_tutorial_seen(seen: bool = true) -> Dictionary:
 		"office_intro": seen,
 		"methodology_intro": seen,
 		"hiring_intro": seen,
+		"kanban_exit_intro": seen,
 	}
 
 # Type : 0 = Front End | 1 = Back End | 2 = Documenting | 3 = Reliability | 4 = Stakeholder Satisfaction
@@ -156,7 +171,7 @@ func resetData():
 	completedMetrics = []
 	workers = []
 	upgrades = []
-	currency = 100.0
+	currency = 0.0
 	score = 0
 	weekResults = {}
 	selectedAssignments = {}
@@ -299,10 +314,11 @@ func newProject(newProject) -> void:
 	loopStateChanged.emit()
 	statsChanged.emit()
 
-func newHire(worker) -> bool:
+func newHire(worker, apply_active_upgrades: bool = true) -> bool:
 	if workers.size() >= max_worker_capacity:
 		return false
-	_apply_active_upgrade_effects_to_worker(worker)
+	if apply_active_upgrades:
+		_apply_active_upgrade_effects_to_worker(worker)
 	worker.name = worker.personName
 	workers.append(worker)
 	var worker_parent: Node = worker.get_parent()
@@ -373,6 +389,7 @@ func purchase_standard_upgrade(upgrade_data: Dictionary) -> Dictionary:
 	addCurrency(-int(upgrade_data.get("cost", 0)))
 	newUpgrade(purchased_upgrade)
 	_apply_standard_upgrade_purchase_effects(purchased_upgrade)
+	statsChanged.emit()
 	return {
 		"ok": true,
 		"reason": "Purchased %s." % str(upgrade_data.get("name", "Upgrade"))
@@ -423,15 +440,10 @@ func resolveWeek() -> bool:
 	var sprintFinished: bool = projWeek >= int(project.sprintLength)
 	if sprintFinished:
 		if projSprint >= int(project.sprintAmount) or _allBacklogItemsComplete():
+			completed_project_count += 1
 			projectCompleted.emit()
 			deadlineReached.emit()
-			completed_project_count += 1
-			project = null
-			backlogItems = []
-			sprintGoal = {}
-			projWeek = 0
-			projSprint = 0
-			loopPhase = LOOP_NO_PROJECT
+			resetProjectStats()
 		else:
 			earnSprintMoney()
 			sprintComplete.emit()
@@ -453,6 +465,11 @@ func resolveWeek() -> bool:
 func assignWorkerToItem(workerName: String, itemId: int) -> Dictionary:
 	if project == null or loopPhase != LOOP_PLANNING_WEEK:
 		return {"ok": false, "reason": "You can only assign work while planning the week."}
+	var worker = getWorkerByName(workerName)
+	if worker == null:
+		return {"ok": false, "reason": "That worker no longer exists."}
+	if bool(worker.get("resting")):
+		return {"ok": false, "reason": "%s is resting until their stamina is full." % workerName}
 	var item := getBacklogItemById(itemId)
 	if item.is_empty():
 		return {"ok": false, "reason": "That backlog item no longer exists."}
@@ -662,12 +679,21 @@ func _sync_office_capacity() -> void:
 	max_worker_capacity = get_office_capacity_for_tier(office_tier)
 
 func _normalize_upgrade_record(upgrade_data: Dictionary) -> Dictionary:
+	var category := str(upgrade_data.get("category", ""))
+	var tier := int(upgrade_data.get("tier", 0))
 	var normalized_upgrade := {
-		"category": str(upgrade_data.get("category", "")),
-		"tier": int(upgrade_data.get("tier", 0)),
+		"category": category,
+		"tier": tier,
 		"name": str(upgrade_data.get("name", "")),
 	}
 
+	if upgrade_data.has("description"):
+		normalized_upgrade["description"] = str(upgrade_data.get("description", ""))
+	var effects := _get_upgrade_effects(upgrade_data)
+	if effects.is_empty():
+		effects = _get_legacy_upgrade_effects(category, tier)
+	if not effects.is_empty():
+		normalized_upgrade["effects"] = effects
 	if upgrade_data.has("scene_prop_key"):
 		normalized_upgrade["scene_prop_key"] = str(upgrade_data.get("scene_prop_key", ""))
 	if upgrade_data.has("capacity"):
@@ -676,68 +702,118 @@ func _normalize_upgrade_record(upgrade_data: Dictionary) -> Dictionary:
 	return normalized_upgrade
 
 func _apply_standard_upgrade_purchase_effects(upgrade_data: Dictionary) -> void:
-	if _is_desktop_pc_upgrade(upgrade_data):
-		_apply_desktop_pc_skill_boost_to_all_workers()
-	if _is_coffee_machine_upgrade(upgrade_data):
-		_apply_coffee_machine_stamina_boost_to_all_workers()
+	for worker in workers:
+		_apply_worker_upgrade_effects(worker, upgrade_data)
 
 func _apply_active_upgrade_effects_to_worker(worker) -> void:
-	if _has_active_upgrade_with_scene_prop_key(DESKTOP_PC_SCENE_PROP_KEY):
-		_apply_worker_desktop_pc_boost(worker, DESKTOP_PC_SKILL_MULTIPLIER)
-	if _has_active_upgrade_with_scene_prop_key(COFFEE_MACHINE_SCENE_PROP_KEY):
-		_apply_worker_stamina_boost(worker, COFFEE_MACHINE_STAMINA_MULTIPLIER)
-
-func _apply_desktop_pc_skill_boost_to_all_workers() -> void:
-	for worker in workers:
-		_apply_worker_desktop_pc_boost(worker, DESKTOP_PC_SKILL_MULTIPLIER)
-
-func _apply_coffee_machine_stamina_boost_to_all_workers() -> void:
-	for worker in workers:
-		_apply_worker_stamina_boost(worker, COFFEE_MACHINE_STAMINA_MULTIPLIER)
-
-func _has_active_upgrade_with_scene_prop_key(scene_prop_key: String) -> bool:
 	for upgrade_data in upgrades:
-		if str(upgrade_data.get("scene_prop_key", "")) == scene_prop_key:
-			return true
-	return false
+		_apply_worker_upgrade_effects(worker, upgrade_data)
 
-func _is_coffee_machine_upgrade(upgrade_data: Dictionary) -> bool:
-	return str(upgrade_data.get("scene_prop_key", "")) == COFFEE_MACHINE_SCENE_PROP_KEY
-
-func _is_desktop_pc_upgrade(upgrade_data: Dictionary) -> bool:
-	return str(upgrade_data.get("scene_prop_key", "")) == DESKTOP_PC_SCENE_PROP_KEY
-
-func _apply_worker_desktop_pc_boost(worker, multiplier: float) -> void:
+func _apply_worker_upgrade_effects(worker, upgrade_data: Dictionary) -> void:
 	if worker == null:
 		return
-	if bool(worker.get_meta(DESKTOP_PC_BOOST_APPLIED_META_KEY, false)):
+	var category := str(upgrade_data.get("category", ""))
+	var tier := int(upgrade_data.get("tier", 0))
+	var effects := _get_upgrade_effects(upgrade_data)
+	if effects.is_empty():
+		effects = _get_legacy_upgrade_effects(category, tier)
+	if effects.is_empty():
 		return
-	if not worker.has_meta(DESKTOP_PC_BASE_FRONTEND_META_KEY):
-		worker.set_meta(DESKTOP_PC_BASE_FRONTEND_META_KEY, int(worker.frontEndStat))
-	if not worker.has_meta(DESKTOP_PC_BASE_BACKEND_META_KEY):
-		worker.set_meta(DESKTOP_PC_BASE_BACKEND_META_KEY, int(worker.backEndStat))
+	var applied_meta_key := _get_upgrade_applied_meta_key(category, tier)
+	if bool(worker.get_meta(applied_meta_key, false)):
+		return
 
-	worker.frontEndStat = max(0, int(round(float(worker.get_meta(DESKTOP_PC_BASE_FRONTEND_META_KEY)) * multiplier)))
-	worker.backEndStat = max(0, int(round(float(worker.get_meta(DESKTOP_PC_BASE_BACKEND_META_KEY)) * multiplier)))
-	worker.set_meta(DESKTOP_PC_BOOST_APPLIED_META_KEY, true)
+	for effect in effects:
+		if effect is Dictionary:
+			_apply_worker_stat_multiplier(worker, str(effect.get("stat", "")), float(effect.get("multiplier", 1.0)))
+	worker.set_meta(applied_meta_key, true)
 
-func _apply_worker_stamina_boost(worker, multiplier: float) -> void:
-	if worker == null:
+func _get_upgrade_effects(upgrade_data: Dictionary) -> Array:
+	if upgrade_data.has("effects"):
+		return upgrade_data.get("effects", []).duplicate(true)
+	return _parse_upgrade_effects_from_description(str(upgrade_data.get("description", "")))
+
+func _get_legacy_upgrade_effects(category: String, tier: int) -> Array:
+	var upgrade_key := "%s:%d" % [category, tier]
+	return LEGACY_STANDARD_UPGRADE_EFFECTS.get(upgrade_key, []).duplicate(true)
+
+func _parse_upgrade_effects_from_description(description: String) -> Array:
+	var effects := []
+	for raw_token in description.split(","):
+		var token := str(raw_token).strip_edges()
+		if not token.begins_with("+"):
+			continue
+		var percent_end := token.find("%")
+		if percent_end <= 1:
+			continue
+		var percent_text := token.substr(1, percent_end - 1).strip_edges()
+		if not percent_text.is_valid_float():
+			continue
+		var stat_key := _normalize_upgrade_stat_name(token.substr(percent_end + 1).strip_edges())
+		if stat_key.is_empty():
+			continue
+		effects.append({
+			"stat": stat_key,
+			"multiplier": 1.0 + (float(percent_text) / 100.0),
+		})
+	return effects
+
+func _normalize_upgrade_stat_name(stat_name: String) -> String:
+	var normalized_name := stat_name.to_lower().replace(" ", "").replace("_", "")
+	match normalized_name:
+		"frontend":
+			return "front_end"
+		"backend":
+			return "back_end"
+		"documentation", "documenting":
+			return "documenting"
+		"speed":
+			return "speed"
+		"stamina":
+			return "stamina"
+	return ""
+
+func _get_upgrade_applied_meta_key(category: String, tier: int) -> String:
+	return "upgrade_effects_applied_%s_%d" % [_sanitize_meta_key(category), tier]
+
+func _sanitize_meta_key(value: String) -> String:
+	return value.to_lower().replace(" ", "_").replace("-", "_").replace(":", "_").replace("/", "_")
+
+func _apply_worker_stat_multiplier(worker, stat_key: String, multiplier: float) -> void:
+	if not WORKER_UPGRADE_STAT_PROPERTIES.has(stat_key):
 		return
-	if bool(worker.get_meta(COFFEE_MACHINE_BOOST_APPLIED_META_KEY, false)):
+	var property_name := str(WORKER_UPGRADE_STAT_PROPERTIES.get(stat_key))
+	var current_value := int(worker.get(property_name))
+	var updated_value := maxi(0, int(floorf(float(current_value) * multiplier)))
+	_track_worker_upgrade_bonus(worker, stat_key, float(updated_value - current_value))
+	if stat_key == "stamina":
+		_apply_worker_stamina_value(worker, updated_value)
+	else:
+		worker.set(property_name, updated_value)
+
+func _track_worker_upgrade_bonus(worker, stat_key: String, bonus: float) -> void:
+	if bonus <= 0.0:
 		return
+	if typeof(worker.get("upgradeStatBonuses")) != TYPE_DICTIONARY:
+		worker.upgradeStatBonuses = {}
+	_ensure_worker_upgrade_bonus_keys(worker)
+	worker.upgradeStatBonuses[stat_key] = float(worker.upgradeStatBonuses.get(stat_key, 0.0)) + bonus
+
+func _ensure_worker_upgrade_bonus_keys(worker) -> void:
+	if typeof(worker.get("upgradeStatBonuses")) != TYPE_DICTIONARY:
+		worker.upgradeStatBonuses = {}
+	for stat_key in WORKER_UPGRADE_STAT_PROPERTIES.keys():
+		if not worker.upgradeStatBonuses.has(stat_key):
+			worker.upgradeStatBonuses[stat_key] = 0.0
+
+func _apply_worker_stamina_value(worker, updated_stamina: int) -> void:
 	var stamina_bar = worker.get_node_or_null("staminaBar")
 	var previous_stamina_max := int(worker.staminaStat)
 	var previous_stamina_value := previous_stamina_max
 	if stamina_bar != null:
 		previous_stamina_max = int(stamina_bar.max_value)
 		previous_stamina_value = int(stamina_bar.value)
-	if not worker.has_meta(COFFEE_MACHINE_BASE_STAMINA_META_KEY):
-		var base_stamina := int(worker.staminaStat)
-		worker.set_meta(COFFEE_MACHINE_BASE_STAMINA_META_KEY, base_stamina)
-	var boosted_stamina := int(round(float(worker.get_meta(COFFEE_MACHINE_BASE_STAMINA_META_KEY)) * multiplier))
-	worker.staminaStat = max(MIN_WORKER_STAMINA, boosted_stamina)
-	worker.set_meta(COFFEE_MACHINE_BOOST_APPLIED_META_KEY, true)
+	worker.staminaStat = max(MIN_WORKER_STAMINA, updated_stamina)
 
 	if stamina_bar != null:
 		stamina_bar.max_value = worker.staminaStat

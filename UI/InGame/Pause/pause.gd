@@ -7,6 +7,8 @@ var currentMenu: Node
 func _ready() -> void:
 	if not $LearningCenter.close_requested.is_connected(_on_learning_center_close_requested):
 		$LearningCenter.close_requested.connect(_on_learning_center_close_requested)
+	if not $Settings.close_requested.is_connected(_on_settings_close_requested):
+		$Settings.close_requested.connect(_on_settings_close_requested)
 
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
@@ -45,7 +47,7 @@ func _on_settings_button_pressed() -> void:
 	currentMenu = $Settings
 	currentMenu.visible = true
 	$Menu.visible = false
-	$Back.visible = true
+	$Back.visible = false
 	pass
 
 
@@ -57,6 +59,12 @@ func _on_back_pressed() -> void:
 
 func _on_learning_center_close_requested() -> void:
 	$LearningCenter.visible = false
+	$Menu.visible = true
+	$Back.visible = false
+	currentMenu = null
+
+func _on_settings_close_requested() -> void:
+	$Settings.visible = false
 	$Menu.visible = true
 	$Back.visible = false
 	currentMenu = null

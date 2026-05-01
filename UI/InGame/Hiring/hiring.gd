@@ -10,6 +10,9 @@ func _ready() -> void:
 	PCWindowLayout.apply(self)
 	_apply_content_layout()
 	_hide_insufficient_funds_popup()
+	update_currency()
+	if not PlayerTool.currencyChanged.is_connected(update_currency):
+		PlayerTool.currencyChanged.connect(update_currency)
 	checkIfMaxHire()
 	call_deferred("_show_hiring_tutorial")
 
@@ -24,6 +27,11 @@ func _apply_content_layout() -> void:
 	var hires_width: float = 580.0
 	var hires_height: float = 185.0
 	var controls_width: float = 575.0
+
+	$Currency.offset_left = PCWindowLayout.WINDOW_LEFT + 40.0
+	$Currency.offset_top = PCWindowLayout.WINDOW_TOP + PCWindowLayout.TITLE_TOP_PADDING
+	$Currency.offset_right = $Currency.offset_left + 220.0
+	$Currency.offset_bottom = $Currency.offset_top + PCWindowLayout.TITLE_HEIGHT
 
 	$Hires.offset_left = content_rect.position.x + (content_rect.size.x - hires_width) / 2.0
 	$Hires.offset_top = content_rect.position.y + 12.0
@@ -46,6 +54,9 @@ func _apply_content_layout() -> void:
 	$SearchButton.offset_bottom = $SearchButton.offset_top + 56.0
 
 	_layout_insufficient_funds_popup()
+
+func update_currency() -> void:
+	$Currency.text = "Currency: $%0.2f" % PlayerTool.currency
 
 func checkIfMaxHire() -> void:
 	var current_workers := PlayerTool.workers.size()
