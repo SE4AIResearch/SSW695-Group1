@@ -24,10 +24,10 @@ func _refreshWorkers() -> void:
 	for worker in PlayerTool.workers:
 		var newWorker = backlogWorkerItem.instantiate()
 		newWorker.createWorkerItem(worker)
-		var is_resting := bool(worker.get("resting"))
+		var is_resting := bool(worker.resting)
 		newWorker.disabled = readOnly or is_resting
-		newWorker.setWorkerStatus(PlayerTool.selectedAssignments.has(worker.personName), is_resting)
-		var assignmentId = PlayerTool.selectedAssignments.get(worker.personName, null)
+		newWorker.setWorkerStatus(PlayerTool.selectedAssignments.has(worker.workerId), is_resting)
+		var assignmentId = PlayerTool.selectedAssignments.get(worker.workerId, null)
 		if assignmentId != null:
 			var item: Dictionary = PlayerTool.getBacklogItemById(int(assignmentId))
 			if not item.is_empty():
@@ -88,7 +88,7 @@ func backlogSelected(metricButton):
 		_set_status_message("Select a worker first, then click a backlog card to assign them.")
 		return
 	var workerButton = selectedWorker
-	var result: Dictionary = PlayerTool.assignWorkerToItem(workerButton.heldWorker.personName, int(metricButton.heldItem.get("id", -1)))
+	var result: Dictionary = PlayerTool.assignWorkerToItem(workerButton.heldWorker.workerId, int(metricButton.heldItem.get("id", -1)))
 	_set_status_message(str(result.get("reason", "")))
 	if result.get("ok", false):
 		if workerButton != null and is_instance_valid(workerButton):
@@ -110,7 +110,7 @@ func workerSelected(workerButton):
 		return
 	if workerButton.isBusy:
 		var workerName: String = workerButton.heldWorker.personName
-		PlayerTool.unassignWorker(workerName)
+		PlayerTool.unassignWorker(workerButton.heldWorker.workerId)
 		selectedWorker = null
 		_set_status_message("%s is now free." % workerName)
 		return

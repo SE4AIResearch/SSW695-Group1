@@ -84,6 +84,7 @@ var completed_project_count: int = 0
 var has_viewed_methodology_learning_center: bool = false
 var office_tier: int = 0
 var max_worker_capacity: int = 6
+var workerIdCounter: int = 0
 var remaining_project_choice_names: Array = []
 
 var loopPhase: String = LOOP_NO_PROJECT
@@ -188,6 +189,7 @@ func resetData():
 	FEBacklogStep = 0
 	BEBacklogStep = 0
 	docBacklogStep = 0
+	workerIdCounter = 0
 	_backlogItemIdCounter = 0
 	loopPhase = LOOP_NO_PROJECT
 	currencyChanged.emit()
@@ -318,9 +320,11 @@ func newProject(newProject) -> void:
 func newHire(worker, apply_active_upgrades: bool = true) -> bool:
 	if workers.size() >= max_worker_capacity:
 		return false
+	if worker == null:
+		return false
 	if apply_active_upgrades:
 		_apply_active_upgrade_effects_to_worker(worker)
-	worker.name = worker.personName
+	_ensure_worker_identity(worker)
 	workers.append(worker)
 	var worker_parent: Node = worker.get_parent()
 	if worker_parent == null:
@@ -428,9 +432,9 @@ func resolveWeek() -> bool:
 	loopStateChanged.emit()
 
 	var assignmentKeys := selectedAssignments.keys().duplicate()
-	for workerName in assignmentKeys:
-		var item := getBacklogItemById(int(selectedAssignments.get(workerName, -1)))
-		var worker = getWorkerByName(str(workerName))
+	for workerId in assignmentKeys:
+		var item := getBacklogItemById(int(selectedAssignments.get(workerId, -1)))
+		var worker = getWorkerById(str(workerId))
 		if item.is_empty() or worker == null:
 			continue
 		if !worker.resting: _resolve_assignment(worker, item)
@@ -463,53 +467,75 @@ func resolveWeek() -> bool:
 	weekResolved.emit()
 	return true
 
-func assignWorkerToItem(workerName: String, itemId: int) -> Dictionary:
+func assignWorkerToItem(workerId: String, itemId: int) -> Dictionary:
 	if project == null or loopPhase != LOOP_PLANNING_WEEK:
 		return {"ok": false, "reason": "You can only assign work while planning the week."}
-	var worker = getWorkerByName(workerName)
+	var worker = getWorkerById(workerId)
 	if worker == null:
 		return {"ok": false, "reason": "That worker no longer exists."}
-	if bool(worker.get("resting")):
-		return {"ok": false, "reason": "%s is resting until their stamina is full." % workerName}
+	if bool(worker.resting):
+		return {"ok": false, "reason": "%s is resting until their stamina is full." % worker.personName}
 	var item := getBacklogItemById(itemId)
 	if item.is_empty():
 		return {"ok": false, "reason": "That backlog item no longer exists."}
 	if item.get("status") == "done":
 		return {"ok": false, "reason": "That item is already complete."}
-	var previousWorkerName := str(item.get("assigned_worker_name", ""))
-	if previousWorkerName != "" and previousWorkerName != workerName:
-		return {"ok": false, "reason": "%s is already assigned to that card." % previousWorkerName}
-	unassignWorker(workerName)
-	item.set("assigned_worker_name", workerName)
+	var previousWorkerId := str(item.get("assigned_worker_id", ""))
+	if previousWorkerId != "" and previousWorkerId != workerId:
+		var previousWorker = getWorkerById(previousWorkerId)
+		var previousWorkerLabel := "Another worker"
+		if previousWorker != null:
+			previousWorkerLabel = str(previousWorker.personName)
+		return {"ok": false, "reason": "%s is already assigned to that card." % previousWorkerLabel}
+	unassignWorker(workerId)
+	item.set("assigned_worker_id", workerId)
+	if item.has("assigned_worker_name"):
+		item.erase("assigned_worker_name")
 	if item.get("status") == "backlog":
 		item.set("status", "in_progress")
-	selectedAssignments.set(workerName, itemId)
+	selectedAssignments.set(workerId, itemId)
 	backlogUpdated.emit()
-	return {"ok": true, "reason": "%s is now assigned to %s." % [workerName, str(item.get("name", ""))]}
+	return {"ok": true, "reason": "%s is now assigned to %s." % [str(worker.personName), str(item.get("name", ""))]}
 
-func unassignWorker(workerName: String) -> void:
-	if not selectedAssignments.has(workerName):
+func unassignWorker(workerId: String) -> void:
+	if not selectedAssignments.has(workerId):
 		return
-	var item := getBacklogItemById(int(selectedAssignments.get(workerName, -1)))
+	var item := getBacklogItemById(int(selectedAssignments.get(workerId, -1)))
 	if not item.is_empty():
-		item.set("assigned_worker_name", "")
+		item.set("assigned_worker_id", "")
+		if item.has("assigned_worker_name"):
+			item.erase("assigned_worker_name")
 		if item.get("status") == "in_progress" and int(item.get("effort_remaining", 0)) >= int(item.get("total_effort", 0)):
 			item.set("status", "backlog")
-	selectedAssignments.erase(workerName)
+	selectedAssignments.erase(workerId)
 	backlogUpdated.emit()
 
 func clearAssignments() -> void:
-	for workerName in selectedAssignments.keys():
-		var item := getBacklogItemById(int(selectedAssignments.get(workerName, -1)))
+	for workerId in selectedAssignments.keys():
+		var item := getBacklogItemById(int(selectedAssignments.get(workerId, -1)))
 		if not item.is_empty():
-			item.set("assigned_worker_name", "")
+			item.set("assigned_worker_id", "")
+			if item.has("assigned_worker_name"):
+				item.erase("assigned_worker_name")
 	selectedAssignments.clear()
+
+func getWorkerById(workerId: String):
+	for worker in workers:
+		if str(worker.workerId) == workerId:
+			return worker
+	return null
 
 func getWorkerByName(workerName: String):
 	for worker in workers:
 		if worker.personName == workerName:
 			return worker
 	return null
+
+func getWorkerIdByName(workerName: String) -> String:
+	var worker = getWorkerByName(workerName)
+	if worker == null:
+		return ""
+	return str(worker.workerId)
 
 func getBacklogItemById(itemId: int) -> Dictionary:
 	for item in backlogItems:
@@ -542,7 +568,9 @@ func _appendMetricItems(metricDictionary: Dictionary, requiredSkill: String, tar
 			existingItem.set("total_effort", totalEffort)
 			existingItem.set("effort_remaining", clampi(int(existingItem.get("effort_remaining", totalEffort)), 0, totalEffort))
 			existingItem.set("status", str(existingItem.get("status", "backlog")))
-			existingItem.set("assigned_worker_name", str(existingItem.get("assigned_worker_name", "")))
+			existingItem.set("assigned_worker_id", str(existingItem.get("assigned_worker_id", "")))
+			if existingItem.has("assigned_worker_name"):
+				existingItem.erase("assigned_worker_name")
 			existingItem.set("metric_reward", maxi(1, int(existingItem.get("metric_reward", 2))))
 			existingItem.set("is_scope_change", bool(existingItem.get("is_scope_change", false)))
 			existingItem.set("is_reliability_critical", bool(existingItem.get("is_reliability_critical", false)))
@@ -567,11 +595,37 @@ func _addBacklogItem(itemName: String, requiredSkill: String, effort: int, metri
 		"effort_remaining": maxi(1, effort),
 		"total_effort": maxi(1, effort),
 		"status": "backlog",
-		"assigned_worker_name": "",
+		"assigned_worker_id": "",
 		"metric_reward": maxi(1, metricReward),
 		"is_scope_change": isScopeChange,
 		"is_reliability_critical": isReliabilityCritical,
 	})
+
+func _ensure_worker_identity(worker, preferredId: String = "") -> void:
+	var candidateId := preferredId
+	if candidateId.is_empty():
+		candidateId = str(worker.workerId)
+	if candidateId.is_empty() or _worker_id_belongs_to_other_worker(candidateId, worker):
+		candidateId = _next_worker_id()
+	else:
+		_track_existing_worker_id(candidateId)
+	worker.workerId = candidateId
+	worker.name = candidateId
+
+func _worker_id_belongs_to_other_worker(workerId: String, worker) -> bool:
+	var existingWorker = getWorkerById(workerId)
+	return existingWorker != null and existingWorker != worker
+
+func _next_worker_id() -> String:
+	workerIdCounter += 1
+	return "worker_%d" % workerIdCounter
+
+func _track_existing_worker_id(workerId: String) -> void:
+	if !workerId.begins_with("worker_"):
+		return
+	var suffix := workerId.trim_prefix("worker_")
+	if suffix.is_valid_int():
+		workerIdCounter = maxi(workerIdCounter, int(suffix))
 
 func _prepare_sprint_context(sprintNumber: int) -> void:
 	sprintGoal = {

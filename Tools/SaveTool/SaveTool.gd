@@ -219,7 +219,7 @@ func loadPlayerData(saveName: String = current_save_name):
 	PlayerTool.BEBacklogStep = saveData.get_value("Project", "BEBacklogStep", 0)
 	PlayerTool.docBacklogStep = saveData.get_value("Project", "docBacklogStep", 0)
 	PlayerTool.totalEvents = saveData.get_value("Project", "totalEvents", 0)
-	
+
 	PlayerTool.teamRank = saveData.get_value("Player", "teamRank", 1)
 	PlayerTool.currency = saveData.get_value("Player", "currency", 0.0)
 	PlayerTool.score = saveData.get_value("Player", "score", 0)
@@ -228,12 +228,13 @@ func loadPlayerData(saveName: String = current_save_name):
 	PlayerTool.has_viewed_methodology_learning_center = saveData.get_value("Player", "has_viewed_methodology_learning_center", false)
 	PlayerTool.office_tier = saveData.get_value("Player", "office_tier", 0)
 	PlayerTool.max_worker_capacity = saveData.get_value("Player", "max_worker_capacity", 6)
+	PlayerTool.workerIdCounter = saveData.get_value("Player", "workerIdCounter", 0)
 	PlayerTool.remaining_project_choice_names = saveData.get_value("Player", "remaining_project_choice_names", [])
-	
+
 	PlayerTool.loopPhase = saveData.get_value("GameState", "loopPhase", "no_project")
 	PlayerTool.weekResults = saveData.get_value("GameState", "weekResults", {})
-	PlayerTool.selectedAssignments = saveData.get_value("GameState", "selectedAssignments", {})
-	PlayerTool.backlogItems = saveData.get_value("GameState", "backlogItems", [])
+	var rawSelectedAssignments: Dictionary = saveData.get_value("GameState", "selectedAssignments", {})
+	var rawBacklogItems: Array = saveData.get_value("GameState", "backlogItems", [])
 	PlayerTool.pendingProjectSummary = saveData.get_value("GameState", "pendingProjectSummary", {})
 	PlayerTool.sprintGoal = saveData.get_value("GameState", "sprintGoal", {})
 	PlayerTool.shouldShowWeekResultsModal = saveData.get_value("GameState", "shouldShowWeekResultsModal", false)
@@ -241,12 +242,14 @@ func loadPlayerData(saveName: String = current_save_name):
 		PlayerTool.tutorial_seen = saveData.get_value("GameState", "tutorial_seen", PlayerTool._default_tutorial_seen(true)) as Dictionary
 	else:
 		PlayerTool.set_new_player_tutorials_enabled(false)
-	
+
 	PlayerTool.upgrades = saveData.get_value("Lists", "upgrades", [])
-	
+
 	# Load workers
 	var serialized_workers = saveData.get_value("Lists", "workers", [])
 	deserializeWorkers(serialized_workers)
+	PlayerTool.backlogItems = _normalize_loaded_backlog_items(rawBacklogItems)
+	PlayerTool.selectedAssignments = _normalize_loaded_selected_assignments(rawSelectedAssignments, PlayerTool.backlogItems)
 
 func savePlayerData():
 	var saveData = ConfigFile.new()
@@ -279,6 +282,7 @@ func savePlayerData():
 	saveData.set_value("Player", "has_viewed_methodology_learning_center", PlayerTool.has_viewed_methodology_learning_center)
 	saveData.set_value("Player", "office_tier", PlayerTool.office_tier)
 	saveData.set_value("Player", "max_worker_capacity", PlayerTool.max_worker_capacity)
+	saveData.set_value("Player", "workerIdCounter", PlayerTool.workerIdCounter)
 	saveData.set_value("Player", "remaining_project_choice_names", PlayerTool.remaining_project_choice_names)
 	
 	# GameState variables
@@ -301,6 +305,7 @@ func serializeWorkers() -> Array:
 	var list = []
 	for worker in PlayerTool.workers:
 		var w_data = {
+			"workerId": str(worker.workerId),
 			"personName": worker.personName,
 			"frontEndStat": worker.frontEndStat,
 			"backEndStat": worker.backEndStat,
@@ -335,6 +340,7 @@ func deserializeWorkers(serialized_workers: Array):
 			"stamina": w_data.staminaStat
 		}
 		var worker = PersonConstructor.generateWorker(stats)
+		worker.workerId = str(w_data.get("workerId", ""))
 		worker.personName = w_data.personName
 		worker.upgradeStatBonuses = _normalize_worker_upgrade_bonuses(w_data.get("upgradeStatBonuses", {}))
 		worker.headSpritePath = w_data.headSpritePath
@@ -360,3 +366,44 @@ func _normalize_worker_upgrade_bonuses(upgrade_stat_bonuses: Dictionary) -> Dict
 	for stat_key in normalized_bonuses.keys():
 		normalized_bonuses[stat_key] = float(upgrade_stat_bonuses.get(stat_key, 0.0))
 	return normalized_bonuses
+
+func _normalize_loaded_backlog_items(raw_backlog_items: Array) -> Array:
+	var normalized_items: Array = []
+	for raw_item in raw_backlog_items:
+		if raw_item is not Dictionary:
+			continue
+		var item: Dictionary = raw_item.duplicate(true)
+		var assigned_worker_id := str(item.get("assigned_worker_id", ""))
+		if assigned_worker_id.is_empty():
+			assigned_worker_id = _resolve_loaded_worker_id(str(item.get("assigned_worker_name", "")))
+		item.set("assigned_worker_id", assigned_worker_id)
+		if item.has("assigned_worker_name"):
+			item.erase("assigned_worker_name")
+		normalized_items.append(item)
+	return normalized_items
+
+func _normalize_loaded_selected_assignments(raw_selected_assignments: Dictionary, normalized_backlog_items: Array) -> Dictionary:
+	var normalized_assignments: Dictionary = {}
+	for raw_worker_reference in raw_selected_assignments.keys():
+		var resolved_worker_id := _resolve_loaded_worker_id(str(raw_worker_reference))
+		if resolved_worker_id.is_empty():
+			continue
+		normalized_assignments[resolved_worker_id] = int(raw_selected_assignments.get(raw_worker_reference, -1))
+	for item in normalized_backlog_items:
+		if item is not Dictionary:
+			continue
+		var assigned_worker_id := str(item.get("assigned_worker_id", ""))
+		var item_id := int(item.get("id", -1))
+		if assigned_worker_id.is_empty() or item_id < 0:
+			continue
+		if !normalized_assignments.has(assigned_worker_id):
+			normalized_assignments[assigned_worker_id] = item_id
+	return normalized_assignments
+
+func _resolve_loaded_worker_id(worker_reference: String) -> String:
+	if worker_reference.is_empty():
+		return ""
+	var worker_by_id = PlayerTool.getWorkerById(worker_reference)
+	if worker_by_id != null:
+		return worker_reference
+	return PlayerTool.getWorkerIdByName(worker_reference)

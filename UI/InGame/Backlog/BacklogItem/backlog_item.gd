@@ -69,8 +69,8 @@ func prepItem(item, itemType: int = -1):
 	call_deferred("_refresh_card_layout")
 
 func _refresh_assigned_worker_preview() -> void:
-	var assignedWorkerName: String = str(heldItem.get("assigned_worker_name", ""))
-	var assignedWorker: Node = PlayerTool.getWorkerByName(assignedWorkerName)
+	var assignedWorkerId: String = str(heldItem.get("assigned_worker_id", ""))
+	var assignedWorker: Node = PlayerTool.getWorkerById(assignedWorkerId)
 	$assignedWorkerPreview.visible = assignedWorker != null
 	if assignedWorker == null:
 		return

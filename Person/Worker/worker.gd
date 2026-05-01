@@ -7,6 +7,7 @@ signal hover_ended(worker)
 @export var workingColor: Color
 
 var personName: String
+var workerId: String
 
 var headSpritePath: String
 var hairSpritePath: String
