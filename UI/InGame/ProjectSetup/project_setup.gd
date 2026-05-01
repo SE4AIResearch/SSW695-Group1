@@ -9,12 +9,15 @@ var methodList = load("res://Projects/MethodologyList.gd").new()
 var projectChoiceItem = preload("res://UI/InGame/ProjectSetup/ProjectItem/ProjectItem.tscn")
 var TutorialModal: PackedScene = preload("res://UI/InGame/TutorialModal/TutorialModal.tscn")
 
-const PROJECT_CHOICES_HEIGHT := 305.0
+const PROJECT_CHOICES_HEIGHT := 390.0
+const PROJECT_CARD_WIDTH := 311.0
+const PROJECT_CARD_GAP := 4.0
 const LEARN_MORE_BUTTON_WIDTH := 160.0
 const LEARN_MORE_BUTTON_HEIGHT := 40.0
 const ACTION_BUTTON_WIDTH := 240.0
+const PROJECT_ACTION_BUTTON_HEIGHT := 64.0
 const ACTION_BUTTON_HEIGHT := 80.0
-const ACTION_BUTTON_BOTTOM_PADDING := 10.0
+const ACTION_BUTTON_BOTTOM_PADDING := 2.0
 const METHODOLOGY_WINDOW_SIDE_PADDING := 20.0
 const METHODOLOGY_CARD_GAP := 2
 const METHODOLOGY_CARD_HEIGHT := 240.0
@@ -44,9 +47,11 @@ func _ready():
 
 func _apply_content_layout() -> void:
 	var content_rect: Rect2 = PCWindowLayout.content_rect()
-	var choice_top: float = content_rect.position.y + 10.0
-	var choices_left: float = content_rect.position.x + 82.0
-	var choices_right: float = content_rect.position.x + content_rect.size.x - 81.0
+	var choice_top: float = content_rect.position.y - 10.0
+	var project_card_count := 3
+	var choices_width: float = (PROJECT_CARD_WIDTH * project_card_count) + (PROJECT_CARD_GAP * (project_card_count - 1))
+	var choices_left: float = content_rect.position.x + (content_rect.size.x - choices_width) / 2.0
+	var choices_right: float = choices_left + choices_width
 	var methodology_left: float = PCWindowLayout.WINDOW_LEFT + METHODOLOGY_WINDOW_SIDE_PADDING
 	var methodology_right: float = PCWindowLayout.WINDOW_LEFT + PCWindowLayout.WINDOW_WIDTH - METHODOLOGY_WINDOW_SIDE_PADDING
 
@@ -57,11 +62,13 @@ func _apply_content_layout() -> void:
 	$ProjectChoose/ProjectChoices.offset_top = choice_top
 	$ProjectChoose/ProjectChoices.offset_right = choices_right
 	$ProjectChoose/ProjectChoices.offset_bottom = choice_top + PROJECT_CHOICES_HEIGHT
+	$ProjectChoose/ProjectChoices.alignment = BoxContainer.ALIGNMENT_CENTER
+	$ProjectChoose/ProjectChoices.add_theme_constant_override("separation", int(PROJECT_CARD_GAP))
 
 	$ProjectChoose/Button.offset_left = content_rect.position.x + (content_rect.size.x - ACTION_BUTTON_WIDTH) / 2.0
-	$ProjectChoose/Button.offset_top = content_rect.position.y + content_rect.size.y - ACTION_BUTTON_HEIGHT - ACTION_BUTTON_BOTTOM_PADDING
+	$ProjectChoose/Button.offset_top = content_rect.position.y + content_rect.size.y - PROJECT_ACTION_BUTTON_HEIGHT - ACTION_BUTTON_BOTTOM_PADDING + 30.0
 	$ProjectChoose/Button.offset_right = $ProjectChoose/Button.offset_left + ACTION_BUTTON_WIDTH
-	$ProjectChoose/Button.offset_bottom = $ProjectChoose/Button.offset_top + ACTION_BUTTON_HEIGHT
+	$ProjectChoose/Button.offset_bottom = $ProjectChoose/Button.offset_top + PROJECT_ACTION_BUTTON_HEIGHT
 
 	$LearnMoreButton.offset_left = PCWindowLayout.WINDOW_LEFT + 40.0
 	$LearnMoreButton.offset_top = PCWindowLayout.WINDOW_TOP + 18.0
