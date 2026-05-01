@@ -129,7 +129,7 @@ var constraints = [
 "sprintAmount":0,
 "sprintLength":1,
 "sprintMetricAmount":0,
-"randomEventChance":.3
+"randomEventChance":1.1
 },
 
 
@@ -217,7 +217,7 @@ var constraints = [
 "sprintAmount":0,
 "sprintLength":2,
 "sprintMetricAmount":1,
-"randomEventChance":0.5
+"randomEventChance":1.33
 }
 
 ]
