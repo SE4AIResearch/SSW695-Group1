@@ -1,5 +1,8 @@
 # Software Development Tycoon
 
+![GitHub Downloads](https://img.shields.io/github/downloads/SE4AIResearch/SSW695-Group1/total)
+
+
 Software Development Tycoon is a single-player simulation game that teaches software project management through hands-on decision-making. Players manage software projects by balancing scope, cost, schedule, quality, risks, and stakeholder satisfaction across the software development lifecycle (SDLC).
 
 ## Overview
@@ -66,18 +69,3 @@ Players will:
 This README provides a high-level overview of the project.
 
 For detailed documentation on gameplay systems, SDLC mechanics, project risks, assumptions, methodology behavior, and team responsibilities, please visit the GitHub Wiki.
-
-## Release Process
-
-This repository uses lightweight GitHub Actions automation for validation and releases.
-
-* Pull requests targeting `main` and direct pushes to `main` run lightweight validation only.
-* Versioned releases are created by pushing a git tag that matches `vMAJOR.MINOR` or `vMAJOR.MINOR.PATCH`, such as `v1.0` or `v1.0.1`.
-* Release tags trigger a GitHub Actions workflow that builds and uploads a macOS `.dmg` and a Windows `.zip` containing the exported `.exe` and `.pck`.
-
-Example release flow:
-
-```bash
-git tag v1.0
-git push origin v1.0
-```
