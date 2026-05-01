@@ -9,7 +9,14 @@ var ProjectSetupMenu = load("res://UI/InGame/ProjectSetup/ProjectSetup.tscn")
 var randomEventMenu = load("res://UI/InGame/RandomEvent/RandomEvent.tscn")
 var projectCompletionMenu = load("res://UI/InGame/ProjectCompletion/ProjectCompletion.tscn")
 var TutorialModal: PackedScene = preload("res://UI/InGame/TutorialModal/TutorialModal.tscn")
+const FIRST_SPRINT_REWARD_TUTORIAL_KEY := "first_sprint_reward_intro"
+const FIRST_SPRINT_REWARD_TUTORIAL_TITLE := "First Sprint Complete"
+const FIRST_SPRINT_REWARD_TUTORIAL_MESSAGE := "You just earned currency for completing a sprint. Congrats! Check out the Hiring menu to search for team members, or visit Upgrades to purchase an upgrade."
 var pcMode = false
+var _pending_first_sprint_reward_tutorial: bool = false
+var _pending_project_completion_snapshot: Dictionary = {}
+var _pending_random_event_context: Dictionary = {}
+var _active_random_event_context: Dictionary = {}
 
 
 
@@ -17,7 +24,8 @@ func _ready() -> void:
 	PlayerTool.connect("projectSelected",toggleProjectButtons)
 	PlayerTool.connect("deadlineReached",toggleProjectButtons)
 	toggleProjectButtons()
-	PlayerTool.projectCompleted.connect(runProjectCompletion)
+	PlayerTool.projectCompleted.connect(_on_project_completed)
+	PlayerTool.sprintComplete.connect(_on_sprint_completed)
 	call_deferred("show_office_intro_tutorial")
 	AudioManager.reset_resting_workers()
 	AudioManager.play_music("gameplay")
@@ -146,22 +154,137 @@ func toggleProjectButtons():
 	var hasProject = PlayerTool.project != null
 	$BacklogButton.disabled = !hasProject
 
-func startEvent():
-	if PlayerTool.project == null or $NewMenu.get_child_count() != 0:
-		return
+func startEvent(event_context: Dictionary = {}) -> bool:
+	var effective_event_context := event_context.duplicate(true)
+	if effective_event_context.is_empty():
+		effective_event_context = _build_random_event_context()
+	if effective_event_context.is_empty() or $NewMenu.get_child_count() != 0:
+		return false
+
+	_active_random_event_context = effective_event_context
+	_prepare_pending_completion_for_random_event()
 	get_tree().paused = true
 	$randomEventRinger.play("ringing")
 	$randomEventRinger/ringerAudio.play()
 	await $randomEventRinger/ringerAudio.finished
 	$randomEventRinger.play("idle")
-	if PlayerTool.project == null or $NewMenu.get_child_count() != 0:
+	if $NewMenu.get_child_count() != 0:
 		if $NewMenu.get_child_count() == 0:
 			get_tree().paused = false
-		return
-	createMenu(randomEventMenu.instantiate())
+		_active_random_event_context = {}
+		return false
+	var menu = randomEventMenu.instantiate()
+	if menu.has_method("setup_event_context"):
+		menu.setup_event_context(_active_random_event_context)
+	createMenu(menu)
+	return true
 
-func runProjectCompletion():
-	createMenu(projectCompletionMenu.instantiate())
+func handle_post_week_follow_up() -> void:
+	if _start_random_event_if_needed():
+		return
+	_continue_post_week_follow_up()
+
+func _start_random_event_if_needed() -> bool:
+	var event_context := _consume_random_event_context()
+	if event_context.is_empty():
+		return false
+	if randf_range(0, 1) > float(event_context.get("event_chance", 0.0)):
+		return false
+	startEvent(event_context)
+	return true
+
+func _continue_post_week_follow_up() -> void:
+	if _pending_first_sprint_reward_tutorial:
+		_pending_first_sprint_reward_tutorial = false
+		var on_dismissed := Callable()
+		if !_pending_project_completion_snapshot.is_empty():
+			on_dismissed = _run_pending_project_completion
+		show_first_sprint_reward_tutorial(on_dismissed)
+		return
+	if !_pending_project_completion_snapshot.is_empty():
+		_run_pending_project_completion()
+
+func runProjectCompletion(completion_data: Dictionary = {}) -> void:
+	var menu = projectCompletionMenu.instantiate()
+	if menu.has_method("setup_from_snapshot"):
+		menu.setup_from_snapshot(completion_data)
+	createMenu(menu)
+
+func _on_project_completed() -> void:
+	_pending_project_completion_snapshot = _build_project_completion_snapshot()
+	_pending_random_event_context = _build_random_event_context()
+	_pending_first_sprint_reward_tutorial = _should_show_first_sprint_reward_tutorial()
+
+func _on_sprint_completed() -> void:
+	if _should_show_first_sprint_reward_tutorial():
+		_pending_first_sprint_reward_tutorial = true
+	_pending_random_event_context = _build_random_event_context()
+
+func _should_show_first_sprint_reward_tutorial() -> bool:
+	return PlayerTool.projSprint == 1 and PlayerTool.should_show_tutorial(FIRST_SPRINT_REWARD_TUTORIAL_KEY)
+
+func _build_random_event_context() -> Dictionary:
+	var project = PlayerTool.project
+	if project == null:
+		return {}
+	var project_name := str(project.projectName)
+	if project_name.is_empty():
+		return {}
+	return {
+		"project_name": project_name,
+		"event_chance": float(project.eventChance),
+	}
+
+func _consume_random_event_context() -> Dictionary:
+	if !_pending_random_event_context.is_empty():
+		var pending_context := _pending_random_event_context.duplicate(true)
+		_pending_random_event_context = {}
+		return pending_context
+	return _build_random_event_context()
+
+func _build_project_completion_snapshot() -> Dictionary:
+	var project = PlayerTool.project
+	if project == null:
+		return {}
+	return {
+		"project_name": str(project.projectName),
+		"client_name": str(project.clientName),
+		"project_rated_difficulty": float(PlayerTool.projectRatedDifficulty),
+		"project_amount": int(PlayerTool.projectAmount),
+		"team_rank": int(PlayerTool.teamRank),
+		"metrics": PlayerTool.metrics.duplicate(true),
+		"front_end_target": int(project.frontEndProjectMin),
+		"back_end_target": int(project.backEndProjectMin),
+		"documenting_target": int(project.documentingProjectMin),
+		"total_events": int(PlayerTool.totalEvents),
+	}
+
+func _run_pending_project_completion() -> void:
+	var completion_data := _pending_project_completion_snapshot.duplicate(true)
+	_pending_project_completion_snapshot = {}
+	runProjectCompletion(completion_data)
+
+func _prepare_pending_completion_for_random_event() -> void:
+	if _pending_project_completion_snapshot.is_empty():
+		return
+	_pending_project_completion_snapshot["total_events"] = int(_pending_project_completion_snapshot.get("total_events", 0)) + 1
+
+func apply_metric_deltas_to_pending_project_completion(metric_deltas: Dictionary) -> void:
+	if _pending_project_completion_snapshot.is_empty():
+		return
+	var metrics: Dictionary = _pending_project_completion_snapshot.get("metrics", {}).duplicate(true)
+	for metric_key in metric_deltas.keys():
+		if !metrics.has(metric_key):
+			continue
+		var updated_value := int(metrics.get(metric_key, 0)) + int(metric_deltas.get(metric_key, 0))
+		if metric_key in ["reliability", "stakeholderSatisfaction"]:
+			updated_value = clampi(updated_value, 0, 100)
+		metrics[metric_key] = updated_value
+	_pending_project_completion_snapshot["metrics"] = metrics
+
+func _on_random_event_finished() -> void:
+	_active_random_event_context = {}
+	_continue_post_week_follow_up()
 
 
 func _on_button_pressed() -> void: runProjectCompletion()
@@ -181,15 +304,28 @@ func show_kanban_exit_tutorial() -> void:
 		true
 	)
 
-func _show_tutorial(tutorial_key: String, title: String, message: String, show_stamina_examples: bool = false) -> void:
+func show_first_sprint_reward_tutorial(on_dismissed: Callable = Callable()) -> void:
+	_show_tutorial(
+		FIRST_SPRINT_REWARD_TUTORIAL_KEY,
+		FIRST_SPRINT_REWARD_TUTORIAL_TITLE,
+		FIRST_SPRINT_REWARD_TUTORIAL_MESSAGE,
+		false,
+		on_dismissed
+	)
+
+func _show_tutorial(tutorial_key: String, title: String, message: String, show_stamina_examples: bool = false, on_dismissed: Callable = Callable()) -> void:
 	if !PlayerTool.should_show_tutorial(tutorial_key):
+		if on_dismissed.is_valid():
+			on_dismissed.call()
 		return
 
 	var modal: TutorialModalPanel = TutorialModal.instantiate() as TutorialModalPanel
 	add_child(modal)
 	modal.setup(title, message, "OK", show_stamina_examples)
-	modal.dismissed.connect(_on_tutorial_dismissed.bind(tutorial_key))
+	modal.dismissed.connect(_on_tutorial_dismissed.bind(tutorial_key, on_dismissed))
 
-func _on_tutorial_dismissed(tutorial_key: String) -> void:
+func _on_tutorial_dismissed(tutorial_key: String, on_dismissed: Callable = Callable()) -> void:
 	PlayerTool.mark_tutorial_seen(tutorial_key)
 	SaveTool.savePlayerData()
+	if on_dismissed.is_valid():
+		on_dismissed.call()

@@ -14,10 +14,14 @@ var choiceOutcomes: Array = []
 
 var feedbackContainer: Control
 var continueBtn: Button
+var _event_context: Dictionary = {}
 
 var postIt1Sprites = ["res://UI/Theme/MainMenu/postIt.png","res://UI/Theme/MainMenu/postItHover.png","res://UI/Theme/MainMenu/postItSelect.png"]
 var postIt2Sprites = ["res://UI/Theme/MainMenu/postIt2.png","res://UI/Theme/MainMenu/postIt2Hover.png","res://UI/Theme/MainMenu/postIt2Select.png"]
 var handwrittenFont = preload("res://UI/Theme/Fonts/jakes-writing-font/Jakeswriting-P2Zr.ttf")
+
+func setup_event_context(event_context: Dictionary) -> void:
+	_event_context = event_context.duplicate(true)
 
 func _ready() -> void:
 	buildFeedbackUI()
@@ -93,8 +97,9 @@ func initializeEvent():
 	PlayerTool.totalEvents += 1
 	var eventPool: Array = []
 	eventPool.append_array(eventList.general_events)
-	if PlayerTool.project != null and eventList.project_events.has(PlayerTool.project.projectName):
-		eventPool.append_array(eventList.project_events.get(PlayerTool.project.projectName, []))
+	var project_name := _get_event_project_name()
+	if !project_name.is_empty() and eventList.project_events.has(project_name):
+		eventPool.append_array(eventList.project_events.get(project_name, []))
 	if eventPool.is_empty():
 		$eventText.text = "No event available."
 		button1.visible = false
@@ -189,6 +194,11 @@ func processChoice(choiceIndex: int):
 
 func _apply_metric_deltas(metricDeltas) -> void:
 	if metricDeltas is not Dictionary:
+		return
+	if PlayerTool.project == null:
+		var ui = _get_ui_layer()
+		if ui != null and ui.has_method("apply_metric_deltas_to_pending_project_completion"):
+			ui.apply_metric_deltas_to_pending_project_completion(metricDeltas)
 		return
 	for metricKey in metricDeltas.keys():
 		PlayerTool.changeMetricByName(str(metricKey), int(metricDeltas.get(metricKey, 0)))
@@ -286,5 +296,19 @@ func formatMetricName(key: String) -> String:
 		"stakeholderSatisfaction": return "Stakeholder Satisfaction"
 		_: return key.capitalize()
 
+func _get_event_project_name() -> String:
+	if PlayerTool.project != null:
+		return str(PlayerTool.project.projectName)
+	return str(_event_context.get("project_name", ""))
+
+func _get_ui_layer():
+	var current_scene: Node = get_tree().current_scene
+	if current_scene == null:
+		return null
+	return current_scene.get_node_or_null("UI")
+
 func _on_continue_pressed():
-	get_parent().get_parent().endMenu()
+	var ui = get_parent().get_parent()
+	ui.endMenu()
+	if ui.has_method("_on_random_event_finished"):
+		ui._on_random_event_finished()

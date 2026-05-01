@@ -6,58 +6,98 @@ const DOC_COLOR := Color(0.0, 0.7839653, 0.19948468, 1)
 const REL_COLOR := Color(1.0, 1.0, 0.17254902, 1.0)
 const SAT_COLOR := Color(0.95, 0.75, 0.15, 1.0)
 
+var _completion_snapshot: Dictionary = {}
+var _currency_awarded: bool = false
 
 func _ready() -> void:
 	calculateCompletion()
 
+func setup_from_snapshot(completion_snapshot: Dictionary) -> void:
+	_completion_snapshot = completion_snapshot.duplicate(true)
+	if is_inside_tree():
+		calculateCompletion()
 
 func calculateCompletion() -> void:
-	if PlayerTool.project == null:
+	var completion_data := _get_completion_data()
+	if completion_data.is_empty():
 		$ProjectInfo.text = "No completed project available."
 		$CurrencyAmount.text = "$0"
 		return
-	prepMenu()
-	calculateStakeholderSatisfaction()
+	prepMenu(completion_data)
+	calculateStakeholderSatisfaction(completion_data)
 		
 
-func prepMenu():
-	$ProjectInfo.text = "Project Name: "+PlayerTool.project.projectName + "\nClient: " + PlayerTool.project.clientName 
-	pass
+func prepMenu(completion_data: Dictionary) -> void:
+	$ProjectInfo.text = "Project Name: %s\nClient: %s" % [
+		str(completion_data.get("project_name", "")),
+		str(completion_data.get("client_name", ""))
+	]
 
-func calculateStakeholderSatisfaction():
+func calculateStakeholderSatisfaction(completion_data: Dictionary) -> void:
+	var metrics: Dictionary = completion_data.get("metrics", {})
+	var front_end_target := maxi(1, int(completion_data.get("front_end_target", 0)))
+	var back_end_target := maxi(1, int(completion_data.get("back_end_target", 0)))
+	var documenting_target := maxi(1, int(completion_data.get("documenting_target", 0)))
+	var total_events := maxi(1, int(completion_data.get("total_events", 0)))
 	var frontEndRanking: float
-	match PlayerTool.metrics.get("frontEnd") == 0:
+	match int(metrics.get("frontEnd", 0)) == 0:
 		true: frontEndRanking = 0
-		false: frontEndRanking = PlayerTool.metrics.get("frontEnd")/PlayerTool.project.frontEndProjectMin
+		false: frontEndRanking = float(metrics.get("frontEnd", 0)) / front_end_target
 	var backEndRanking: float
-	match PlayerTool.metrics.get("backEnd") == 0:
+	match int(metrics.get("backEnd", 0)) == 0:
 		true: backEndRanking = 0
-		false: backEndRanking = PlayerTool.metrics.get("backEnd")/PlayerTool.project.backEndProjectMin
+		false: backEndRanking = float(metrics.get("backEnd", 0)) / back_end_target
 	var documentationRanking: float
-	match PlayerTool.metrics.get("documenting") == 0:
+	match int(metrics.get("documenting", 0)) == 0:
 		true: documentationRanking = 0
-		false: documentationRanking = PlayerTool.metrics.get("documenting")/PlayerTool.project.documentingProjectMin
+		false: documentationRanking = float(metrics.get("documenting", 0)) / documenting_target
 	var reliabilityRanking: float
-	match PlayerTool.metrics.get("reliability") == 0:
+	match int(metrics.get("reliability", 0)) == 0:
 		true: reliabilityRanking = 0
-		false: reliabilityRanking = PlayerTool.metrics.get("reliability")/ PlayerTool.totalEvents
-	PlayerTool.metrics.set("stakeholderSatisfaction",frontEndRanking + backEndRanking + documentationRanking + reliabilityRanking)
+		false: reliabilityRanking = float(metrics.get("reliability", 0)) / total_events
+	var stakeholder_satisfaction := frontEndRanking + backEndRanking + documentationRanking + reliabilityRanking
 	var stakeholderSatisfactionMax = 4
-	$FERating.value = PlayerTool.metrics.get("frontEnd")
-	$FERating.max_value = PlayerTool.project.frontEndProjectMin
-	$BERating.value = PlayerTool.metrics.get("backEnd")
-	$BERating.max_value = PlayerTool.project.backEndProjectMin
-	$DocRating.value = PlayerTool.metrics.get("documenting")
-	$DocRating.max_value = PlayerTool.project.documentingProjectMin
-	$ReliabilityRating.value = PlayerTool.metrics.get("reliability")
-	$ReliabilityRating.max_value = PlayerTool.totalEvents
-	$SSRating.value = PlayerTool.metrics.get("stakeholderSatisfaction")
+	$FERating.value = int(metrics.get("frontEnd", 0))
+	$FERating.max_value = front_end_target
+	$BERating.value = int(metrics.get("backEnd", 0))
+	$BERating.max_value = back_end_target
+	$DocRating.value = int(metrics.get("documenting", 0))
+	$DocRating.max_value = documenting_target
+	$ReliabilityRating.value = int(metrics.get("reliability", 0))
+	$ReliabilityRating.max_value = total_events
+	$SSRating.value = stakeholder_satisfaction
 	$SSRating.max_value = stakeholderSatisfactionMax
-	calculateCurrencyEarned(PlayerTool.metrics.get("stakeholderSatisfaction"))
-	pass
+	calculateCurrencyEarned(stakeholder_satisfaction, completion_data)
 
-func calculateCurrencyEarned(satisfactionAmount: float):
-	var percentageEarned = satisfactionAmount/4
-	PlayerTool.earnProjectMoney(percentageEarned)
-	$CurrencyAmount.text = "$" + str(PlayerTool.returnSprintMoney(percentageEarned))
-	pass
+func calculateCurrencyEarned(satisfactionAmount: float, completion_data: Dictionary) -> void:
+	var percentageEarned = satisfactionAmount / 4.0
+	var currency_earned := _calculate_project_currency_earned(completion_data, percentageEarned)
+	if !_currency_awarded:
+		PlayerTool.addCurrency(currency_earned)
+		_currency_awarded = true
+	$CurrencyAmount.text = "$" + str(currency_earned)
+
+func _get_completion_data() -> Dictionary:
+	if !_completion_snapshot.is_empty():
+		return _completion_snapshot
+	if PlayerTool.project == null:
+		return {}
+	return {
+		"project_name": str(PlayerTool.project.projectName),
+		"client_name": str(PlayerTool.project.clientName),
+		"project_rated_difficulty": float(PlayerTool.projectRatedDifficulty),
+		"project_amount": int(PlayerTool.projectAmount),
+		"team_rank": int(PlayerTool.teamRank),
+		"metrics": PlayerTool.metrics.duplicate(true),
+		"front_end_target": int(PlayerTool.project.frontEndProjectMin),
+		"back_end_target": int(PlayerTool.project.backEndProjectMin),
+		"documenting_target": int(PlayerTool.project.documentingProjectMin),
+		"total_events": int(PlayerTool.totalEvents),
+	}
+
+func _calculate_project_currency_earned(completion_data: Dictionary, satisfaction_amount: float) -> int:
+	return int(floor(
+		(500.0 * float(completion_data.get("project_rated_difficulty", 0.0))) +
+		(25.0 * int(completion_data.get("project_amount", 0))) +
+		(650.0 * (int(completion_data.get("team_rank", 1)) - 1)) * satisfaction_amount
+	))
