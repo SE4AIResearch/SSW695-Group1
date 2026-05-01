@@ -39,7 +39,8 @@ func _ready():
 	if PlayerTool.workers.size() == 0:
 		$ProjectChoose/Button.text = "Hire a Worker!"
 		$ProjectChoose/Button.disabled = true
-	pass
+	else:
+		generateProjectChoices()
 
 func _apply_content_layout() -> void:
 	var content_rect: Rect2 = PCWindowLayout.content_rect()
