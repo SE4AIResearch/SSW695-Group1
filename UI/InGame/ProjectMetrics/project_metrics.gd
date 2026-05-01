@@ -12,6 +12,7 @@ func _ready() -> void:
 
 func setupMetrics():
 	if PlayerTool.project == null:
+		$reliabilityBar.max_value = 1
 		return
 	$projectNameLabel.text = "Project: " + PlayerTool.project.projectName + " | Client: " + PlayerTool.project.clientName
 	$methodologyLabel.text = "Methodology: " + PlayerTool.project.methodology.get("name")
@@ -19,7 +20,7 @@ func setupMetrics():
 	$backEndBar.max_value = PlayerTool.project.backEndProjectMin
 	$documentationBar.max_value = PlayerTool.project.documentingProjectMin
 	$reliabilityBar.value = PlayerTool.metrics.get("reliability")
-	$reliabilityBar.max_value = 1
+	$reliabilityBar.max_value = 0
 	pass
 
 func updateCurrentStats():

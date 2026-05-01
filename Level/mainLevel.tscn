@@ -471,6 +471,7 @@ offset_right = 875.0
 offset_bottom = 506.0
 scale = Vector2(2, 2)
 mouse_filter = 2
+max_value = 1.0
 texture_under = ExtResource("16_lkgwe")
 texture_progress = ExtResource("17_uibgn")
 tint_progress = Color(1, 1, 0.17254902, 1)
