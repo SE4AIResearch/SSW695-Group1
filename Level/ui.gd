@@ -9,7 +9,11 @@ var ProjectSetupMenu = load("res://UI/InGame/ProjectSetup/ProjectSetup.tscn")
 var randomEventMenu = load("res://UI/InGame/RandomEvent/RandomEvent.tscn")
 var projectCompletionMenu = load("res://UI/InGame/ProjectCompletion/ProjectCompletion.tscn")
 var TutorialModal: PackedScene = preload("res://UI/InGame/TutorialModal/TutorialModal.tscn")
+const FIRST_SPRINT_REWARD_TUTORIAL_KEY := "first_sprint_reward_intro"
+const FIRST_SPRINT_REWARD_TUTORIAL_TITLE := "First Sprint Complete"
+const FIRST_SPRINT_REWARD_TUTORIAL_MESSAGE := "You just earned currency for completing a sprint. Congrats! Check out the Hiring menu to search for team members, or visit Upgrades to purchase an upgrade."
 var pcMode = false
+var _pending_first_sprint_reward_tutorial: bool = false
 
 
 
@@ -17,7 +21,8 @@ func _ready() -> void:
 	PlayerTool.connect("projectSelected",toggleProjectButtons)
 	PlayerTool.connect("deadlineReached",toggleProjectButtons)
 	toggleProjectButtons()
-	PlayerTool.projectCompleted.connect(runProjectCompletion)
+	PlayerTool.projectCompleted.connect(_on_project_completed)
+	PlayerTool.sprintComplete.connect(_on_sprint_completed)
 	call_deferred("show_office_intro_tutorial")
 	AudioManager.reset_resting_workers()
 	AudioManager.play_music("gameplay")
@@ -65,6 +70,8 @@ func endMenu():
 		false:
 			$BackButton.visible = false
 			get_tree().paused = false
+	if _pending_first_sprint_reward_tutorial:
+		call_deferred("_show_pending_first_sprint_reward_tutorial_if_needed")
 
 func newProject():
 	endMenu()
@@ -152,9 +159,9 @@ func toggleProjectButtons():
 	var hasProject = PlayerTool.project != null
 	$BacklogButton.disabled = !hasProject
 
-func startEvent():
+func startEvent() -> bool:
 	if PlayerTool.project == null or $NewMenu.get_child_count() != 0:
-		return
+		return false
 	get_tree().paused = true
 	$randomEventRinger.play("ringing")
 	$randomEventRinger/ringerAudio.play()
@@ -163,11 +170,52 @@ func startEvent():
 	if PlayerTool.project == null or $NewMenu.get_child_count() != 0:
 		if $NewMenu.get_child_count() == 0:
 			get_tree().paused = false
-		return
+		return false
 	createMenu(randomEventMenu.instantiate(),false)
+	return true
 
-func runProjectCompletion():
-	createMenu(projectCompletionMenu.instantiate(),true)
+func runProjectCompletion(completion_data: Dictionary = {}) -> void:
+	var menu = projectCompletionMenu.instantiate()
+	if !completion_data.is_empty() and menu.has_method("setup_from_snapshot"):
+		menu.setup_from_snapshot(completion_data)
+	createMenu(menu,true)
+
+func _on_project_completed() -> void:
+	runProjectCompletion(_build_project_completion_snapshot())
+
+func _on_sprint_completed() -> void:
+	if !_should_show_first_sprint_reward_tutorial():
+		return
+	_pending_first_sprint_reward_tutorial = true
+	call_deferred("_show_pending_first_sprint_reward_tutorial_if_needed")
+
+func _show_pending_first_sprint_reward_tutorial_if_needed() -> void:
+	if !_pending_first_sprint_reward_tutorial:
+		return
+	if currentMenu != null and is_instance_valid(currentMenu):
+		return
+	_pending_first_sprint_reward_tutorial = false
+	show_first_sprint_reward_tutorial()
+
+func _should_show_first_sprint_reward_tutorial() -> bool:
+	return PlayerTool.projSprint == 1 and PlayerTool.should_show_tutorial(FIRST_SPRINT_REWARD_TUTORIAL_KEY)
+
+func _build_project_completion_snapshot() -> Dictionary:
+	var project = PlayerTool.project
+	if project == null:
+		return {}
+	return {
+		"project_name": str(project.projectName),
+		"client_name": str(project.clientName),
+		"project_rated_difficulty": float(PlayerTool.projectRatedDifficulty),
+		"project_amount": int(PlayerTool.projectAmount),
+		"team_rank": int(PlayerTool.teamRank),
+		"metrics": PlayerTool.metrics.duplicate(true),
+		"front_end_target": int(project.frontEndProjectMin),
+		"back_end_target": int(project.backEndProjectMin),
+		"documenting_target": int(project.documentingProjectMin),
+		"total_events": int(PlayerTool.totalEvents),
+	}
 
 
 func _on_button_pressed() -> void: runProjectCompletion()
@@ -185,6 +233,14 @@ func show_kanban_exit_tutorial() -> void:
 		"Week Started",
 		"Your workers will now make progress on their assigned backlog items. Watch stamina during the week.",
 		true
+	)
+
+func show_first_sprint_reward_tutorial() -> void:
+	_show_tutorial(
+		FIRST_SPRINT_REWARD_TUTORIAL_KEY,
+		FIRST_SPRINT_REWARD_TUTORIAL_TITLE,
+		FIRST_SPRINT_REWARD_TUTORIAL_MESSAGE,
+		false
 	)
 
 func _show_tutorial(tutorial_key: String, title: String, message: String, show_stamina_examples: bool = false) -> void:

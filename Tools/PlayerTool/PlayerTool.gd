@@ -121,6 +121,7 @@ func _default_tutorial_seen(seen: bool = true) -> Dictionary:
 		"methodology_intro": seen,
 		"hiring_intro": seen,
 		"kanban_exit_intro": seen,
+		"first_sprint_reward_intro": seen,
 	}
 
 # Type : 0 = Front End | 1 = Back End | 2 = Documenting | 3 = Reliability | 4 = Stakeholder Satisfaction

@@ -19,7 +19,7 @@ texture = ExtResource("3_cajoh")
 texture = ExtResource("4_0x3gt")
 
 [node name="ProjectItem" type="Button" unique_id=1964688718]
-custom_minimum_size = Vector2(260, 305)
+custom_minimum_size = Vector2(311, 390)
 anchors_preset = -1
 anchor_right = 0.19500001
 anchor_bottom = 0.335
