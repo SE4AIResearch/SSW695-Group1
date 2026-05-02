@@ -159,6 +159,7 @@ script = ExtResource("1_kl53g")
 [node name="Level" type="Node2D" parent="." unique_id=1824383856]
 
 [node name="background" type="Sprite2D" parent="Level" unique_id=1279202580]
+z_index = -20
 position = Vector2(576, 324)
 scale = Vector2(4.5, 4.5)
 texture = ExtResource("2_ern18")
@@ -269,16 +270,17 @@ position = Vector2(576, 324)
 scale = Vector2(4.5, 4.5)
 texture = ExtResource("3_s1qlg")
 
-[node name="Calendar" type="Sprite2D" parent="UI" unique_id=1608500558]
+[node name="Calendar" type="Sprite2D" parent="Level" unique_id=1608500558]
+z_index = -10
 position = Vector2(884, 187.00002)
 scale = Vector2(5, 5)
 texture = ExtResource("42_ce85j")
 script = ExtResource("9_ce85j")
 
-[node name="TextParent" type="Node2D" parent="UI/Calendar" unique_id=1619162444]
+[node name="TextParent" type="Node2D" parent="Level/Calendar" unique_id=1619162444]
 scale = Vector2(0.38, 0.38)
 
-[node name="sprintLabel" type="RichTextLabel" parent="UI/Calendar/TextParent" unique_id=1052199359]
+[node name="sprintLabel" type="RichTextLabel" parent="Level/Calendar/TextParent" unique_id=1052199359]
 offset_left = -53.157883
 offset_top = -50.000008
 offset_right = -1.0526276
@@ -290,7 +292,7 @@ bbcode_enabled = true
 text = "Sprint:"
 vertical_alignment = 1
 
-[node name="sprintData" type="RichTextLabel" parent="UI/Calendar/TextParent" unique_id=1130532827]
+[node name="sprintData" type="RichTextLabel" parent="Level/Calendar/TextParent" unique_id=1130532827]
 offset_left = -1.0526333
 offset_top = -50.000008
 offset_right = 53.157906
@@ -303,7 +305,7 @@ text = "0/0"
 horizontal_alignment = 2
 vertical_alignment = 1
 
-[node name="weekLabel" type="RichTextLabel" parent="UI/Calendar/TextParent" unique_id=314886438]
+[node name="weekLabel" type="RichTextLabel" parent="Level/Calendar/TextParent" unique_id=314886438]
 offset_left = -53.157898
 offset_top = -21.052643
 offset_right = -4.736847
@@ -316,7 +318,7 @@ bbcode_enabled = true
 text = "Week:"
 vertical_alignment = 1
 
-[node name="weekData" type="RichTextLabel" parent="UI/Calendar/TextParent" unique_id=1966119321]
+[node name="weekData" type="RichTextLabel" parent="Level/Calendar/TextParent" unique_id=1966119321]
 offset_left = -4.7368317
 offset_top = -21.052643
 offset_right = 53.157913
@@ -330,7 +332,7 @@ text = "0/0"
 horizontal_alignment = 2
 vertical_alignment = 1
 
-[node name="weekStatus" type="RichTextLabel" parent="UI/Calendar/TextParent" unique_id=647893365]
+[node name="weekStatus" type="RichTextLabel" parent="Level/Calendar/TextParent" unique_id=647893365]
 offset_left = -55.263184
 offset_top = 18.421043
 offset_right = 55.263123
@@ -343,7 +345,7 @@ bbcode_enabled = true
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="weekBar" type="TextureProgressBar" parent="UI/Calendar" unique_id=1335137699]
+[node name="weekBar" type="TextureProgressBar" parent="Level/Calendar" unique_id=1335137699]
 offset_left = -21.000015
 offset_top = 6.999996
 offset_right = 20.999985

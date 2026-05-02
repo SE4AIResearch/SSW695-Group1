@@ -42,6 +42,9 @@ const PLACED_UPGRADE_VISUALS := {
 }
 
 const DESKTOP_PC_WORKER_Y_OFFSET := -15
+const BACKGROUND_Z_INDEX := -20
+const WALL_CALENDAR_Z_INDEX := -10
+const WORLD_OBJECT_Z_INDEX := 0
 
 func _ready() -> void:
 	TimeTool.weekPassed.connect(rollEvent)
@@ -49,12 +52,19 @@ func _ready() -> void:
 	PlayerTool.officeTierChanged.connect(setupDeskVisuals)
 	PlayerTool.upgradesChanged.connect(setupDeskVisuals)
 	PlayerTool.upgradesChanged.connect(setupUpgradeVisuals)
+	_apply_world_render_layers()
 	initializeSave()
 	PlayerTool.level = self
 	_ensure_office_slots()
 	setupDeskVisuals()
 	setupUpgradeVisuals()
 	PlayerTool.levelLoaded.emit()
+
+func _apply_world_render_layers() -> void:
+	$Level/background.z_index = BACKGROUND_Z_INDEX
+	$Level/Calendar.z_index = WALL_CALENDAR_Z_INDEX
+	$Level/workers.z_index = WORLD_OBJECT_Z_INDEX
+
 func initializeSave():
 	if PlayerTool.projectName == "":
 		return
@@ -172,6 +182,7 @@ func _ensure_upgrade_props_container() -> Node2D:
 
 	var background_index := level_node.get_node("background").get_index()
 	level_node.move_child(upgrade_props, background_index + 1)
+	upgrade_props.z_index = WORLD_OBJECT_Z_INDEX
 	return upgrade_props
 
 func _get_worker_slots() -> Array:
