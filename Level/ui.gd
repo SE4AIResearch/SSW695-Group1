@@ -6,6 +6,7 @@ var ProjectMetricsMenu = load("res://UI/InGame/ProjectMetrics/ProjectMetrics.tsc
 var HiringMenu = load("res://UI/InGame/Hiring/Hiring.tscn")
 var BacklogMenu = load("res://UI/InGame/Backlog/Backlog.tscn")
 var ProjectSetupMenu = load("res://UI/InGame/ProjectSetup/ProjectSetup.tscn")
+var ProjectPortfolioMenu = load("res://UI/InGame/ProjectPortfolio/ProjectPortfolio.tscn")
 var randomEventMenu = load("res://UI/InGame/RandomEvent/RandomEvent.tscn")
 var projectCompletionMenu = load("res://UI/InGame/ProjectCompletion/ProjectCompletion.tscn")
 var TutorialModal: PackedScene = preload("res://UI/InGame/TutorialModal/TutorialModal.tscn")
@@ -64,6 +65,7 @@ func endMenu():
 			$PCButtons.visible = true
 			$PCButtons/UpgradesButton.disabled = false
 			$PCButtons/HiringButton.disabled = false
+			$PCButtons/ProjectPortfolioButton.disabled = false
 			var hasProject = PlayerTool.project != null
 			$PCButtons/projectStartMenu.text = "Already have a Project" if hasProject else "Start New Project"
 			$PCButtons/projectStartMenu.disabled = hasProject
@@ -92,6 +94,10 @@ func _on_hiring_button_pressed() -> void:
 	AudioManager.play_sfx("pc_click")
 	createMenu(HiringMenu.instantiate(),false)
 
+func _on_project_portfolio_button_pressed() -> void:
+	AudioManager.play_sfx("pc_click")
+	createMenu(ProjectPortfolioMenu.instantiate(),false)
+
 func _on_backlog_button_pressed() -> void:
 	AudioManager.play_sfx("paper_rustle")
 	createMenu(BacklogMenu.instantiate(),true)
@@ -116,6 +122,7 @@ func createMenu(menu,allowBack):
 			$PCButtons.visible = false
 			$PCButtons/UpgradesButton.disabled = true
 			$PCButtons/HiringButton.disabled = true
+			$PCButtons/ProjectPortfolioButton.disabled = true
 			$PCButtons/projectStartMenu.disabled = true
 		false:
 			if allowBack: $BackButton.visible = true
@@ -130,6 +137,7 @@ func _on_pc_pressed() -> void:
 	$PCScreen.visible = true
 	$PCScreenPanel.visible = true	
 	$PCButtons.visible = true
+	$PCButtons/ProjectPortfolioButton.disabled = false
 	match PlayerTool.project == null:
 		true:
 			$PCButtons/projectStartMenu.text = "Start New Project"
@@ -151,6 +159,7 @@ func _on_pc_power_pressed() -> void:
 	$PCButtons.visible = false
 	$PCButtons/UpgradesButton.disabled = false
 	$PCButtons/HiringButton.disabled = false
+	$PCButtons/ProjectPortfolioButton.disabled = false
 	$PCButtons/projectStartMenu.disabled = false
 	if $NewMenu.get_children().size() > 0: $NewMenu.get_child(0).queue_free()
 	pass

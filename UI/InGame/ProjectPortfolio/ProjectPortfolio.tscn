@@ -1,0 +1,226 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://UI/InGame/ProjectPortfolio/project_portfolio.gd" id="1_0xv1o"]
+[ext_resource type="StyleBoxTexture" path="res://UI/Theme/PCTheme/PCWindowFrame.tres" id="2_ttwve"]
+[ext_resource type="Texture2D" uid="uid://d00apn0evacqg" path="res://UI/Theme/PCTheme/Back/pcBack.png" id="3_wk7t5"]
+[ext_resource type="Texture2D" uid="uid://dkqvr0lf6ytje" path="res://UI/Theme/PCTheme/Back/pcBackPressed.png" id="4_ar0rh"]
+[ext_resource type="Texture2D" uid="uid://crruuadiafv87" path="res://UI/Theme/PCTheme/Back/pcBackHeld.png" id="5_y3rje"]
+[ext_resource type="Texture2D" uid="uid://o4k321o7djhb" path="res://UI/Theme/PCTheme/Back/pcBackDisabled.png" id="6_o45cl"]
+[ext_resource type="Texture2D" uid="uid://cqjra4hvo67jb" path="res://UI/Theme/PCTheme/TextureBar/BG.png" id="7_o7t1n"]
+[ext_resource type="Texture2D" uid="uid://cy7ghvk8gm6ef" path="res://UI/Theme/PCTheme/TextureBar/Progress.png" id="8_jkvaf"]
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_back_normal"]
+texture = ExtResource("3_wk7t5")
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_back_pressed"]
+texture = ExtResource("4_ar0rh")
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_back_hover"]
+texture = ExtResource("5_y3rje")
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_back_disabled"]
+texture = ExtResource("6_o45cl")
+
+[node name="ProjectPortfolio" type="Node2D"]
+process_mode = 2
+script = ExtResource("1_0xv1o")
+
+[node name="WindowFrame" type="Panel" parent="."]
+mouse_filter = 2
+offset_left = 120.0
+offset_top = 100.0
+offset_right = 1030.0
+offset_bottom = 610.0
+theme_override_styles/panel = ExtResource("2_ttwve")
+
+[node name="Title" type="Label" parent="."]
+offset_left = 400.0
+offset_top = 110.0
+offset_right = 750.0
+offset_bottom = 148.0
+text = "Project Portfolio"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="SummaryLabel" type="Label" parent="."]
+offset_left = 108.0
+offset_top = 168.0
+offset_right = 488.0
+offset_bottom = 342.0
+text = "No active project"
+vertical_alignment = 1
+autowrap_mode = 2
+
+[node name="CompletedProjectsLabel" type="Label" parent="."]
+offset_left = 108.0
+offset_top = 366.0
+offset_right = 488.0
+offset_bottom = 400.0
+text = "Completed Projects: 0"
+vertical_alignment = 1
+
+[node name="NoActiveProjectLabel" type="Label" parent="."]
+offset_left = 108.0
+offset_top = 418.0
+offset_right = 488.0
+offset_bottom = 492.0
+text = "Start a project from the PC menu to see its portfolio details here."
+vertical_alignment = 1
+autowrap_mode = 2
+
+[node name="MetricHeader" type="Label" parent="."]
+offset_left = 540.0
+offset_top = 168.0
+offset_right = 980.0
+offset_bottom = 206.0
+text = "Current Metric Progress"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="frontEndLabel" type="Label" parent="."]
+offset_left = 540.0
+offset_top = 238.0
+offset_right = 750.0
+offset_bottom = 266.0
+text = "Front End"
+vertical_alignment = 1
+
+[node name="frontEndValue" type="Label" parent="."]
+offset_left = 750.0
+offset_top = 238.0
+offset_right = 846.0
+offset_bottom = 266.0
+text = "0 / 1"
+horizontal_alignment = 2
+vertical_alignment = 1
+
+[node name="frontEndBar" type="TextureProgressBar" parent="."]
+offset_left = 540.0
+offset_top = 264.0
+offset_right = 930.0
+offset_bottom = 280.0
+mouse_filter = 2
+texture_under = ExtResource("7_o7t1n")
+texture_progress = ExtResource("8_jkvaf")
+tint_progress = Color(0.82258534, 0.14166427, 0, 1)
+
+[node name="backEndLabel" type="Label" parent="."]
+offset_left = 540.0
+offset_top = 282.0
+offset_right = 750.0
+offset_bottom = 310.0
+text = "Back End"
+vertical_alignment = 1
+
+[node name="backEndValue" type="Label" parent="."]
+offset_left = 750.0
+offset_top = 282.0
+offset_right = 846.0
+offset_bottom = 310.0
+text = "0 / 1"
+horizontal_alignment = 2
+vertical_alignment = 1
+
+[node name="backEndBar" type="TextureProgressBar" parent="."]
+offset_left = 540.0
+offset_top = 308.0
+offset_right = 930.0
+offset_bottom = 324.0
+mouse_filter = 2
+texture_under = ExtResource("7_o7t1n")
+texture_progress = ExtResource("8_jkvaf")
+tint_progress = Color(0, 0.59539217, 0.76481044, 1)
+
+[node name="documentingLabel" type="Label" parent="."]
+offset_left = 540.0
+offset_top = 326.0
+offset_right = 750.0
+offset_bottom = 354.0
+text = "Documentation"
+vertical_alignment = 1
+
+[node name="documentationValue" type="Label" parent="."]
+offset_left = 750.0
+offset_top = 326.0
+offset_right = 846.0
+offset_bottom = 354.0
+text = "0 / 1"
+horizontal_alignment = 2
+vertical_alignment = 1
+
+[node name="documentationBar" type="TextureProgressBar" parent="."]
+offset_left = 540.0
+offset_top = 352.0
+offset_right = 930.0
+offset_bottom = 368.0
+mouse_filter = 2
+texture_under = ExtResource("7_o7t1n")
+texture_progress = ExtResource("8_jkvaf")
+tint_progress = Color(0, 0.7839653, 0.19948468, 1)
+
+[node name="reliabilityLabel" type="Label" parent="."]
+offset_left = 540.0
+offset_top = 370.0
+offset_right = 750.0
+offset_bottom = 398.0
+text = "Reliability"
+vertical_alignment = 1
+
+[node name="reliabilityValue" type="Label" parent="."]
+offset_left = 750.0
+offset_top = 370.0
+offset_right = 846.0
+offset_bottom = 398.0
+text = "0 / 100"
+horizontal_alignment = 2
+vertical_alignment = 1
+
+[node name="reliabilityBar" type="TextureProgressBar" parent="."]
+offset_left = 540.0
+offset_top = 396.0
+offset_right = 930.0
+offset_bottom = 412.0
+mouse_filter = 2
+texture_under = ExtResource("7_o7t1n")
+texture_progress = ExtResource("8_jkvaf")
+tint_progress = Color(1, 1, 0.17254902, 1)
+
+[node name="stakeholderSatisfactionLabel" type="Label" parent="."]
+offset_left = 540.0
+offset_top = 414.0
+offset_right = 750.0
+offset_bottom = 442.0
+text = "Stakeholder Satisfaction"
+vertical_alignment = 1
+autowrap_mode = 2
+
+[node name="stakeholderValue" type="Label" parent="."]
+offset_left = 750.0
+offset_top = 414.0
+offset_right = 846.0
+offset_bottom = 442.0
+text = "0 / 100"
+horizontal_alignment = 2
+vertical_alignment = 1
+
+[node name="stakeholderBar" type="TextureProgressBar" parent="."]
+offset_left = 540.0
+offset_top = 440.0
+offset_right = 930.0
+offset_bottom = 456.0
+mouse_filter = 2
+texture_under = ExtResource("7_o7t1n")
+texture_progress = ExtResource("8_jkvaf")
+tint_progress = Color(0.95, 0.75, 0.15, 1)
+
+[node name="PCBack" type="Button" parent="."]
+offset_left = 932.0
+offset_top = 116.0
+offset_right = 1012.0
+offset_bottom = 136.0
+theme_override_styles/normal = SubResource("StyleBoxTexture_back_normal")
+theme_override_styles/pressed = SubResource("StyleBoxTexture_back_pressed")
+theme_override_styles/hover = SubResource("StyleBoxTexture_back_hover")
+theme_override_styles/disabled = SubResource("StyleBoxTexture_back_disabled")
+
+[connection signal="pressed" from="PCBack" to="." method="_on_pc_back_pressed"]
