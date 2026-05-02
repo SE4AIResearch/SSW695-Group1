@@ -6,6 +6,7 @@ const PortfolioProjectItem = preload("res://UI/InGame/ProjectPortfolio/Portfolio
 const CONTENT_PADDING := 24.0
 const HEADER_HEIGHT := 28.0
 const HEADER_GAP := 10.0
+const PORTFOLIO_ITEM_WIDTH := 884.0
 
 func _ready() -> void:
 	PCWindowLayout.apply(self)
@@ -26,7 +27,7 @@ func _apply_content_layout() -> void:
 	_place_control($EmptyStateLabel, content_left + 80.0, scroll_top + 112.0, content_width - 160.0, 96.0)
 
 	var project_list: VBoxContainer = $ScrollContainer/ProjectList
-	project_list.custom_minimum_size = Vector2(content_width - 20.0, 0.0)
+	project_list.custom_minimum_size = Vector2(maxf(PORTFOLIO_ITEM_WIDTH, content_width - 20.0), 0.0)
 	project_list.add_theme_constant_override("separation", 8)
 
 func _connect_player_signals() -> void:
