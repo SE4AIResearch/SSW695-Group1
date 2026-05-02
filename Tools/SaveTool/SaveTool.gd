@@ -230,6 +230,9 @@ func loadPlayerData(saveName: String = current_save_name):
 	PlayerTool.max_worker_capacity = saveData.get_value("Player", "max_worker_capacity", 6)
 	PlayerTool.workerIdCounter = saveData.get_value("Player", "workerIdCounter", 0)
 	PlayerTool.remaining_project_choice_names = saveData.get_value("Player", "remaining_project_choice_names", [])
+	PlayerTool.completed_project_portfolio = _normalize_loaded_project_portfolio(
+		saveData.get_value("Lists", "completed_project_portfolio", [])
+	)
 
 	PlayerTool.loopPhase = saveData.get_value("GameState", "loopPhase", "no_project")
 	PlayerTool.weekResults = saveData.get_value("GameState", "weekResults", {})
@@ -297,6 +300,7 @@ func savePlayerData():
 	
 	# Lists
 	saveData.set_value("Lists", "upgrades", PlayerTool.upgrades)
+	saveData.set_value("Lists", "completed_project_portfolio", PlayerTool.completed_project_portfolio)
 	saveData.set_value("Lists", "workers", serializeWorkers())
 	
 	saveData.save(get_save_path(current_save_name))
@@ -366,6 +370,27 @@ func _normalize_worker_upgrade_bonuses(upgrade_stat_bonuses: Dictionary) -> Dict
 	for stat_key in normalized_bonuses.keys():
 		normalized_bonuses[stat_key] = float(upgrade_stat_bonuses.get(stat_key, 0.0))
 	return normalized_bonuses
+
+func _normalize_loaded_project_portfolio(raw_portfolio) -> Array:
+	if raw_portfolio is not Array:
+		return []
+
+	var normalized_portfolio: Array = []
+	for raw_record in raw_portfolio:
+		if raw_record is not Dictionary:
+			continue
+		var record: Dictionary = raw_record.duplicate(true)
+		var metrics_value = record.get("metrics", {})
+		var metric_maxes_value = record.get("metric_maxes", {})
+		var completed_at_value = record.get("completed_at", {})
+		if metrics_value is not Dictionary:
+			record["metrics"] = {}
+		if metric_maxes_value is not Dictionary:
+			record["metric_maxes"] = {}
+		if completed_at_value is not Dictionary:
+			record["completed_at"] = {}
+		normalized_portfolio.append(record)
+	return normalized_portfolio
 
 func _normalize_loaded_backlog_items(raw_backlog_items: Array) -> Array:
 	var normalized_items: Array = []

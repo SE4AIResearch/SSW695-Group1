@@ -13,6 +13,7 @@ signal weekTimerUpdated
 signal projectCompleted
 signal currencyChanged
 signal scoreChanged
+signal projectPortfolioChanged
 signal officeTierChanged
 signal upgradesChanged
 
@@ -81,6 +82,7 @@ var currency: float = 0.0
 var score: int = 0
 var projectAmount: int = 0
 var completed_project_count: int = 0
+var completed_project_portfolio: Array = []
 var has_viewed_methodology_learning_center: bool = false
 var office_tier: int = 0
 var max_worker_capacity: int = 6
@@ -158,6 +160,7 @@ func resetData():
 	projectRatedDifficulty = 0
 	projectAmount = 0
 	completed_project_count = 0
+	completed_project_portfolio = []
 	has_viewed_methodology_learning_center = false
 	office_tier = 0
 	remaining_project_choice_names = []
@@ -194,6 +197,7 @@ func resetData():
 	loopPhase = LOOP_NO_PROJECT
 	currencyChanged.emit()
 	scoreChanged.emit()
+	projectPortfolioChanged.emit()
 	backlogUpdated.emit()
 	loopStateChanged.emit()
 	statsChanged.emit()
@@ -407,6 +411,40 @@ func addCurrency(amount: int) -> void:
 func addScore(amount: int) -> void:
 	score = maxi(0, score + amount)
 	scoreChanged.emit()
+
+func record_completed_project(completion_data: Dictionary, currency_earned: int, stakeholder_satisfaction: float) -> void:
+	if completion_data.is_empty():
+		return
+
+	var raw_metrics = completion_data.get("metrics", {})
+	var source_metrics: Dictionary = {}
+	if raw_metrics is Dictionary:
+		source_metrics = raw_metrics
+
+	var total_events := int(completion_data.get("total_events", 0))
+	var portfolio_record := {
+		"project_name": str(completion_data.get("project_name", "")),
+		"client_name": str(completion_data.get("client_name", "")),
+		"completed_at": Time.get_datetime_dict_from_system(false),
+		"currency_earned": int(currency_earned),
+		"metrics": {
+			"stakeholderSatisfaction": float(stakeholder_satisfaction),
+			"frontEnd": int(source_metrics.get("frontEnd", 0)),
+			"backEnd": int(source_metrics.get("backEnd", 0)),
+			"reliability": int(source_metrics.get("reliability", 0)),
+			"documenting": int(source_metrics.get("documenting", 0)),
+		},
+		"metric_maxes": {
+			"stakeholderSatisfaction": 4,
+			"frontEnd": maxi(1, int(completion_data.get("front_end_target", 0))),
+			"backEnd": maxi(1, int(completion_data.get("back_end_target", 0))),
+			"reliability": maxi(1, total_events),
+			"documenting": maxi(1, int(completion_data.get("documenting_target", 0))),
+		},
+	}
+
+	completed_project_portfolio.append(portfolio_record)
+	projectPortfolioChanged.emit()
 
 func canAdvanceWeek() -> bool:
 	return project != null and loopPhase == LOOP_PLANNING_WEEK
