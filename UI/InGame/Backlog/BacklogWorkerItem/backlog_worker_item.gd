@@ -11,6 +11,8 @@ const STATUS_RESTING_COLOR: Color = Color(0.017259976, 0.4440687, 0.8440869)
 
 func createWorkerItem(worker):
 	heldWorker = worker
+	if material:
+		material = material.duplicate()
 	$Person.get_node("headSprite").texture = worker.get_node("headSprite").texture
 	$Person.get_node("hairSprite").texture = worker.get_node("hairSprite").texture
 	$Person.get_node("mouthSprite").texture = worker.get_node("mouthSprite").texture
@@ -30,6 +32,7 @@ func setBusyStatus(is_busy: bool) -> void:
 func setWorkerStatus(is_busy: bool, is_resting: bool) -> void:
 	isBusy = is_busy
 	isResting = is_resting
+	update_shader_opacity()
 	if is_resting:
 		$StatusLabel.text = "RESTING"
 		$StatusLabel.add_theme_color_override("font_color", _get_resting_status_color())
@@ -54,6 +57,19 @@ func _get_resting_status_color() -> Color:
 		if resting_color is Color:
 			return resting_color
 	return STATUS_RESTING_COLOR
+
+func update_shader_opacity(someone_selected: bool = false, is_this_selected: bool = false):
+	var opacity = 0.0
+	if someone_selected:
+		if is_this_selected:
+			opacity = 1.0
+		else:
+			opacity = 0.0
+	elif not isBusy and not isResting:
+		opacity = 1.0
+		
+	if material:
+		material.set_shader_parameter("opacity", opacity)
 
 func _on_pressed() -> void:
 	WorkerSelected.emit(self)

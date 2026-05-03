@@ -1,5 +1,6 @@
 extends CanvasLayer
 var currentMenu: Node
+var portfolio_needs_attention: bool = false
 
 var UpgradesMenu = load("res://UI/InGame/Upgrades/Upgrades.tscn")
 var ProjectMetricsMenu = load("res://UI/InGame/ProjectMetrics/ProjectMetrics.tscn")
@@ -27,6 +28,17 @@ func _ready() -> void:
 	_apply_render_layers()
 	PlayerTool.connect("projectSelected",toggleProjectButtons)
 	PlayerTool.connect("deadlineReached",toggleProjectButtons)
+	PlayerTool.connect("loopStateChanged", update_shader_opacities)
+	
+	if $BacklogButton.material:
+		$BacklogButton.material = $BacklogButton.material.duplicate()
+	if $PC.material:
+		$PC.material = $PC.material.duplicate()
+	if $PCButtons/ProjectPortfolioButton.material:
+		$PCButtons/ProjectPortfolioButton.material = $PCButtons/ProjectPortfolioButton.material.duplicate()
+	if $PCButtons/projectStartMenu.material:
+		$PCButtons/projectStartMenu.material = $PCButtons/projectStartMenu.material.duplicate()
+		
 	toggleProjectButtons()
 	PlayerTool.projectCompleted.connect(_on_project_completed)
 	PlayerTool.sprintComplete.connect(_on_sprint_completed)
@@ -82,7 +94,7 @@ func endMenu():
 			$PCButtons/HiringButton.disabled = false
 			$PCButtons/ProjectPortfolioButton.disabled = false
 			var hasProject = PlayerTool.project != null
-			$PCButtons/projectStartMenu.text = "Already have a Project" if hasProject else "Start New Project"
+			$PCButtons/projectStartMenu/Label.text = "Already have a Project" if hasProject else "Start New Project"
 			$PCButtons/projectStartMenu.disabled = hasProject
 		false:
 			$BackButton.visible = false
@@ -111,6 +123,8 @@ func _on_hiring_button_pressed() -> void:
 
 func _on_project_portfolio_button_pressed() -> void:
 	AudioManager.play_sfx("pc_click")
+	portfolio_needs_attention = false
+	update_shader_opacities()
 	createMenu(ProjectPortfolioMenu.instantiate(),false)
 
 func _on_backlog_button_pressed() -> void:
@@ -155,11 +169,11 @@ func _on_pc_pressed() -> void:
 	$PCButtons/ProjectPortfolioButton.disabled = false
 	match PlayerTool.project == null:
 		true:
-			$PCButtons/projectStartMenu.text = "Start New Project"
+			$PCButtons/projectStartMenu/Label.text = "Start New Project"
 			$PCButtons/projectStartMenu.disabled = false
 			pass
 		false:
-			$PCButtons/projectStartMenu.text = "Already have a Project"
+			$PCButtons/projectStartMenu/Label.text = "Already have a Project"
 			$PCButtons/projectStartMenu.disabled = true		
 			pass
 	
@@ -182,6 +196,30 @@ func _on_pc_power_pressed() -> void:
 func toggleProjectButtons():
 	var hasProject = PlayerTool.project != null
 	$BacklogButton.disabled = !hasProject
+	update_shader_opacities()
+
+func update_shader_opacities():
+	# BacklogButton Logic
+	var backlog_opacity = 0.0
+	if PlayerTool.project != null and !PlayerTool.isWeekActive():
+		backlog_opacity = 0.5
+	if $BacklogButton.material:
+		$BacklogButton.material.set_shader_parameter("opacity", backlog_opacity)
+	
+	# PC Logic
+	var pc_opacity = 0.0 if PlayerTool.project != null else 0.5
+	if $PC.material:
+		$PC.material.set_shader_parameter("opacity", pc_opacity)
+	
+	# ProjectPortfolioButton Logic
+	var portfolio_opacity = 0.5 if portfolio_needs_attention else 0.0
+	if $PCButtons/ProjectPortfolioButton.material:
+		$PCButtons/ProjectPortfolioButton.material.set_shader_parameter("opacity", portfolio_opacity)
+	
+	# projectStartMenu Logic
+	var start_menu_opacity = 1.0 if PlayerTool.project == null else 0.0
+	if $PCButtons/projectStartMenu.material:
+		$PCButtons/projectStartMenu.material.set_shader_parameter("opacity", start_menu_opacity)
 
 func startEvent() -> bool:
 	if PlayerTool.project == null or $NewMenu.get_child_count() != 0:
@@ -205,6 +243,8 @@ func runProjectCompletion(completion_data: Dictionary = {}) -> void:
 	createMenu(menu,true)
 
 func _on_project_completed() -> void:
+	portfolio_needs_attention = true
+	update_shader_opacities()
 	runProjectCompletion(_build_project_completion_snapshot())
 
 func _on_sprint_completed() -> void:

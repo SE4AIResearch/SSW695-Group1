@@ -3,10 +3,24 @@
 [ext_resource type="Texture2D" uid="uid://k7xby2l5gc5f" path="res://UI/Theme/MainLevel/backlog/BG.png" id="1_gwqqw"]
 [ext_resource type="Script" uid="uid://b48o1abbwl63b" path="res://UI/InGame/Backlog/backlog.gd" id="1_qp40g"]
 [ext_resource type="FontFile" uid="uid://b0lji18tmt8ua" path="res://UI/Theme/Fonts/jakes-writing-font/Jakeswriting-P2Zr.ttf" id="2_qp40g"]
-[ext_resource type="Texture2D" path="res://UI/Theme/PCTheme/button/slimButton.png" id="7_adv_week"]
-[ext_resource type="Texture2D" path="res://UI/Theme/PCTheme/button/slimButtonPressed.png" id="8_adv_week"]
-[ext_resource type="Texture2D" path="res://UI/Theme/PCTheme/button/slimButtonHeld.png" id="9_adv_week"]
-[ext_resource type="Texture2D" path="res://UI/Theme/PCTheme/button/slimButtonDisabled.png" id="10_adv_week"]
+[ext_resource type="Shader" uid="uid://bhapt2ethyik7" path="res://Shaders/outline.gdshader" id="4_xk3u1"]
+[ext_resource type="Texture2D" uid="uid://drwt4l4mwiboc" path="res://UI/Theme/PCTheme/button/slimButton.png" id="7_adv_week"]
+[ext_resource type="Texture2D" uid="uid://cuyr4sv3sto4b" path="res://UI/Theme/PCTheme/button/slimButtonPressed.png" id="8_adv_week"]
+[ext_resource type="Texture2D" uid="uid://b8snwl2q3qflg" path="res://UI/Theme/PCTheme/button/slimButtonHeld.png" id="9_adv_week"]
+[ext_resource type="Texture2D" uid="uid://2jvaulftw7b6" path="res://UI/Theme/PCTheme/button/slimButtonDisabled.png" id="10_adv_week"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_7x6es"]
+shader = ExtResource("4_xk3u1")
+shader_parameter/color = Color(0.9218597, 0.7484043, 0.7382472, 1)
+shader_parameter/width = 1.0000000475
+shader_parameter/pattern = 1
+shader_parameter/inside = false
+shader_parameter/add_margins = true
+shader_parameter/number_of_images = Vector2(1, 1)
+shader_parameter/sheen_color = Color(0.8863476, 0.3061895, 0.28166446, 1)
+shader_parameter/sheen_speed = 3.0000001425
+shader_parameter/sheen_frequency = 4.00000019
+shader_parameter/opacity = 1.0
 
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_adv_week_normal"]
 texture = ExtResource("7_adv_week")
@@ -94,11 +108,10 @@ theme_override_colors/default_color = Color(0, 0, 0, 1)
 theme_override_fonts/normal_font = ExtResource("2_qp40g")
 theme_override_font_sizes/normal_font_size = 22
 bbcode_enabled = true
-fit_content = false
 scroll_active = false
-autowrap_mode = 3
 
 [node name="AdvanceWeekButton" type="Button" parent="." unique_id=1971555331]
+material = SubResource("ShaderMaterial_7x6es")
 offset_left = 903.0
 offset_top = 59.0
 offset_right = 1048.0
@@ -110,6 +123,16 @@ theme_override_styles/normal = SubResource("StyleBoxTexture_adv_week_normal")
 theme_override_styles/pressed = SubResource("StyleBoxTexture_adv_week_pressed")
 theme_override_styles/hover = SubResource("StyleBoxTexture_adv_week_hover")
 theme_override_styles/disabled = SubResource("StyleBoxTexture_adv_week_disabled")
+
+[node name="Label" type="Label" parent="AdvanceWeekButton" unique_id=1686043910]
+layout_mode = 0
+offset_left = 15.0
+offset_top = 14.0
+offset_right = 131.0
+offset_bottom = 37.0
+mouse_filter = 1
+theme_override_fonts/font = ExtResource("2_qp40g")
+theme_override_font_sizes/font_size = 24
 text = "Advance Week"
 
 [node name="WorkersScroll" type="ScrollContainer" parent="." unique_id=1079949786]

@@ -17,6 +17,8 @@ const TITLE_LINE_HEIGHT: float = 15.0
 const DETAIL_LINE_HEIGHT: float = 12.0
 
 func prepItem(item, itemType: int = -1):
+	if material:
+		material = material.duplicate()
 	if item is Dictionary:
 		heldItem = item
 	else:
@@ -167,6 +169,17 @@ func _strip_bbcode(text: String) -> String:
 		elif not insideTag:
 			plainText += character
 	return plainText
+
+func update_shader_opacity(worker_is_selected: bool):
+	var is_completed = heldItem.get("status") == "done"
+	var is_assigned = str(heldItem.get("assigned_worker_id", "")) != ""
+	
+	var opacity = 0.0
+	if worker_is_selected and not is_assigned and not is_completed:
+		opacity = 1.0
+	
+	if material:
+		material.set_shader_parameter("opacity", opacity)
 
 func _on_pressed() -> void:
 	MetricChosen.emit(self)
