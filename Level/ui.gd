@@ -6,18 +6,25 @@ var ProjectMetricsMenu = load("res://UI/InGame/ProjectMetrics/ProjectMetrics.tsc
 var HiringMenu = load("res://UI/InGame/Hiring/Hiring.tscn")
 var BacklogMenu = load("res://UI/InGame/Backlog/Backlog.tscn")
 var ProjectSetupMenu = load("res://UI/InGame/ProjectSetup/ProjectSetup.tscn")
+var ProjectPortfolioMenu = load("res://UI/InGame/ProjectPortfolio/ProjectPortfolio.tscn")
 var randomEventMenu = load("res://UI/InGame/RandomEvent/RandomEvent.tscn")
 var projectCompletionMenu = load("res://UI/InGame/ProjectCompletion/ProjectCompletion.tscn")
 var TutorialModal: PackedScene = preload("res://UI/InGame/TutorialModal/TutorialModal.tscn")
 const FIRST_SPRINT_REWARD_TUTORIAL_KEY := "first_sprint_reward_intro"
 const FIRST_SPRINT_REWARD_TUTORIAL_TITLE := "First Sprint Complete"
 const FIRST_SPRINT_REWARD_TUTORIAL_MESSAGE := "You just earned currency for completing a sprint. Congrats! Check out the Hiring menu to search for team members, or visit Upgrades to purchase an upgrade."
+const PC_OVERLAY_Z_INDEX := 400
+const PC_BUTTONS_Z_INDEX := 500
+const MENU_Z_INDEX := 600
+const HUD_BUTTON_Z_INDEX := 700
+const PAUSE_MENU_Z_INDEX := 800
 var pcMode = false
 var _pending_first_sprint_reward_tutorial: bool = false
 
 
 
 func _ready() -> void:
+	_apply_render_layers()
 	PlayerTool.connect("projectSelected",toggleProjectButtons)
 	PlayerTool.connect("deadlineReached",toggleProjectButtons)
 	toggleProjectButtons()
@@ -28,6 +35,15 @@ func _ready() -> void:
 	AudioManager.play_music("gameplay")
 	AudioManager.start_random_ambient()
 	$Pause.resumeSignal.connect(checkRandomEventRinger)
+
+func _apply_render_layers() -> void:
+	$PCScreenPanel.z_index = PC_OVERLAY_Z_INDEX
+	$PCScreen.z_index = PC_OVERLAY_Z_INDEX
+	$PCButtons.z_index = PC_BUTTONS_Z_INDEX
+	$NewMenu.z_index = MENU_Z_INDEX
+	$BackButton.z_index = HUD_BUTTON_Z_INDEX
+	$PauseButton.z_index = HUD_BUTTON_Z_INDEX
+	$Pause.z_index = PAUSE_MENU_Z_INDEX
 
 func _exit_tree() -> void:
 	AudioManager.stop_random_ambient()
@@ -64,6 +80,7 @@ func endMenu():
 			$PCButtons.visible = true
 			$PCButtons/UpgradesButton.disabled = false
 			$PCButtons/HiringButton.disabled = false
+			$PCButtons/ProjectPortfolioButton.disabled = false
 			var hasProject = PlayerTool.project != null
 			$PCButtons/projectStartMenu.text = "Already have a Project" if hasProject else "Start New Project"
 			$PCButtons/projectStartMenu.disabled = hasProject
@@ -92,6 +109,10 @@ func _on_hiring_button_pressed() -> void:
 	AudioManager.play_sfx("pc_click")
 	createMenu(HiringMenu.instantiate(),false)
 
+func _on_project_portfolio_button_pressed() -> void:
+	AudioManager.play_sfx("pc_click")
+	createMenu(ProjectPortfolioMenu.instantiate(),false)
+
 func _on_backlog_button_pressed() -> void:
 	AudioManager.play_sfx("paper_rustle")
 	createMenu(BacklogMenu.instantiate(),true)
@@ -116,6 +137,7 @@ func createMenu(menu,allowBack):
 			$PCButtons.visible = false
 			$PCButtons/UpgradesButton.disabled = true
 			$PCButtons/HiringButton.disabled = true
+			$PCButtons/ProjectPortfolioButton.disabled = true
 			$PCButtons/projectStartMenu.disabled = true
 		false:
 			if allowBack: $BackButton.visible = true
@@ -130,6 +152,7 @@ func _on_pc_pressed() -> void:
 	$PCScreen.visible = true
 	$PCScreenPanel.visible = true	
 	$PCButtons.visible = true
+	$PCButtons/ProjectPortfolioButton.disabled = false
 	match PlayerTool.project == null:
 		true:
 			$PCButtons/projectStartMenu.text = "Start New Project"
@@ -151,6 +174,7 @@ func _on_pc_power_pressed() -> void:
 	$PCButtons.visible = false
 	$PCButtons/UpgradesButton.disabled = false
 	$PCButtons/HiringButton.disabled = false
+	$PCButtons/ProjectPortfolioButton.disabled = false
 	$PCButtons/projectStartMenu.disabled = false
 	if $NewMenu.get_children().size() > 0: $NewMenu.get_child(0).queue_free()
 	pass

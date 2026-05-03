@@ -1,0 +1,81 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://UI/InGame/ProjectPortfolio/project_portfolio.gd" id="1_0xv1o"]
+[ext_resource type="StyleBoxTexture" path="res://UI/Theme/PCTheme/PCWindowFrame.tres" id="2_ttwve"]
+[ext_resource type="Texture2D" uid="uid://d00apn0evacqg" path="res://UI/Theme/PCTheme/Back/pcBack.png" id="3_wk7t5"]
+[ext_resource type="Texture2D" uid="uid://dkqvr0lf6ytje" path="res://UI/Theme/PCTheme/Back/pcBackPressed.png" id="4_ar0rh"]
+[ext_resource type="Texture2D" uid="uid://crruuadiafv87" path="res://UI/Theme/PCTheme/Back/pcBackHeld.png" id="5_y3rje"]
+[ext_resource type="Texture2D" uid="uid://o4k321o7djhb" path="res://UI/Theme/PCTheme/Back/pcBackDisabled.png" id="6_o45cl"]
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_back_normal"]
+texture = ExtResource("3_wk7t5")
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_back_pressed"]
+texture = ExtResource("4_ar0rh")
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_back_hover"]
+texture = ExtResource("5_y3rje")
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_back_disabled"]
+texture = ExtResource("6_o45cl")
+
+[node name="ProjectPortfolio" type="Node2D"]
+process_mode = 2
+script = ExtResource("1_0xv1o")
+
+[node name="WindowFrame" type="Panel" parent="."]
+mouse_filter = 2
+offset_left = 120.0
+offset_top = 100.0
+offset_right = 1030.0
+offset_bottom = 610.0
+theme_override_styles/panel = ExtResource("2_ttwve")
+
+[node name="Title" type="Label" parent="."]
+offset_left = 400.0
+offset_top = 110.0
+offset_right = 750.0
+offset_bottom = 148.0
+text = "Project Portfolio"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="CompletedProjectsLabel" type="Label" parent="."]
+offset_left = 126.0
+offset_top = 152.0
+offset_right = 486.0
+offset_bottom = 180.0
+text = "Completed Projects: 0"
+vertical_alignment = 1
+
+[node name="ScrollContainer" type="ScrollContainer" parent="."]
+offset_left = 126.0
+offset_top = 190.0
+offset_right = 1029.0
+offset_bottom = 576.0
+
+[node name="ProjectList" type="VBoxContainer" parent="ScrollContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="EmptyStateLabel" type="Label" parent="."]
+offset_left = 206.0
+offset_top = 302.0
+offset_right = 949.0
+offset_bottom = 398.0
+text = "Complete a project to see it here."
+horizontal_alignment = 1
+vertical_alignment = 1
+autowrap_mode = 2
+
+[node name="PCBack" type="Button" parent="."]
+offset_left = 932.0
+offset_top = 116.0
+offset_right = 1012.0
+offset_bottom = 136.0
+theme_override_styles/normal = SubResource("StyleBoxTexture_back_normal")
+theme_override_styles/pressed = SubResource("StyleBoxTexture_back_pressed")
+theme_override_styles/hover = SubResource("StyleBoxTexture_back_hover")
+theme_override_styles/disabled = SubResource("StyleBoxTexture_back_disabled")
+
+[connection signal="pressed" from="PCBack" to="." method="_on_pc_back_pressed"]

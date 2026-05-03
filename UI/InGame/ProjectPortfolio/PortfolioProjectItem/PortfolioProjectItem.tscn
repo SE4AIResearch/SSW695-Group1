@@ -1,0 +1,215 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://UI/InGame/ProjectPortfolio/PortfolioProjectItem/portfolio_project_item.gd" id="1_portfolio_item"]
+[ext_resource type="Texture2D" path="res://UI/InGame/ProjectPortfolio/PortfolioProjectItem/Portfolio_item.png" id="2_portfolio_item"]
+[ext_resource type="Texture2D" path="res://UI/Theme/MainLevel/ProjectCompletion/barBorder.png" id="6_bar_border"]
+[ext_resource type="Texture2D" path="res://UI/Theme/MainLevel/ProjectCompletion/barProgress.png" id="7_bar_progress"]
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_portfolio_item"]
+texture = ExtResource("2_portfolio_item")
+
+[node name="PortfolioProjectItem" type="Button"]
+custom_minimum_size = Vector2(884, 124)
+size_flags_horizontal = 3
+focus_mode = 0
+theme_override_styles/normal = SubResource("StyleBoxTexture_portfolio_item")
+theme_override_styles/pressed = SubResource("StyleBoxTexture_portfolio_item")
+theme_override_styles/hover = SubResource("StyleBoxTexture_portfolio_item")
+theme_override_styles/disabled = SubResource("StyleBoxTexture_portfolio_item")
+script = ExtResource("1_portfolio_item")
+
+[node name="ProjectName" type="Label" parent="."]
+layout_mode = 0
+offset_left = 18.0
+offset_top = 10.0
+offset_right = 570.0
+offset_bottom = 32.0
+mouse_filter = 2
+theme_override_font_sizes/font_size = 18
+text = "PROJECT NAME"
+vertical_alignment = 1
+clip_text = true
+
+[node name="ClientLabel" type="Label" parent="."]
+layout_mode = 0
+offset_left = 18.0
+offset_top = 34.0
+offset_right = 570.0
+offset_bottom = 52.0
+mouse_filter = 2
+theme_override_font_sizes/font_size = 12
+text = "CLIENT:  CLIENT NAME"
+vertical_alignment = 1
+clip_text = true
+
+[node name="StakeholderLabel" type="Label" parent="."]
+layout_mode = 0
+offset_left = 18.0
+offset_top = 73.0
+offset_right = 138.0
+offset_bottom = 89.0
+mouse_filter = 2
+theme_override_font_sizes/font_size = 9
+text = "Stakeholder Satisfaction"
+vertical_alignment = 1
+clip_text = true
+
+[node name="StakeholderBar" type="TextureProgressBar" parent="."]
+layout_mode = 0
+offset_left = 18.0
+offset_top = 91.0
+offset_right = 138.0
+offset_bottom = 103.0
+mouse_filter = 2
+texture_under = ExtResource("6_bar_border")
+texture_progress = ExtResource("7_bar_progress")
+tint_progress = Color(0.95, 0.75, 0.15, 1)
+
+[node name="FrontEndLabel" type="Label" parent="."]
+layout_mode = 0
+offset_left = 148.0
+offset_top = 73.0
+offset_right = 268.0
+offset_bottom = 89.0
+mouse_filter = 2
+theme_override_font_sizes/font_size = 9
+text = "Front End"
+vertical_alignment = 1
+clip_text = true
+
+[node name="FrontEndBar" type="TextureProgressBar" parent="."]
+layout_mode = 0
+offset_left = 148.0
+offset_top = 91.0
+offset_right = 268.0
+offset_bottom = 103.0
+mouse_filter = 2
+texture_under = ExtResource("6_bar_border")
+texture_progress = ExtResource("7_bar_progress")
+tint_progress = Color(0.82258534, 0.14166427, 0, 1)
+
+[node name="BackEndLabel" type="Label" parent="."]
+layout_mode = 0
+offset_left = 278.0
+offset_top = 73.0
+offset_right = 398.0
+offset_bottom = 89.0
+mouse_filter = 2
+theme_override_font_sizes/font_size = 9
+text = "Back End"
+vertical_alignment = 1
+clip_text = true
+
+[node name="BackEndBar" type="TextureProgressBar" parent="."]
+layout_mode = 0
+offset_left = 278.0
+offset_top = 91.0
+offset_right = 398.0
+offset_bottom = 103.0
+mouse_filter = 2
+texture_under = ExtResource("6_bar_border")
+texture_progress = ExtResource("7_bar_progress")
+tint_progress = Color(0, 0.59539217, 0.76481044, 1)
+
+[node name="ReliabilityLabel" type="Label" parent="."]
+layout_mode = 0
+offset_left = 408.0
+offset_top = 73.0
+offset_right = 528.0
+offset_bottom = 89.0
+mouse_filter = 2
+theme_override_font_sizes/font_size = 9
+text = "Reliability"
+vertical_alignment = 1
+clip_text = true
+
+[node name="ReliabilityBar" type="TextureProgressBar" parent="."]
+layout_mode = 0
+offset_left = 408.0
+offset_top = 91.0
+offset_right = 528.0
+offset_bottom = 103.0
+mouse_filter = 2
+texture_under = ExtResource("6_bar_border")
+texture_progress = ExtResource("7_bar_progress")
+tint_progress = Color(1, 1, 0.17254902, 1)
+
+[node name="DocumentationLabel" type="Label" parent="."]
+layout_mode = 0
+offset_left = 538.0
+offset_top = 73.0
+offset_right = 658.0
+offset_bottom = 89.0
+mouse_filter = 2
+theme_override_font_sizes/font_size = 9
+text = "Documentation"
+vertical_alignment = 1
+clip_text = true
+
+[node name="DocumentationBar" type="TextureProgressBar" parent="."]
+layout_mode = 0
+offset_left = 538.0
+offset_top = 91.0
+offset_right = 658.0
+offset_bottom = 103.0
+mouse_filter = 2
+texture_under = ExtResource("6_bar_border")
+texture_progress = ExtResource("7_bar_progress")
+tint_progress = Color(0, 0.7839653, 0.19948468, 1)
+
+[node name="Divider" type="ColorRect" parent="."]
+layout_mode = 0
+offset_left = 646.0
+offset_top = 8.0
+offset_right = 647.0
+offset_bottom = 108.0
+mouse_filter = 2
+color = Color(0.35, 0.35, 0.35, 0.75)
+
+[node name="CurrencyTitle" type="Label" parent="."]
+layout_mode = 0
+offset_left = 668.0
+offset_top = 14.0
+offset_right = 830.0
+offset_bottom = 30.0
+mouse_filter = 2
+theme_override_font_sizes/font_size = 10
+text = "CURRENCY EARNED"
+vertical_alignment = 1
+clip_text = true
+
+[node name="CurrencyAmount" type="Label" parent="."]
+layout_mode = 0
+offset_left = 668.0
+offset_top = 32.0
+offset_right = 830.0
+offset_bottom = 60.0
+mouse_filter = 2
+theme_override_font_sizes/font_size = 20
+text = "$0.00"
+vertical_alignment = 1
+clip_text = true
+
+[node name="CompletedAtLabel" type="Label" parent="."]
+layout_mode = 0
+offset_left = 668.0
+offset_top = 78.0
+offset_right = 830.0
+offset_bottom = 96.0
+mouse_filter = 2
+theme_override_font_sizes/font_size = 12
+text = "01/01/2026 00:00"
+vertical_alignment = 1
+clip_text = true
+
+[node name="CompletedLabel" type="Label" parent="."]
+layout_mode = 0
+offset_left = 668.0
+offset_top = 96.0
+offset_right = 830.0
+offset_bottom = 112.0
+mouse_filter = 2
+theme_override_font_sizes/font_size = 10
+text = "COMPLETED"
+vertical_alignment = 1
+clip_text = true

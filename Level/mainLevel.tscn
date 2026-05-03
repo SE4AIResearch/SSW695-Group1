@@ -42,6 +42,8 @@
 [ext_resource type="Texture2D" uid="uid://2jvaulftw7b6" path="res://UI/Theme/PCTheme/button/slimButtonDisabled.png" id="21_lkgwe"]
 [ext_resource type="Script" uid="uid://cmvfif4wbkq60" path="res://Level/pc_stats.gd" id="23_62x8c"]
 [ext_resource type="PackedScene" uid="uid://bt0pge4yh7l4p" path="res://UI/InGame/ProjectMetrics/ProjectMetrics.tscn" id="29_uibgn"]
+[ext_resource type="Texture2D" path="res://UI/InGame/ProjectPortfolio/BaseIcon.png" id="30_qo4hk"]
+[ext_resource type="Texture2D" path="res://UI/InGame/ProjectPortfolio/BaseIcon_Hover.png" id="31_h7x13"]
 [ext_resource type="Texture2D" uid="uid://be3qkx4golcyk" path="res://UI/Theme/Back/backDisabled.png" id="41_hsny4"]
 [ext_resource type="Texture2D" uid="uid://dhthtk5swgjkl" path="res://UI/Theme/MainLevel/calendar.png" id="42_ce85j"]
 
@@ -157,6 +159,7 @@ script = ExtResource("1_kl53g")
 [node name="Level" type="Node2D" parent="." unique_id=1824383856]
 
 [node name="background" type="Sprite2D" parent="Level" unique_id=1279202580]
+z_index = -20
 position = Vector2(576, 324)
 scale = Vector2(4.5, 4.5)
 texture = ExtResource("2_ern18")
@@ -267,16 +270,17 @@ position = Vector2(576, 324)
 scale = Vector2(4.5, 4.5)
 texture = ExtResource("3_s1qlg")
 
-[node name="Calendar" type="Sprite2D" parent="UI" unique_id=1608500558]
+[node name="Calendar" type="Sprite2D" parent="Level" unique_id=1608500558]
+z_index = -10
 position = Vector2(884, 187.00002)
 scale = Vector2(5, 5)
 texture = ExtResource("42_ce85j")
 script = ExtResource("9_ce85j")
 
-[node name="TextParent" type="Node2D" parent="UI/Calendar" unique_id=1619162444]
+[node name="TextParent" type="Node2D" parent="Level/Calendar" unique_id=1619162444]
 scale = Vector2(0.38, 0.38)
 
-[node name="sprintLabel" type="RichTextLabel" parent="UI/Calendar/TextParent" unique_id=1052199359]
+[node name="sprintLabel" type="RichTextLabel" parent="Level/Calendar/TextParent" unique_id=1052199359]
 offset_left = -53.157883
 offset_top = -50.000008
 offset_right = -1.0526276
@@ -288,7 +292,7 @@ bbcode_enabled = true
 text = "Sprint:"
 vertical_alignment = 1
 
-[node name="sprintData" type="RichTextLabel" parent="UI/Calendar/TextParent" unique_id=1130532827]
+[node name="sprintData" type="RichTextLabel" parent="Level/Calendar/TextParent" unique_id=1130532827]
 offset_left = -1.0526333
 offset_top = -50.000008
 offset_right = 53.157906
@@ -301,7 +305,7 @@ text = "0/0"
 horizontal_alignment = 2
 vertical_alignment = 1
 
-[node name="weekLabel" type="RichTextLabel" parent="UI/Calendar/TextParent" unique_id=314886438]
+[node name="weekLabel" type="RichTextLabel" parent="Level/Calendar/TextParent" unique_id=314886438]
 offset_left = -53.157898
 offset_top = -21.052643
 offset_right = -4.736847
@@ -314,7 +318,7 @@ bbcode_enabled = true
 text = "Week:"
 vertical_alignment = 1
 
-[node name="weekData" type="RichTextLabel" parent="UI/Calendar/TextParent" unique_id=1966119321]
+[node name="weekData" type="RichTextLabel" parent="Level/Calendar/TextParent" unique_id=1966119321]
 offset_left = -4.7368317
 offset_top = -21.052643
 offset_right = 53.157913
@@ -328,7 +332,7 @@ text = "0/0"
 horizontal_alignment = 2
 vertical_alignment = 1
 
-[node name="weekStatus" type="RichTextLabel" parent="UI/Calendar/TextParent" unique_id=647893365]
+[node name="weekStatus" type="RichTextLabel" parent="Level/Calendar/TextParent" unique_id=647893365]
 offset_left = -55.263184
 offset_top = 18.421043
 offset_right = 55.263123
@@ -341,7 +345,7 @@ bbcode_enabled = true
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="weekBar" type="TextureProgressBar" parent="UI/Calendar" unique_id=1335137699]
+[node name="weekBar" type="TextureProgressBar" parent="Level/Calendar" unique_id=1335137699]
 offset_left = -21.000015
 offset_top = 6.999996
 offset_right = 20.999985
@@ -549,6 +553,26 @@ theme_override_styles/hover = SubResource("StyleBoxTexture_k25hm")
 
 [node name="ProjectMetrics" parent="UI/PCButtons" unique_id=65546387 instance=ExtResource("29_uibgn")]
 
+[node name="ProjectPortfolioButton" type="TextureButton" parent="UI/PCButtons"]
+offset_left = 840.0
+offset_top = 295.0
+offset_right = 1000.0
+offset_bottom = 375.0
+texture_normal = ExtResource("30_qo4hk")
+texture_pressed = ExtResource("31_h7x13")
+texture_hover = ExtResource("31_h7x13")
+ignore_texture_size = true
+stretch_mode = 4
+
+[node name="ProjectPortfolioLabel" type="Label" parent="UI/PCButtons"]
+offset_left = 840.0
+offset_top = 375.0
+offset_right = 968.0
+offset_bottom = 405.0
+text = "Project Portfolio"
+horizontal_alignment = 1
+vertical_alignment = 1
+
 [node name="NewMenu" type="Node2D" parent="UI" unique_id=1478451013]
 
 [node name="BackButton" type="Button" parent="UI" unique_id=1567251887]
@@ -596,6 +620,7 @@ script = ExtResource("5_f8h88")
 [connection signal="pressed" from="UI/PCButtons/HiringButton" to="UI" method="_on_hiring_button_pressed"]
 [connection signal="pressed" from="UI/PCButtons/projectStartMenu" to="UI" method="_on_project_start_menu_pressed"]
 [connection signal="pressed" from="UI/PCButtons/PCPower" to="UI" method="_on_pc_power_pressed"]
+[connection signal="pressed" from="UI/PCButtons/ProjectPortfolioButton" to="UI" method="_on_project_portfolio_button_pressed"]
 [connection signal="pressed" from="UI/BackButton" to="UI" method="_on_back_button_pressed"]
 [connection signal="pressed" from="UI/PauseButton" to="UI" method="_on_pause_button_pressed"]
 [connection signal="pressed" from="UI/Button" to="UI" method="_on_button_pressed"]

@@ -78,6 +78,7 @@ func calculateCurrencyEarned(satisfactionAmount: float, completion_data: Diction
 	var currency_earned := _calculate_project_currency_earned(completion_data, satisfactionAmount / 4.0)
 	if !_currency_awarded:
 		PlayerTool.addCurrency(currency_earned)
+		PlayerTool.record_completed_project(completion_data, currency_earned, satisfactionAmount)
 		_currency_awarded = true
 	$CurrencyAmount.text = "$" + str(currency_earned)
 
