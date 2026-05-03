@@ -47,6 +47,16 @@ const LEGACY_STANDARD_UPGRADE_EFFECTS := {
 }
 const MIN_WORKER_STAMINA := 1
 const WORKER_LEVEL_SCALE := Vector2(2.5, 2.5)
+const WORKLOAD_METRIC_KEYS: Array = ["frontEnd", "backEnd", "documenting"]
+const WORKLOAD_TARGET_COMPLETION_RATIO: float = 0.85
+const WORKLOAD_CAPACITY_ELASTICITY: float = 0.85
+const WORKLOAD_REFERENCE_CAPACITY: float = 2.0
+const WORKLOAD_WEEK_DURATION_SECONDS: int = 10
+const WORKLOAD_STAMINA_DRAIN_PER_SECOND: float = 2.0
+const WORKLOAD_STAMINA_RECOVERY_PER_SECOND: float = 6.0
+const WORKLOAD_MIN_STAMINA_AVAILABILITY: float = 0.25
+const MIN_BACKLOG_EFFORT: float = 0.25
+const BACKLOG_EFFORT_EPSILON: float = 0.001
 
 var level
 
@@ -93,6 +103,7 @@ var loopPhase: String = LOOP_NO_PROJECT
 var weekResults: Dictionary = {}
 var selectedAssignments: Dictionary = {}
 var backlogItems: Array = []
+var projectWorkloadSnapshot: Dictionary = {}
 var pendingProjectSummary: Dictionary = {}
 var sprintGoal: Dictionary = {}
 var shouldShowWeekResultsModal: bool = false
@@ -145,7 +156,7 @@ func changeProjectStats(type, amount):
 func changeMetricByName(metricName: String, amount: int) -> void:
 	if not metrics.has(metricName):
 		return
-	var updatedValue := int(metrics.get(metricName)) + amount
+	var updatedValue: int = int(metrics.get(metricName)) + amount
 	if metricName in ["reliability", "stakeholderSatisfaction"]:
 		updatedValue = clampi(updatedValue, 0, 100)
 	metrics.set(metricName, updatedValue)
@@ -181,6 +192,7 @@ func resetData():
 	weekResults = {}
 	selectedAssignments = {}
 	backlogItems = []
+	projectWorkloadSnapshot = {}
 	pendingProjectSummary = {}
 	sprintGoal = {}
 	shouldShowWeekResultsModal = false
@@ -225,6 +237,7 @@ func resetProjectStats():
 	weekResults = {}
 	selectedAssignments = {}
 	backlogItems = []
+	projectWorkloadSnapshot = {}
 	pendingProjectSummary = {}
 	sprintGoal = {}
 	shouldShowWeekResultsModal = false
@@ -302,6 +315,7 @@ func _find_project_choice(all_projects: Array, project_name: String) -> Dictiona
 
 func newProject(newProject) -> void:
 	resetProjectStats()
+	_apply_active_upgrade_effects_to_all_workers()
 	project = newProject
 	methodology = newProject.methodology
 	projectName = newProject.projectName
@@ -314,6 +328,8 @@ func newProject(newProject) -> void:
 	projSprint = 1
 	projectAmount += 1
 	_build_backlog_for_project(project)
+	_build_project_workload_snapshot()
+	_scale_backlog_effort_for_project()
 	_prepare_sprint_context(projSprint)
 	loopPhase = LOOP_PLANNING_WEEK
 	projectSelected.emit()
@@ -326,7 +342,7 @@ func newHire(worker, apply_active_upgrades: bool = true) -> bool:
 		return false
 	if worker == null:
 		return false
-	if apply_active_upgrades:
+	if apply_active_upgrades and project == null:
 		_apply_active_upgrade_effects_to_worker(worker)
 	_ensure_worker_identity(worker)
 	workers.append(worker)
@@ -373,9 +389,9 @@ func has_upgrade(category: String, tier: int) -> bool:
 	return false
 
 func can_purchase_standard_upgrade(upgrade_data: Dictionary) -> Dictionary:
-	var category := str(upgrade_data.get("category", ""))
-	var target_tier := int(upgrade_data.get("tier", 0))
-	var cost := int(upgrade_data.get("cost", 0))
+	var category: String = str(upgrade_data.get("category", ""))
+	var target_tier: int = int(upgrade_data.get("tier", 0))
+	var cost: int = int(upgrade_data.get("cost", 0))
 
 	if category.is_empty():
 		return {"ok": false, "reason": "That upgrade category is invalid."}
@@ -397,7 +413,8 @@ func purchase_standard_upgrade(upgrade_data: Dictionary) -> Dictionary:
 	var purchased_upgrade: Dictionary = _normalize_upgrade_record(upgrade_data)
 	addCurrency(-int(upgrade_data.get("cost", 0)))
 	newUpgrade(purchased_upgrade)
-	_apply_standard_upgrade_purchase_effects(purchased_upgrade)
+	if project == null:
+		_apply_standard_upgrade_purchase_effects(purchased_upgrade)
 	statsChanged.emit()
 	return {
 		"ok": true,
@@ -416,12 +433,12 @@ func record_completed_project(completion_data: Dictionary, currency_earned: int,
 	if completion_data.is_empty():
 		return
 
-	var raw_metrics = completion_data.get("metrics", {})
+	var raw_metrics: Variant = completion_data.get("metrics", {})
 	var source_metrics: Dictionary = {}
 	if raw_metrics is Dictionary:
 		source_metrics = raw_metrics
 
-	var total_events := int(completion_data.get("total_events", 0))
+	var total_events: int = int(completion_data.get("total_events", 0))
 	var portfolio_record := {
 		"project_name": str(completion_data.get("project_name", "")),
 		"client_name": str(completion_data.get("client_name", "")),
@@ -471,9 +488,11 @@ func resolveWeek() -> bool:
 
 	var assignmentKeys := selectedAssignments.keys().duplicate()
 	for workerId in assignmentKeys:
-		var item := getBacklogItemById(int(selectedAssignments.get(workerId, -1)))
+		var item: Dictionary = getBacklogItemById(int(selectedAssignments.get(workerId, -1)))
 		var worker = getWorkerById(str(workerId))
 		if item.is_empty() or worker == null:
+			continue
+		if !isWorkerEligibleForCurrentProject(str(workerId)):
 			continue
 		if !worker.resting: _resolve_assignment(worker, item)
 
@@ -511,6 +530,8 @@ func assignWorkerToItem(workerId: String, itemId: int) -> Dictionary:
 	var worker = getWorkerById(workerId)
 	if worker == null:
 		return {"ok": false, "reason": "That worker no longer exists."}
+	if !isWorkerEligibleForCurrentProject(workerId):
+		return {"ok": false, "reason": "%s can start contributing on the next project." % worker.personName}
 	if bool(worker.resting):
 		return {"ok": false, "reason": "%s is resting until their stamina is full." % worker.personName}
 	var item := getBacklogItemById(itemId)
@@ -518,7 +539,7 @@ func assignWorkerToItem(workerId: String, itemId: int) -> Dictionary:
 		return {"ok": false, "reason": "That backlog item no longer exists."}
 	if item.get("status") == "done":
 		return {"ok": false, "reason": "That item is already complete."}
-	var previousWorkerId := str(item.get("assigned_worker_id", ""))
+	var previousWorkerId: String = str(item.get("assigned_worker_id", ""))
 	if previousWorkerId != "" and previousWorkerId != workerId:
 		var previousWorker = getWorkerById(previousWorkerId)
 		var previousWorkerLabel := "Another worker"
@@ -538,19 +559,19 @@ func assignWorkerToItem(workerId: String, itemId: int) -> Dictionary:
 func unassignWorker(workerId: String) -> void:
 	if not selectedAssignments.has(workerId):
 		return
-	var item := getBacklogItemById(int(selectedAssignments.get(workerId, -1)))
+	var item: Dictionary = getBacklogItemById(int(selectedAssignments.get(workerId, -1)))
 	if not item.is_empty():
 		item.set("assigned_worker_id", "")
 		if item.has("assigned_worker_name"):
 			item.erase("assigned_worker_name")
-		if item.get("status") == "in_progress" and int(item.get("effort_remaining", 0)) >= int(item.get("total_effort", 0)):
+		if item.get("status") == "in_progress" and float(item.get("effort_remaining", 0.0)) >= float(item.get("total_effort", 0.0)):
 			item.set("status", "backlog")
 	selectedAssignments.erase(workerId)
 	backlogUpdated.emit()
 
 func clearAssignments() -> void:
 	for workerId in selectedAssignments.keys():
-		var item := getBacklogItemById(int(selectedAssignments.get(workerId, -1)))
+		var item: Dictionary = getBacklogItemById(int(selectedAssignments.get(workerId, -1)))
 		if not item.is_empty():
 			item.set("assigned_worker_id", "")
 			if item.has("assigned_worker_name"):
@@ -581,6 +602,25 @@ func getBacklogItemById(itemId: int) -> Dictionary:
 			return item
 	return {}
 
+func isWorkerEligibleForCurrentProject(workerId: String) -> bool:
+	if project == null:
+		return true
+	if projectWorkloadSnapshot.is_empty():
+		return true
+	var eligible_worker_ids: Variant = projectWorkloadSnapshot.get("eligible_worker_ids", [])
+	if eligible_worker_ids is not Array:
+		return true
+	return eligible_worker_ids.has(workerId)
+
+func getProjectWorkerSnapshot(workerId: String) -> Dictionary:
+	var worker_snapshots: Variant = projectWorkloadSnapshot.get("workers", {})
+	if worker_snapshots is not Dictionary:
+		return {}
+	var snapshot: Variant = worker_snapshots.get(workerId, {})
+	if snapshot is Dictionary:
+		return snapshot
+	return {}
+
 func addEventBacklogItem(metricKey: String, itemName: String, effort: int = 5, reward: int = 2, isScopeChange: bool = true) -> void:
 	_addBacklogItem(itemName, metricKey, effort, reward, isScopeChange, false)
 	backlogUpdated.emit()
@@ -595,16 +635,18 @@ func _build_backlog_for_project(projectNode: Node) -> void:
 func _appendMetricItems(metricDictionary: Dictionary, requiredSkill: String, targetTotal: int) -> void:
 	var itemCount := maxi(1, metricDictionary.size())
 	for index in metricDictionary.keys():
-		var metricData = metricDictionary.get(index)
+		var metricData: Variant = metricDictionary.get(index)
 		if metricData is Dictionary and metricData.has("required_skill"):
 			var existingItem: Dictionary = metricData.duplicate(true)
 			_backlogItemIdCounter += 1
 			existingItem.set("id", _backlogItemIdCounter)
 			existingItem.set("name", str(existingItem.get("name", "Backlog Item")))
 			existingItem.set("required_skill", str(existingItem.get("required_skill", requiredSkill)))
-			var totalEffort := maxi(1, int(existingItem.get("total_effort", existingItem.get("effort_remaining", 1))))
+			var totalEffort: float = maxf(MIN_BACKLOG_EFFORT, float(existingItem.get("total_effort", existingItem.get("effort_remaining", 1.0))))
+			var effortRemaining: float = clampf(float(existingItem.get("effort_remaining", totalEffort)), 0.0, totalEffort)
+			existingItem.set("base_effort", maxf(MIN_BACKLOG_EFFORT, float(existingItem.get("base_effort", totalEffort))))
 			existingItem.set("total_effort", totalEffort)
-			existingItem.set("effort_remaining", clampi(int(existingItem.get("effort_remaining", totalEffort)), 0, totalEffort))
+			existingItem.set("effort_remaining", effortRemaining)
 			existingItem.set("status", str(existingItem.get("status", "backlog")))
 			existingItem.set("assigned_worker_id", str(existingItem.get("assigned_worker_id", "")))
 			if existingItem.has("assigned_worker_name"):
@@ -614,7 +656,7 @@ func _appendMetricItems(metricDictionary: Dictionary, requiredSkill: String, tar
 			existingItem.set("is_reliability_critical", bool(existingItem.get("is_reliability_critical", false)))
 			backlogItems.append(existingItem)
 			continue
-		var itemName := str(metricData)
+		var itemName: String = str(metricData)
 		_addBacklogItem(
 			itemName,
 			requiredSkill,
@@ -624,20 +666,195 @@ func _appendMetricItems(metricDictionary: Dictionary, requiredSkill: String, tar
 			false
 		)
 
-func _addBacklogItem(itemName: String, requiredSkill: String, effort: int, metricReward: int, isScopeChange: bool, isReliabilityCritical: bool) -> void:
+func _addBacklogItem(itemName: String, requiredSkill: String, effort: float, metricReward: int, isScopeChange: bool, isReliabilityCritical: bool) -> void:
 	_backlogItemIdCounter += 1
+	var normalizedEffort: float = maxf(MIN_BACKLOG_EFFORT, effort)
 	backlogItems.append({
 		"id": _backlogItemIdCounter,
 		"name": itemName,
 		"required_skill": requiredSkill,
-		"effort_remaining": maxi(1, effort),
-		"total_effort": maxi(1, effort),
+		"base_effort": normalizedEffort,
+		"effort_remaining": normalizedEffort,
+		"total_effort": normalizedEffort,
 		"status": "backlog",
 		"assigned_worker_id": "",
 		"metric_reward": maxi(1, metricReward),
 		"is_scope_change": isScopeChange,
 		"is_reliability_critical": isReliabilityCritical,
 	})
+
+func _build_project_workload_snapshot() -> void:
+	var total_project_weeks: int = _get_total_project_weeks()
+	var worker_snapshots: Dictionary = {}
+	var eligible_worker_ids: Array = []
+
+	for worker in workers:
+		if worker == null:
+			continue
+		var workerId: String = str(worker.workerId)
+		if workerId.is_empty():
+			continue
+		eligible_worker_ids.append(workerId)
+		worker_snapshots[workerId] = _build_worker_workload_snapshot(worker, total_project_weeks)
+
+	projectWorkloadSnapshot = {
+		"version": 1,
+		"eligible_worker_ids": eligible_worker_ids,
+		"workers": worker_snapshots,
+		"total_project_weeks": total_project_weeks,
+		"settings": {
+			"target_completion_ratio": WORKLOAD_TARGET_COMPLETION_RATIO,
+			"capacity_elasticity": WORKLOAD_CAPACITY_ELASTICITY,
+			"reference_capacity": WORKLOAD_REFERENCE_CAPACITY,
+			"week_duration_seconds": WORKLOAD_WEEK_DURATION_SECONDS,
+			"stamina_drain_per_second": WORKLOAD_STAMINA_DRAIN_PER_SECOND,
+			"stamina_recovery_per_second": WORKLOAD_STAMINA_RECOVERY_PER_SECOND,
+			"minimum_stamina_availability": WORKLOAD_MIN_STAMINA_AVAILABILITY,
+			"minimum_backlog_effort": MIN_BACKLOG_EFFORT,
+		},
+		"metric_capacity": {},
+		"metric_effective_capacity": {},
+		"metric_budget": {},
+		"metric_item_counts": {},
+	}
+
+func _build_worker_workload_snapshot(worker, total_project_weeks: int) -> Dictionary:
+	var starting_stamina: float = _get_worker_current_stamina_value(worker)
+	var stamina_availability: float = _estimate_worker_stamina_availability(worker, total_project_weeks)
+	var weekly_progress: Dictionary = {}
+	for metricKey in WORKLOAD_METRIC_KEYS:
+		weekly_progress[metricKey] = _calculate_worker_weekly_progress(
+			_get_worker_skill(worker, metricKey),
+			int(worker.speedStat)
+		)
+
+	return {
+		"worker_id": str(worker.workerId),
+		"frontEnd": int(worker.frontEndStat),
+		"backEnd": int(worker.backEndStat),
+		"documenting": int(worker.documentingStat),
+		"speed": int(worker.speedStat),
+		"stamina": int(worker.staminaStat),
+		"starting_stamina": starting_stamina,
+		"starting_resting": bool(worker.resting),
+		"stamina_availability": stamina_availability,
+		"weekly_progress": weekly_progress,
+	}
+
+func _scale_backlog_effort_for_project() -> void:
+	if backlogItems.is_empty():
+		return
+
+	var metric_item_counts: Dictionary = {}
+	var metric_base_effort_totals: Dictionary = {}
+	for item in backlogItems:
+		var metricKey: String = str(item.get("required_skill", "frontEnd"))
+		var base_effort: float = maxf(
+			MIN_BACKLOG_EFFORT,
+			float(item.get("base_effort", item.get("total_effort", item.get("effort_remaining", 1.0))))
+		)
+		item.set("base_effort", base_effort)
+		metric_item_counts[metricKey] = int(metric_item_counts.get(metricKey, 0)) + 1
+		metric_base_effort_totals[metricKey] = float(metric_base_effort_totals.get(metricKey, 0.0)) + base_effort
+
+	_update_project_workload_metric_budgets(metric_item_counts, backlogItems.size())
+
+	var raw_metric_budgets: Variant = projectWorkloadSnapshot.get("metric_budget", {})
+	var metric_budgets: Dictionary = {}
+	if raw_metric_budgets is Dictionary:
+		metric_budgets = raw_metric_budgets
+	for item in backlogItems:
+		var metricKey: String = str(item.get("required_skill", "frontEnd"))
+		var base_effort: float = maxf(MIN_BACKLOG_EFFORT, float(item.get("base_effort", 1.0)))
+		var metric_base_total: float = maxf(MIN_BACKLOG_EFFORT, float(metric_base_effort_totals.get(metricKey, base_effort)))
+		var metric_budget: float = maxf(MIN_BACKLOG_EFFORT, float(metric_budgets.get(metricKey, metric_base_total)))
+		var scaled_effort: float = maxf(MIN_BACKLOG_EFFORT, metric_budget * base_effort / metric_base_total)
+		item.set("total_effort", scaled_effort)
+		item.set("effort_remaining", scaled_effort)
+		item.set("status", str(item.get("status", "backlog")))
+
+func _update_project_workload_metric_budgets(metric_item_counts: Dictionary, total_item_count: int) -> void:
+	if projectWorkloadSnapshot.is_empty():
+		return
+
+	var metric_capacity: Dictionary = {}
+	var metric_effective_capacity: Dictionary = {}
+	var metric_budget: Dictionary = {}
+	var total_project_weeks: int = _get_total_project_weeks()
+	var safe_total_item_count: int = maxi(1, total_item_count)
+
+	for metricKey in WORKLOAD_METRIC_KEYS:
+		var raw_capacity: float = _calculate_metric_raw_capacity(metricKey)
+		var effective_capacity: float = _calculate_effective_capacity(raw_capacity)
+		var demand_weight: float = float(metric_item_counts.get(metricKey, 0)) / float(safe_total_item_count)
+		var budget: float = effective_capacity * float(total_project_weeks) * WORKLOAD_TARGET_COMPLETION_RATIO * demand_weight
+		metric_capacity[metricKey] = raw_capacity
+		metric_effective_capacity[metricKey] = effective_capacity
+		metric_budget[metricKey] = maxf(MIN_BACKLOG_EFFORT, budget)
+
+	projectWorkloadSnapshot["metric_capacity"] = metric_capacity
+	projectWorkloadSnapshot["metric_effective_capacity"] = metric_effective_capacity
+	projectWorkloadSnapshot["metric_budget"] = metric_budget
+	projectWorkloadSnapshot["metric_item_counts"] = metric_item_counts.duplicate(true)
+
+func _calculate_metric_raw_capacity(metricKey: String) -> float:
+	var worker_snapshots: Variant = projectWorkloadSnapshot.get("workers", {})
+	if worker_snapshots is not Dictionary:
+		return 0.0
+
+	var raw_capacity: float = 0.0
+	for workerId in worker_snapshots.keys():
+		var worker_snapshot: Variant = worker_snapshots.get(workerId, {})
+		if worker_snapshot is not Dictionary:
+			continue
+		var weekly_progress: Variant = worker_snapshot.get("weekly_progress", {})
+		if weekly_progress is not Dictionary:
+			continue
+		raw_capacity += float(weekly_progress.get(metricKey, 1.0)) * float(worker_snapshot.get("stamina_availability", 1.0))
+	return raw_capacity
+
+func _calculate_effective_capacity(raw_capacity: float) -> float:
+	if raw_capacity <= WORKLOAD_REFERENCE_CAPACITY:
+		return raw_capacity
+	return WORKLOAD_REFERENCE_CAPACITY * pow(raw_capacity / WORKLOAD_REFERENCE_CAPACITY, WORKLOAD_CAPACITY_ELASTICITY)
+
+func _calculate_worker_weekly_progress(worker_skill: int, worker_speed: int) -> int:
+	return maxi(1, int(floor(float(worker_skill) * (float(worker_speed) / 100.0))))
+
+func _get_total_project_weeks() -> int:
+	return maxi(1, int(sprintAmount) * int(sprintLength))
+
+func _get_worker_current_stamina_value(worker) -> float:
+	var stamina_bar = worker.get_node_or_null("staminaBar")
+	if stamina_bar != null:
+		return clampf(float(stamina_bar.value), 0.0, maxf(1.0, float(worker.staminaStat)))
+	return maxf(1.0, float(worker.staminaStat))
+
+func _estimate_worker_stamina_availability(worker, total_project_weeks: int) -> float:
+	if total_project_weeks <= 0:
+		return 1.0
+
+	var max_stamina: float = maxf(1.0, float(worker.staminaStat))
+	var stamina_value: float = clampf(_get_worker_current_stamina_value(worker), 0.0, max_stamina)
+	var is_resting: bool = bool(worker.resting)
+	var available_weeks: int = 0
+
+	for _week in range(total_project_weeks):
+		for _second in range(WORKLOAD_WEEK_DURATION_SECONDS):
+			if is_resting:
+				stamina_value += WORKLOAD_STAMINA_RECOVERY_PER_SECOND
+				if stamina_value >= max_stamina:
+					stamina_value = max_stamina
+					is_resting = false
+			else:
+				stamina_value -= WORKLOAD_STAMINA_DRAIN_PER_SECOND
+				if stamina_value <= 0.0:
+					stamina_value = 0.0
+					is_resting = true
+		if !is_resting:
+			available_weeks += 1
+
+	return clampf(float(available_weeks) / float(total_project_weeks), WORKLOAD_MIN_STAMINA_AVAILABILITY, 1.0)
 
 func _ensure_worker_identity(worker, preferredId: String = "") -> void:
 	var candidateId := preferredId
@@ -671,23 +888,81 @@ func _prepare_sprint_context(sprintNumber: int) -> void:
 	}
 
 func _resolve_assignment(worker, item: Dictionary) -> void:
-	var metricKey := str(item.get("required_skill", "frontEnd"))
-	var workerSkill := _get_worker_skill(worker, metricKey)
-	var progress := workerSkill
-	# if not _worker_is_specialist_for_item(worker, item):
-	# 	progress = int(floor(progress * 0.5))
-	progress = maxi(1, int(floor(float(progress) * (float(worker.speedStat) / 100.0))))
+	var metricKey: String = str(item.get("required_skill", "frontEnd"))
+	var progress: float = _get_worker_project_progress(str(worker.workerId), worker, metricKey)
+	_apply_progress_with_overflow(item, metricKey, progress)
 
-	var previousEffort := int(item.get("effort_remaining", 0))
-	item.set("effort_remaining", maxi(0, previousEffort - progress))
-	if int(item.get("effort_remaining", 0)) <= 0:
-		item.set("status", "done")
-		_apply_backlog_item_completion(item)
-	else:
-		item.set("status", "in_progress")
+func _get_worker_project_progress(workerId: String, worker, metricKey: String) -> float:
+	var worker_snapshot: Dictionary = getProjectWorkerSnapshot(workerId)
+	if !worker_snapshot.is_empty():
+		var weekly_progress: Variant = worker_snapshot.get("weekly_progress", {})
+		if weekly_progress is Dictionary:
+			return maxf(1.0, float(weekly_progress.get(metricKey, 1.0)))
+
+	var workerSkill: int = _get_worker_skill(worker, metricKey)
+	return float(_calculate_worker_weekly_progress(workerSkill, int(worker.speedStat)))
+
+func _apply_progress_with_overflow(startingItem: Dictionary, metricKey: String, progress: float) -> void:
+	var remaining_progress: float = maxf(0.0, progress)
+	var current_item: Dictionary = startingItem
+	var last_item_id: int = int(current_item.get("id", -1))
+
+	while remaining_progress > BACKLOG_EFFORT_EPSILON and !current_item.is_empty():
+		if current_item.get("status") == "done":
+			current_item = _find_next_overflow_backlog_item(metricKey, int(current_item.get("id", last_item_id)))
+			if !current_item.is_empty():
+				last_item_id = int(current_item.get("id", last_item_id))
+			continue
+
+		var effort_remaining: float = maxf(0.0, float(current_item.get("effort_remaining", 0.0)))
+		if effort_remaining <= BACKLOG_EFFORT_EPSILON:
+			_complete_backlog_item(current_item)
+			current_item = _find_next_overflow_backlog_item(metricKey, int(current_item.get("id", last_item_id)))
+			if !current_item.is_empty():
+				last_item_id = int(current_item.get("id", last_item_id))
+			continue
+
+		if remaining_progress + BACKLOG_EFFORT_EPSILON >= effort_remaining:
+			remaining_progress -= effort_remaining
+			current_item.set("effort_remaining", 0.0)
+			_complete_backlog_item(current_item)
+			current_item = _find_next_overflow_backlog_item(metricKey, int(current_item.get("id", last_item_id)))
+			if !current_item.is_empty():
+				last_item_id = int(current_item.get("id", last_item_id))
+		else:
+			current_item.set("effort_remaining", effort_remaining - remaining_progress)
+			current_item.set("status", "in_progress")
+			remaining_progress = 0.0
+
+func _complete_backlog_item(item: Dictionary) -> void:
+	if item.get("status") == "done":
+		return
+	item.set("status", "done")
+	item.set("effort_remaining", 0.0)
+	_apply_backlog_item_completion(item)
+
+func _find_next_overflow_backlog_item(metricKey: String, afterItemId: int) -> Dictionary:
+	var wrapped_candidate: Dictionary = {}
+	var found_after_item: bool = afterItemId < 0
+	for item in backlogItems:
+		if item is not Dictionary:
+			continue
+		var item_id: int = int(item.get("id", -1))
+		if item_id == afterItemId:
+			found_after_item = true
+			continue
+		if str(item.get("required_skill", "frontEnd")) != metricKey:
+			continue
+		if item.get("status") == "done":
+			continue
+		if found_after_item:
+			return item
+		if wrapped_candidate.is_empty():
+			wrapped_candidate = item
+	return wrapped_candidate
 
 func _apply_backlog_item_completion(item: Dictionary) -> void:
-	var metricKey := str(item.get("required_skill", "frontEnd"))
+	var metricKey: String = str(item.get("required_skill", "frontEnd"))
 	changeMetricByName(metricKey, int(item.get("metric_reward", 0)))
 	completedMetrics.append(item.get("name"))
 
@@ -708,9 +983,9 @@ func _get_worker_skill(worker, metricKey: String) -> int:
 	return 1
 
 func _worker_is_specialist_for_item(worker, item: Dictionary) -> bool:
-	var metricKey := str(item.get("required_skill", "frontEnd"))
-	var workerSkill := _get_worker_skill(worker, metricKey)
-	var bestSkill := maxi(int(worker.frontEndStat), maxi(int(worker.backEndStat), int(worker.documentingStat)))
+	var metricKey: String = str(item.get("required_skill", "frontEnd"))
+	var workerSkill: int = _get_worker_skill(worker, metricKey)
+	var bestSkill: int = maxi(int(worker.frontEndStat), maxi(int(worker.backEndStat), int(worker.documentingStat)))
 	return workerSkill >= bestSkill
 
 func earnSprintMoney():
@@ -725,10 +1000,10 @@ func get_office_capacity_for_tier(tier: int) -> int:
 	return int(OFFICE_CAPACITY_BY_TIER[clamped_tier])
 
 func can_purchase_office_upgrade(upgrade_data: Dictionary) -> Dictionary:
-	var target_tier := int(upgrade_data.get("tier", 0))
-	var required_projects := int(upgrade_data.get("required_projects", 0))
-	var required_workers := int(upgrade_data.get("required_workers", 0))
-	var cost := int(upgrade_data.get("cost", 0))
+	var target_tier: int = int(upgrade_data.get("tier", 0))
+	var required_projects: int = int(upgrade_data.get("required_projects", 0))
+	var required_workers: int = int(upgrade_data.get("required_workers", 0))
+	var cost: int = int(upgrade_data.get("cost", 0))
 
 	if target_tier < 1 or target_tier >= OFFICE_CAPACITY_BY_TIER.size():
 		return {"ok": false, "reason": "That office tier is invalid."}
@@ -749,8 +1024,8 @@ func purchase_office_upgrade(upgrade_data: Dictionary) -> Dictionary:
 	if not bool(validation.get("ok", false)):
 		return validation
 
-	var target_tier := int(upgrade_data.get("tier", 0))
-	var cost := int(upgrade_data.get("cost", 0))
+	var target_tier: int = int(upgrade_data.get("tier", 0))
+	var cost: int = int(upgrade_data.get("cost", 0))
 	addCurrency(-cost)
 	office_tier = target_tier
 	_sync_office_capacity()
@@ -772,8 +1047,8 @@ func _sync_office_capacity() -> void:
 	max_worker_capacity = get_office_capacity_for_tier(office_tier)
 
 func _normalize_upgrade_record(upgrade_data: Dictionary) -> Dictionary:
-	var category := str(upgrade_data.get("category", ""))
-	var tier := int(upgrade_data.get("tier", 0))
+	var category: String = str(upgrade_data.get("category", ""))
+	var tier: int = int(upgrade_data.get("tier", 0))
 	var normalized_upgrade := {
 		"category": category,
 		"tier": tier,
@@ -798,6 +1073,10 @@ func _apply_standard_upgrade_purchase_effects(upgrade_data: Dictionary) -> void:
 	for worker in workers:
 		_apply_worker_upgrade_effects(worker, upgrade_data)
 
+func _apply_active_upgrade_effects_to_all_workers() -> void:
+	for worker in workers:
+		_apply_active_upgrade_effects_to_worker(worker)
+
 func _apply_active_upgrade_effects_to_worker(worker) -> void:
 	for upgrade_data in upgrades:
 		_apply_worker_upgrade_effects(worker, upgrade_data)
@@ -805,8 +1084,8 @@ func _apply_active_upgrade_effects_to_worker(worker) -> void:
 func _apply_worker_upgrade_effects(worker, upgrade_data: Dictionary) -> void:
 	if worker == null:
 		return
-	var category := str(upgrade_data.get("category", ""))
-	var tier := int(upgrade_data.get("tier", 0))
+	var category: String = str(upgrade_data.get("category", ""))
+	var tier: int = int(upgrade_data.get("tier", 0))
 	var effects := _get_upgrade_effects(upgrade_data)
 	if effects.is_empty():
 		effects = _get_legacy_upgrade_effects(category, tier)
@@ -875,8 +1154,8 @@ func _sanitize_meta_key(value: String) -> String:
 func _apply_worker_stat_multiplier(worker, stat_key: String, multiplier: float) -> void:
 	if not WORKER_UPGRADE_STAT_PROPERTIES.has(stat_key):
 		return
-	var property_name := str(WORKER_UPGRADE_STAT_PROPERTIES.get(stat_key))
-	var current_value := int(worker.get(property_name))
+	var property_name: String = str(WORKER_UPGRADE_STAT_PROPERTIES.get(stat_key))
+	var current_value: int = int(worker.get(property_name))
 	var updated_value := maxi(0, int(floorf(float(current_value) * multiplier)))
 	_track_worker_upgrade_bonus(worker, stat_key, float(updated_value - current_value))
 	if stat_key == "stamina":

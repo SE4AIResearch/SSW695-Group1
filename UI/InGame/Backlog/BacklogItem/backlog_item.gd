@@ -56,11 +56,11 @@ func prepItem(item, itemType: int = -1):
 		tags.append("In Progress")
 
 	$metricName.text = "[color=%s]%s" % [skillColor, str(heldItem.get("name", "Backlog Item"))]
-	var detailText: String = "[color=%s]%s | Effort %d/%d" % [
+	var detailText: String = "[color=%s]%s | Effort %s/%s" % [
 		skillColor,
 		skillLabel,
-		int(heldItem.get("effort_remaining", 0)),
-		int(heldItem.get("total_effort", 0)),
+		_format_effort_value(float(heldItem.get("effort_remaining", 0.0))),
+		_format_effort_value(float(heldItem.get("total_effort", 0.0))),
 	]
 	if not tags.is_empty():
 		detailText += " | " + " | ".join(tags)
@@ -167,6 +167,14 @@ func _strip_bbcode(text: String) -> String:
 		elif not insideTag:
 			plainText += character
 	return plainText
+
+func _format_effort_value(value: float) -> String:
+	var rounded_value: float = round(value)
+	if absf(value - rounded_value) < 0.05:
+		return str(int(rounded_value))
+	if value < 1.0:
+		return "%0.2f" % value
+	return "%0.1f" % value
 
 func _on_pressed() -> void:
 	MetricChosen.emit(self)

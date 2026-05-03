@@ -5,9 +5,11 @@ signal WorkerSelected(button)
 var heldWorker: Node
 var isBusy: bool = false
 var isResting: bool = false
+var isUnavailable: bool = false
 const STATUS_BUSY_COLOR: Color = Color(0.96, 0.76, 0.18)
 const STATUS_FREE_COLOR: Color = Color(0.2, 0.78, 0.36)
 const STATUS_RESTING_COLOR: Color = Color(0.017259976, 0.4440687, 0.8440869)
+const STATUS_UNAVAILABLE_COLOR: Color = Color(0.56, 0.56, 0.56)
 
 func createWorkerItem(worker):
 	heldWorker = worker
@@ -20,16 +22,25 @@ func createWorkerItem(worker):
 	$Person.get_node("hairSprite").modulate = worker.get_node("hairSprite").modulate
 	$Person.get_node("noseSprite").modulate = worker.get_node("noseSprite").modulate
 	
+	var workerSnapshot: Dictionary = PlayerTool.getProjectWorkerSnapshot(str(worker.workerId))
+	var frontEndStat: int = int(workerSnapshot.get("frontEnd", worker.frontEndStat))
+	var backEndStat: int = int(workerSnapshot.get("backEnd", worker.backEndStat))
+	var documentingStat: int = int(workerSnapshot.get("documenting", worker.documentingStat))
 	$textParent/nameLabel.text = worker.personName
-	$textParent/statsLabel.text = "[color=#fc2403]Front End: " + str(worker.frontEndStat) + "[/color] \n [color=#30c4ff]Back End: " + str(worker.backEndStat) + "[/color] \n [color=#03fc41]Documenting: " + str(worker.documentingStat)
+	$textParent/statsLabel.text = "[color=#fc2403]Front End: " + str(frontEndStat) + "[/color] \n [color=#30c4ff]Back End: " + str(backEndStat) + "[/color] \n [color=#03fc41]Documenting: " + str(documentingStat)
 	pass
 
 func setBusyStatus(is_busy: bool) -> void:
-	setWorkerStatus(is_busy, false)
+	setWorkerStatus(is_busy, false, false)
 
-func setWorkerStatus(is_busy: bool, is_resting: bool) -> void:
+func setWorkerStatus(is_busy: bool, is_resting: bool, is_unavailable: bool = false) -> void:
 	isBusy = is_busy
 	isResting = is_resting
+	isUnavailable = is_unavailable
+	if is_unavailable:
+		$StatusLabel.text = "NEXT PROJECT"
+		$StatusLabel.add_theme_color_override("font_color", STATUS_UNAVAILABLE_COLOR)
+		return
 	if is_resting:
 		$StatusLabel.text = "RESTING"
 		$StatusLabel.add_theme_color_override("font_color", _get_resting_status_color())
@@ -50,7 +61,7 @@ func setAssignmentLabel(assignmentText: String) -> void:
 
 func _get_resting_status_color() -> Color:
 	if heldWorker != null:
-		var resting_color = heldWorker.get("restingColor")
+		var resting_color: Variant = heldWorker.get("restingColor")
 		if resting_color is Color:
 			return resting_color
 	return STATUS_RESTING_COLOR

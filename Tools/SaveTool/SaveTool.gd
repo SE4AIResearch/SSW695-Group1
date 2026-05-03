@@ -10,6 +10,7 @@ const DEFAULT_WORKER_UPGRADE_STAT_BONUSES := {
 	"speed": 0.0,
 	"stamina": 0.0,
 }
+const MIN_LOADED_BACKLOG_EFFORT := 0.25
 
 var current_save_name: String = "Save Slot 1"
 var save_list: Array = SaveSlots.duplicate()
@@ -238,6 +239,7 @@ func loadPlayerData(saveName: String = current_save_name):
 	PlayerTool.weekResults = saveData.get_value("GameState", "weekResults", {})
 	var rawSelectedAssignments: Dictionary = saveData.get_value("GameState", "selectedAssignments", {})
 	var rawBacklogItems: Array = saveData.get_value("GameState", "backlogItems", [])
+	var rawProjectWorkloadSnapshot: Variant = saveData.get_value("GameState", "projectWorkloadSnapshot", {})
 	PlayerTool.pendingProjectSummary = saveData.get_value("GameState", "pendingProjectSummary", {})
 	PlayerTool.sprintGoal = saveData.get_value("GameState", "sprintGoal", {})
 	PlayerTool.shouldShowWeekResultsModal = saveData.get_value("GameState", "shouldShowWeekResultsModal", false)
@@ -249,8 +251,9 @@ func loadPlayerData(saveName: String = current_save_name):
 	PlayerTool.upgrades = saveData.get_value("Lists", "upgrades", [])
 
 	# Load workers
-	var serialized_workers = saveData.get_value("Lists", "workers", [])
+	var serialized_workers: Array = saveData.get_value("Lists", "workers", [])
 	deserializeWorkers(serialized_workers)
+	PlayerTool.projectWorkloadSnapshot = _normalize_loaded_project_workload_snapshot(rawProjectWorkloadSnapshot)
 	PlayerTool.backlogItems = _normalize_loaded_backlog_items(rawBacklogItems)
 	PlayerTool.selectedAssignments = _normalize_loaded_selected_assignments(rawSelectedAssignments, PlayerTool.backlogItems)
 
@@ -293,6 +296,7 @@ func savePlayerData():
 	saveData.set_value("GameState", "weekResults", PlayerTool.weekResults)
 	saveData.set_value("GameState", "selectedAssignments", PlayerTool.selectedAssignments)
 	saveData.set_value("GameState", "backlogItems", PlayerTool.backlogItems)
+	saveData.set_value("GameState", "projectWorkloadSnapshot", PlayerTool.projectWorkloadSnapshot)
 	saveData.set_value("GameState", "pendingProjectSummary", PlayerTool.pendingProjectSummary)
 	saveData.set_value("GameState", "sprintGoal", PlayerTool.sprintGoal)
 	saveData.set_value("GameState", "shouldShowWeekResultsModal", PlayerTool.shouldShowWeekResultsModal)
@@ -317,6 +321,7 @@ func serializeWorkers() -> Array:
 			"speedStat": worker.speedStat,
 			"staminaStat": worker.staminaStat,
 			"upgradeStatBonuses": _normalize_worker_upgrade_bonuses(worker.upgradeStatBonuses),
+			"appliedUpgradeKeys": _get_worker_applied_upgrade_keys(worker),
 			"headSpritePath": worker.headSpritePath,
 			"hairSpritePath": worker.hairSpritePath,
 			"mouthSpritePath": worker.mouthSpritePath,
@@ -347,6 +352,7 @@ func deserializeWorkers(serialized_workers: Array):
 		worker.workerId = str(w_data.get("workerId", ""))
 		worker.personName = w_data.personName
 		worker.upgradeStatBonuses = _normalize_worker_upgrade_bonuses(w_data.get("upgradeStatBonuses", {}))
+		_restore_worker_applied_upgrade_keys(worker, w_data)
 		worker.headSpritePath = w_data.headSpritePath
 		worker.hairSpritePath = w_data.hairSpritePath
 		worker.mouthSpritePath = w_data.mouthSpritePath
@@ -366,10 +372,38 @@ func deserializeWorkers(serialized_workers: Array):
 		PlayerTool.newHire(worker, false)
 
 func _normalize_worker_upgrade_bonuses(upgrade_stat_bonuses: Dictionary) -> Dictionary:
-	var normalized_bonuses := DEFAULT_WORKER_UPGRADE_STAT_BONUSES.duplicate(true)
+	var normalized_bonuses: Dictionary = DEFAULT_WORKER_UPGRADE_STAT_BONUSES.duplicate(true)
 	for stat_key in normalized_bonuses.keys():
 		normalized_bonuses[stat_key] = float(upgrade_stat_bonuses.get(stat_key, 0.0))
 	return normalized_bonuses
+
+func _get_worker_applied_upgrade_keys(worker) -> Array:
+	var applied_upgrade_keys: Array = []
+	for upgrade_data in PlayerTool.upgrades:
+		var applied_meta_key: String = PlayerTool._get_upgrade_applied_meta_key(
+			str(upgrade_data.get("category", "")),
+			int(upgrade_data.get("tier", 0))
+		)
+		if bool(worker.get_meta(applied_meta_key, false)):
+			applied_upgrade_keys.append(applied_meta_key)
+	return applied_upgrade_keys
+
+func _restore_worker_applied_upgrade_keys(worker, worker_data: Dictionary) -> void:
+	var raw_applied_upgrade_keys: Variant = worker_data.get("appliedUpgradeKeys", null)
+	if raw_applied_upgrade_keys is Array:
+		for applied_upgrade_key in raw_applied_upgrade_keys:
+			worker.set_meta(str(applied_upgrade_key), true)
+		return
+
+	# Older saves already have purchased upgrades baked into worker stats, but did not save the meta flags.
+	for upgrade_data in PlayerTool.upgrades:
+		worker.set_meta(
+			PlayerTool._get_upgrade_applied_meta_key(
+				str(upgrade_data.get("category", "")),
+				int(upgrade_data.get("tier", 0))
+			),
+			true
+		)
 
 func _normalize_loaded_project_portfolio(raw_portfolio) -> Array:
 	if raw_portfolio is not Array:
@@ -380,9 +414,9 @@ func _normalize_loaded_project_portfolio(raw_portfolio) -> Array:
 		if raw_record is not Dictionary:
 			continue
 		var record: Dictionary = raw_record.duplicate(true)
-		var metrics_value = record.get("metrics", {})
-		var metric_maxes_value = record.get("metric_maxes", {})
-		var completed_at_value = record.get("completed_at", {})
+		var metrics_value: Variant = record.get("metrics", {})
+		var metric_maxes_value: Variant = record.get("metric_maxes", {})
+		var completed_at_value: Variant = record.get("completed_at", {})
 		if metrics_value is not Dictionary:
 			record["metrics"] = {}
 		if metric_maxes_value is not Dictionary:
@@ -398,7 +432,17 @@ func _normalize_loaded_backlog_items(raw_backlog_items: Array) -> Array:
 		if raw_item is not Dictionary:
 			continue
 		var item: Dictionary = raw_item.duplicate(true)
-		var assigned_worker_id := str(item.get("assigned_worker_id", ""))
+		var total_effort: float = maxf(
+			MIN_LOADED_BACKLOG_EFFORT,
+			float(item.get("total_effort", item.get("effort_remaining", 1.0)))
+		)
+		var effort_remaining: float = clampf(float(item.get("effort_remaining", total_effort)), 0.0, total_effort)
+		if str(item.get("status", "backlog")) == "done":
+			effort_remaining = 0.0
+		item.set("base_effort", maxf(MIN_LOADED_BACKLOG_EFFORT, float(item.get("base_effort", total_effort))))
+		item.set("total_effort", total_effort)
+		item.set("effort_remaining", effort_remaining)
+		var assigned_worker_id: String = str(item.get("assigned_worker_id", ""))
 		if assigned_worker_id.is_empty():
 			assigned_worker_id = _resolve_loaded_worker_id(str(item.get("assigned_worker_name", "")))
 		item.set("assigned_worker_id", assigned_worker_id)
@@ -407,18 +451,43 @@ func _normalize_loaded_backlog_items(raw_backlog_items: Array) -> Array:
 		normalized_items.append(item)
 	return normalized_items
 
+func _normalize_loaded_project_workload_snapshot(raw_snapshot) -> Dictionary:
+	if raw_snapshot is not Dictionary:
+		return {}
+
+	var snapshot: Dictionary = raw_snapshot.duplicate(true)
+	var eligible_worker_ids: Array = []
+	var raw_eligible_worker_ids: Variant = snapshot.get("eligible_worker_ids", [])
+	if raw_eligible_worker_ids is Array:
+		for worker_id in raw_eligible_worker_ids:
+			var normalized_worker_id: String = str(worker_id)
+			if !normalized_worker_id.is_empty():
+				eligible_worker_ids.append(normalized_worker_id)
+	snapshot["eligible_worker_ids"] = eligible_worker_ids
+
+	var raw_worker_snapshots: Variant = snapshot.get("workers", {})
+	var normalized_worker_snapshots: Dictionary = {}
+	if raw_worker_snapshots is Dictionary:
+		for worker_id in raw_worker_snapshots.keys():
+			var worker_snapshot: Variant = raw_worker_snapshots.get(worker_id, {})
+			if worker_snapshot is Dictionary:
+				normalized_worker_snapshots[str(worker_id)] = worker_snapshot.duplicate(true)
+	snapshot["workers"] = normalized_worker_snapshots
+
+	return snapshot
+
 func _normalize_loaded_selected_assignments(raw_selected_assignments: Dictionary, normalized_backlog_items: Array) -> Dictionary:
 	var normalized_assignments: Dictionary = {}
 	for raw_worker_reference in raw_selected_assignments.keys():
-		var resolved_worker_id := _resolve_loaded_worker_id(str(raw_worker_reference))
+		var resolved_worker_id: String = _resolve_loaded_worker_id(str(raw_worker_reference))
 		if resolved_worker_id.is_empty():
 			continue
 		normalized_assignments[resolved_worker_id] = int(raw_selected_assignments.get(raw_worker_reference, -1))
 	for item in normalized_backlog_items:
 		if item is not Dictionary:
 			continue
-		var assigned_worker_id := str(item.get("assigned_worker_id", ""))
-		var item_id := int(item.get("id", -1))
+		var assigned_worker_id: String = str(item.get("assigned_worker_id", ""))
+		var item_id: int = int(item.get("id", -1))
 		if assigned_worker_id.is_empty() or item_id < 0:
 			continue
 		if !normalized_assignments.has(assigned_worker_id):
