@@ -217,7 +217,7 @@ func update_shader_opacities():
 		$PCButtons/ProjectPortfolioButton.material.set_shader_parameter("opacity", portfolio_opacity)
 	
 	# projectStartMenu Logic
-	var start_menu_opacity = 1.0 if PlayerTool.project == null else 0.0
+	var start_menu_opacity = 0.5 if PlayerTool.project == null else 0.0
 	if $PCButtons/projectStartMenu.material:
 		$PCButtons/projectStartMenu.material.set_shader_parameter("opacity", start_menu_opacity)
 
