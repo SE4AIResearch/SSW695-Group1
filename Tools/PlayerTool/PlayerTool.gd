@@ -342,7 +342,7 @@ func newHire(worker, apply_active_upgrades: bool = true) -> bool:
 		return false
 	if worker == null:
 		return false
-	if apply_active_upgrades and project == null:
+	if apply_active_upgrades:
 		_apply_active_upgrade_effects_to_worker(worker)
 	_ensure_worker_identity(worker)
 	workers.append(worker)
@@ -492,8 +492,6 @@ func resolveWeek() -> bool:
 		var worker = getWorkerById(str(workerId))
 		if item.is_empty() or worker == null:
 			continue
-		if !isWorkerEligibleForCurrentProject(str(workerId)):
-			continue
 		if !worker.resting: _resolve_assignment(worker, item)
 
 	clearAssignments()
@@ -530,8 +528,6 @@ func assignWorkerToItem(workerId: String, itemId: int) -> Dictionary:
 	var worker = getWorkerById(workerId)
 	if worker == null:
 		return {"ok": false, "reason": "That worker no longer exists."}
-	if !isWorkerEligibleForCurrentProject(workerId):
-		return {"ok": false, "reason": "%s can start contributing on the next project." % worker.personName}
 	if bool(worker.resting):
 		return {"ok": false, "reason": "%s is resting until their stamina is full." % worker.personName}
 	var item := getBacklogItemById(itemId)
@@ -601,16 +597,6 @@ func getBacklogItemById(itemId: int) -> Dictionary:
 		if int(item.get("id", -1)) == itemId:
 			return item
 	return {}
-
-func isWorkerEligibleForCurrentProject(workerId: String) -> bool:
-	if project == null:
-		return true
-	if projectWorkloadSnapshot.is_empty():
-		return true
-	var eligible_worker_ids: Variant = projectWorkloadSnapshot.get("eligible_worker_ids", [])
-	if eligible_worker_ids is not Array:
-		return true
-	return eligible_worker_ids.has(workerId)
 
 func getProjectWorkerSnapshot(workerId: String) -> Dictionary:
 	var worker_snapshots: Variant = projectWorkloadSnapshot.get("workers", {})

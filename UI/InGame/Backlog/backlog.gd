@@ -25,9 +25,8 @@ func _refreshWorkers() -> void:
 		var newWorker = backlogWorkerItem.instantiate()
 		newWorker.createWorkerItem(worker)
 		var is_resting: bool = bool(worker.resting)
-		var is_project_eligible: bool = PlayerTool.isWorkerEligibleForCurrentProject(str(worker.workerId))
-		newWorker.disabled = readOnly or is_resting or !is_project_eligible
-		newWorker.setWorkerStatus(PlayerTool.selectedAssignments.has(worker.workerId), is_resting, !is_project_eligible)
+		newWorker.disabled = readOnly or is_resting
+		newWorker.setWorkerStatus(PlayerTool.selectedAssignments.has(worker.workerId), is_resting)
 		var assignmentId: Variant = PlayerTool.selectedAssignments.get(worker.workerId, null)
 		if assignmentId != null:
 			var item: Dictionary = PlayerTool.getBacklogItemById(int(assignmentId))
@@ -108,11 +107,6 @@ func workerSelected(workerButton):
 		workerButton.button_pressed = false
 		selectedWorker = null
 		_set_status_message("%s is resting until their stamina is full." % workerButton.heldWorker.personName)
-		return
-	if workerButton.isUnavailable:
-		workerButton.button_pressed = false
-		selectedWorker = null
-		_set_status_message("%s can start contributing on the next project." % workerButton.heldWorker.personName)
 		return
 	if workerButton.isBusy:
 		var workerName: String = workerButton.heldWorker.personName

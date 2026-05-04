@@ -5,11 +5,9 @@ signal WorkerSelected(button)
 var heldWorker: Node
 var isBusy: bool = false
 var isResting: bool = false
-var isUnavailable: bool = false
 const STATUS_BUSY_COLOR: Color = Color(0.96, 0.76, 0.18)
 const STATUS_FREE_COLOR: Color = Color(0.2, 0.78, 0.36)
 const STATUS_RESTING_COLOR: Color = Color(0.017259976, 0.4440687, 0.8440869)
-const STATUS_UNAVAILABLE_COLOR: Color = Color(0.56, 0.56, 0.56)
 
 func createWorkerItem(worker):
 	heldWorker = worker
@@ -31,16 +29,11 @@ func createWorkerItem(worker):
 	pass
 
 func setBusyStatus(is_busy: bool) -> void:
-	setWorkerStatus(is_busy, false, false)
+	setWorkerStatus(is_busy, false)
 
-func setWorkerStatus(is_busy: bool, is_resting: bool, is_unavailable: bool = false) -> void:
+func setWorkerStatus(is_busy: bool, is_resting: bool) -> void:
 	isBusy = is_busy
 	isResting = is_resting
-	isUnavailable = is_unavailable
-	if is_unavailable:
-		$StatusLabel.text = "NEXT PROJECT"
-		$StatusLabel.add_theme_color_override("font_color", STATUS_UNAVAILABLE_COLOR)
-		return
 	if is_resting:
 		$StatusLabel.text = "RESTING"
 		$StatusLabel.add_theme_color_override("font_color", _get_resting_status_color())
