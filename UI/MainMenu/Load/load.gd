@@ -97,15 +97,16 @@ func _show_overwrite_confirmation(save_name: String) -> void:
 		secondary_button_text = OVERWRITE_CANCEL_TEXT
 	)
 	modal.confirmed.connect(_on_overwrite_confirmed.bind(save_name))
-	modal.dismissed.connect(_on_overwrite_modal_dismissed)
+	modal.cancelled.connect(_on_overwrite_cancelled)
 	_overwrite_modal = modal
 
 
 func _on_overwrite_confirmed(save_name: String) -> void:
+	_overwrite_modal = null
 	_start_new_game(save_name)
 
 
-func _on_overwrite_modal_dismissed() -> void:
+func _on_overwrite_cancelled() -> void:
 	_overwrite_modal = null
 
 
