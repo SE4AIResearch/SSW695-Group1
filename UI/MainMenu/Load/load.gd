@@ -1,14 +1,14 @@
 extends Node2D
 
 var is_new_game_selection: bool = false
-var TutorialModal: PackedScene = preload("res://UI/InGame/TutorialModal/TutorialModal.tscn")
+var tutorial_modal_scene: PackedScene = preload("res://UI/InGame/TutorialModal/TutorialModal.tscn")
 
 const OVERWRITE_TITLE := "Overwrite Save?"
 const OVERWRITE_MESSAGE := "Starting a new game in this slot will overwrite the existing save data with a new save. This cannot be undone."
 const OVERWRITE_CONFIRM_TEXT := "Overwrite"
 const OVERWRITE_CANCEL_TEXT := "Cancel"
 
-var _overwrite_modal: TutorialModalPanel = null
+var _overwrite_modal: TutorialModalPanel
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
@@ -85,9 +85,10 @@ func _handle_delete(slot_index: int) -> void:
 
 func _show_overwrite_confirmation(save_name: String) -> void:
 	if _overwrite_modal != null and is_instance_valid(_overwrite_modal):
-		return
+		_overwrite_modal.queue_free()
+		_overwrite_modal = null
 
-	var modal: TutorialModalPanel = TutorialModal.instantiate() as TutorialModalPanel
+	var modal: TutorialModalPanel = tutorial_modal_scene.instantiate() as TutorialModalPanel
 	_get_tutorial_modal_parent().add_child(modal)
 	modal.setup(OVERWRITE_TITLE, OVERWRITE_MESSAGE, OVERWRITE_CONFIRM_TEXT, false, OVERWRITE_CANCEL_TEXT)
 	modal.confirmed.connect(_on_overwrite_confirmed.bind(save_name))
