@@ -90,8 +90,8 @@ func _show_overwrite_confirmation(save_name: String) -> void:
 	var modal: TutorialModalPanel = tutorial_modal_scene.instantiate() as TutorialModalPanel
 	_get_tutorial_modal_parent().add_child(modal)
 	modal.setup(
-		OVERWRITE_TITLE,
-		OVERWRITE_MESSAGE,
+		title: OVERWRITE_TITLE,
+		message: OVERWRITE_MESSAGE,
 		button_text: OVERWRITE_CONFIRM_TEXT,
 		show_stamina_examples: false,
 		secondary_button_text: OVERWRITE_CANCEL_TEXT
