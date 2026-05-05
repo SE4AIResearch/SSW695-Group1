@@ -18,8 +18,9 @@ var _show_secondary_button: bool = false
 
 func _enter_tree() -> void:
 	process_mode = Node.PROCESS_MODE_ALWAYS
-	_previous_pause_state = get_tree().paused
-	get_tree().paused = true
+	var tree := get_tree()
+	_previous_pause_state = tree != null and tree.paused
+	_set_tree_paused(true)
 	_hide_worker_details()
 
 func _ready() -> void:
@@ -122,7 +123,7 @@ func _dismiss() -> void:
 	_is_dismissing = true
 	visible = false
 	mouse_filter = Control.MOUSE_FILTER_IGNORE
-	get_tree().paused = _previous_pause_state
+	_set_tree_paused(_previous_pause_state)
 	queue_free()
 	dismissed.emit()
 
@@ -154,3 +155,8 @@ func _layout_buttons(button_top: float, button_bottom: float) -> void:
 	$MessagePanel/OkButton.offset_bottom = button_bottom
 	$MessagePanel/CancelButton.offset_top = button_top
 	$MessagePanel/CancelButton.offset_bottom = button_bottom
+
+func _set_tree_paused(paused: bool) -> void:
+	var tree := get_tree()
+	if tree != null:
+		tree.paused = paused

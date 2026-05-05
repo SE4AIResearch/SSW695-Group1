@@ -220,7 +220,9 @@ func calculateUpgradeEffects():
 	pass
 	
 func finishProjectChoosing():
-	get_tree().paused = false
+	var tree := get_tree()
+	if tree != null:
+		tree.paused = false
 	self.queue_free()
 	pass
 
