@@ -1,8 +1,11 @@
 extends Control
 class_name TutorialModalPanel
 
+# Emitted when the modal is closed.
 signal dismissed
+# Emitted when the primary button is pressed.
 signal confirmed
+# Emitted when the secondary button is pressed.
 signal cancelled
 
 const PANEL_WIDTH: float = 580.0
@@ -144,12 +147,10 @@ func _layout_buttons(button_top: float, button_bottom: float) -> void:
 		$MessagePanel/OkButton.offset_right = start_left + BUTTON_WIDTH
 		$MessagePanel/CancelButton.offset_left = start_left + BUTTON_WIDTH + BUTTON_GAP
 		$MessagePanel/CancelButton.offset_right = $MessagePanel/CancelButton.offset_left + BUTTON_WIDTH
-		$MessagePanel/CancelButton.visible = true
 	else:
 		var start_left := (PANEL_WIDTH - BUTTON_WIDTH) / 2.0
 		$MessagePanel/OkButton.offset_left = start_left
 		$MessagePanel/OkButton.offset_right = start_left + BUTTON_WIDTH
-		$MessagePanel/CancelButton.visible = false
 
 	$MessagePanel/OkButton.offset_top = button_top
 	$MessagePanel/OkButton.offset_bottom = button_bottom

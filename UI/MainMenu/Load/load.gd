@@ -85,15 +85,13 @@ func _handle_delete(slot_index: int) -> void:
 
 func _show_overwrite_confirmation(save_name: String) -> void:
 	if _overwrite_modal != null and is_instance_valid(_overwrite_modal):
-		_overwrite_modal.queue_free()
-		_overwrite_modal = null
+		return
 
 	var modal: TutorialModalPanel = tutorial_modal_scene.instantiate() as TutorialModalPanel
 	_get_tutorial_modal_parent().add_child(modal)
 	modal.setup(OVERWRITE_TITLE, OVERWRITE_MESSAGE, OVERWRITE_CONFIRM_TEXT, false, OVERWRITE_CANCEL_TEXT)
 	modal.confirmed.connect(_on_overwrite_confirmed.bind(save_name))
 	modal.cancelled.connect(_on_overwrite_cancelled)
-	modal.dismissed.connect(_on_overwrite_modal_dismissed)
 	_overwrite_modal = modal
 
 
@@ -103,10 +101,6 @@ func _on_overwrite_confirmed(save_name: String) -> void:
 
 
 func _on_overwrite_cancelled() -> void:
-	_overwrite_modal = null
-
-
-func _on_overwrite_modal_dismissed() -> void:
 	_overwrite_modal = null
 
 
