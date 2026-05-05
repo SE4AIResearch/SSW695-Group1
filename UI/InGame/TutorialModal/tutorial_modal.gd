@@ -109,17 +109,15 @@ func _confirm() -> void:
 		return
 	if _show_secondary_button:
 		confirmed.emit()
-		_dismiss(false)
-	else:
-		_dismiss()
+	_dismiss()
 
 func _cancel() -> void:
 	if _is_dismissing:
 		return
 	cancelled.emit()
-	_dismiss(false)
+	_dismiss()
 
-func _dismiss(emit_dismissed: bool = true) -> void:
+func _dismiss() -> void:
 	if _is_dismissing:
 		return
 	_is_dismissing = true
@@ -127,8 +125,7 @@ func _dismiss(emit_dismissed: bool = true) -> void:
 	mouse_filter = Control.MOUSE_FILTER_IGNORE
 	get_tree().paused = _previous_pause_state
 	queue_free()
-	if emit_dismissed:
-		dismissed.emit()
+	dismissed.emit()
 
 func _hide_worker_details() -> void:
 	var scene_root: Node = get_tree().current_scene

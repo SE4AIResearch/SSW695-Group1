@@ -90,18 +90,23 @@ func _show_overwrite_confirmation(save_name: String) -> void:
 
 	var modal: TutorialModalPanel = tutorial_modal_scene.instantiate() as TutorialModalPanel
 	_get_tutorial_modal_parent().add_child(modal)
-	modal.setup(OVERWRITE_TITLE, OVERWRITE_MESSAGE, OVERWRITE_CONFIRM_TEXT, false, OVERWRITE_CANCEL_TEXT)
+	modal.setup(
+		OVERWRITE_TITLE,
+		OVERWRITE_MESSAGE,
+		OVERWRITE_CONFIRM_TEXT,
+		show_stamina_examples = false,
+		secondary_button_text = OVERWRITE_CANCEL_TEXT
+	)
 	modal.confirmed.connect(_on_overwrite_confirmed.bind(save_name))
-	modal.cancelled.connect(_on_overwrite_cancelled)
+	modal.dismissed.connect(_on_overwrite_modal_dismissed)
 	_overwrite_modal = modal
 
 
 func _on_overwrite_confirmed(save_name: String) -> void:
-	_overwrite_modal = null
 	_start_new_game(save_name)
 
 
-func _on_overwrite_cancelled() -> void:
+func _on_overwrite_modal_dismissed() -> void:
 	_overwrite_modal = null
 
 
