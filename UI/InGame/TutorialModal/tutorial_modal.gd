@@ -107,8 +107,7 @@ func _on_cancel_button_gui_input(event: InputEvent) -> void:
 func _confirm() -> void:
 	if _is_dismissing:
 		return
-	if _show_secondary_button:
-		confirmed.emit()
+	confirmed.emit()
 	_dismiss()
 
 func _cancel() -> void:

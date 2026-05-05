@@ -85,8 +85,7 @@ func _handle_delete(slot_index: int) -> void:
 
 func _show_overwrite_confirmation(save_name: String) -> void:
 	if _overwrite_modal != null and is_instance_valid(_overwrite_modal):
-		_overwrite_modal.queue_free()
-		_overwrite_modal = null
+		return
 
 	var modal: TutorialModalPanel = tutorial_modal_scene.instantiate() as TutorialModalPanel
 	_get_tutorial_modal_parent().add_child(modal)
