@@ -93,8 +93,8 @@ func _show_overwrite_confirmation(save_name: String) -> void:
 		OVERWRITE_TITLE,
 		OVERWRITE_MESSAGE,
 		OVERWRITE_CONFIRM_TEXT,
-		show_stamina_examples = false,
-		secondary_button_text = OVERWRITE_CANCEL_TEXT
+		show_stamina_examples: false,
+		secondary_button_text: OVERWRITE_CANCEL_TEXT
 	)
 	modal.confirmed.connect(_on_overwrite_confirmed.bind(save_name), CONNECT_ONE_SHOT)
 	modal.dismissed.connect(_on_overwrite_modal_dismissed, CONNECT_ONE_SHOT)
