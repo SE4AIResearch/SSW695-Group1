@@ -92,7 +92,7 @@ func _show_overwrite_confirmation(save_name: String) -> void:
 	modal.setup(
 		OVERWRITE_TITLE,
 		OVERWRITE_MESSAGE,
-		OVERWRITE_CONFIRM_TEXT,
+		button_text: OVERWRITE_CONFIRM_TEXT,
 		show_stamina_examples: false,
 		secondary_button_text: OVERWRITE_CANCEL_TEXT
 	)
