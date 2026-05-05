@@ -107,16 +107,19 @@ func _on_cancel_button_gui_input(event: InputEvent) -> void:
 func _confirm() -> void:
 	if _is_dismissing:
 		return
-	confirmed.emit()
-	_dismiss()
+	if _show_secondary_button:
+		confirmed.emit()
+		_dismiss(false)
+	else:
+		_dismiss()
 
 func _cancel() -> void:
 	if _is_dismissing:
 		return
 	cancelled.emit()
-	_dismiss()
+	_dismiss(false)
 
-func _dismiss() -> void:
+func _dismiss(emit_dismissed: bool = true) -> void:
 	if _is_dismissing:
 		return
 	_is_dismissing = true
@@ -124,7 +127,8 @@ func _dismiss() -> void:
 	mouse_filter = Control.MOUSE_FILTER_IGNORE
 	get_tree().paused = _previous_pause_state
 	queue_free()
-	dismissed.emit()
+	if emit_dismissed:
+		dismissed.emit()
 
 func _hide_worker_details() -> void:
 	var scene_root: Node = get_tree().current_scene
@@ -143,12 +147,10 @@ func _layout_buttons(button_top: float, button_bottom: float) -> void:
 		$MessagePanel/OkButton.offset_right = start_left + BUTTON_WIDTH
 		$MessagePanel/CancelButton.offset_left = start_left + BUTTON_WIDTH + BUTTON_GAP
 		$MessagePanel/CancelButton.offset_right = $MessagePanel/CancelButton.offset_left + BUTTON_WIDTH
-		$MessagePanel/CancelButton.visible = true
 	else:
 		var start_left := (PANEL_WIDTH - BUTTON_WIDTH) / 2.0
 		$MessagePanel/OkButton.offset_left = start_left
 		$MessagePanel/OkButton.offset_right = start_left + BUTTON_WIDTH
-		$MessagePanel/CancelButton.visible = false
 
 	$MessagePanel/OkButton.offset_top = button_top
 	$MessagePanel/OkButton.offset_bottom = button_bottom
