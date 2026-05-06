@@ -1,11 +1,11 @@
 extends Control
 class_name TutorialModalPanel
 
-# Emitted when the modal is closed.
+# Emitted when the modal is closed (after confirmed/cancelled, if emitted).
 signal dismissed
-# Emitted when the primary button is pressed.
+# Emitted when the primary button is pressed (dismissed will follow).
 signal confirmed
-# Emitted when the secondary button is pressed.
+# Emitted when the secondary button is pressed (dismissed will follow).
 signal cancelled
 
 const PANEL_WIDTH: float = 580.0
