@@ -1,8 +1,7 @@
 # Software Development Tycoon
 
-[![GitHub Downloads](https://img.shields.io/github/downloads/SE4AIResearch/SSW695-Group1/total)
-](https://img.shields.io/github/downloads/SE4AIResearch/SSW695-Group1/total
-)
+![GitHub Downloads (all assets, all releases)](https://img.shields.io/github/downloads/SE4AIResearch/SSW695-Group1/total)
+
 
 Software Development Tycoon is a single-player simulation game that teaches software project management through hands-on decision-making. Players manage software projects by balancing scope, cost, schedule, quality, risks, and stakeholder satisfaction across the software development lifecycle (SDLC).
 
