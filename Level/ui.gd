@@ -63,12 +63,21 @@ func _exit_tree() -> void:
 	
 func _physics_process(delta: float) -> void: pass
 
+func _is_tree_paused() -> bool:
+	var tree := get_tree()
+	return tree != null and tree.paused
+
+func _set_tree_paused(paused: bool) -> void:
+	var tree := get_tree()
+	if tree != null:
+		tree.paused = paused
+
 func _on_pause_button_pressed() -> void:
-	match get_tree().paused:
+	match _is_tree_paused():
 		true: $Pause.resumePaused = true
 		false: $Pause.resumePaused = false
 	if $randomEventRinger/ringerAudio.playing:$randomEventRinger/ringerAudio.stream_paused = true
-	get_tree().paused = true
+	_set_tree_paused(true)
 	$Pause.visible = true
 	pass
 
@@ -98,7 +107,7 @@ func endMenu():
 			$PCButtons/projectStartMenu.disabled = hasProject
 		false:
 			$BackButton.visible = false
-			get_tree().paused = false
+			_set_tree_paused(false)
 	if _pending_first_sprint_reward_tutorial:
 		call_deferred("_show_pending_first_sprint_reward_tutorial_if_needed")
 
@@ -144,7 +153,7 @@ func createMenu(menu,allowBack):
 		currentMenu.queue_free()
 	$NewMenu.add_child(menu)
 	currentMenu = menu
-	get_tree().paused = true
+	_set_tree_paused(true)
 	currentMenu.visible = true
 	match pcMode:
 		true: 
@@ -161,7 +170,7 @@ func _on_pc_pressed() -> void:
 	#and showing the PC Buttons when completed
 	AudioManager.play_sfx("pc_click")
 	pcMode = true
-	get_tree().paused = true
+	_set_tree_paused(true)
 	$PCStats.visible = false
 	$PCScreen.visible = true
 	$PCScreenPanel.visible = true	
@@ -181,7 +190,7 @@ func _on_pc_power_pressed() -> void:
 	#Insert code of screen lerping in size and position to the original PC location and render buttons invisible
 	AudioManager.play_sfx("pc_click")
 	pcMode = false
-	get_tree().paused = false
+	_set_tree_paused(false)
 	$PCStats.visible = true
 	$PCScreen.visible = false
 	$PCScreenPanel.visible = false
@@ -224,14 +233,14 @@ func update_shader_opacities():
 func startEvent() -> bool:
 	if PlayerTool.project == null or $NewMenu.get_child_count() != 0:
 		return false
-	get_tree().paused = true
+	_set_tree_paused(true)
 	$randomEventRinger.play("ringing")
 	$randomEventRinger/ringerAudio.play()
 	await $randomEventRinger/ringerAudio.finished
 	$randomEventRinger.play("idle")
 	if PlayerTool.project == null or $NewMenu.get_child_count() != 0:
 		if $NewMenu.get_child_count() == 0:
-			get_tree().paused = false
+			_set_tree_paused(false)
 		return false
 	createMenu(randomEventMenu.instantiate(),false)
 	return true

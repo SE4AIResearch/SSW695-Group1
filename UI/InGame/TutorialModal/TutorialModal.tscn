@@ -165,4 +165,18 @@ theme_override_styles/focus = SubResource("StyleBoxEmpty_ok_focus")
 focus_mode = 0
 text = "OK"
 
+[node name="CancelButton" type="Button" parent="MessagePanel"]
+visible = false
+offset_left = 170.0
+offset_top = 196.0
+offset_right = 410.0
+offset_bottom = 276.0
+theme_override_styles/normal = SubResource("StyleBoxTexture_ok")
+theme_override_styles/pressed = SubResource("StyleBoxTexture_ok_pressed")
+theme_override_styles/hover = SubResource("StyleBoxTexture_ok_hover")
+theme_override_styles/disabled = SubResource("StyleBoxTexture_ok_disabled")
+theme_override_styles/focus = SubResource("StyleBoxEmpty_ok_focus")
+focus_mode = 0
+text = "Cancel"
+
 [connection signal="pressed" from="MessagePanel/OkButton" to="." method="_on_ok_button_pressed"]

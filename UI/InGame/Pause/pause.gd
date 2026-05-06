@@ -15,21 +15,28 @@ func _ready() -> void:
 func _process(delta: float) -> void:
 	pass
 
+func _set_tree_paused(paused: bool) -> void:
+	var tree := get_tree()
+	if tree != null:
+		tree.paused = paused
+
 
 func _on_resume_pressed() -> void:
 	resumeSignal.emit()
-	get_tree().paused = false
+	_set_tree_paused(false)
 	self.visible = false
 	match resumePaused:
-		true: get_tree().paused = true
-		false: get_tree().paused = false
+		true: _set_tree_paused(true)
+		false: _set_tree_paused(false)
 	pass
 
 
 func _on_quit_pressed() -> void:
 	TimeTool.reset()
-	get_tree().paused = false
-	get_tree().change_scene_to_file("res://MainMenu/MainMenu.tscn")
+	var tree := get_tree()
+	if tree != null:
+		tree.paused = false
+		tree.change_scene_to_file("res://MainMenu/MainMenu.tscn")
 	SaveTool.savePlayerData()
 	PlayerTool.resetData()
 	pass
