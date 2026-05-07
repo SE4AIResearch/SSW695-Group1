@@ -520,11 +520,7 @@ func assignWorkerToItem(workerId: String, itemId: int) -> Dictionary:
 		return {"ok": false, "reason": "That item is already complete."}
 	var previousWorkerId := str(item.get("assigned_worker_id", ""))
 	if previousWorkerId != "" and previousWorkerId != workerId:
-		var previousWorker = getWorkerById(previousWorkerId)
-		var previousWorkerLabel := "Another worker"
-		if previousWorker != null:
-			previousWorkerLabel = str(previousWorker.personName)
-		return {"ok": false, "reason": "%s is already assigned to that card." % previousWorkerLabel}
+		unassignWorker(previousWorkerId)
 	unassignWorker(workerId)
 	item.set("assigned_worker_id", workerId)
 	if item.has("assigned_worker_name"):
