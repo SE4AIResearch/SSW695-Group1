@@ -6,7 +6,9 @@
 [ext_resource type="Shader" uid="uid://bhapt2ethyik7" path="res://Shaders/outline.gdshader" id="4_xk3u1"]
 [ext_resource type="Texture2D" uid="uid://drwt4l4mwiboc" path="res://UI/Theme/PCTheme/button/slimButton.png" id="7_adv_week"]
 [ext_resource type="Texture2D" uid="uid://cuyr4sv3sto4b" path="res://UI/Theme/PCTheme/button/slimButtonPressed.png" id="8_adv_week"]
+[ext_resource type="PackedScene" uid="uid://doy5ib16ee1oa" path="res://Person/Person.tscn" id="9_7x6es"]
 [ext_resource type="Texture2D" uid="uid://b8snwl2q3qflg" path="res://UI/Theme/PCTheme/button/slimButtonHeld.png" id="9_adv_week"]
+[ext_resource type="Script" uid="uid://q764mi1vt2xn" path="res://UI/InGame/Backlog/grabber.gd" id="9_bl0b8"]
 [ext_resource type="Texture2D" uid="uid://2jvaulftw7b6" path="res://UI/Theme/PCTheme/button/slimButtonDisabled.png" id="10_adv_week"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_7x6es"]
@@ -175,5 +177,10 @@ offset_bottom = 648.0
 [node name="Completed" type="VBoxContainer" parent="CompletedScroll" unique_id=432847845]
 layout_mode = 2
 size_flags_horizontal = 3
+
+[node name="Grabber" type="Node2D" parent="." unique_id=1364614474]
+script = ExtResource("9_bl0b8")
+
+[node name="Person" parent="Grabber" unique_id=1533579046 instance=ExtResource("9_7x6es")]
 
 [connection signal="pressed" from="AdvanceWeekButton" to="." method="_on_advance_week_button_pressed"]

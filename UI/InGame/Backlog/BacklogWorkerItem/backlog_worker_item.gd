@@ -1,6 +1,7 @@
 extends Button
 
 signal WorkerSelected(button)
+signal WorkerDragStarted(button)
 
 var heldWorker: Node
 var isBusy: bool = false
@@ -73,4 +74,8 @@ func update_shader_opacity(someone_selected: bool = false, is_this_selected: boo
 
 func _on_pressed() -> void:
 	WorkerSelected.emit(self)
+
+func _gui_input(event: InputEvent) -> void:
+	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT and event.pressed:
+		WorkerDragStarted.emit(self)
 	

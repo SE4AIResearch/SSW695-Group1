@@ -4,7 +4,11 @@ var backlogItem = preload("res://UI/InGame/Backlog/BacklogItem/BacklogItem.tscn"
 var backlogWorkerItem = preload("res://UI/InGame/Backlog/BacklogWorkerItem/BacklogWorkerItem.tscn")
 
 var selectedWorker: Node
+var draggedWorker: Node
+var hoveredDropItem: Node
 var status_message: String = ""
+
+@onready var grabber: Node2D = $Grabber
 
 func _ready() -> void:
 	if $AdvanceWeekButton.material:
@@ -15,6 +19,10 @@ func _ready() -> void:
 
 func refreshBoard() -> void:
 	selectedWorker = null
+	draggedWorker = null
+	hoveredDropItem = null
+	if is_instance_valid(grabber) and grabber.has_method("clearGrab"):
+		grabber.clearGrab()
 	_refreshWorkers()
 	_refreshItems()
 	updateHeader()
@@ -26,6 +34,7 @@ func _refreshWorkers() -> void:
 	for worker in PlayerTool.workers:
 		var newWorker = backlogWorkerItem.instantiate()
 		newWorker.createWorkerItem(worker)
+		newWorker.toggle_mode = false
 		var is_resting := bool(worker.resting)
 		newWorker.disabled = readOnly or is_resting
 		newWorker.setWorkerStatus(PlayerTool.selectedAssignments.has(worker.workerId), is_resting)
@@ -34,7 +43,7 @@ func _refreshWorkers() -> void:
 			var item: Dictionary = PlayerTool.getBacklogItemById(int(assignmentId))
 			if not item.is_empty():
 				newWorker.setAssignmentLabel("Assigned: " + str(item.get("name", "")))
-		newWorker.WorkerSelected.connect(workerSelected)
+		newWorker.WorkerDragStarted.connect(workerDragStarted)
 		_add_control_to_column($WorkersScroll/Workers, newWorker)
 
 func _refreshItems() -> void:
@@ -48,7 +57,8 @@ func _refreshItems() -> void:
 	for item in PlayerTool.backlogItems:
 		var newItem = backlogItem.instantiate()
 		newItem.prepItem(item)
-		newItem.MetricChosen.connect(backlogSelected)
+		newItem.mouse_entered.connect(_on_item_mouse_entered.bind(newItem))
+		newItem.mouse_exited.connect(_on_item_mouse_exited.bind(newItem))
 		newItem.update_shader_opacity(selectedWorker != null)
 		var readOnly: bool = PlayerTool.loopPhase != PlayerTool.LOOP_PLANNING_WEEK
 		match str(item.get("status", "backlog")):
@@ -122,7 +132,7 @@ func backlogSelected(metricButton):
 		_set_status_message("Week in progress. Assignments are locked until the timer ends.")
 		return
 	if selectedWorker == null:
-		_set_status_message("Select a worker first, then click a backlog card to assign them.")
+		_set_status_message("Drag a worker and release over a backlog or in-progress card to assign them.")
 		return
 	var workerButton = selectedWorker
 	var result: Dictionary = PlayerTool.assignWorkerToItem(workerButton.heldWorker.workerId, int(metricButton.heldItem.get("id", -1)))
@@ -135,33 +145,74 @@ func backlogSelected(metricButton):
 		return
 	updateHeader()
 
-func workerSelected(workerButton):
+func workerDragStarted(workerButton):
 	if PlayerTool.loopPhase != PlayerTool.LOOP_PLANNING_WEEK:
-		workerButton.button_pressed = false
-		selectedWorker = null
 		_set_status_message("Week in progress. Assignments are locked until the timer ends.")
-		_update_all_shader_opacities()
 		return
 	if workerButton.isResting:
-		workerButton.button_pressed = false
-		selectedWorker = null
 		_set_status_message("%s is resting until their stamina is full." % workerButton.heldWorker.personName)
-		_update_all_shader_opacities()
 		return
-	if workerButton.isBusy:
-		var workerName: String = workerButton.heldWorker.personName
-		PlayerTool.unassignWorker(workerButton.heldWorker.workerId)
-		selectedWorker = null
-		_set_status_message("%s is now free." % workerName)
+	draggedWorker = workerButton
+	selectedWorker = workerButton
+	hoveredDropItem = null
+	if is_instance_valid(grabber) and grabber.has_method("beginGrab"):
+		grabber.beginGrab(workerButton.heldWorker)
+	_set_status_message("Dragging %s. Release over a backlog or in-progress card to assign them this week." % workerButton.heldWorker.personName)
+	_update_all_shader_opacities()
+
+func workerSelected(workerButton):
+	workerDragStarted(workerButton)
+
+func _input(event: InputEvent) -> void:
+	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT and not event.pressed:
+		_finishWorkerDrag()
+
+func _on_item_mouse_entered(itemButton: Node) -> void:
+	if draggedWorker == null:
 		return
-	if selectedWorker != null and selectedWorker != workerButton:
-		selectedWorker.button_pressed = false
-	if workerButton.button_pressed:
-		selectedWorker = workerButton
-		_set_status_message("Selected %s. Click a backlog or in-progress card to assign them this week." % workerButton.heldWorker.personName)
+	hoveredDropItem = itemButton
+
+func _on_item_mouse_exited(itemButton: Node) -> void:
+	if hoveredDropItem == itemButton:
+		hoveredDropItem = null
+
+func _finishWorkerDrag() -> void:
+	if draggedWorker == null:
+		return
+	var workerButton = draggedWorker
+	var dropItem = _resolveDropItem()
+	if dropItem != null:
+		var result: Dictionary = PlayerTool.assignWorkerToItem(workerButton.heldWorker.workerId, dropItem.getItemId())
+		_set_status_message(str(result.get("reason", "")))
+		if not result.get("ok", false):
+			updateHeader()
 	else:
-		selectedWorker = null
-		_set_status_message("Assign workers to backlog items, or advance the week when ready.")
+		if workerButton.isBusy:
+			var workerName: String = workerButton.heldWorker.personName
+			PlayerTool.unassignWorker(workerButton.heldWorker.workerId)
+			_set_status_message("%s is now free." % workerName)
+		else:
+			_set_status_message("Released %s without assigning them." % workerButton.heldWorker.personName)
+	_clearDragState()
+
+func _resolveDropItem() -> Node:
+	if hoveredDropItem != null and is_instance_valid(hoveredDropItem):
+		if hoveredDropItem.has_method("isDropTarget") and hoveredDropItem.isDropTarget():
+			return hoveredDropItem
+	var hoveredControl: Control = get_viewport().gui_get_hovered_control()
+	while hoveredControl != null:
+		if hoveredControl.has_method("isDropTarget") and hoveredControl.has_method("getItemId"):
+			if hoveredControl.isDropTarget():
+				return hoveredControl
+		hoveredControl = hoveredControl.get_parent() as Control
+	return null
+
+func _clearDragState() -> void:
+	draggedWorker = null
+	selectedWorker = null
+	hoveredDropItem = null
+	if is_instance_valid(grabber) and grabber.has_method("clearGrab"):
+		grabber.clearGrab()
 	_update_all_shader_opacities()
 
 func _on_advance_week_button_pressed() -> void:

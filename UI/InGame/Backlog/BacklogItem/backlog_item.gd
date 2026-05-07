@@ -172,14 +172,19 @@ func _strip_bbcode(text: String) -> String:
 
 func update_shader_opacity(worker_is_selected: bool):
 	var is_completed = heldItem.get("status") == "done"
-	var is_assigned = str(heldItem.get("assigned_worker_id", "")) != ""
 	
 	var opacity = 0.0
-	if worker_is_selected and not is_assigned and not is_completed:
+	if worker_is_selected and not is_completed:
 		opacity = 1.0
 	
 	if material:
 		material.set_shader_parameter("opacity", opacity)
+
+func isDropTarget() -> bool:
+	return heldItem.get("status") != "done"
+
+func getItemId() -> int:
+	return int(heldItem.get("id", -1))
 
 func _on_pressed() -> void:
 	MetricChosen.emit(self)
