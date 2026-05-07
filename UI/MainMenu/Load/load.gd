@@ -1,6 +1,14 @@
 extends Node2D
 
 var is_new_game_selection: bool = false
+var tutorial_modal_scene: PackedScene = preload("res://UI/InGame/TutorialModal/TutorialModal.tscn")
+
+const OVERWRITE_TITLE := "Overwrite Save?"
+const OVERWRITE_MESSAGE := "Starting a new game in this slot will overwrite the existing save data with a new save. This cannot be undone."
+const OVERWRITE_CONFIRM_TEXT := "Overwrite"
+const OVERWRITE_CANCEL_TEXT := "Cancel"
+
+var _overwrite_modal: TutorialModalPanel
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
@@ -54,8 +62,11 @@ func _handle_save_selection(slot_index: int) -> void:
 
 	var save_name = saves[slot_index]
 	if is_new_game_selection:
-		SaveTool.create_new_save(save_name)
-		get_tree().change_scene_to_file("res://Level/mainLevel.tscn")
+		var summary = SaveTool.get_save_summary(save_name)
+		if summary.exists:
+			_show_overwrite_confirmation(save_name)
+			return
+		_start_new_game(save_name)
 	else:
 		var summary = SaveTool.get_save_summary(save_name)
 		if summary.exists:
@@ -70,6 +81,40 @@ func _handle_delete(slot_index: int) -> void:
 
 	SaveTool.delete_save(saves[slot_index])
 	update_save_buttons()
+
+
+func _show_overwrite_confirmation(save_name: String) -> void:
+	if _overwrite_modal != null and is_instance_valid(_overwrite_modal):
+		return
+
+	var modal: TutorialModalPanel = tutorial_modal_scene.instantiate() as TutorialModalPanel
+	_get_tutorial_modal_parent().add_child(modal)
+	modal.setup(OVERWRITE_TITLE, OVERWRITE_MESSAGE, OVERWRITE_CONFIRM_TEXT, false, OVERWRITE_CANCEL_TEXT)
+	modal.confirmed.connect(_on_overwrite_confirmed.bind(save_name), CONNECT_ONE_SHOT)
+	modal.dismissed.connect(_on_overwrite_modal_dismissed, CONNECT_ONE_SHOT)
+	_overwrite_modal = modal
+
+
+func _on_overwrite_confirmed(save_name: String) -> void:
+	_start_new_game(save_name)
+
+
+func _on_overwrite_modal_dismissed() -> void:
+	_overwrite_modal = null
+
+
+func _start_new_game(save_name: String) -> void:
+	SaveTool.create_new_save(save_name)
+	get_tree().change_scene_to_file("res://Level/mainLevel.tscn")
+
+
+func _get_tutorial_modal_parent() -> Node:
+	var scene_root: Node = get_tree().current_scene
+	if scene_root != null:
+		var ui_layer: Node = scene_root.get_node_or_null("UI")
+		if ui_layer != null:
+			return ui_layer
+	return self
 
 
 func _on_save_button_1_pressed() -> void:

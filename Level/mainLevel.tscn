@@ -33,6 +33,7 @@
 [ext_resource type="Texture2D" uid="uid://cebiwghdhkfft" path="res://UI/Theme/PCTheme/powerButton/pcPower.png" id="16_fy2ok"]
 [ext_resource type="Texture2D" uid="uid://cqjra4hvo67jb" path="res://UI/Theme/PCTheme/TextureBar/BG.png" id="16_lkgwe"]
 [ext_resource type="Texture2D" uid="uid://drwt4l4mwiboc" path="res://UI/Theme/PCTheme/button/slimButton.png" id="16_simky"]
+[ext_resource type="Shader" uid="uid://bhapt2ethyik7" path="res://Shaders/outline.gdshader" id="17_62x8c"]
 [ext_resource type="Texture2D" uid="uid://cuyr4sv3sto4b" path="res://UI/Theme/PCTheme/button/slimButtonPressed.png" id="17_k25hm"]
 [ext_resource type="Texture2D" uid="uid://cy7ghvk8gm6ef" path="res://UI/Theme/PCTheme/TextureBar/Progress.png" id="17_uibgn"]
 [ext_resource type="Texture2D" uid="uid://b2d03va5d08g6" path="res://UI/Theme/PCTheme/powerButton/pcPowerPressed.png" id="17_uy1d4"]
@@ -42,8 +43,8 @@
 [ext_resource type="Texture2D" uid="uid://2jvaulftw7b6" path="res://UI/Theme/PCTheme/button/slimButtonDisabled.png" id="21_lkgwe"]
 [ext_resource type="Script" uid="uid://cmvfif4wbkq60" path="res://Level/pc_stats.gd" id="23_62x8c"]
 [ext_resource type="PackedScene" uid="uid://bt0pge4yh7l4p" path="res://UI/InGame/ProjectMetrics/ProjectMetrics.tscn" id="29_uibgn"]
-[ext_resource type="Texture2D" path="res://UI/InGame/ProjectPortfolio/BaseIcon.png" id="30_qo4hk"]
-[ext_resource type="Texture2D" path="res://UI/InGame/ProjectPortfolio/BaseIcon_Hover.png" id="31_h7x13"]
+[ext_resource type="Texture2D" uid="uid://dvxrqx3um8vou" path="res://UI/InGame/ProjectPortfolio/BaseIcon.png" id="30_qo4hk"]
+[ext_resource type="Texture2D" uid="uid://dsfsblg0gbj47" path="res://UI/InGame/ProjectPortfolio/BaseIcon_Hover.png" id="31_h7x13"]
 [ext_resource type="Texture2D" uid="uid://be3qkx4golcyk" path="res://UI/Theme/Back/backDisabled.png" id="41_hsny4"]
 [ext_resource type="Texture2D" uid="uid://dhthtk5swgjkl" path="res://UI/Theme/MainLevel/calendar.png" id="42_ce85j"]
 
@@ -65,6 +66,19 @@ animations = [{
 "name": &"on",
 "speed": 5.0
 }]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_62x8c"]
+shader = ExtResource("17_62x8c")
+shader_parameter/color = Color(0.9218597, 0.7484043, 0.7382472, 1)
+shader_parameter/width = 1.0
+shader_parameter/pattern = 0
+shader_parameter/inside = false
+shader_parameter/add_margins = true
+shader_parameter/number_of_images = Vector2(1, 1)
+shader_parameter/sheen_color = Color(0.8863476, 0.3061895, 0.28166446, 1)
+shader_parameter/sheen_speed = 3.0000001425
+shader_parameter/sheen_frequency = 4.00000019
+shader_parameter/opacity = 0.50000002375
 
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_7drem"]
 texture = ExtResource("5_o11ri")
@@ -123,6 +137,19 @@ texture = ExtResource("18_6ypmx")
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_uibgn"]
 texture = ExtResource("21_lkgwe")
 
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_3m33v"]
+shader = ExtResource("17_62x8c")
+shader_parameter/color = Color(0.9218597, 0.7484043, 0.7382472, 1)
+shader_parameter/width = 1.0
+shader_parameter/pattern = 0
+shader_parameter/inside = false
+shader_parameter/add_margins = true
+shader_parameter/number_of_images = Vector2(1, 1)
+shader_parameter/sheen_color = Color(0.8863476, 0.3061895, 0.28166446, 1)
+shader_parameter/sheen_speed = 3.0000001425
+shader_parameter/sheen_frequency = 4.00000019
+shader_parameter/opacity = 0.50000002375
+
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_u051x"]
 texture = ExtResource("16_fy2ok")
 
@@ -131,6 +158,19 @@ texture = ExtResource("17_uy1d4")
 
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_k25hm"]
 texture = ExtResource("18_tmx83")
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_tpo4u"]
+shader = ExtResource("17_62x8c")
+shader_parameter/color = Color(0.9218597, 0.7484043, 0.7382472, 1)
+shader_parameter/width = 1.0
+shader_parameter/pattern = 0
+shader_parameter/inside = false
+shader_parameter/add_margins = true
+shader_parameter/number_of_images = Vector2(1, 1)
+shader_parameter/sheen_color = Color(0.8863476, 0.3061895, 0.28166446, 1)
+shader_parameter/sheen_speed = 3.0000001425
+shader_parameter/sheen_frequency = 4.00000019
+shader_parameter/opacity = 0.50000002375
 
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_s1qlg"]
 texture = ExtResource("8_3c0mk")
@@ -262,14 +302,6 @@ scale = Vector2(4, 4)
 sprite_frames = SubResource("SpriteFrames_62x8c")
 animation = &"off"
 
-[node name="UI" type="CanvasLayer" parent="." unique_id=2109094166]
-script = ExtResource("2_3c0mk")
-
-[node name="Desk" type="Sprite2D" parent="UI" unique_id=713871823]
-position = Vector2(576, 324)
-scale = Vector2(4.5, 4.5)
-texture = ExtResource("3_s1qlg")
-
 [node name="Calendar" type="Sprite2D" parent="Level" unique_id=1608500558]
 z_index = -10
 position = Vector2(884, 187.00002)
@@ -353,12 +385,21 @@ offset_bottom = 19.999996
 max_value = 10.0
 texture_progress = ExtResource("10_skrj4")
 
+[node name="UI" type="CanvasLayer" parent="." unique_id=2109094166]
+script = ExtResource("2_3c0mk")
+
+[node name="Desk" type="Sprite2D" parent="UI" unique_id=713871823]
+position = Vector2(576, 324)
+scale = Vector2(4.5, 4.5)
+texture = ExtResource("3_s1qlg")
+
 [node name="HUD" type="Node2D" parent="UI" unique_id=1641217276]
 
 [node name="WorkerDetails" parent="UI" unique_id=284419767 instance=ExtResource("1_mk20e")]
 visible = false
 
 [node name="BacklogButton" type="Button" parent="UI" unique_id=457063984]
+material = SubResource("ShaderMaterial_62x8c")
 offset_left = 482.0
 offset_top = 519.0
 offset_right = 601.0
@@ -368,7 +409,6 @@ theme_override_styles/pressed = SubResource("StyleBoxTexture_qbsll")
 theme_override_styles/hover = SubResource("StyleBoxTexture_khv2s")
 theme_override_styles/disabled = SubResource("StyleBoxTexture_tmx83")
 disabled = true
-metadata/_edit_use_anchors_ = true
 
 [node name="randomEventRinger" type="AnimatedSprite2D" parent="UI" unique_id=1191905118]
 process_mode = 3
@@ -382,6 +422,7 @@ metadata/_edit_use_anchors_ = true
 stream = ExtResource("19_ce85j")
 
 [node name="PC" type="Button" parent="UI" unique_id=1894238861]
+material = SubResource("ShaderMaterial_62x8c")
 offset_left = 732.0
 offset_top = 379.0
 offset_right = 1126.0
@@ -389,7 +430,6 @@ offset_bottom = 640.0
 theme_override_styles/normal = SubResource("StyleBoxTexture_mk20e")
 theme_override_styles/pressed = SubResource("StyleBoxTexture_5o0fy")
 theme_override_styles/hover = SubResource("StyleBoxTexture_adavl")
-metadata/_edit_use_anchors_ = true
 
 [node name="PCScreenPanel" type="Panel" parent="UI" unique_id=268579011]
 visible = false
@@ -532,6 +572,7 @@ theme_override_styles/disabled = SubResource("StyleBoxTexture_uibgn")
 text = "Hire Worker"
 
 [node name="projectStartMenu" type="Button" parent="UI/PCButtons" unique_id=1227698512]
+material = SubResource("ShaderMaterial_3m33v")
 offset_left = 62.0
 offset_top = 61.0
 offset_right = 302.0
@@ -540,7 +581,15 @@ theme_override_styles/normal = SubResource("StyleBoxTexture_ktvj5")
 theme_override_styles/pressed = SubResource("StyleBoxTexture_x2ak7")
 theme_override_styles/hover = SubResource("StyleBoxTexture_lkgwe")
 theme_override_styles/disabled = SubResource("StyleBoxTexture_uibgn")
+
+[node name="Label" type="Label" parent="UI/PCButtons/projectStartMenu" unique_id=1892170305]
+layout_mode = 0
+offset_right = 240.0
+offset_bottom = 80.0
+mouse_filter = 1
 text = "Start New Project"
+horizontal_alignment = 1
+vertical_alignment = 1
 
 [node name="PCPower" type="Button" parent="UI/PCButtons" unique_id=1338520100]
 offset_left = 1024.0
@@ -553,7 +602,8 @@ theme_override_styles/hover = SubResource("StyleBoxTexture_k25hm")
 
 [node name="ProjectMetrics" parent="UI/PCButtons" unique_id=65546387 instance=ExtResource("29_uibgn")]
 
-[node name="ProjectPortfolioButton" type="TextureButton" parent="UI/PCButtons"]
+[node name="ProjectPortfolioButton" type="TextureButton" parent="UI/PCButtons" unique_id=1010936947]
+material = SubResource("ShaderMaterial_tpo4u")
 offset_left = 840.0
 offset_top = 295.0
 offset_right = 1000.0
@@ -564,7 +614,7 @@ texture_hover = ExtResource("31_h7x13")
 ignore_texture_size = true
 stretch_mode = 4
 
-[node name="ProjectPortfolioLabel" type="Label" parent="UI/PCButtons"]
+[node name="ProjectPortfolioLabel" type="Label" parent="UI/PCButtons" unique_id=414508690]
 offset_left = 840.0
 offset_top = 375.0
 offset_right = 968.0

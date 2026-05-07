@@ -1,11 +1,25 @@
 [gd_scene format=3 uid="uid://dj1mtm8v5pks8"]
 
+[ext_resource type="Shader" uid="uid://bhapt2ethyik7" path="res://Shaders/outline.gdshader" id="1_3nkee"]
 [ext_resource type="Script" uid="uid://dhp4mf17p8qyy" path="res://UI/InGame/Backlog/BacklogItem/backlog_item.gd" id="1_nmmrt"]
 [ext_resource type="Texture2D" uid="uid://drwt4l4mwiboc" path="res://UI/Theme/PCTheme/button/slimButton.png" id="1_pb3br"]
 [ext_resource type="Texture2D" uid="uid://cuyr4sv3sto4b" path="res://UI/Theme/PCTheme/button/slimButtonPressed.png" id="2_r8yt8"]
 [ext_resource type="Texture2D" uid="uid://b8snwl2q3qflg" path="res://UI/Theme/PCTheme/button/slimButtonHeld.png" id="3_3nkee"]
 [ext_resource type="Texture2D" uid="uid://2jvaulftw7b6" path="res://UI/Theme/PCTheme/button/slimButtonDisabled.png" id="4_0iwd3"]
 [ext_resource type="PackedScene" uid="uid://doy5ib16ee1oa" path="res://Person/Person.tscn" id="5_0iwd3"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_0iwd3"]
+shader = ExtResource("1_3nkee")
+shader_parameter/color = Color(0.9218597, 0.7484043, 0.7382472, 1)
+shader_parameter/width = 1.0
+shader_parameter/pattern = 0
+shader_parameter/inside = false
+shader_parameter/add_margins = true
+shader_parameter/number_of_images = Vector2(1, 1)
+shader_parameter/sheen_color = Color(0.8863476, 0.3061895, 0.28166446, 1)
+shader_parameter/sheen_speed = 3.0000001425
+shader_parameter/sheen_frequency = 4.00000019
+shader_parameter/opacity = 1.0
 
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_y8yop"]
 texture = ExtResource("1_pb3br")
@@ -20,6 +34,7 @@ texture = ExtResource("3_3nkee")
 texture = ExtResource("4_0iwd3")
 
 [node name="BacklogItem" type="Button" unique_id=1164579516]
+material = SubResource("ShaderMaterial_0iwd3")
 custom_minimum_size = Vector2(192, 64)
 anchors_preset = -1
 anchor_right = 0.125
@@ -49,7 +64,6 @@ fit_content = true
 scroll_active = false
 horizontal_alignment = 1
 vertical_alignment = 1
-autowrap_mode = 3
 
 [node name="metricDetails" type="RichTextLabel" parent="." unique_id=1439054878]
 layout_mode = 0
@@ -65,9 +79,8 @@ fit_content = true
 scroll_active = false
 horizontal_alignment = 1
 vertical_alignment = 1
-autowrap_mode = 3
 
-[node name="assignedWorkerPreview" parent="." instance=ExtResource("5_0iwd3")]
+[node name="assignedWorkerPreview" parent="." unique_id=1313447937 instance=ExtResource("5_0iwd3")]
 visible = false
 position = Vector2(28, 38)
 scale = Vector2(1.25, 1.25)

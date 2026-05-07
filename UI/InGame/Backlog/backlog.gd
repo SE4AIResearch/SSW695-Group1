@@ -7,6 +7,8 @@ var selectedWorker: Node
 var status_message: String = ""
 
 func _ready() -> void:
+	if $AdvanceWeekButton.material:
+		$AdvanceWeekButton.material = $AdvanceWeekButton.material.duplicate()
 	PlayerTool.backlogUpdated.connect(refreshBoard)
 	PlayerTool.loopStateChanged.connect(updateHeader)
 	refreshBoard()
@@ -47,6 +49,7 @@ func _refreshItems() -> void:
 		var newItem = backlogItem.instantiate()
 		newItem.prepItem(item)
 		newItem.MetricChosen.connect(backlogSelected)
+		newItem.update_shader_opacity(selectedWorker != null)
 		var readOnly: bool = PlayerTool.loopPhase != PlayerTool.LOOP_PLANNING_WEEK
 		match str(item.get("status", "backlog")):
 			"done":
@@ -79,6 +82,40 @@ func updateHeader() -> void:
 		status_message = "Assign workers to backlog items, or advance the week when ready."
 	$FeedbackLabel.text = _format_feedback_message(status_message)
 	$AdvanceWeekButton.disabled = PlayerTool.loopPhase != PlayerTool.LOOP_PLANNING_WEEK or not PlayerTool.canAdvanceWeek()
+	_update_advance_button_shader()
+
+func _update_advance_button_shader():
+	var all_dealt_with = true
+	for worker in PlayerTool.workers:
+		var is_assigned = PlayerTool.selectedAssignments.has(worker.workerId)
+		var is_resting = bool(worker.resting)
+		if not (is_assigned or is_resting):
+			all_dealt_with = false
+			break
+	
+	if $AdvanceWeekButton.material:
+		$AdvanceWeekButton.material.set_shader_parameter("opacity", 1.0 if all_dealt_with else 0.0)
+
+func _update_item_shader_opacities():
+	var worker_selected = selectedWorker != null
+	for column in [$BacklogScroll/Backlog, $InProgressScroll/InProgress, $CompletedScroll/Completed]:
+		for wrapper in column.get_children():
+			if wrapper is CenterContainer and wrapper.get_child_count() > 0:
+				var item = wrapper.get_child(0)
+				if item.has_method("update_shader_opacity"):
+					item.update_shader_opacity(worker_selected)
+
+func _update_worker_shader_opacities():
+	var worker_selected = selectedWorker != null
+	for wrapper in $WorkersScroll/Workers.get_children():
+		if wrapper is CenterContainer and wrapper.get_child_count() > 0:
+			var worker_item = wrapper.get_child(0)
+			if worker_item.has_method("update_shader_opacity"):
+				worker_item.update_shader_opacity(worker_selected, selectedWorker == worker_item)
+
+func _update_all_shader_opacities():
+	_update_item_shader_opacities()
+	_update_worker_shader_opacities()
 
 func backlogSelected(metricButton):
 	if PlayerTool.loopPhase != PlayerTool.LOOP_PLANNING_WEEK:
@@ -94,6 +131,7 @@ func backlogSelected(metricButton):
 		if workerButton != null and is_instance_valid(workerButton):
 			workerButton.button_pressed = false
 		selectedWorker = null
+		_update_all_shader_opacities()
 		return
 	updateHeader()
 
@@ -102,11 +140,13 @@ func workerSelected(workerButton):
 		workerButton.button_pressed = false
 		selectedWorker = null
 		_set_status_message("Week in progress. Assignments are locked until the timer ends.")
+		_update_all_shader_opacities()
 		return
 	if workerButton.isResting:
 		workerButton.button_pressed = false
 		selectedWorker = null
 		_set_status_message("%s is resting until their stamina is full." % workerButton.heldWorker.personName)
+		_update_all_shader_opacities()
 		return
 	if workerButton.isBusy:
 		var workerName: String = workerButton.heldWorker.personName
@@ -122,6 +162,7 @@ func workerSelected(workerButton):
 	else:
 		selectedWorker = null
 		_set_status_message("Assign workers to backlog items, or advance the week when ready.")
+	_update_all_shader_opacities()
 
 func _on_advance_week_button_pressed() -> void:
 	if not PlayerTool.canAdvanceWeek():
