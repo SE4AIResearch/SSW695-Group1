@@ -158,6 +158,7 @@ func _layout_buttons(button_top: float, button_bottom: float) -> void:
 	$MessagePanel/CancelButton.offset_bottom = button_bottom
 
 func _set_tree_paused(paused: bool) -> void:
-	var tree := get_tree()
-	if tree != null:
-		tree.paused = paused
+#	var tree := get_tree()
+#	if tree != null:
+#		tree.paused = paused
+	pass

@@ -1,7 +1,7 @@
 [gd_scene format=3 uid="uid://dxn21lnj1tucq"]
 
 [ext_resource type="Script" uid="uid://xmimf63qhrhe" path="res://UI/InGame/ProjectSetup/project_setup.gd" id="1_4r33p"]
-[ext_resource type="StyleBoxTexture" path="res://UI/Theme/PCTheme/PCWindowFrame.tres" id="2_g4tci"]
+[ext_resource type="StyleBox" path="res://UI/Theme/PCTheme/PCWindowFrame.tres" id="2_g4tci"]
 [ext_resource type="Texture2D" uid="uid://drwt4l4mwiboc" path="res://UI/Theme/PCTheme/button/slimButton.png" id="3_r18lb"]
 [ext_resource type="Texture2D" uid="uid://cuyr4sv3sto4b" path="res://UI/Theme/PCTheme/button/slimButtonPressed.png" id="4_1j4pd"]
 [ext_resource type="Texture2D" uid="uid://b8snwl2q3qflg" path="res://UI/Theme/PCTheme/button/slimButtonHeld.png" id="5_ti15a"]
@@ -41,11 +41,11 @@ process_mode = 2
 script = ExtResource("1_4r33p")
 
 [node name="WindowFrame" type="Panel" parent="." unique_id=583097485]
-mouse_filter = 2
 offset_left = 120.0
 offset_top = 100.0
 offset_right = 1030.0
 offset_bottom = 610.0
+mouse_filter = 2
 theme_override_styles/panel = ExtResource("2_g4tci")
 
 [node name="Title" type="Label" parent="." unique_id=825801333]
@@ -110,7 +110,7 @@ theme_override_styles/normal = SubResource("StyleBoxTexture_khj05")
 theme_override_styles/pressed = SubResource("StyleBoxTexture_pfa6d")
 theme_override_styles/hover = SubResource("StyleBoxTexture_lmcgk")
 theme_override_styles/disabled = SubResource("StyleBoxTexture_e4uks")
-text = "Generate Project Choices"
+text = "Select project"
 
 [node name="PCBack" type="Button" parent="." unique_id=546718404]
 offset_left = 932.0
@@ -137,7 +137,7 @@ text = "learn more"
 [node name="LearningCenter" parent="." unique_id=2076332728 instance=ExtResource("11_58bh3")]
 visible = false
 
+[connection signal="pressed" from="MethodologyChoose/ConfirmButton" to="." method="_on_confirm_button_pressed"]
 [connection signal="pressed" from="ProjectChoose/Button" to="." method="_on_button_pressed"]
 [connection signal="pressed" from="PCBack" to="." method="_on_pc_back_pressed"]
 [connection signal="pressed" from="LearnMoreButton" to="." method="_on_learn_more_button_pressed"]
-[connection signal="pressed" from="MethodologyChoose/ConfirmButton" to="." method="_on_confirm_button_pressed"]
