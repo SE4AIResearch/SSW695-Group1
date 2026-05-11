@@ -59,6 +59,7 @@ func _refreshItems() -> void:
 		newItem.prepItem(item)
 		newItem.mouse_entered.connect(_on_item_mouse_entered.bind(newItem))
 		newItem.mouse_exited.connect(_on_item_mouse_exited.bind(newItem))
+		newItem.WorkerDragStarted.connect(_on_item_worker_drag_started)
 		newItem.update_shader_opacity(selectedWorker != null)
 		var readOnly: bool = PlayerTool.loopPhase != PlayerTool.LOOP_PLANNING_WEEK
 		match str(item.get("status", "backlog")):
@@ -149,7 +150,7 @@ func workerDragStarted(workerButton):
 	if PlayerTool.loopPhase != PlayerTool.LOOP_PLANNING_WEEK:
 		_set_status_message("Week in progress. Assignments are locked until the timer ends.")
 		return
-	if workerButton.isResting:
+	if workerButton.isResting and not workerButton.isBusy:
 		_set_status_message("%s is resting until their stamina is full." % workerButton.heldWorker.personName)
 		return
 	draggedWorker = workerButton
@@ -166,6 +167,14 @@ func workerSelected(workerButton):
 func _input(event: InputEvent) -> void:
 	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT and not event.pressed:
 		_finishWorkerDrag()
+
+func _on_item_worker_drag_started(workerId: String) -> void:
+	for wrapper in $WorkersScroll/Workers.get_children():
+		if wrapper is CenterContainer and wrapper.get_child_count() > 0:
+			var workerButton = wrapper.get_child(0)
+			if workerButton.heldWorker and str(workerButton.heldWorker.workerId) == workerId:
+				workerDragStarted(workerButton)
+				return
 
 func _on_item_mouse_entered(itemButton: Node) -> void:
 	if draggedWorker == null:
