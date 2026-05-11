@@ -2,6 +2,8 @@ extends Node2D
 
 const PCWindowLayout = preload("res://UI/InGame/PCWindow/pc_window_layout.gd")
 
+const SEARCH_COST := 75
+
 var hireItem = preload("res://UI/InGame/Hiring/HireItem/HireItem.tscn")
 var TutorialModal: PackedScene = preload("res://UI/InGame/TutorialModal/TutorialModal.tscn")
 var insufficient_funds_message := ""
@@ -14,8 +16,8 @@ func _ready() -> void:
 	if not PlayerTool.currencyChanged.is_connected(update_currency):
 		PlayerTool.currencyChanged.connect(update_currency)
 	checkIfMaxHire()
+	_display_empty_hires()
 	call_deferred("_show_hiring_tutorial")
-	call_deferred("_auto_search_hires")
 
 func _process(delta: float) -> void:
 	var budget = int($BudgetSlider.value)
@@ -49,15 +51,16 @@ func _apply_content_layout() -> void:
 	$BudgetSlider.offset_right = $BudgetSlider.offset_left + controls_width
 	$BudgetSlider.offset_bottom = $BudgetSlider.offset_top + 16.0
 
-	$SearchButton.offset_left = content_rect.position.x + content_rect.size.x - 220.0
+	$SearchButton.offset_left = content_rect.position.x + content_rect.size.x - 260.0
 	$SearchButton.offset_top = content_rect.position.y + 236.0
-	$SearchButton.offset_right = $SearchButton.offset_left + 180.0
+	$SearchButton.offset_right = $SearchButton.offset_left + 220.0
 	$SearchButton.offset_bottom = $SearchButton.offset_top + 56.0
 
 	_layout_insufficient_funds_popup()
 
 func update_currency() -> void:
 	$Currency.text = "Currency: $%0.2f" % PlayerTool.currency
+	$BudgetSlider.max_value = mini(1000, maxi(0, int(PlayerTool.currency) - SEARCH_COST))
 
 func checkIfMaxHire() -> void:
 	var current_workers := PlayerTool.workers.size()
@@ -67,18 +70,32 @@ func checkIfMaxHire() -> void:
 	if at_capacity:
 		$SearchButton.text = "Max Hired (%d/%d)" % [current_workers, max_workers]
 	else:
-		$SearchButton.text = "Search Hires (%d/%d)" % [current_workers, max_workers]
+		$SearchButton.text = "Search Hires ($%d) (%d/%d)" % [SEARCH_COST, current_workers, max_workers]
 
 
-func _auto_search_hires() -> void:
-	if not $SearchButton.disabled:
-		_on_search_button_pressed()
+func _display_empty_hires() -> void:
+	for i in range(3):
+		var newHireUI = hireItem.instantiate()
+		newHireUI.disabled = true
+		$Hires.add_child(newHireUI)
+		var worker_info = newHireUI.get_node_or_null("workerInfo")
+		if worker_info:
+			worker_info.text = ""
+
 
 func _on_search_button_pressed() -> void:
 	if _is_insufficient_funds_popup_visible():
 		return
 
+	if int(PlayerTool.currency) < SEARCH_COST:
+		AudioManager.play_sfx("buzzer_error")
+		_show_insufficient_funds_popup("You do not have enough money to search for hires.")
+		return
+
 	var budget := maxi(1, int($BudgetSlider.value))
+	PlayerTool.addCurrency(-SEARCH_COST)
+	AudioManager.play_sfx("cash_register")
+
 	for child in $Hires.get_children(): child.queue_free()
 	for i in range(3):
 		var newHireUI = hireItem.instantiate()
@@ -167,7 +184,7 @@ func _show_hiring_tutorial() -> void:
 	_show_tutorial(
 		"hiring_intro",
 		"Hiring",
-		"Slide the budget bar before searching. A bigger budget helps you find more skilled workers, but hiring them costs more."
+		"Slide the budget bar before searching. A search costs $%d. A bigger budget helps you find more skilled workers, but hiring them costs more." % SEARCH_COST
 	)
 
 func _show_tutorial(tutorial_key: String, title: String, message: String) -> void:
