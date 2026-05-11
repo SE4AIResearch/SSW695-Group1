@@ -1,6 +1,7 @@
 extends Node2D
 
 signal close_requested
+#signal tutorials_reset_requested
 
 const BUTTON_TEXTURE_NORMAL = preload("res://UI/Theme/PCTheme/button/slimButton.png")
 const BUTTON_TEXTURE_PRESSED = preload("res://UI/Theme/PCTheme/button/slimButtonPressed.png")
@@ -16,6 +17,8 @@ const NAV_BUTTON_GAP := 12
 const GROUP_FONT_SIZE := 16
 const TOPIC_FONT_SIZE := 14
 const NAV_LABEL_TARGET_LINE_LENGTH := 22
+#const RESET_BUTTON_TEXT := "Reset Tutorials"
+#const RESET_BUTTON_DONE_TEXT := "Tutorials Reset"
 
 var entries = load("res://UI/Learning Center/entries.gd").new()
 var expanded_groups: Dictionary = {}
@@ -25,6 +28,7 @@ var normal_button_style: StyleBoxTexture
 var pressed_button_style: StyleBoxTexture
 var hover_button_style: StyleBoxTexture
 var group_header_font: FontVariation
+#var reset_tutorials_button: Button
 
 @onready var categories_panel: Sprite2D = $Categories/Sprite2D
 @onready var categories_scroll: ScrollContainer = $Categories/ScrollContainer
@@ -39,6 +43,9 @@ func _ready() -> void:
 	_apply_scene_layout_defaults()
 
 	entry_label.bbcode_enabled = true
+	entry_label.mouse_filter = Control.MOUSE_FILTER_STOP
+	entry_label.scroll_active = true
+#	reset_tutorials_button = _build_reset_tutorials_button()
 	$Page.visible = true
 	$Page/previousButton.visible = false
 	$Page/nextButton.visible = false
@@ -118,6 +125,7 @@ func _select_topic(topic_id: String) -> void:
 	_expand_group_for_topic(topic_id)
 	_rebuild_navigation()
 	_render_topic(topic_id)
+#	_sync_reset_tutorials_button()
 
 func _expand_group_for_topic(topic_id: String) -> void:
 	for group in entries.get_learning_groups():
@@ -181,6 +189,13 @@ func _render_topic(topic_id: String) -> void:
 	entry_label.text = "\n".join(lines)
 	entry_label.scroll_to_line(0)
 
+#func _sync_reset_tutorials_button() -> void:
+#	if reset_tutorials_button == null:
+#		return
+#	reset_tutorials_button.visible = current_topic_id == "tutorials"
+#	if reset_tutorials_button.visible:
+#		reset_tutorials_button.text = RESET_BUTTON_TEXT
+
 func _apply_navigation_button_theme(button: Button, is_group_button: bool, is_selected: bool) -> void:
 	button.disabled = false
 	button.add_theme_stylebox_override("normal", hover_button_style if is_selected else normal_button_style)
@@ -233,6 +248,29 @@ func _make_stylebox(texture: Texture2D) -> StyleBoxTexture:
 	var stylebox: StyleBoxTexture = StyleBoxTexture.new()
 	stylebox.texture = texture
 	return stylebox
+
+#func _build_reset_tutorials_button() -> Button:
+#	var button := Button.new()
+#	button.name = "ResetTutorialsButton"
+#	button.offset_left = 636.0
+#	button.offset_top = 562.0
+#	button.offset_right = 876.0
+#	button.offset_bottom = 622.0
+#	button.focus_mode = Control.FOCUS_NONE
+#	button.mouse_filter = Control.MOUSE_FILTER_STOP
+#	button.text = RESET_BUTTON_TEXT
+#	button.visible = false
+#	button.add_theme_stylebox_override("normal", normal_button_style)
+#	button.add_theme_stylebox_override("pressed", pressed_button_style)
+#	button.add_theme_stylebox_override("hover", hover_button_style)
+#	button.add_theme_stylebox_override("focus", pressed_button_style)
+#	button.add_theme_color_override("font_color", Color(1, 1, 1, 1))
+#	button.add_theme_color_override("font_hover_color", Color(1, 1, 1, 1))
+#	button.add_theme_color_override("font_pressed_color", Color(1, 1, 1, 1))
+#	button.add_theme_color_override("font_focus_color", Color(1, 1, 1, 1))
+#	button.pressed.connect(_on_reset_tutorials_pressed)
+#	$Page.add_child(button)
+#	return button
 
 func _make_group_header_font() -> FontVariation:
 	var base_font: Font = categories_scroll.get_theme_font("font")
@@ -299,6 +337,13 @@ func _on_next_button_pressed() -> void:
 
 func _on_return_to_lc_menu_pressed() -> void:
 	reset_state()
+
+#func _on_reset_tutorials_pressed() -> void:
+#	PlayerTool.set_new_player_tutorials_enabled(true)
+#	SaveTool.savePlayerData()
+#	if reset_tutorials_button != null:
+#		reset_tutorials_button.text = RESET_BUTTON_DONE_TEXT
+#	tutorials_reset_requested.emit()
 
 func _on_back_button_pressed() -> void:
 	close_requested.emit()

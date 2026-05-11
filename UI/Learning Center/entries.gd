@@ -4,7 +4,7 @@ var groups = [
 	{
 		"id": "foundations",
 		"title": "Foundations",
-		"topics": ["sdlcOverview"]
+		"topics": ["sdlcOverview", "tutorials"]
 	},
 	{
 		"id": "methodologies",
@@ -23,6 +23,11 @@ var topic_pages = {
 		0: "Software Development Life Cycle (SDLC)\n\nThe Software Development Life Cycle is a structured framework that defines the stages involved in developing a software application from start to finish. These stages typically include Planning, Requirements Analysis, Design, Implementation, Testing, Deployment, and Maintenance.",
 		1: "SDLC Phases\n\nPlanning: Define the project scope, goals, and feasibility.\n\nRequirements Analysis: Gather and document what the software must do.\n\nDesign: Create the architecture and technical blueprint.\n\nImplementation: Write the actual code.\n\nTesting: Verify the software works as intended.\n\nDeployment: Release the software to end users.\n\nMaintenance: Fix bugs and add improvements over time.",
 		2: "How It Affects the Game\n\nIn Software Development Tycoon, you manage a project through the full SDLC. Your decisions during each phase directly impact your project's Key Performance Indicators (KPIs): Front End, Back End, Documentation, Reliability, and Stakeholder Satisfaction. Understanding the SDLC helps you plan sprints, allocate workers, and respond to events more effectively."
+	},
+	"tutorials": {
+		0: "Tutorials\n\nRevisit this page anytime if you need a refresher on how to play and navigate the game. Use Reset Tutorials if you want the tutorial popups to appear again.",
+		1: "How To Play\n\nStart a new project: From the office view, click the computer and choose Start New Project. Pick a project card, confirm your choice, then choose a methodology. Use Learn More if you want to compare methodologies before locking in your choice.\n\nHow to hire workers: From the office view, click the computer, then choose Hiring. Set the budget bar first, then search. A search costs $75. Higher budgets can find stronger workers, but those workers also cost more to hire. After the search, choose one of the available candidates if you can afford them.\n\nPurchase upgrades: Click the computer and open Upgrades. Available upgrades show a Buy button with their cost. Some upgrades are locked until earlier tiers are purchased or requirements are met.\n\nAssign workers to backlog items: Open the backlog during sprint planning. Drag a worker onto a backlog or in-progress card to assign them for the week. Workers make progress when the week runs.\n\nRemove workers from backlog items: During sprint planning, drag an already assigned worker away from their card and release them without dropping onto another valid item. That frees the worker. You can also drag the worker onto a different backlog item to move their assignment.\n\nView previous projects in the portfolio: Click the computer and open Project Portfolio. Completed projects appear there with their project results, earned currency, and KPI information.",
+		2: "Stamina Bar\n\nThe stamina bar shows whether a worker is ready, working, or recovering. Yellow means the worker is working and stamina is ticking down. Blue means the worker is recovering until the bar fills again.\n\nAssigned workers spend stamina while the week is active. If a worker runs out of stamina mid-week, they begin resting. Resting workers cannot be assigned again until their stamina is full, so spread work across the team when possible."
 	},
 	"agile": {
 		0: "Agile\n\nAgile is an iterative and incremental approach to software development. Instead of delivering the entire product at the end, Agile teams work in short cycles called sprints, continuously delivering small pieces of functionality and adapting based on feedback.",
@@ -77,6 +82,26 @@ func get_topic(topic_id: String) -> Dictionary:
 	var overview: Dictionary = _split_section(str(raw_topic.get(0, "")))
 	var key_concepts: Dictionary = _split_section(str(raw_topic.get(1, "")))
 	var game_impact: Dictionary = _split_section(str(raw_topic.get(2, "")))
+
+	if topic_id == "tutorials":
+		return {
+			"id": topic_id,
+			"title": str(overview.get("heading", "")),
+			"sections": [
+				{
+					"heading": "Overview",
+					"body": str(overview.get("body", ""))
+				},
+				{
+					"heading": str(key_concepts.get("heading", "How To Play")),
+					"body": str(key_concepts.get("body", ""))
+				},
+				{
+					"heading": str(game_impact.get("heading", "Stamina Bar")),
+					"body": str(game_impact.get("body", ""))
+				}
+			]
+		}
 
 	return {
 		"id": topic_id,
