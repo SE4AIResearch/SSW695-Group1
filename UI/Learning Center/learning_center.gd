@@ -107,7 +107,8 @@ func _on_visibility_changed() -> void:
 func _initialize_group_state() -> void:
 	expanded_groups.clear()
 	for group in entries.get_learning_groups():
-		expanded_groups[str(group.get("id", ""))] = true
+		var group_id: String = str(group.get("id", ""))
+		expanded_groups[group_id] = group_id == "foundations"
 
 func _select_topic(topic_id: String) -> void:
 	if topic_id == "":
