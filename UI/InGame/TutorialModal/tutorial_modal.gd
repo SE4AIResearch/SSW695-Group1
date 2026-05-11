@@ -18,11 +18,13 @@ var _previous_pause_state: bool = false
 var _is_dismissing: bool = false
 var _show_stamina_examples: bool = false
 var _show_secondary_button: bool = false
+var _pause_tree: bool = true
+var _tree: SceneTree
 
 func _enter_tree() -> void:
 	process_mode = Node.PROCESS_MODE_ALWAYS
-	var tree := get_tree()
-	_previous_pause_state = tree != null and tree.paused
+	_tree = get_tree()
+	_previous_pause_state = _tree != null and _tree.paused
 	_set_tree_paused(true)
 	_hide_worker_details()
 
@@ -37,7 +39,10 @@ func _ready() -> void:
 		$MessagePanel/CancelButton.gui_input.connect(_on_cancel_button_gui_input)
 	_layout_modal()
 
-func setup(title: String, message: String, button_text: String = "OK", show_stamina_examples: bool = false, secondary_button_text: String = "") -> void:
+func setup(title: String, message: String, button_text: String = "OK", show_stamina_examples: bool = false, secondary_button_text: String = "", pause_tree: bool = true) -> void:
+	if _pause_tree and !pause_tree:
+		_set_tree_paused(_previous_pause_state)
+	_pause_tree = pause_tree
 	_show_stamina_examples = show_stamina_examples
 	_show_secondary_button = secondary_button_text != ""
 	$MessagePanel/Title.text = title
@@ -158,7 +163,6 @@ func _layout_buttons(button_top: float, button_bottom: float) -> void:
 	$MessagePanel/CancelButton.offset_bottom = button_bottom
 
 func _set_tree_paused(paused: bool) -> void:
-#	var tree := get_tree()
-#	if tree != null:
-#		tree.paused = paused
-	pass
+	if !_pause_tree or _tree == null or !is_instance_valid(_tree):
+		return
+	_tree.paused = paused
