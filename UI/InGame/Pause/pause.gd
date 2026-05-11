@@ -2,11 +2,14 @@ extends Node2D
 
 var resumePaused: bool
 var currentMenu: Node
+var tutorials_reset_pending: bool = false
 signal resumeSignal
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
 	if not $LearningCenter.close_requested.is_connected(_on_learning_center_close_requested):
 		$LearningCenter.close_requested.connect(_on_learning_center_close_requested)
+	if $LearningCenter.has_signal("tutorials_reset_requested") and not $LearningCenter.tutorials_reset_requested.is_connected(_on_tutorials_reset_requested):
+		$LearningCenter.tutorials_reset_requested.connect(_on_tutorials_reset_requested)
 	if not $Settings.close_requested.is_connected(_on_settings_close_requested):
 		$Settings.close_requested.connect(_on_settings_close_requested)
 
@@ -67,9 +70,24 @@ func _on_back_pressed() -> void:
 
 func _on_learning_center_close_requested() -> void:
 	$LearningCenter.visible = false
+	if tutorials_reset_pending:
+		tutorials_reset_pending = false
+		currentMenu = null
+		$Menu.visible = true
+		$Back.visible = false
+		resumeSignal.emit()
+		_set_tree_paused(false)
+		self.visible = false
+		var ui = get_parent()
+		if ui != null and ui.has_method("show_office_intro_tutorial"):
+			ui.call_deferred("show_office_intro_tutorial")
+		return
 	$Menu.visible = true
 	$Back.visible = false
 	currentMenu = null
+
+func _on_tutorials_reset_requested() -> void:
+	tutorials_reset_pending = true
 
 func _on_settings_close_requested() -> void:
 	$Settings.visible = false
