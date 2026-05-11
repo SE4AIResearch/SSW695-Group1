@@ -249,16 +249,32 @@ func _ready() -> void:
 func get_unique_project_choices(all_projects: Array, count: int = 3) -> Array:
 	var selected_projects: Array = []
 	var selected_names: Array = []
-	var target_count: int = mini(count, all_projects.size())
+	
+	var last_completed_name: String = ""
+	if !completed_project_portfolio.is_empty():
+		last_completed_name = str(completed_project_portfolio.back().get("project_name", ""))
+	
+	var available_count: int = all_projects.size()
+	if !last_completed_name.is_empty():
+		for project_choice in all_projects:
+			if str(project_choice.get("name", "")) == last_completed_name:
+				available_count -= 1
+				break
+	
+	var target_count: int = mini(count, available_count)
 
 	while selected_projects.size() < target_count:
 		if remaining_project_choice_names.is_empty():
 			_refill_project_choice_pool(all_projects)
 
-		var project_name: String = _pop_next_project_choice_name(selected_names)
+		var exclusions: Array = selected_names.duplicate()
+		if !last_completed_name.is_empty():
+			exclusions.append(last_completed_name)
+
+		var project_name: String = _pop_next_project_choice_name(exclusions)
 		if project_name.is_empty():
 			_refill_project_choice_pool(all_projects)
-			project_name = _pop_next_project_choice_name(selected_names)
+			project_name = _pop_next_project_choice_name(exclusions)
 			if project_name.is_empty():
 				break
 

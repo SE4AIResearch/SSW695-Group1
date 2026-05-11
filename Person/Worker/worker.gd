@@ -51,6 +51,18 @@ func _on_hover_area_mouse_exited() -> void:
 
 func work():
 	if PlayerTool.project != null && PlayerTool.isWeekActive():
+		var hasBacklogItem: bool = PlayerTool.selectedAssignments.has(workerId)
+		if not hasBacklogItem:
+			$staminaBar.value += 3
+			if $staminaBar.value > staminaStat:
+				$staminaBar.value = staminaStat
+			if resting and $staminaBar.value >= staminaStat:
+				$staminaBar.value = staminaStat
+				$staminaBar.tint_under = workingColor
+				$staminaBar.tint_progress = workingColor
+				resting = false
+				AudioManager.notify_worker_resting_ended()
+			return
 		match resting:
 			false:
 					$staminaBar.value -= 2

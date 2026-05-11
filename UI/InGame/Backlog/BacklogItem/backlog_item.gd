@@ -1,6 +1,7 @@
 extends Button
 
 signal MetricChosen(button)
+signal WorkerDragStarted(worker_id)
 
 var heldItem: Dictionary = {}
 const CARD_WIDTH: float = 192.0
@@ -188,3 +189,12 @@ func getItemId() -> int:
 
 func _on_pressed() -> void:
 	MetricChosen.emit(self)
+
+func _gui_input(event: InputEvent) -> void:
+	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT and event.pressed:
+		if $assignedWorkerPreview.visible:
+			var assignedWorkerId: String = str(heldItem.get("assigned_worker_id", ""))
+			var avatarWidth := CARD_PADDING_X + ASSIGNED_AVATAR_SLOT_WIDTH
+			if assignedWorkerId != "" and get_local_mouse_position().x < avatarWidth:
+				WorkerDragStarted.emit(assignedWorkerId)
+				accept_event()

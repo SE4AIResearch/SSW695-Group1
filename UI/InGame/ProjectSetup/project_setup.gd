@@ -25,11 +25,13 @@ const METHODOLOGY_CARD_WIDTH_REDUCTION := 20.0
 const METHODOLOGY_CARD_BOTTOM_GAP := 16.0
 
 var selectedProject: Node
+var pendingProject: Node
 var pendingMethodology: Dictionary = {}
 
 
 func _on_button_pressed() -> void:
-	generateProjectChoices()
+	if pendingProject:
+		_confirm_project_selection(pendingProject)
 	pass
 
 func _ready():
@@ -104,6 +106,9 @@ func _sync_project_setup_back_button() -> void:
 	$PCBack.visible = !$LearningCenter.visible
 
 func generateProjectChoices() -> void:
+	pendingProject = null
+	$ProjectChoose/Button.text = "Select a Project"
+	$ProjectChoose/Button.disabled = true
 	#Insert below code to pool together total worker skills
 	var totalFE: int = 0
 	var totalBE: int = 0
@@ -151,11 +156,20 @@ func generateProjectChoices() -> void:
 			projectInfo.eventChance *= constraint.get("randomEventChance")
 		
 		newChoice.prepProject(projectInfo)
-		newChoice.connect("selected",projectSelected)
+		newChoice.toggle_mode = true
+		newChoice.connect("selected", _on_project_item_clicked.bind(newChoice))
 		$ProjectChoose/ProjectChoices.add_child(newChoice)
 		pass
 
-func projectSelected(project):
+func _on_project_item_clicked(project, chosenButton: Button):
+	pendingProject = project
+	$ProjectChoose/Button.text = "Confirm Project Selection"
+	$ProjectChoose/Button.disabled = false
+	for child in $ProjectChoose/ProjectChoices.get_children():
+		if child is Button:
+			child.button_pressed = (child == chosenButton)
+
+func _confirm_project_selection(project):
 	for child in $ProjectChoose/ProjectChoices.get_children(): 
 		if child.heldProject != project: child.heldProject.queue_free()
 		child.queue_free()
