@@ -16,6 +16,10 @@ EXPECTED_PRESETS = {
         "platform": "Windows Desktop",
         "export_path_suffix": ".exe",
     },
+    "GameDevTycoonLinux": {
+        "platform": "Linux",
+        "export_path_suffix": ".x86_64",
+    },
 }
 
 TAG_PATTERN = re.compile(r"^v\d+\.\d+(?:\.\d+)?$")
