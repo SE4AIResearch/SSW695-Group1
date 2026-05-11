@@ -89,7 +89,7 @@ func _show_overwrite_confirmation(save_name: String) -> void:
 
 	var modal: TutorialModalPanel = tutorial_modal_scene.instantiate() as TutorialModalPanel
 	_get_tutorial_modal_parent().add_child(modal)
-	modal.setup(OVERWRITE_TITLE, OVERWRITE_MESSAGE, OVERWRITE_CONFIRM_TEXT, false, OVERWRITE_CANCEL_TEXT)
+	modal.setup(OVERWRITE_TITLE, OVERWRITE_MESSAGE, OVERWRITE_CONFIRM_TEXT, false, OVERWRITE_CANCEL_TEXT, false)
 	modal.confirmed.connect(_on_overwrite_confirmed.bind(save_name), CONNECT_ONE_SHOT)
 	modal.dismissed.connect(_on_overwrite_modal_dismissed, CONNECT_ONE_SHOT)
 	_overwrite_modal = modal
