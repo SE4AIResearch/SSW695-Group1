@@ -6,10 +6,12 @@ const BUTTON_TEXTURE_NORMAL = preload("res://UI/Theme/PCTheme/button/slimButton.
 const BUTTON_TEXTURE_PRESSED = preload("res://UI/Theme/PCTheme/button/slimButtonPressed.png")
 const BUTTON_TEXTURE_HOVER = preload("res://UI/Theme/PCTheme/button/slimButtonHeld.png")
 
+const FONT_BOLD = preload("res://UI/Theme/Fonts/figtree-2.0.3/otf/Figtree-Bold.otf")
+const FONT_LIGHT = preload("res://UI/Theme/Fonts/figtree-2.0.3/otf/Figtree-Light.otf")
+
 const NAV_BUTTON_MAX_WIDTH := 240.0
 const NAV_PANEL_SIDE_PADDING := 32.0
 const TOPIC_INDENT := 40.0
-const GROUP_FONT_EMBOLDEN := 0.8
 const GROUP_BUTTON_HEIGHT := 66.0
 const TOPIC_BUTTON_HEIGHT := 60.0
 const NAV_BUTTON_GAP := 12
@@ -24,7 +26,6 @@ var current_topic_id: String = ""
 var normal_button_style: StyleBoxTexture
 var pressed_button_style: StyleBoxTexture
 var hover_button_style: StyleBoxTexture
-var group_header_font: FontVariation
 
 @onready var categories_panel: Sprite2D = $Categories/Sprite2D
 @onready var categories_scroll: ScrollContainer = $Categories/ScrollContainer
@@ -35,7 +36,6 @@ func _ready() -> void:
 	normal_button_style = _make_stylebox(BUTTON_TEXTURE_NORMAL)
 	pressed_button_style = _make_stylebox(BUTTON_TEXTURE_PRESSED)
 	hover_button_style = _make_stylebox(BUTTON_TEXTURE_HOVER)
-	group_header_font = _make_group_header_font()
 	_apply_scene_layout_defaults()
 
 	entry_label.bbcode_enabled = true
@@ -187,8 +187,7 @@ func _apply_navigation_button_theme(button: Button, is_group_button: bool, is_se
 	button.add_theme_stylebox_override("hover", hover_button_style)
 	button.add_theme_stylebox_override("focus", pressed_button_style)
 	button.add_theme_font_size_override("font_size", GROUP_FONT_SIZE if is_group_button else TOPIC_FONT_SIZE)
-	if is_group_button and group_header_font != null:
-		button.add_theme_font_override("font", group_header_font)
+	button.add_theme_font_override("font", FONT_BOLD if is_group_button else FONT_LIGHT)
 	button.add_theme_color_override("font_color", Color(1, 1, 1, 1))
 	button.add_theme_color_override("font_hover_color", Color(1, 1, 1, 1))
 	button.add_theme_color_override("font_pressed_color", Color(1, 1, 1, 1))
@@ -232,16 +231,6 @@ func _make_stylebox(texture: Texture2D) -> StyleBoxTexture:
 	var stylebox: StyleBoxTexture = StyleBoxTexture.new()
 	stylebox.texture = texture
 	return stylebox
-
-func _make_group_header_font() -> FontVariation:
-	var base_font: Font = categories_scroll.get_theme_font("font")
-	if base_font == null:
-		return null
-
-	var font_variation := FontVariation.new()
-	font_variation.base_font = base_font
-	font_variation.variation_embolden = GROUP_FONT_EMBOLDEN
-	return font_variation
 
 func _make_indented_topic_row(topic_button: Button) -> HBoxContainer:
 	var topic_row := HBoxContainer.new()
