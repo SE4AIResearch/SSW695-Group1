@@ -19,6 +19,14 @@ const GROUP_FONT_SIZE := 16
 const TOPIC_FONT_SIZE := 14
 const NAV_LABEL_TARGET_LINE_LENGTH := 22
 
+const KEYWORD_COLORS = {
+	"Front[ -]End": "d22400",
+	"Back[ -]End": "0098c3",
+	"Reliability": "ffff2c",
+	"Documentation|documenting": "00c833",
+	"Stakeholder Satisfaction": "e3b394"
+}
+
 var entries = load("res://UI/Learning Center/entries.gd").new()
 var expanded_groups: Dictionary = {}
 var current_topic_id: String = ""
@@ -177,8 +185,18 @@ func _render_topic(topic_id: String) -> void:
 		if body != "":
 			lines.append(body)
 
-	entry_label.text = "\n".join(lines)
+	entry_label.text = _apply_keyword_colors("\n".join(lines))
 	entry_label.scroll_to_line(0)
+
+func _apply_keyword_colors(text: String) -> String:
+	var result = text
+	for pattern in KEYWORD_COLORS:
+		var color = KEYWORD_COLORS[pattern]
+		var regex = RegEx.new()
+		# Use (?i) for case-insensitive matching
+		regex.compile("(?i)\\b(" + pattern + ")\\b")
+		result = regex.sub(result, "[color=#" + color + "]$1[/color]", true)
+	return result
 
 func _apply_navigation_button_theme(button: Button, is_group_button: bool, is_selected: bool) -> void:
 	button.disabled = false
