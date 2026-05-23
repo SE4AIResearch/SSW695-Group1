@@ -74,6 +74,7 @@ var FEBacklogStep: int = 0
 var BEBacklogStep: int = 0
 var docBacklogStep: int = 0
 var totalEvents: int = 0
+var lastEventName: String = ""
 
 var teamRank: int = 1
 var workers: Array = []
@@ -189,6 +190,7 @@ func resetData():
 	projWeek = 0
 	projSprint = 0
 	totalEvents = 0
+	lastEventName = ""
 	FEBacklogStep = 0
 	BEBacklogStep = 0
 	docBacklogStep = 0

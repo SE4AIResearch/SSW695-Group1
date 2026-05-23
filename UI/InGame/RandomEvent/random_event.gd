@@ -108,7 +108,14 @@ func initializeEvent():
 		button4.visible = false
 		return
 
-	chosenEvent = eventPool.pick_random()
+	var pool_to_pick_from = eventPool
+	if eventPool.size() > 1:
+		var filtered = eventPool.filter(func(e): return e.get("name") != PlayerTool.lastEventName)
+		if not filtered.is_empty():
+			pool_to_pick_from = filtered
+
+	chosenEvent = pool_to_pick_from.pick_random()
+	PlayerTool.lastEventName = chosenEvent.get("name", "")
 	var choices: Array = chosenEvent.get("choices", [])
 	choiceOutcomes = chosenEvent.get("outcomes", [])
 	$eventText.text = chosenEvent.get("description", "")
