@@ -6,6 +6,7 @@ const DEFAULT_WORKER_STATS := {
 	"documenting": 3,
 	"speed": 100,
 	"stamina": 100,
+	"rank": 1,
 }
 const DEFAULT_UPGRADE_STAT_BONUSES := {
 	"front_end": 0.0,
@@ -195,6 +196,7 @@ static func roll_worker_stats_for_tier(rank: int) -> Dictionary:
 		"documenting": roll_uniform_range_value(int(tier["skill_floor"]), int(tier["skill_ceiling"])),
 		"speed": roll_uniform_range_value(int(tier["speed_floor"]), int(tier["speed_ceiling"])),
 		"stamina": roll_uniform_range_value(int(tier["stamina_floor"]), int(tier["stamina_ceiling"])),
+		"rank": rank,
 	}
 
 static func roll_hiring_worker_stats(budget: int) -> Dictionary:
@@ -206,6 +208,7 @@ static func roll_hiring_worker_stats(budget: int) -> Dictionary:
 		"documenting": roll_weighted_range_value(tier["skill_floor"], tier["skill_ceiling"], budget_progress_in_tier),
 		"speed": roll_weighted_range_value(tier["speed_floor"], tier["speed_ceiling"], budget_progress_in_tier),
 		"stamina": roll_weighted_range_value(tier["stamina_floor"], tier["stamina_ceiling"], budget_progress_in_tier),
+		"rank": tier["rank"],
 	}
 
 static func apply_to_worker(worker, stats: Dictionary = {}) -> void:
@@ -216,4 +219,5 @@ static func apply_to_worker(worker, stats: Dictionary = {}) -> void:
 	worker.documentingStat = resolved_stats["documenting"]
 	worker.speedStat = resolved_stats["speed"]
 	worker.staminaStat = resolved_stats["stamina"]
+	worker.rank = resolved_stats["rank"]
 	worker.upgradeStatBonuses = get_default_upgrade_stat_bonuses()

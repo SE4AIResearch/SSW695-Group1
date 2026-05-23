@@ -47,6 +47,7 @@
 [ext_resource type="Texture2D" uid="uid://dsfsblg0gbj47" path="res://UI/InGame/ProjectPortfolio/BaseIcon_Hover.png" id="31_h7x13"]
 [ext_resource type="Texture2D" uid="uid://be3qkx4golcyk" path="res://UI/Theme/Back/backDisabled.png" id="41_hsny4"]
 [ext_resource type="Texture2D" uid="uid://dhthtk5swgjkl" path="res://UI/Theme/MainLevel/calendar.png" id="42_ce85j"]
+[ext_resource type="PackedScene" uid="uid://c6l8j5k8j8j8j" path="res://UI/InGame/WorkerManagement/WorkerManagement.tscn" id="50_uibgn"]
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_62x8c"]
 animations = [{
@@ -396,6 +397,11 @@ texture = ExtResource("3_s1qlg")
 [node name="HUD" type="Node2D" parent="UI" unique_id=1641217276]
 
 [node name="WorkerDetails" parent="UI" unique_id=284419767 instance=ExtResource("1_mk20e")]
+unique_name_in_owner = true
+visible = false
+
+[node name="WorkerManagement" parent="UI" instance=ExtResource("50_uibgn")]
+unique_name_in_owner = true
 visible = false
 
 [node name="BacklogButton" type="Button" parent="UI" unique_id=457063984]

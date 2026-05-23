@@ -1,0 +1,236 @@
+[gd_scene load_steps=6 format=3 uid="uid://c6l8j5k8j8j8j"]
+
+[ext_resource type="Script" path="res://UI/InGame/WorkerManagement/worker_management.gd" id="1_1"]
+[ext_resource type="Texture2D" uid="uid://bial1tt4lpoow" path="res://UI/Theme/PCTheme/Panel.png" id="2_1"]
+[ext_resource type="Texture2D" uid="uid://cqjra4hvo67jb" path="res://UI/Theme/PCTheme/TextureBar/BG.png" id="3_1"]
+[ext_resource type="Texture2D" uid="uid://cy7ghvk8gm6ef" path="res://UI/Theme/PCTheme/TextureBar/Progress.png" id="4_1"]
+
+[node name="WorkerManagement" type="Node2D"]
+process_mode = 3
+script = ExtResource("1_1")
+
+[node name="Panel" type="Sprite2D" parent="."]
+position = Vector2(576, 324)
+scale = Vector2(5, 6.5)
+texture = ExtResource("2_1")
+
+[node name="WorkerName" type="Label" parent="."]
+unique_name_in_owner = true
+offset_left = 426.0
+offset_top = 134.0
+offset_right = 726.0
+offset_bottom = 164.0
+theme_override_font_size = 20
+text = "Worker Name"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="WorkerRank" type="Label" parent="."]
+unique_name_in_owner = true
+offset_left = 426.0
+offset_top = 164.0
+offset_right = 726.0
+offset_bottom = 189.0
+text = "Rank: 1"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="StatsContainer" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 0
+offset_left = 346.0
+offset_top = 210.0
+offset_right = 806.0
+offset_bottom = 460.0
+
+[node name="FELabel" type="Label" parent="StatsContainer"]
+layout_mode = 0
+offset_left = 20.0
+offset_top = 0.0
+offset_right = 120.0
+offset_bottom = 25.0
+text = "Front End"
+
+[node name="FEBar" type="TextureProgressBar" parent="StatsContainer"]
+unique_name_in_owner = true
+layout_mode = 0
+offset_left = 130.0
+offset_top = 2.0
+offset_right = 194.0
+offset_bottom = 18.0
+scale = Vector2(3.5, 1.5)
+max_value = 10.0
+texture_under = ExtResource("3_1")
+texture_progress = ExtResource("4_1")
+tint_progress = Color(0.823529, 0.141176, 0, 1)
+
+[node name="FEValue" type="Label" parent="StatsContainer"]
+unique_name_in_owner = true
+layout_mode = 0
+offset_left = 360.0
+offset_top = 0.0
+offset_right = 440.0
+offset_bottom = 25.0
+text = "0 / 10"
+vertical_alignment = 1
+
+[node name="BELabel" type="Label" parent="StatsContainer"]
+layout_mode = 0
+offset_left = 20.0
+offset_top = 35.0
+offset_right = 120.0
+offset_bottom = 60.0
+text = "Back End"
+
+[node name="BEBar" type="TextureProgressBar" parent="StatsContainer"]
+unique_name_in_owner = true
+layout_mode = 0
+offset_left = 130.0
+offset_top = 37.0
+offset_right = 194.0
+offset_bottom = 53.0
+scale = Vector2(3.5, 1.5)
+max_value = 10.0
+texture_under = ExtResource("3_1")
+texture_progress = ExtResource("4_1")
+tint_progress = Color(0, 0.596078, 0.764706, 1)
+
+[node name="BEValue" type="Label" parent="StatsContainer"]
+unique_name_in_owner = true
+layout_mode = 0
+offset_left = 360.0
+offset_top = 35.0
+offset_right = 440.0
+offset_bottom = 60.0
+text = "0 / 10"
+vertical_alignment = 1
+
+[node name="DocLabel" type="Label" parent="StatsContainer"]
+layout_mode = 0
+offset_left = 20.0
+offset_top = 70.0
+offset_right = 120.0
+offset_bottom = 95.0
+text = "Documenting"
+
+[node name="DocBar" type="TextureProgressBar" parent="StatsContainer"]
+unique_name_in_owner = true
+layout_mode = 0
+offset_left = 130.0
+offset_top = 72.0
+offset_right = 194.0
+offset_bottom = 88.0
+scale = Vector2(3.5, 1.5)
+max_value = 10.0
+texture_under = ExtResource("3_1")
+texture_progress = ExtResource("4_1")
+tint_progress = Color(0, 0.784314, 0.2, 1)
+
+[node name="DocValue" type="Label" parent="StatsContainer"]
+unique_name_in_owner = true
+layout_mode = 0
+offset_left = 360.0
+offset_top = 70.0
+offset_right = 440.0
+offset_bottom = 95.0
+text = "0 / 10"
+vertical_alignment = 1
+
+[node name="SpeedLabel" type="Label" parent="StatsContainer"]
+layout_mode = 0
+offset_left = 20.0
+offset_top = 105.0
+offset_right = 120.0
+offset_bottom = 130.0
+text = "Speed"
+
+[node name="SpeedBar" type="TextureProgressBar" parent="StatsContainer"]
+unique_name_in_owner = true
+layout_mode = 0
+offset_left = 130.0
+offset_top = 107.0
+offset_right = 194.0
+offset_bottom = 123.0
+scale = Vector2(3.5, 1.5)
+max_value = 150.0
+texture_under = ExtResource("3_1")
+texture_progress = ExtResource("4_1")
+tint_progress = Color(0.5, 0.5, 0.5, 1)
+
+[node name="SpeedValue" type="Label" parent="StatsContainer"]
+unique_name_in_owner = true
+layout_mode = 0
+offset_left = 360.0
+offset_top = 105.0
+offset_right = 440.0
+offset_bottom = 130.0
+text = "0 / 150"
+vertical_alignment = 1
+
+[node name="StaminaLabel" type="Label" parent="StatsContainer"]
+layout_mode = 0
+offset_left = 20.0
+offset_top = 140.0
+offset_right = 120.0
+offset_bottom = 165.0
+text = "Stamina"
+
+[node name="StaminaBar" type="TextureProgressBar" parent="StatsContainer"]
+unique_name_in_owner = true
+layout_mode = 0
+offset_left = 130.0
+offset_top = 142.0
+offset_right = 194.0
+offset_bottom = 158.0
+scale = Vector2(3.5, 1.5)
+max_value = 100.0
+texture_under = ExtResource("3_1")
+texture_progress = ExtResource("4_1")
+tint_progress = Color(0.921569, 0.968627, 0, 1)
+
+[node name="StaminaValue" type="Label" parent="StatsContainer"]
+unique_name_in_owner = true
+layout_mode = 0
+offset_left = 360.0
+offset_top = 140.0
+offset_right = 440.0
+offset_bottom = 165.0
+text = "0 / 100"
+vertical_alignment = 1
+
+[node name="UpgradeButton" type="Button" parent="."]
+unique_name_in_owner = true
+offset_left = 406.0
+offset_top = 420.0
+offset_right = 576.0
+offset_bottom = 460.0
+text = "Upgrade ($100)"
+
+[node name="FireButton" type="Button" parent="."]
+unique_name_in_owner = true
+offset_left = 586.0
+offset_top = 420.0
+offset_right = 756.0
+offset_bottom = 460.0
+theme_override_colors/font_color = Color(1, 0, 0, 1)
+text = "Fire Worker"
+
+[node name="CloseButton" type="Button" parent="."]
+offset_left = 730.0
+offset_top = 125.0
+offset_right = 765.0
+offset_bottom = 160.0
+text = "X"
+
+[node name="ConfirmFireDialog" type="ConfirmationDialog" parent="."]
+unique_name_in_owner = true
+title = "Confirm Firing"
+initial_position = 2
+size = Vector2i(350, 120)
+ok_button_text = "Yes, Fire"
+dialog_text = "Are you sure you want to fire this worker?\nThis action cannot be undone."
+cancel_button_text = "No, Keep"
+
+[connection signal="pressed" from="UpgradeButton" to="." method="_on_upgrade_button_pressed"]
+[connection signal="pressed" from="FireButton" to="." method="_on_fire_button_pressed"]
+[connection signal="pressed" from="CloseButton" to="." method="_on_close_button_pressed"]
