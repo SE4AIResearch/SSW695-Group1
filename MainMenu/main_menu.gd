@@ -80,7 +80,7 @@ func _position_back_button(menu) -> void:
 	$UI/Back.offset_right = target_rect.position.x + target_rect.size.x
 	$UI/Back.offset_bottom = target_rect.position.y + target_rect.size.y
 
-func _on_learning_center_close_requested() -> void:
+func _on_learning_center_close_requested(_close_all: bool) -> void:
 	$UI/LearningCenter.visible = false
 	$UI/Back.visible = false
 	_position_back_button(null)

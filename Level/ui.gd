@@ -199,7 +199,8 @@ func _on_pc_power_pressed() -> void:
 	$PCButtons/HiringButton.disabled = false
 	$PCButtons/ProjectPortfolioButton.disabled = false
 	$PCButtons/projectStartMenu.disabled = false
-	if $NewMenu.get_children().size() > 0: $NewMenu.get_child(0).queue_free()
+	if currentMenu != null:
+		endMenu()
 	pass
 
 func toggleProjectButtons():
@@ -231,19 +232,25 @@ func update_shader_opacities():
 		$PCButtons/projectStartMenu.material.set_shader_parameter("opacity", start_menu_opacity)
 
 func startEvent() -> bool:
-	if PlayerTool.project == null or $NewMenu.get_child_count() != 0:
+	if PlayerTool.project == null or _is_menu_showing():
 		return false
 	_set_tree_paused(true)
 	$randomEventRinger.play("ringing")
 	$randomEventRinger/ringerAudio.play()
 	await $randomEventRinger/ringerAudio.finished
 	$randomEventRinger.play("idle")
-	if PlayerTool.project == null or $NewMenu.get_child_count() != 0:
-		if $NewMenu.get_child_count() == 0:
+	if PlayerTool.project == null or _is_menu_showing():
+		if not _is_menu_showing():
 			_set_tree_paused(false)
 		return false
 	createMenu(randomEventMenu.instantiate(),false)
 	return true
+
+func _is_menu_showing() -> bool:
+	for child in $NewMenu.get_children():
+		if child.visible:
+			return true
+	return false
 
 func runProjectCompletion(completion_data: Dictionary = {}) -> void:
 	var menu = projectCompletionMenu.instantiate()
@@ -328,3 +335,8 @@ func _show_tutorial(tutorial_key: String, title: String, message: String, show_s
 func _on_tutorial_dismissed(tutorial_key: String) -> void:
 	PlayerTool.mark_tutorial_seen(tutorial_key)
 	SaveTool.savePlayerData()
+
+func start_tutorial_restart_sequence() -> void:
+	PlayerTool.set_new_player_tutorials_enabled(true)
+	SaveTool.savePlayerData()
+	show_office_intro_tutorial()

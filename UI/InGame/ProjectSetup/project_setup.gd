@@ -271,7 +271,7 @@ func _reset_learning_center() -> void:
 	if $LearningCenter.has_method("reset_state"):
 		$LearningCenter.reset_state()
 
-func _on_learning_center_close_requested() -> void:
+func _on_learning_center_close_requested(_close_all: bool) -> void:
 	_hide_learning_center()
 
 func _show_methodology_tutorial() -> void:

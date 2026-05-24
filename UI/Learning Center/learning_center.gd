@@ -1,6 +1,6 @@
 extends Node2D
 
-signal close_requested
+signal close_requested(close_all: bool)
 
 const BUTTON_TEXTURE_NORMAL = preload("res://UI/Theme/PCTheme/button/slimButton.png")
 const BUTTON_TEXTURE_PRESSED = preload("res://UI/Theme/PCTheme/button/slimButtonPressed.png")
@@ -39,12 +39,16 @@ var hover_button_style: StyleBoxTexture
 @onready var categories_scroll: ScrollContainer = $Categories/ScrollContainer
 @onready var categories_container: VBoxContainer = $Categories/ScrollContainer/VBoxContainer
 @onready var entry_label: RichTextLabel = $Page/Entry
+@onready var restart_tutorial_button: Button = $RestartTutorialButton
 
 func _ready() -> void:
 	normal_button_style = _make_stylebox(BUTTON_TEXTURE_NORMAL)
 	pressed_button_style = _make_stylebox(BUTTON_TEXTURE_PRESSED)
 	hover_button_style = _make_stylebox(BUTTON_TEXTURE_HOVER)
 	_apply_scene_layout_defaults()
+	_apply_navigation_button_theme(restart_tutorial_button, true, false)
+	if restart_tutorial_button:
+		restart_tutorial_button.visible = PlayerTool.level != null and is_instance_valid(PlayerTool.level)
 
 	entry_label.bbcode_enabled = true
 	$Page.visible = true
@@ -111,6 +115,8 @@ func toggle_group(group_id: String) -> void:
 func _on_visibility_changed() -> void:
 	if visible:
 		reset_state()
+		if restart_tutorial_button:
+			restart_tutorial_button.visible = PlayerTool.level != null and is_instance_valid(PlayerTool.level)
 
 func _initialize_group_state() -> void:
 	expanded_groups.clear()
@@ -306,5 +312,12 @@ func _on_next_button_pressed() -> void:
 func _on_return_to_lc_menu_pressed() -> void:
 	reset_state()
 
+func _on_restart_tutorial_pressed() -> void:
+	if PlayerTool.level and PlayerTool.level.has_node("UI"):
+		var ui = PlayerTool.level.get_node("UI")
+		if ui.has_method("start_tutorial_restart_sequence"):
+			ui.start_tutorial_restart_sequence()
+	close_requested.emit(true)
+
 func _on_back_button_pressed() -> void:
-	close_requested.emit()
+	close_requested.emit(false)

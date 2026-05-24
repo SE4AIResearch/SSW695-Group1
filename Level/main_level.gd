@@ -68,6 +68,10 @@ func _ready() -> void:
 	setupUpgradeVisuals()
 	PlayerTool.levelLoaded.emit()
 
+func _exit_tree() -> void:
+	if PlayerTool.level == self:
+		PlayerTool.level = null
+
 func _apply_world_render_layers() -> void:
 	$Level/background.z_index = BACKGROUND_Z_INDEX
 	$Level/Calendar.z_index = WALL_CALENDAR_Z_INDEX
@@ -235,6 +239,12 @@ func _apply_desk_computer_visual_config(computer: AnimatedSprite2D, visual_confi
 func _on_worker_hover_started(worker) -> void:
 	if not is_instance_valid(worker_details):
 		worker_details = _get_ui_node("WorkerDetails")
+
+	if not is_instance_valid(worker_management):
+		worker_management = _get_ui_node("WorkerManagement")
+
+	if worker_management and worker_management.visible:
+		return
 			
 	if worker_details:
 		worker_details.show_worker(worker)
@@ -249,6 +259,8 @@ func _on_worker_clicked(worker) -> void:
 
 	if worker_management:
 		worker_management.show_worker(worker)
+		if is_instance_valid(worker_details):
+			worker_details.hide_worker()
 	else:
 		push_error("WorkerManagement UI not found at main_level.gd (tried unique name, path, and find_child)")
 

@@ -87,6 +87,18 @@ theme_override_styles/pressed = SubResource("StyleBoxTexture_k5c6i")
 theme_override_styles/hover = SubResource("StyleBoxTexture_urb25")
 theme_override_styles/disabled = SubResource("StyleBoxTexture_112x7")
 
+[node name="RestartTutorialButton" type="Button" parent="." unique_id=2026052415]
+visible = false
+offset_left = 152.0
+offset_top = 43.0
+offset_right = 316.0
+offset_bottom = 84.0
+theme_override_fonts/font = ExtResource("12_pehpa")
+theme_override_styles/normal = SubResource("StyleBoxTexture_40kxx")
+theme_override_styles/pressed = SubResource("StyleBoxTexture_s0rqm")
+theme_override_styles/hover = SubResource("StyleBoxTexture_dlx5r")
+text = "Restart Tutorial"
+
 [node name="Categories" type="Node2D" parent="." unique_id=1567571191]
 
 [node name="Sprite2D" type="Sprite2D" parent="Categories" unique_id=617280156]
@@ -235,6 +247,7 @@ theme_override_fonts/bold_font = ExtResource("13_vw6wv")
 bbcode_enabled = true
 
 [connection signal="pressed" from="BackButton" to="." method="_on_back_button_pressed"]
+[connection signal="pressed" from="RestartTutorialButton" to="." method="_on_restart_tutorial_pressed"]
 [connection signal="pressed" from="Categories/ScrollContainer/VBoxContainer/SDLC Overview" to="." method="_on_sdlc_overview_pressed"]
 [connection signal="pressed" from="Categories/ScrollContainer/VBoxContainer/Agile" to="." method="_on_agile_pressed"]
 [connection signal="pressed" from="Categories/ScrollContainer/VBoxContainer/Waterfall" to="." method="_on_waterfall_pressed"]

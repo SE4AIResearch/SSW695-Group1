@@ -400,9 +400,6 @@ texture = ExtResource("3_s1qlg")
 unique_name_in_owner = true
 visible = false
 
-[node name="WorkerManagement" parent="UI" instance=ExtResource("50_uibgn")]
-unique_name_in_owner = true
-visible = false
 
 [node name="BacklogButton" type="Button" parent="UI" unique_id=457063984]
 material = SubResource("ShaderMaterial_62x8c")
@@ -630,6 +627,10 @@ horizontal_alignment = 1
 vertical_alignment = 1
 
 [node name="NewMenu" type="Node2D" parent="UI" unique_id=1478451013]
+
+[node name="WorkerManagement" parent="UI/NewMenu" instance=ExtResource("50_uibgn")]
+unique_name_in_owner = true
+visible = false
 
 [node name="BackButton" type="Button" parent="UI" unique_id=1567251887]
 process_mode = 2
