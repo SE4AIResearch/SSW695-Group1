@@ -1,6 +1,14 @@
 extends Node2D
 
-@onready var worker_details = $UI/WorkerDetails
+@onready var worker_details = _get_ui_node("WorkerDetails")
+@onready var worker_management = _get_ui_node("WorkerManagement")
+
+func _get_ui_node(node_name: String) -> Node:
+	if has_node("%" + node_name):
+		return get_node("%" + node_name)
+	if has_node("UI/" + node_name):
+		return get_node("UI/" + node_name)
+	return find_child(node_name, true, false)
 
 const DESK_COMPUTER_VISUALS := {
 	"default": {
@@ -59,6 +67,10 @@ func _ready() -> void:
 	setupDeskVisuals()
 	setupUpgradeVisuals()
 	PlayerTool.levelLoaded.emit()
+
+func _exit_tree() -> void:
+	if PlayerTool.level == self:
+		PlayerTool.level = null
 
 func _apply_world_render_layers() -> void:
 	$Level/background.z_index = BACKGROUND_Z_INDEX
@@ -123,6 +135,8 @@ func setupDeskVisuals():
 			worker.hover_started.connect(_on_worker_hover_started)
 		if not worker.hover_ended.is_connected(_on_worker_hover_ended):
 			worker.hover_ended.connect(_on_worker_hover_ended)
+		if not worker.clicked.is_connected(_on_worker_clicked):
+			worker.clicked.connect(_on_worker_clicked)
 		var worker_slot := $Level/workers.get_node(str(workerCount))
 		var desk = worker_slot.get_node("worker")
 		var computer := worker_slot.get_node("computer") as AnimatedSprite2D
@@ -223,10 +237,32 @@ func _apply_desk_computer_visual_config(computer: AnimatedSprite2D, visual_confi
 	computer.sprite_frames = sprite_frames
 
 func _on_worker_hover_started(worker) -> void:
-	worker_details.show_worker(worker)
+	if not is_instance_valid(worker_details):
+		worker_details = _get_ui_node("WorkerDetails")
+
+	if not is_instance_valid(worker_management):
+		worker_management = _get_ui_node("WorkerManagement")
+
+	if worker_management and worker_management.visible:
+		return
+			
+	if worker_details:
+		worker_details.show_worker(worker)
 
 func _on_worker_hover_ended(worker) -> void:
-	worker_details.hide_worker()
+	if is_instance_valid(worker_details):
+		worker_details.hide_worker()
+
+func _on_worker_clicked(worker) -> void:
+	if not is_instance_valid(worker_management):
+		worker_management = _get_ui_node("WorkerManagement")
+
+	if worker_management:
+		worker_management.show_worker(worker)
+		if is_instance_valid(worker_details):
+			worker_details.hide_worker()
+	else:
+		push_error("WorkerManagement UI not found at main_level.gd (tried unique name, path, and find_child)")
 
 func rollEvent():
 	if PlayerTool.project == null:

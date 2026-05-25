@@ -11,6 +11,8 @@
 [ext_resource type="Texture2D" uid="uid://dla72g4cpmext" path="res://UI/Theme/PCTheme/arrow/nextPressed.png" id="9_ubbqy"]
 [ext_resource type="Texture2D" uid="uid://fi7cm2jdqiqa" path="res://UI/Theme/PCTheme/arrow/nextHover.png" id="10_pehpa"]
 [ext_resource type="Texture2D" uid="uid://ckh4yuj22ffnl" path="res://UI/Theme/PCTheme/arrow/nextDisabled.png" id="11_vw6wv"]
+[ext_resource type="FontFile" uid="uid://cc7ip5lk1jtns" path="res://UI/Theme/Fonts/figtree-2.0.3/otf/Figtree-Light.otf" id="12_pehpa"]
+[ext_resource type="FontFile" uid="uid://dp23u7yu0bu7o" path="res://UI/Theme/Fonts/figtree-2.0.3/otf/Figtree-Bold.otf" id="13_vw6wv"]
 
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_va0p5"]
 texture = ExtResource("8_3gx42")
@@ -85,6 +87,18 @@ theme_override_styles/pressed = SubResource("StyleBoxTexture_k5c6i")
 theme_override_styles/hover = SubResource("StyleBoxTexture_urb25")
 theme_override_styles/disabled = SubResource("StyleBoxTexture_112x7")
 
+[node name="RestartTutorialButton" type="Button" parent="." unique_id=2026052415]
+visible = false
+offset_left = 152.0
+offset_top = 43.0
+offset_right = 316.0
+offset_bottom = 84.0
+theme_override_fonts/font = ExtResource("12_pehpa")
+theme_override_styles/normal = SubResource("StyleBoxTexture_40kxx")
+theme_override_styles/pressed = SubResource("StyleBoxTexture_s0rqm")
+theme_override_styles/hover = SubResource("StyleBoxTexture_dlx5r")
+text = "Restart Tutorial"
+
 [node name="Categories" type="Node2D" parent="." unique_id=1567571191]
 
 [node name="Sprite2D" type="Sprite2D" parent="Categories" unique_id=617280156]
@@ -105,6 +119,7 @@ layout_mode = 2
 [node name="SDLC Overview" type="Button" parent="Categories/ScrollContainer/VBoxContainer" unique_id=3841594]
 custom_minimum_size = Vector2(240, 80)
 layout_mode = 2
+theme_override_fonts/font = ExtResource("12_pehpa")
 theme_override_styles/normal = SubResource("StyleBoxTexture_40kxx")
 theme_override_styles/pressed = SubResource("StyleBoxTexture_s0rqm")
 theme_override_styles/hover = SubResource("StyleBoxTexture_dlx5r")
@@ -113,6 +128,7 @@ text = "SDLC Overview"
 [node name="Agile" type="Button" parent="Categories/ScrollContainer/VBoxContainer" unique_id=716144803]
 custom_minimum_size = Vector2(240, 80)
 layout_mode = 2
+theme_override_fonts/font = ExtResource("12_pehpa")
 theme_override_styles/normal = SubResource("StyleBoxTexture_40kxx")
 theme_override_styles/pressed = SubResource("StyleBoxTexture_s0rqm")
 theme_override_styles/hover = SubResource("StyleBoxTexture_dlx5r")
@@ -121,6 +137,7 @@ text = "Agile"
 [node name="Waterfall" type="Button" parent="Categories/ScrollContainer/VBoxContainer" unique_id=1040418353]
 custom_minimum_size = Vector2(240, 80)
 layout_mode = 2
+theme_override_fonts/font = ExtResource("12_pehpa")
 theme_override_styles/normal = SubResource("StyleBoxTexture_40kxx")
 theme_override_styles/pressed = SubResource("StyleBoxTexture_s0rqm")
 theme_override_styles/hover = SubResource("StyleBoxTexture_dlx5r")
@@ -129,6 +146,7 @@ text = "Waterfall"
 [node name="VModel" type="Button" parent="Categories/ScrollContainer/VBoxContainer" unique_id=997413821]
 custom_minimum_size = Vector2(240, 80)
 layout_mode = 2
+theme_override_fonts/font = ExtResource("12_pehpa")
 theme_override_styles/normal = SubResource("StyleBoxTexture_40kxx")
 theme_override_styles/pressed = SubResource("StyleBoxTexture_s0rqm")
 theme_override_styles/hover = SubResource("StyleBoxTexture_dlx5r")
@@ -137,6 +155,7 @@ text = "V-Model"
 [node name="Spiral" type="Button" parent="Categories/ScrollContainer/VBoxContainer" unique_id=175881227]
 custom_minimum_size = Vector2(240, 80)
 layout_mode = 2
+theme_override_fonts/font = ExtResource("12_pehpa")
 theme_override_styles/normal = SubResource("StyleBoxTexture_40kxx")
 theme_override_styles/pressed = SubResource("StyleBoxTexture_s0rqm")
 theme_override_styles/hover = SubResource("StyleBoxTexture_dlx5r")
@@ -145,6 +164,7 @@ text = "Spiral"
 [node name="ProjectConstraints" type="Button" parent="Categories/ScrollContainer/VBoxContainer" unique_id=1644543603]
 custom_minimum_size = Vector2(240, 80)
 layout_mode = 2
+theme_override_fonts/font = ExtResource("12_pehpa")
 theme_override_styles/normal = SubResource("StyleBoxTexture_40kxx")
 theme_override_styles/pressed = SubResource("StyleBoxTexture_s0rqm")
 theme_override_styles/hover = SubResource("StyleBoxTexture_dlx5r")
@@ -153,6 +173,7 @@ text = "Project Constraints"
 [node name="StakeholderManagement" type="Button" parent="Categories/ScrollContainer/VBoxContainer" unique_id=868400943]
 custom_minimum_size = Vector2(240, 80)
 layout_mode = 2
+theme_override_fonts/font = ExtResource("12_pehpa")
 theme_override_styles/normal = SubResource("StyleBoxTexture_40kxx")
 theme_override_styles/pressed = SubResource("StyleBoxTexture_s0rqm")
 theme_override_styles/hover = SubResource("StyleBoxTexture_dlx5r")
@@ -161,6 +182,7 @@ text = "Stakeholder Management"
 [node name="SprintPlanningBasics" type="Button" parent="Categories/ScrollContainer/VBoxContainer" unique_id=2073076304]
 custom_minimum_size = Vector2(240, 80)
 layout_mode = 2
+theme_override_fonts/font = ExtResource("12_pehpa")
 theme_override_styles/normal = SubResource("StyleBoxTexture_40kxx")
 theme_override_styles/pressed = SubResource("StyleBoxTexture_s0rqm")
 theme_override_styles/hover = SubResource("StyleBoxTexture_dlx5r")
@@ -169,6 +191,7 @@ text = "Sprint Planning Basics"
 [node name="RiskManagement" type="Button" parent="Categories/ScrollContainer/VBoxContainer" unique_id=2113047792]
 custom_minimum_size = Vector2(240, 80)
 layout_mode = 2
+theme_override_fonts/font = ExtResource("12_pehpa")
 theme_override_styles/normal = SubResource("StyleBoxTexture_40kxx")
 theme_override_styles/pressed = SubResource("StyleBoxTexture_s0rqm")
 theme_override_styles/hover = SubResource("StyleBoxTexture_dlx5r")
@@ -219,9 +242,12 @@ offset_top = 148.0
 offset_right = 1081.0
 offset_bottom = 560.0
 mouse_filter = 2
+theme_override_fonts/normal_font = ExtResource("12_pehpa")
+theme_override_fonts/bold_font = ExtResource("13_vw6wv")
 bbcode_enabled = true
 
 [connection signal="pressed" from="BackButton" to="." method="_on_back_button_pressed"]
+[connection signal="pressed" from="RestartTutorialButton" to="." method="_on_restart_tutorial_pressed"]
 [connection signal="pressed" from="Categories/ScrollContainer/VBoxContainer/SDLC Overview" to="." method="_on_sdlc_overview_pressed"]
 [connection signal="pressed" from="Categories/ScrollContainer/VBoxContainer/Agile" to="." method="_on_agile_pressed"]
 [connection signal="pressed" from="Categories/ScrollContainer/VBoxContainer/Waterfall" to="." method="_on_waterfall_pressed"]

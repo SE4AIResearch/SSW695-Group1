@@ -219,6 +219,7 @@ func loadPlayerData(saveName: String = current_save_name):
 	PlayerTool.BEBacklogStep = saveData.get_value("Project", "BEBacklogStep", 0)
 	PlayerTool.docBacklogStep = saveData.get_value("Project", "docBacklogStep", 0)
 	PlayerTool.totalEvents = saveData.get_value("Project", "totalEvents", 0)
+	PlayerTool.lastEventName = saveData.get_value("Project", "lastEventName", "")
 
 	PlayerTool.teamRank = saveData.get_value("Player", "teamRank", 1)
 	PlayerTool.currency = saveData.get_value("Player", "currency", 0.0)
@@ -275,6 +276,7 @@ func savePlayerData():
 	saveData.set_value("Project", "BEBacklogStep", PlayerTool.BEBacklogStep)
 	saveData.set_value("Project", "docBacklogStep", PlayerTool.docBacklogStep)
 	saveData.set_value("Project", "totalEvents", PlayerTool.totalEvents)
+	saveData.set_value("Project", "lastEventName", PlayerTool.lastEventName)
 	
 	# Player variables
 	saveData.set_value("Player", "teamRank", PlayerTool.teamRank)

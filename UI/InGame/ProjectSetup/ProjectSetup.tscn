@@ -11,6 +11,8 @@
 [ext_resource type="Texture2D" uid="uid://crruuadiafv87" path="res://UI/Theme/PCTheme/Back/pcBackHeld.png" id="9_lmcgk"]
 [ext_resource type="Texture2D" uid="uid://o4k321o7djhb" path="res://UI/Theme/PCTheme/Back/pcBackDisabled.png" id="10_e4uks"]
 [ext_resource type="PackedScene" uid="uid://ccmfo7vj6hbru" path="res://UI/Learning Center/LearningCenter.tscn" id="11_58bh3"]
+[ext_resource type="FontFile" uid="uid://cc7ip5lk1jtns" path="res://UI/Theme/Fonts/figtree-2.0.3/otf/Figtree-Light.otf" id="12_light"]
+[ext_resource type="FontFile" uid="uid://dp23u7yu0bu7o" path="res://UI/Theme/Fonts/figtree-2.0.3/otf/Figtree-Bold.otf" id="13_bold"]
 
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_khj05"]
 texture = ExtResource("3_r18lb")
@@ -53,6 +55,7 @@ offset_left = 400.0
 offset_top = 110.0
 offset_right = 750.0
 offset_bottom = 148.0
+theme_override_fonts/font = ExtResource("13_bold")
 text = "Select Project"
 horizontal_alignment = 1
 vertical_alignment = 1
@@ -75,6 +78,7 @@ offset_left = 455.0
 offset_top = 490.0
 offset_right = 695.0
 offset_bottom = 570.0
+theme_override_fonts/font = ExtResource("12_light")
 theme_override_styles/normal = SubResource("StyleBoxTexture_khj05")
 theme_override_styles/pressed = SubResource("StyleBoxTexture_pfa6d")
 theme_override_styles/hover = SubResource("StyleBoxTexture_lmcgk")
@@ -97,6 +101,7 @@ offset_left = 477.0
 offset_top = 25.0
 offset_right = 601.0
 offset_bottom = 71.0
+theme_override_fonts/font = ExtResource("13_bold")
 text = "Projects"
 horizontal_alignment = 1
 vertical_alignment = 1
@@ -106,6 +111,7 @@ offset_left = 466.0
 offset_top = 499.0
 offset_right = 706.0
 offset_bottom = 579.0
+theme_override_fonts/font = ExtResource("12_light")
 theme_override_styles/normal = SubResource("StyleBoxTexture_khj05")
 theme_override_styles/pressed = SubResource("StyleBoxTexture_pfa6d")
 theme_override_styles/hover = SubResource("StyleBoxTexture_lmcgk")
@@ -128,6 +134,7 @@ offset_left = 110.0
 offset_top = 90.0
 offset_right = 270.0
 offset_bottom = 130.0
+theme_override_fonts/font = ExtResource("12_light")
 theme_override_styles/normal = SubResource("StyleBoxTexture_khj05")
 theme_override_styles/pressed = SubResource("StyleBoxTexture_pfa6d")
 theme_override_styles/hover = SubResource("StyleBoxTexture_lmcgk")

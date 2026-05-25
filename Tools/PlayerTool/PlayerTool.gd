@@ -47,6 +47,7 @@ const LEGACY_STANDARD_UPGRADE_EFFECTS := {
 }
 const MIN_WORKER_STAMINA := 1
 const WORKER_LEVEL_SCALE := Vector2(2.5, 2.5)
+const WorkerStats = preload("res://Person/Worker/worker_stats.gd")
 
 var level
 
@@ -74,6 +75,7 @@ var FEBacklogStep: int = 0
 var BEBacklogStep: int = 0
 var docBacklogStep: int = 0
 var totalEvents: int = 0
+var lastEventName: String = ""
 
 var teamRank: int = 1
 var workers: Array = []
@@ -125,6 +127,7 @@ func _default_tutorial_seen(seen: bool = true) -> Dictionary:
 		"hiring_intro": seen,
 		"kanban_exit_intro": seen,
 		"first_sprint_reward_intro": seen,
+		"project_selected_backlog_intro": seen,
 	}
 
 # Type : 0 = Front End | 1 = Back End | 2 = Documenting | 3 = Reliability | 4 = Stakeholder Satisfaction
@@ -189,6 +192,7 @@ func resetData():
 	projWeek = 0
 	projSprint = 0
 	totalEvents = 0
+	lastEventName = ""
 	FEBacklogStep = 0
 	BEBacklogStep = 0
 	docBacklogStep = 0
@@ -377,6 +381,46 @@ func purchase_hire(worker, hire_cost: int) -> Dictionary:
 		"ok": true,
 		"reason": "Hired %s." % str(worker.personName)
 	}
+
+func can_upgrade_worker(worker) -> Dictionary:
+	if worker.rank >= 10:
+		return {"ok": false, "reason": "%s is already at the maximum rank." % worker.personName}
+	var next_tier: Dictionary = WorkerStats.get_hiring_tier_by_rank(worker.rank + 1)
+	var upgrade_cost: int = int(next_tier.get("min_budget", 0))
+	if int(currency) < upgrade_cost:
+		return {"ok": false, "reason": "You do not have enough money to upgrade %s." % worker.personName}
+	return {"ok": true, "cost": upgrade_cost}
+
+func upgrade_worker(worker) -> Dictionary:
+	var validation: Dictionary = can_upgrade_worker(worker)
+	if not bool(validation.get("ok", false)):
+		return validation
+	
+	var cost: int = int(validation.get("cost", 0))
+	addCurrency(-cost)
+	
+	var next_rank: int = int(worker.rank) + 1
+	var new_stats: Dictionary = WorkerStats.roll_worker_stats_for_tier(next_rank)
+	
+	worker.frontEndStat = maxi(worker.frontEndStat, new_stats["front_end"])
+	worker.backEndStat = maxi(worker.backEndStat, new_stats["back_end"])
+	worker.documentingStat = maxi(worker.documentingStat, new_stats["documenting"])
+	worker.speedStat = maxi(worker.speedStat, new_stats["speed"])
+	worker.staminaStat = maxi(worker.staminaStat, new_stats["stamina"])
+	worker.rank = next_rank
+	
+	statsChanged.emit()
+	return {"ok": true, "reason": "%s upgraded to Rank %d!" % [worker.personName, next_rank]}
+
+func fire_worker(worker) -> void:
+	if not bool(worker.firable):
+		return
+	
+	unassignWorker(worker.workerId)
+	workers.erase(worker)
+	if is_instance_valid(worker):
+		worker.queue_free()
+	statsChanged.emit()
 
 func newUpgrade(upgrade) -> void:
 	upgrades.append(_normalize_upgrade_record(upgrade))

@@ -10,6 +10,8 @@
 [ext_resource type="Texture2D" uid="uid://21bqovjn7bnq" path="res://UI/Theme/PCTheme/arrow/next.png" id="8_ue8lb"]
 [ext_resource type="Texture2D" uid="uid://dla72g4cpmext" path="res://UI/Theme/PCTheme/arrow/nextPressed.png" id="9_xo5on"]
 [ext_resource type="Texture2D" uid="uid://fi7cm2jdqiqa" path="res://UI/Theme/PCTheme/arrow/nextHover.png" id="10_g56pf"]
+[ext_resource type="FontFile" uid="uid://cc7ip5lk1jtns" path="res://UI/Theme/Fonts/figtree-2.0.3/otf/Figtree-Light.otf" id="11_figtree_light"]
+[ext_resource type="FontFile" uid="uid://dp23u7yu0bu7o" path="res://UI/Theme/Fonts/figtree-2.0.3/otf/Figtree-Bold.otf" id="12_figtree_bold"]
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_xo5on"]
 
@@ -54,6 +56,7 @@ offset_left = 466.0
 offset_top = 36.0
 offset_right = 686.0
 offset_bottom = 135.0
+theme_override_fonts/font = ExtResource("12_figtree_bold")
 text = "Pause"
 horizontal_alignment = 1
 vertical_alignment = 1
@@ -63,6 +66,7 @@ offset_left = 453.0
 offset_top = 168.0
 offset_right = 693.0
 offset_bottom = 248.0
+theme_override_fonts/font = ExtResource("11_figtree_light")
 theme_override_styles/normal = SubResource("StyleBoxTexture_g56pf")
 theme_override_styles/pressed = SubResource("StyleBoxTexture_6s35v")
 theme_override_styles/hover = SubResource("StyleBoxTexture_00l08")
@@ -73,6 +77,7 @@ offset_left = 453.0
 offset_top = 252.0
 offset_right = 693.0
 offset_bottom = 332.0
+theme_override_fonts/font = ExtResource("11_figtree_light")
 theme_override_styles/normal = SubResource("StyleBoxTexture_g56pf")
 theme_override_styles/pressed = SubResource("StyleBoxTexture_6s35v")
 theme_override_styles/hover = SubResource("StyleBoxTexture_00l08")
@@ -83,6 +88,7 @@ offset_left = 453.0
 offset_top = 336.0
 offset_right = 693.0
 offset_bottom = 416.0
+theme_override_fonts/font = ExtResource("11_figtree_light")
 theme_override_styles/normal = SubResource("StyleBoxTexture_g56pf")
 theme_override_styles/pressed = SubResource("StyleBoxTexture_6s35v")
 theme_override_styles/hover = SubResource("StyleBoxTexture_00l08")
@@ -93,6 +99,7 @@ offset_left = 453.0
 offset_top = 420.0
 offset_right = 693.0
 offset_bottom = 500.0
+theme_override_fonts/font = ExtResource("11_figtree_light")
 theme_override_styles/normal = SubResource("StyleBoxTexture_g56pf")
 theme_override_styles/pressed = SubResource("StyleBoxTexture_6s35v")
 theme_override_styles/hover = SubResource("StyleBoxTexture_00l08")

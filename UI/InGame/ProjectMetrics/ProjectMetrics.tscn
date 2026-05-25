@@ -4,6 +4,8 @@
 [ext_resource type="Texture2D" uid="uid://bial1tt4lpoow" path="res://UI/Theme/PCTheme/Panel.png" id="2_h6qok"]
 [ext_resource type="Texture2D" uid="uid://cqjra4hvo67jb" path="res://UI/Theme/PCTheme/TextureBar/BG.png" id="3_vear5"]
 [ext_resource type="Texture2D" uid="uid://cy7ghvk8gm6ef" path="res://UI/Theme/PCTheme/TextureBar/Progress.png" id="4_5q15i"]
+[ext_resource type="FontFile" uid="uid://cc7ip5lk1jtns" path="res://UI/Theme/Fonts/figtree-2.0.3/otf/Figtree-Light.otf" id="5_light"]
+[ext_resource type="FontFile" uid="uid://dp23u7yu0bu7o" path="res://UI/Theme/Fonts/figtree-2.0.3/otf/Figtree-Bold.otf" id="6_bold"]
 
 [node name="ProjectMetrics" type="Node2D" unique_id=65546387]
 process_mode = 3
@@ -19,6 +21,7 @@ offset_left = 102.0
 offset_top = 194.0
 offset_right = 699.0
 offset_bottom = 217.0
+theme_override_fonts/font = ExtResource("6_bold")
 text = "Project: "
 vertical_alignment = 1
 
@@ -27,6 +30,7 @@ offset_left = 220.0
 offset_top = 231.0
 offset_right = 565.0
 offset_bottom = 254.0
+theme_override_fonts/font = ExtResource("5_light")
 text = "Methodology: "
 horizontal_alignment = 1
 vertical_alignment = 1
@@ -36,6 +40,7 @@ offset_left = 98.0
 offset_top = 273.0
 offset_right = 280.0
 offset_bottom = 303.0
+theme_override_fonts/font = ExtResource("5_light")
 text = "Front End"
 horizontal_alignment = 1
 vertical_alignment = 1
@@ -55,6 +60,7 @@ offset_left = 475.0
 offset_top = 268.0
 offset_right = 657.0
 offset_bottom = 298.0
+theme_override_fonts/font = ExtResource("5_light")
 text = "Back End"
 horizontal_alignment = 1
 vertical_alignment = 1
@@ -74,6 +80,7 @@ offset_left = 475.0
 offset_top = 407.0
 offset_right = 657.0
 offset_bottom = 437.0
+theme_override_fonts/font = ExtResource("5_light")
 text = "Documenting"
 horizontal_alignment = 1
 vertical_alignment = 1
@@ -93,6 +100,7 @@ offset_left = 133.0
 offset_top = 401.0
 offset_right = 315.0
 offset_bottom = 431.0
+theme_override_fonts/font = ExtResource("5_light")
 text = "Reliability"
 horizontal_alignment = 1
 vertical_alignment = 1

@@ -1,0 +1,347 @@
+[gd_scene format=3 uid="uid://c6l8j5k8j8j8j"]
+
+[ext_resource type="Script" uid="uid://dibq07et4ji5r" path="res://UI/InGame/WorkerManagement/worker_management.gd" id="1_1"]
+[ext_resource type="Texture2D" uid="uid://k7xby2l5gc5f" path="res://UI/Theme/MainLevel/backlog/BG.png" id="2_4brxn"]
+[ext_resource type="FontFile" uid="uid://b0lji18tmt8ua" path="res://UI/Theme/Fonts/jakes-writing-font/Jakeswriting-P2Zr.ttf" id="3_df1vi"]
+[ext_resource type="Texture2D" uid="uid://v5e7102exc8b" path="res://UI/Theme/MainLevel/ProjectCompletion/barBorder.png" id="4_txrmk"]
+[ext_resource type="Texture2D" uid="uid://bdrwmobn5nte6" path="res://UI/Theme/MainLevel/ProjectCompletion/barProgress.png" id="5_da56h"]
+[ext_resource type="Texture2D" uid="uid://c7y8067tc7g0c" path="res://UI/Theme/MainMenu/postIt2.png" id="6_da56h"]
+[ext_resource type="Texture2D" uid="uid://ckmuyspbg5gn" path="res://UI/Theme/MainMenu/postIt2Select.png" id="7_t3e6j"]
+[ext_resource type="Texture2D" uid="uid://duuify0i2x8xh" path="res://UI/Theme/MainMenu/postIt2Hover.png" id="8_ma2pt"]
+[ext_resource type="Texture2D" uid="uid://d8dehtrlftc1" path="res://UI/Theme/MainMenu/postIt2Disabled.png" id="9_3oari"]
+[ext_resource type="Texture2D" uid="uid://cp34gj4c16p53" path="res://UI/Theme/MainMenu/postIt.png" id="9_q618q"]
+[ext_resource type="Texture2D" uid="uid://1nc4olfgq0wp" path="res://UI/Theme/MainMenu/postItSelect.png" id="10_3oari"]
+[ext_resource type="Texture2D" uid="uid://br62n12v4b1wq" path="res://UI/Theme/MainMenu/postItHover.png" id="11_gr7wu"]
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_6uqk7"]
+texture = ExtResource("6_da56h")
+modulate_color = Color(0.32800657, 0.6677871, 0.4852987, 1)
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_03qlt"]
+texture = ExtResource("7_t3e6j")
+modulate_color = Color(0.32941177, 0.6666667, 0.4862745, 1)
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_d6kwi"]
+texture = ExtResource("8_ma2pt")
+modulate_color = Color(0.32941177, 0.6666667, 0.4862745, 1)
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_wnnng"]
+texture = ExtResource("9_3oari")
+modulate_color = Color(0.32941177, 0.6666667, 0.4862745, 1)
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_iij3h"]
+texture = ExtResource("9_q618q")
+modulate_color = Color(0.8235294, 0.29803923, 0.21960784, 1)
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_d2g5k"]
+texture = ExtResource("10_3oari")
+modulate_color = Color(0.8235294, 0.29803923, 0.21960784, 1)
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_bhyyq"]
+texture = ExtResource("11_gr7wu")
+modulate_color = Color(0.8235294, 0.29803923, 0.21960784, 1)
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_q618q"]
+texture = ExtResource("6_da56h")
+modulate_color = Color(0.97496074, 0.82340354, 0.32362887, 1)
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_3oari"]
+texture = ExtResource("7_t3e6j")
+modulate_color = Color(0.9764706, 0.8235294, 0.3254902, 1)
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_gr7wu"]
+texture = ExtResource("8_ma2pt")
+modulate_color = Color(0.9764706, 0.8235294, 0.3254902, 1)
+
+[node name="WorkerManagement" type="Node2D" unique_id=50444676]
+process_mode = 3
+script = ExtResource("1_1")
+
+[node name="Panel" type="Sprite2D" parent="." unique_id=1947825179]
+position = Vector2(578.735, 325.99997)
+scale = Vector2(3.4508545, 4.486111)
+texture = ExtResource("2_4brxn")
+
+[node name="WorkerName" type="Label" parent="." unique_id=837480212]
+unique_name_in_owner = true
+offset_left = 426.0
+offset_top = 109.0
+offset_right = 726.0
+offset_bottom = 139.0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_fonts/font = ExtResource("3_df1vi")
+theme_override_font_sizes/font_size = 36
+text = "Worker Name"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="WorkerRank" type="Label" parent="." unique_id=296721395]
+unique_name_in_owner = true
+offset_left = 426.0
+offset_top = 152.0
+offset_right = 726.0
+offset_bottom = 177.0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_fonts/font = ExtResource("3_df1vi")
+theme_override_font_sizes/font_size = 36
+text = "Rank: 1"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="StatsContainer" type="Control" parent="." unique_id=415398120]
+layout_mode = 3
+anchors_preset = 0
+offset_left = 346.0
+offset_top = 210.0
+offset_right = 806.0
+offset_bottom = 460.0
+
+[node name="FELabel" type="Label" parent="StatsContainer" unique_id=810287707]
+layout_mode = 0
+offset_left = 28.0
+offset_top = 1.0
+offset_right = 128.0
+offset_bottom = 26.0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_fonts/font = ExtResource("3_df1vi")
+theme_override_font_sizes/font_size = 28
+text = "Front End"
+horizontal_alignment = 2
+vertical_alignment = 1
+
+[node name="FEBar" type="TextureProgressBar" parent="StatsContainer" unique_id=1787747649]
+unique_name_in_owner = true
+layout_mode = 0
+offset_left = 130.0
+offset_top = -4.0
+offset_right = 210.0
+offset_bottom = 20.0
+scale = Vector2(3.5, 1.5)
+max_value = 10.0
+texture_under = ExtResource("4_txrmk")
+texture_progress = ExtResource("5_da56h")
+tint_progress = Color(0.823529, 0.141176, 0, 1)
+
+[node name="FEValue" type="Label" parent="StatsContainer" unique_id=986883302]
+unique_name_in_owner = true
+layout_mode = 0
+offset_left = 416.0
+offset_top = 2.0
+offset_right = 496.0
+offset_bottom = 27.0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_fonts/font = ExtResource("3_df1vi")
+theme_override_font_sizes/font_size = 28
+text = "0 / 10"
+vertical_alignment = 1
+
+[node name="BELabel" type="Label" parent="StatsContainer" unique_id=6795076]
+layout_mode = 0
+offset_left = 27.0
+offset_top = 38.0
+offset_right = 127.0
+offset_bottom = 63.0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_fonts/font = ExtResource("3_df1vi")
+theme_override_font_sizes/font_size = 28
+text = "Back End"
+horizontal_alignment = 2
+vertical_alignment = 1
+
+[node name="BEBar" type="TextureProgressBar" parent="StatsContainer" unique_id=484503164]
+unique_name_in_owner = true
+layout_mode = 0
+offset_left = 130.0
+offset_top = 34.0
+offset_right = 210.0
+offset_bottom = 58.0
+scale = Vector2(3.5, 1.5)
+max_value = 10.0
+texture_under = ExtResource("4_txrmk")
+texture_progress = ExtResource("5_da56h")
+tint_progress = Color(0, 0.596078, 0.764706, 1)
+
+[node name="BEValue" type="Label" parent="StatsContainer" unique_id=1649689820]
+unique_name_in_owner = true
+layout_mode = 0
+offset_left = 416.0
+offset_top = 40.0
+offset_right = 496.0
+offset_bottom = 65.0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_fonts/font = ExtResource("3_df1vi")
+theme_override_font_sizes/font_size = 28
+text = "0 / 10"
+vertical_alignment = 1
+
+[node name="DocLabel" type="Label" parent="StatsContainer" unique_id=575354780]
+layout_mode = 0
+offset_left = 13.0
+offset_top = 76.0
+offset_right = 126.0
+offset_bottom = 101.0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_fonts/font = ExtResource("3_df1vi")
+theme_override_font_sizes/font_size = 28
+text = "Documenting"
+horizontal_alignment = 2
+vertical_alignment = 1
+
+[node name="DocBar" type="TextureProgressBar" parent="StatsContainer" unique_id=775465989]
+unique_name_in_owner = true
+layout_mode = 0
+offset_left = 130.0
+offset_top = 72.0
+offset_right = 194.0
+offset_bottom = 88.0
+scale = Vector2(3.5, 1.5)
+max_value = 10.0
+texture_under = ExtResource("4_txrmk")
+texture_progress = ExtResource("5_da56h")
+tint_progress = Color(0, 0.784314, 0.2, 1)
+
+[node name="DocValue" type="Label" parent="StatsContainer" unique_id=2010200363]
+unique_name_in_owner = true
+layout_mode = 0
+offset_left = 416.0
+offset_top = 78.0
+offset_right = 496.0
+offset_bottom = 103.0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_fonts/font = ExtResource("3_df1vi")
+theme_override_font_sizes/font_size = 28
+text = "0 / 10"
+vertical_alignment = 1
+
+[node name="SpeedLabel" type="Label" parent="StatsContainer" unique_id=520417155]
+layout_mode = 0
+offset_left = 26.0
+offset_top = 116.0
+offset_right = 126.0
+offset_bottom = 141.0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_fonts/font = ExtResource("3_df1vi")
+theme_override_font_sizes/font_size = 28
+text = "Speed"
+horizontal_alignment = 2
+vertical_alignment = 1
+
+[node name="SpeedBar" type="TextureProgressBar" parent="StatsContainer" unique_id=1297400374]
+unique_name_in_owner = true
+layout_mode = 0
+offset_left = 130.0
+offset_top = 110.0
+offset_right = 210.0
+offset_bottom = 134.0
+scale = Vector2(3.5, 1.5)
+max_value = 150.0
+texture_under = ExtResource("4_txrmk")
+texture_progress = ExtResource("5_da56h")
+tint_progress = Color(0.5, 0.5, 0.5, 1)
+
+[node name="SpeedValue" type="Label" parent="StatsContainer" unique_id=1292035526]
+unique_name_in_owner = true
+layout_mode = 0
+offset_left = 416.0
+offset_top = 116.0
+offset_right = 496.0
+offset_bottom = 141.0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_fonts/font = ExtResource("3_df1vi")
+theme_override_font_sizes/font_size = 28
+text = "0 / 150"
+vertical_alignment = 1
+
+[node name="StaminaLabel" type="Label" parent="StatsContainer" unique_id=474538204]
+layout_mode = 0
+offset_left = 27.0
+offset_top = 154.0
+offset_right = 127.0
+offset_bottom = 179.0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_fonts/font = ExtResource("3_df1vi")
+theme_override_font_sizes/font_size = 28
+text = "Stamina"
+horizontal_alignment = 2
+vertical_alignment = 1
+
+[node name="StaminaBar" type="TextureProgressBar" parent="StatsContainer" unique_id=110299601]
+unique_name_in_owner = true
+layout_mode = 0
+offset_left = 130.0
+offset_top = 148.0
+offset_right = 210.0
+offset_bottom = 172.0
+scale = Vector2(3.5, 1.5)
+texture_under = ExtResource("4_txrmk")
+texture_progress = ExtResource("5_da56h")
+tint_progress = Color(0.921569, 0.968627, 0, 1)
+
+[node name="StaminaValue" type="Label" parent="StatsContainer" unique_id=121468370]
+unique_name_in_owner = true
+layout_mode = 0
+offset_left = 416.0
+offset_top = 154.0
+offset_right = 496.0
+offset_bottom = 179.0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_fonts/font = ExtResource("3_df1vi")
+theme_override_font_sizes/font_size = 28
+text = "0 / 100"
+vertical_alignment = 1
+
+[node name="UpgradeButton" type="Button" parent="." unique_id=1179252687]
+unique_name_in_owner = true
+offset_left = 361.0
+offset_top = 419.0
+offset_right = 553.0
+offset_bottom = 611.0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_fonts/font = ExtResource("3_df1vi")
+theme_override_font_sizes/font_size = 36
+theme_override_styles/normal = SubResource("StyleBoxTexture_6uqk7")
+theme_override_styles/pressed = SubResource("StyleBoxTexture_03qlt")
+theme_override_styles/hover = SubResource("StyleBoxTexture_d6kwi")
+theme_override_styles/disabled = SubResource("StyleBoxTexture_wnnng")
+text = "Upgrade
+($100)"
+
+[node name="FireButton" type="Button" parent="." unique_id=1659064255]
+unique_name_in_owner = true
+offset_left = 586.0
+offset_top = 420.0
+offset_right = 778.0
+offset_bottom = 612.0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_fonts/font = ExtResource("3_df1vi")
+theme_override_font_sizes/font_size = 36
+theme_override_styles/normal = SubResource("StyleBoxTexture_iij3h")
+theme_override_styles/pressed = SubResource("StyleBoxTexture_d2g5k")
+theme_override_styles/hover = SubResource("StyleBoxTexture_bhyyq")
+text = "Fire
+Worker"
+
+[node name="CloseButton" type="Button" parent="." unique_id=890481571]
+offset_left = 853.0
+offset_top = 102.0
+offset_right = 888.0
+offset_bottom = 137.0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_styles/normal = SubResource("StyleBoxTexture_q618q")
+theme_override_styles/pressed = SubResource("StyleBoxTexture_3oari")
+theme_override_styles/hover = SubResource("StyleBoxTexture_gr7wu")
+text = "X"
+
+[node name="ConfirmFireDialog" type="ConfirmationDialog" parent="." unique_id=1875789784]
+unique_name_in_owner = true
+title = "Confirm Firing"
+initial_position = 2
+size = Vector2i(350, 120)
+ok_button_text = "Yes, Fire"
+dialog_text = "Are you sure you want to fire this worker?
+This action cannot be undone."
+cancel_button_text = "No, Keep"
+
+[connection signal="pressed" from="UpgradeButton" to="." method="_on_upgrade_button_pressed"]
+[connection signal="pressed" from="FireButton" to="." method="_on_fire_button_pressed"]
+[connection signal="pressed" from="CloseButton" to="." method="_on_close_button_pressed"]

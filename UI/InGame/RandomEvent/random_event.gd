@@ -57,8 +57,8 @@ func buildFeedbackUI():
 	feedbackContainer.add_child(metricsLabel)
 
 	continueBtn = Button.new()
-	continueBtn.set_position(Vector2(436, 480))
-	continueBtn.set_size(Vector2(280, 100))
+	continueBtn.set_position(Vector2(481, 435))
+	continueBtn.set_size(Vector2(190, 190))
 	continueBtn.connect("pressed", _on_continue_pressed)
 	setButtonVisual(continueBtn)
 	feedbackContainer.add_child(continueBtn)
@@ -66,7 +66,7 @@ func buildFeedbackUI():
 	var btnLabel = RichTextLabel.new()
 	btnLabel.bbcode_enabled = true
 	btnLabel.z_index = 1
-	btnLabel.set_position(Vector2(50, 20))
+	btnLabel.set_position(Vector2(5, 65))
 	btnLabel.set_size(Vector2(180, 60))
 	btnLabel.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	btnLabel.add_theme_color_override("default_color", Color.BLACK)
@@ -108,7 +108,14 @@ func initializeEvent():
 		button4.visible = false
 		return
 
-	chosenEvent = eventPool.pick_random()
+	var pool_to_pick_from = eventPool
+	if eventPool.size() > 1:
+		var filtered = eventPool.filter(func(e): return e.get("name") != PlayerTool.lastEventName)
+		if not filtered.is_empty():
+			pool_to_pick_from = filtered
+
+	chosenEvent = pool_to_pick_from.pick_random()
+	PlayerTool.lastEventName = chosenEvent.get("name", "")
 	var choices: Array = chosenEvent.get("choices", [])
 	choiceOutcomes = chosenEvent.get("outcomes", [])
 	$eventText.text = chosenEvent.get("description", "")

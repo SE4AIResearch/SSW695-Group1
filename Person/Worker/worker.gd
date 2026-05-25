@@ -2,6 +2,7 @@ extends Node2D
 
 signal hover_started(worker)
 signal hover_ended(worker)
+signal clicked(worker)
 
 @export var restingColor: Color
 @export var workingColor: Color
@@ -20,6 +21,7 @@ var backEndStat: int
 var documentingStat: int
 var speedStat: int
 var staminaStat: int
+var rank: int = 1
 var upgradeStatBonuses: Dictionary = {}
 
 var firable: bool = true
@@ -37,6 +39,7 @@ func _ready() -> void:
 	$staminaBar.value = staminaStat
 	$HoverArea.mouse_entered.connect(_on_hover_area_mouse_entered)
 	$HoverArea.mouse_exited.connect(_on_hover_area_mouse_exited)
+	$HoverArea.input_event.connect(_on_hover_area_input_event)
 	TimeTool.timer.timeout.connect(work)
 	_cache_progress_bars(self)
 	set_progress_bars_visible(progress_bars_visible)
@@ -48,6 +51,10 @@ func _on_hover_area_mouse_entered() -> void:
 
 func _on_hover_area_mouse_exited() -> void:
 	hover_ended.emit(self)
+
+func _on_hover_area_input_event(_viewport: Node, event: InputEvent, _shape_idx: int) -> void:
+	if event is InputEventMouseButton and event.pressed and event.button_index == MOUSE_BUTTON_LEFT:
+		clicked.emit(self)
 
 func work():
 	if PlayerTool.project != null && PlayerTool.isWeekActive():

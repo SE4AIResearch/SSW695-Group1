@@ -10,6 +10,8 @@
 [ext_resource type="Texture2D" uid="uid://b8snwl2q3qflg" path="res://UI/Theme/PCTheme/button/slimButtonHeld.png" id="5_okbtn"]
 [ext_resource type="Texture2D" uid="uid://o4k321o7djhb" path="res://UI/Theme/PCTheme/Back/pcBackDisabled.png" id="6_kgkrs"]
 [ext_resource type="Texture2D" uid="uid://2jvaulftw7b6" path="res://UI/Theme/PCTheme/button/slimButtonDisabled.png" id="6_okbtn"]
+[ext_resource type="FontFile" uid="uid://cc7ip5lk1jtns" path="res://UI/Theme/Fonts/figtree-2.0.3/otf/Figtree-Light.otf" id="13_light"]
+[ext_resource type="FontFile" uid="uid://dp23u7yu0bu7o" path="res://UI/Theme/Fonts/figtree-2.0.3/otf/Figtree-Bold.otf" id="14_bold"]
 
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_dcl57"]
 texture = ExtResource("3_j7435")
@@ -55,6 +57,7 @@ offset_left = 400.0
 offset_top = 108.0
 offset_right = 750.0
 offset_bottom = 146.0
+theme_override_fonts/font = ExtResource("14_bold")
 text = "Upgrades"
 horizontal_alignment = 1
 vertical_alignment = 1
@@ -64,6 +67,7 @@ offset_left = 110.0
 offset_top = 100.0
 offset_right = 330.0
 offset_bottom = 138.0
+theme_override_fonts/font = ExtResource("13_light")
 text = "Currency: $0.00"
 vertical_alignment = 1
 
@@ -141,6 +145,7 @@ offset_left = 120.0
 offset_top = 24.0
 offset_right = 460.0
 offset_bottom = 68.0
+theme_override_fonts/font = ExtResource("14_bold")
 text = "Purchase Failed"
 horizontal_alignment = 1
 vertical_alignment = 1
@@ -150,6 +155,7 @@ offset_left = 56.0
 offset_top = 88.0
 offset_right = 524.0
 offset_bottom = 188.0
+theme_override_fonts/font = ExtResource("13_light")
 horizontal_alignment = 1
 vertical_alignment = 1
 autowrap_mode = 2
@@ -160,6 +166,7 @@ offset_left = 170.0
 offset_top = 196.0
 offset_right = 410.0
 offset_bottom = 276.0
+theme_override_fonts/font = ExtResource("13_light")
 theme_override_styles/normal = SubResource("StyleBoxTexture_popup_ok")
 theme_override_styles/pressed = SubResource("StyleBoxTexture_popup_ok_pressed")
 theme_override_styles/hover = SubResource("StyleBoxTexture_popup_ok_hover")

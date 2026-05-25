@@ -10,6 +10,8 @@
 [ext_resource type="Texture2D" uid="uid://b8snwl2q3qflg" path="res://UI/Theme/PCTheme/button/slimButtonHeld.png" id="5_wx0r0"]
 [ext_resource type="Texture2D" uid="uid://2jvaulftw7b6" path="res://UI/Theme/PCTheme/button/slimButtonDisabled.png" id="6_gbnct"]
 [ext_resource type="Texture2D" uid="uid://o4k321o7djhb" path="res://UI/Theme/PCTheme/Back/pcBackDisabled.png" id="6_xki6e"]
+[ext_resource type="FontFile" uid="uid://cc7ip5lk1jtns" path="res://UI/Theme/Fonts/figtree-2.0.3/otf/Figtree-Light.otf" id="13_light"]
+[ext_resource type="FontFile" uid="uid://dp23u7yu0bu7o" path="res://UI/Theme/Fonts/figtree-2.0.3/otf/Figtree-Bold.otf" id="14_bold"]
 
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_d37a2"]
 texture = ExtResource("3_5qap7")
@@ -55,6 +57,7 @@ offset_left = 198.0
 offset_top = -131.0
 offset_right = 548.0
 offset_bottom = -93.0
+theme_override_fonts/font = ExtResource("14_bold")
 text = "Hiring"
 horizontal_alignment = 1
 vertical_alignment = 1
@@ -64,6 +67,7 @@ offset_left = 110.0
 offset_top = 100.0
 offset_right = 330.0
 offset_bottom = 138.0
+theme_override_fonts/font = ExtResource("13_light")
 text = "Currency: $0.00"
 vertical_alignment = 1
 
@@ -80,6 +84,7 @@ offset_left = 596.0
 offset_top = 286.0
 offset_right = 760.0
 offset_bottom = 368.0
+theme_override_fonts/font = ExtResource("13_light")
 theme_override_styles/normal = SubResource("StyleBoxTexture_d37a2")
 theme_override_styles/pressed = SubResource("StyleBoxTexture_litpm")
 theme_override_styles/hover = SubResource("StyleBoxTexture_0bxjy")
@@ -101,6 +106,7 @@ offset_left = 153.0
 offset_top = 286.0
 offset_right = 307.0
 offset_bottom = 309.0
+theme_override_fonts/font = ExtResource("13_light")
 text = "Hiring Budget"
 horizontal_alignment = 1
 vertical_alignment = 1
@@ -164,6 +170,7 @@ offset_left = 120.0
 offset_top = 24.0
 offset_right = 460.0
 offset_bottom = 68.0
+theme_override_fonts/font = ExtResource("14_bold")
 text = "Purchase Failed"
 horizontal_alignment = 1
 vertical_alignment = 1
@@ -173,6 +180,7 @@ offset_left = 56.0
 offset_top = 88.0
 offset_right = 524.0
 offset_bottom = 188.0
+theme_override_fonts/font = ExtResource("13_light")
 horizontal_alignment = 1
 vertical_alignment = 1
 autowrap_mode = 2
@@ -183,6 +191,7 @@ offset_left = 170.0
 offset_top = 196.0
 offset_right = 410.0
 offset_bottom = 276.0
+theme_override_fonts/font = ExtResource("13_light")
 theme_override_styles/normal = SubResource("StyleBoxTexture_d37a2")
 theme_override_styles/pressed = SubResource("StyleBoxTexture_litpm")
 theme_override_styles/hover = SubResource("StyleBoxTexture_0bxjy")

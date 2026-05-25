@@ -12,6 +12,8 @@ const BACK_TEXTURE_DISABLED = preload("res://UI/Theme/PCTheme/arrow/nextDisabled
 const OVERLAY_TEXTURE = preload("res://UI/Theme/PCTheme/Overlay.png")
 const NAV_PANEL_TEXTURE = preload("res://UI/Theme/PCTheme/PanelSlim.png")
 const CONTENT_PANEL_TEXTURE = preload("res://UI/Theme/PCTheme/Panel.png")
+const FIGTREE_LIGHT = preload("res://UI/Theme/Fonts/figtree-2.0.3/otf/Figtree-Light.otf")
+const FIGTREE_BOLD = preload("res://UI/Theme/Fonts/figtree-2.0.3/otf/Figtree-Bold.otf")
 
 const AUDIO_CHANNELS := [
 	{"id": "master", "label": "Master"},
@@ -65,6 +67,7 @@ func _build_layout() -> void:
 	title.text = "Settings"
 	title.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	title.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
+	title.add_theme_font_override("font", FIGTREE_BOLD)
 	add_child(title)
 
 	_build_back_button()
@@ -147,6 +150,7 @@ func _build_audio_page() -> void:
 	heading.text = "Audio"
 	heading.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	heading.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
+	heading.add_theme_font_override("font", FIGTREE_BOLD)
 	page_container.add_child(heading)
 
 	var sliders := VBoxContainer.new()
@@ -176,6 +180,7 @@ func _make_audio_slider_row(channel: String, label_text: String) -> HBoxContaine
 	label.custom_minimum_size = Vector2(115.0, 46.0)
 	label.text = label_text
 	label.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
+	label.add_theme_font_override("font", FIGTREE_LIGHT)
 	row.add_child(label)
 
 	var slider := HSlider.new()
@@ -192,6 +197,7 @@ func _make_audio_slider_row(channel: String, label_text: String) -> HBoxContaine
 	value_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_RIGHT
 	value_label.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
 	value_label.text = _format_percent(slider.value)
+	value_label.add_theme_font_override("font", FIGTREE_LIGHT)
 	row.add_child(value_label)
 
 	slider.value_changed.connect(_on_volume_slider_changed.bind(channel, value_label))
@@ -251,6 +257,7 @@ func _apply_nav_button_theme(button: Button, is_selected: bool) -> void:
 	button.add_theme_color_override("font_hover_color", Color(1, 1, 1, 1))
 	button.add_theme_color_override("font_pressed_color", Color(1, 1, 1, 1))
 	button.add_theme_color_override("font_focus_color", Color(1, 1, 1, 1))
+	button.add_theme_font_override("font", FIGTREE_LIGHT)
 
 
 func _make_stylebox(texture: Texture2D) -> StyleBoxTexture:

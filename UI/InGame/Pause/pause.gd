@@ -68,7 +68,7 @@ func _on_back_pressed() -> void:
 	$Back.visible = false
 	pass
 
-func _on_learning_center_close_requested() -> void:
+func _on_learning_center_close_requested(close_all: bool) -> void:
 	$LearningCenter.visible = false
 	if tutorials_reset_pending:
 		tutorials_reset_pending = false
@@ -85,6 +85,8 @@ func _on_learning_center_close_requested() -> void:
 	$Menu.visible = true
 	$Back.visible = false
 	currentMenu = null
+	if close_all:
+		_on_resume_pressed()
 
 func _on_tutorials_reset_requested() -> void:
 	tutorials_reset_pending = true

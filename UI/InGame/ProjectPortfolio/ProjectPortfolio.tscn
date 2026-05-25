@@ -6,6 +6,8 @@
 [ext_resource type="Texture2D" uid="uid://dkqvr0lf6ytje" path="res://UI/Theme/PCTheme/Back/pcBackPressed.png" id="4_ar0rh"]
 [ext_resource type="Texture2D" uid="uid://crruuadiafv87" path="res://UI/Theme/PCTheme/Back/pcBackHeld.png" id="5_y3rje"]
 [ext_resource type="Texture2D" uid="uid://o4k321o7djhb" path="res://UI/Theme/PCTheme/Back/pcBackDisabled.png" id="6_o45cl"]
+[ext_resource type="FontFile" uid="uid://cc7ip5lk1jtns" path="res://UI/Theme/Fonts/figtree-2.0.3/otf/Figtree-Light.otf" id="7_light"]
+[ext_resource type="FontFile" uid="uid://dp23u7yu0bu7o" path="res://UI/Theme/Fonts/figtree-2.0.3/otf/Figtree-Bold.otf" id="8_bold"]
 
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_back_normal"]
 texture = ExtResource("3_wk7t5")
@@ -36,6 +38,7 @@ offset_left = 400.0
 offset_top = 110.0
 offset_right = 750.0
 offset_bottom = 148.0
+theme_override_fonts/font = ExtResource("8_bold")
 text = "Project Portfolio"
 horizontal_alignment = 1
 vertical_alignment = 1
@@ -45,6 +48,7 @@ offset_left = 126.0
 offset_top = 152.0
 offset_right = 486.0
 offset_bottom = 180.0
+theme_override_fonts/font = ExtResource("7_light")
 text = "Completed Projects: 0"
 vertical_alignment = 1
 
@@ -63,6 +67,7 @@ offset_left = 206.0
 offset_top = 302.0
 offset_right = 949.0
 offset_bottom = 398.0
+theme_override_fonts/font = ExtResource("7_light")
 text = "Complete a project to see it here."
 horizontal_alignment = 1
 vertical_alignment = 1
