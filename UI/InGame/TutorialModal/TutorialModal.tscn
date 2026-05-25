@@ -8,6 +8,8 @@
 [ext_resource type="Texture2D" path="res://UI/Theme/PCTheme/button/slimButtonDisabled.png" id="6_ok_disabled"]
 [ext_resource type="Texture2D" path="res://UI/Theme/worker/staminaBarBorder.png" id="7_stamina_border"]
 [ext_resource type="Texture2D" path="res://UI/Theme/worker/staminaBarProgress.png" id="8_stamina_progress"]
+[ext_resource type="FontFile" uid="uid://cc7ip5lk1jtns" path="res://UI/Theme/Fonts/figtree-2.0.3/otf/Figtree-Light.otf" id="9_figtree_light"]
+[ext_resource type="FontFile" uid="uid://dp23u7yu0bu7o" path="res://UI/Theme/Fonts/figtree-2.0.3/otf/Figtree-Bold.otf" id="10_figtree_bold"]
 
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_ok"]
 texture = ExtResource("3_ok")
@@ -77,6 +79,7 @@ offset_left = 120.0
 offset_top = 24.0
 offset_right = 460.0
 offset_bottom = 68.0
+theme_override_fonts/font = ExtResource("10_figtree_bold")
 text = "Tutorial"
 horizontal_alignment = 1
 vertical_alignment = 1
@@ -86,6 +89,7 @@ offset_left = 56.0
 offset_top = 84.0
 offset_right = 524.0
 offset_bottom = 188.0
+theme_override_fonts/font = ExtResource("9_figtree_light")
 horizontal_alignment = 1
 vertical_alignment = 1
 autowrap_mode = 2
@@ -102,6 +106,7 @@ offset_bottom = 292.0
 offset_right = 468.0
 offset_bottom = 24.0
 theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_fonts/font = ExtResource("10_figtree_bold")
 text = "Worker stamina"
 horizontal_alignment = 1
 vertical_alignment = 1
@@ -125,6 +130,7 @@ offset_top = 30.0
 offset_right = 468.0
 offset_bottom = 68.0
 theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_fonts/font = ExtResource("9_figtree_light")
 text = "Yellow: working, stamina ticks down"
 vertical_alignment = 1
 autowrap_mode = 2
@@ -148,6 +154,7 @@ offset_top = 74.0
 offset_right = 468.0
 offset_bottom = 112.0
 theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_fonts/font = ExtResource("9_figtree_light")
 text = "Blue: recovering until full"
 vertical_alignment = 1
 autowrap_mode = 2
@@ -157,6 +164,7 @@ offset_left = 170.0
 offset_top = 196.0
 offset_right = 410.0
 offset_bottom = 276.0
+theme_override_fonts/font = ExtResource("9_figtree_light")
 theme_override_styles/normal = SubResource("StyleBoxTexture_ok")
 theme_override_styles/pressed = SubResource("StyleBoxTexture_ok_pressed")
 theme_override_styles/hover = SubResource("StyleBoxTexture_ok_hover")
@@ -171,6 +179,7 @@ offset_left = 170.0
 offset_top = 196.0
 offset_right = 410.0
 offset_bottom = 276.0
+theme_override_fonts/font = ExtResource("9_figtree_light")
 theme_override_styles/normal = SubResource("StyleBoxTexture_ok")
 theme_override_styles/pressed = SubResource("StyleBoxTexture_ok_pressed")
 theme_override_styles/hover = SubResource("StyleBoxTexture_ok_hover")
