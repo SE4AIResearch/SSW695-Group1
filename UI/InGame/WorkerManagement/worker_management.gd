@@ -57,7 +57,7 @@ func _update_upgrade_button() -> void:
 		if current_worker.rank >= 10:
 			upgrade_button.text = "Max Rank"
 		else:
-			upgrade_button.text = "Cannot Afford"
+			upgrade_button.text = 'Cannot \n Afford'
 
 func _on_upgrade_button_pressed() -> void:
 	if current_worker == null:
