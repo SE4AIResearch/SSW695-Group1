@@ -5,6 +5,8 @@
 [ext_resource type="Texture2D" uid="uid://c44j5fdrdkpuw" path="res://UI/Theme/PCTheme/button/buttonPressed.png" id="2_n78y1"]
 [ext_resource type="Texture2D" uid="uid://cmdgsum31psqr" path="res://UI/Theme/PCTheme/button/buttonHeld.png" id="3_lhns7"]
 [ext_resource type="Texture2D" uid="uid://du30etnm0gfaa" path="res://UI/Theme/PCTheme/button/buttonDisabled.png" id="4_d6deq"]
+[ext_resource type="FontFile" uid="uid://cc7ip5lk1jtns" path="res://UI/Theme/Fonts/figtree-2.0.3/otf/Figtree-Light.otf" id="5_light"]
+[ext_resource type="FontFile" uid="uid://dp23u7yu0bu7o" path="res://UI/Theme/Fonts/figtree-2.0.3/otf/Figtree-Bold.otf" id="6_bold"]
 
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_7ag1o"]
 texture = ExtResource("1_3mg2v")
@@ -39,6 +41,8 @@ offset_top = 16.0
 offset_right = 184.0
 offset_bottom = 184.0
 mouse_filter = 1
+theme_override_fonts/normal_font = ExtResource("5_light")
+theme_override_fonts/bold_font = ExtResource("6_bold")
 bbcode_enabled = true
 
 [connection signal="pressed" from="." to="." method="_on_pressed"]

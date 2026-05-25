@@ -57,8 +57,8 @@ func buildFeedbackUI():
 	feedbackContainer.add_child(metricsLabel)
 
 	continueBtn = Button.new()
-	continueBtn.set_position(Vector2(436, 480))
-	continueBtn.set_size(Vector2(280, 100))
+	continueBtn.set_position(Vector2(481, 435))
+	continueBtn.set_size(Vector2(190, 190))
 	continueBtn.connect("pressed", _on_continue_pressed)
 	setButtonVisual(continueBtn)
 	feedbackContainer.add_child(continueBtn)
@@ -66,7 +66,7 @@ func buildFeedbackUI():
 	var btnLabel = RichTextLabel.new()
 	btnLabel.bbcode_enabled = true
 	btnLabel.z_index = 1
-	btnLabel.set_position(Vector2(50, 20))
+	btnLabel.set_position(Vector2(5, 65))
 	btnLabel.set_size(Vector2(180, 60))
 	btnLabel.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	btnLabel.add_theme_color_override("default_color", Color.BLACK)
