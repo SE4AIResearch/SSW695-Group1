@@ -606,6 +606,7 @@ horizontal_alignment = 1
 vertical_alignment = 1
 
 [node name="PCPower" type="Button" parent="UI/PCButtons" unique_id=1338520100]
+material = SubResource("ShaderMaterial_62x8c")
 offset_left = 1024.0
 offset_top = 64.0
 offset_right = 1088.0

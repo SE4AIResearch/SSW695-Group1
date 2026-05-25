@@ -9,6 +9,7 @@
 [ext_resource type="Texture2D" uid="uid://cuyr4sv3sto4b" path="res://UI/Theme/PCTheme/button/slimButtonPressed.png" id="7_ynyg2"]
 [ext_resource type="Texture2D" uid="uid://b8snwl2q3qflg" path="res://UI/Theme/PCTheme/button/slimButtonHeld.png" id="8_wt7gr"]
 [ext_resource type="Texture2D" uid="uid://2jvaulftw7b6" path="res://UI/Theme/PCTheme/button/slimButtonDisabled.png" id="9_3mybm"]
+[ext_resource type="FontFile" uid="uid://b0lji18tmt8ua" path="res://UI/Theme/Fonts/jakes-writing-font/Jakeswriting-P2Zr.ttf" id="10_nxm3p"]
 
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_gtpok"]
 texture = ExtResource("2_axtlr")
@@ -55,6 +56,8 @@ offset_right = 243.0
 offset_bottom = 288.0
 mouse_filter = 2
 theme_override_colors/default_color = Color(0, 0, 0, 1)
+theme_override_fonts/normal_font = ExtResource("10_nxm3p")
+theme_override_font_sizes/normal_font_size = 22
 bbcode_enabled = true
 
 [node name="saveButton2" type="Button" parent="." unique_id=1423600906]
@@ -75,6 +78,8 @@ offset_right = 243.0
 offset_bottom = 288.0
 mouse_filter = 2
 theme_override_colors/default_color = Color(0, 0, 0, 1)
+theme_override_fonts/normal_font = ExtResource("10_nxm3p")
+theme_override_font_sizes/normal_font_size = 22
 bbcode_enabled = true
 
 [node name="saveButton3" type="Button" parent="." unique_id=1075831825]
@@ -95,6 +100,8 @@ offset_right = 243.0
 offset_bottom = 288.0
 mouse_filter = 2
 theme_override_colors/default_color = Color(0, 0, 0, 1)
+theme_override_fonts/normal_font = ExtResource("10_nxm3p")
+theme_override_font_sizes/normal_font_size = 22
 bbcode_enabled = true
 
 [node name="delete1" type="Button" parent="." unique_id=1597029799]
@@ -102,6 +109,8 @@ offset_left = 95.0
 offset_top = 435.0
 offset_right = 335.0
 offset_bottom = 515.0
+theme_override_fonts/font = ExtResource("10_nxm3p")
+theme_override_font_sizes/font_size = 36
 theme_override_styles/normal = SubResource("StyleBoxTexture_nmjlg")
 theme_override_styles/pressed = SubResource("StyleBoxTexture_ckiq4")
 theme_override_styles/hover = SubResource("StyleBoxTexture_lc2nn")
@@ -113,6 +122,8 @@ offset_left = 477.0
 offset_top = 472.0
 offset_right = 717.0
 offset_bottom = 552.0
+theme_override_fonts/font = ExtResource("10_nxm3p")
+theme_override_font_sizes/font_size = 36
 theme_override_styles/normal = SubResource("StyleBoxTexture_nmjlg")
 theme_override_styles/pressed = SubResource("StyleBoxTexture_ckiq4")
 theme_override_styles/hover = SubResource("StyleBoxTexture_lc2nn")
@@ -124,6 +135,8 @@ offset_left = 835.0
 offset_top = 401.0
 offset_right = 1075.0
 offset_bottom = 481.0
+theme_override_fonts/font = ExtResource("10_nxm3p")
+theme_override_font_sizes/font_size = 36
 theme_override_styles/normal = SubResource("StyleBoxTexture_nmjlg")
 theme_override_styles/pressed = SubResource("StyleBoxTexture_ckiq4")
 theme_override_styles/hover = SubResource("StyleBoxTexture_lc2nn")

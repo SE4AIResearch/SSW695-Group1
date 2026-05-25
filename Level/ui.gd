@@ -14,6 +14,7 @@ var TutorialModal: PackedScene = preload("res://UI/InGame/TutorialModal/Tutorial
 const FIRST_SPRINT_REWARD_TUTORIAL_KEY := "first_sprint_reward_intro"
 const FIRST_SPRINT_REWARD_TUTORIAL_TITLE := "First Sprint Complete"
 const FIRST_SPRINT_REWARD_TUTORIAL_MESSAGE := "You just earned currency for completing a sprint. Congrats! Check out the Hiring menu to search for team members, or visit Upgrades to purchase an upgrade."
+const PROJECT_SELECTED_TUTORIAL_KEY := "project_selected_backlog_intro"
 const PC_OVERLAY_Z_INDEX := 400
 const PC_BUTTONS_Z_INDEX := 500
 const MENU_Z_INDEX := 600
@@ -38,6 +39,8 @@ func _ready() -> void:
 		$PCButtons/ProjectPortfolioButton.material = $PCButtons/ProjectPortfolioButton.material.duplicate()
 	if $PCButtons/projectStartMenu.material:
 		$PCButtons/projectStartMenu.material = $PCButtons/projectStartMenu.material.duplicate()
+	if $PCButtons/PCPower.material:
+		$PCButtons/PCPower.material = $PCButtons/PCPower.material.duplicate()
 		
 	toggleProjectButtons()
 	PlayerTool.projectCompleted.connect(_on_project_completed)
@@ -113,8 +116,8 @@ func endMenu():
 
 func newProject():
 	endMenu()
-	_on_pc_power_pressed()
-	createMenu(BacklogMenu.instantiate(),false)
+	if PlayerTool.project != null:
+		call_deferred("show_project_selected_tutorial")
 
 func _on_upgrades_button_pressed() -> void:
 	AudioManager.play_sfx("pc_click")
@@ -231,6 +234,11 @@ func update_shader_opacities():
 	if $PCButtons/projectStartMenu.material:
 		$PCButtons/projectStartMenu.material.set_shader_parameter("opacity", start_menu_opacity)
 
+	# PCPower Logic
+	var pc_power_opacity = 0.5 if (pcMode and PlayerTool.project != null and !PlayerTool.isWeekActive()) else 0.0
+	if $PCButtons/PCPower.material:
+		$PCButtons/PCPower.material.set_shader_parameter("opacity", pc_power_opacity)
+
 func startEvent() -> bool:
 	if PlayerTool.project == null or _is_menu_showing():
 		return false
@@ -321,6 +329,13 @@ func show_first_sprint_reward_tutorial() -> void:
 		FIRST_SPRINT_REWARD_TUTORIAL_TITLE,
 		FIRST_SPRINT_REWARD_TUTORIAL_MESSAGE,
 		false
+	)
+
+func show_project_selected_tutorial() -> void:
+	_show_tutorial(
+		PROJECT_SELECTED_TUTORIAL_KEY,
+		"Project Selected",
+		"Now that you've selected a project, you can close the PC screen and select the clipboard to open the backlog and continue the project, or you can explore the rest of the PC if you haven't done so already."
 	)
 
 func _show_tutorial(tutorial_key: String, title: String, message: String, show_stamina_examples: bool = false) -> void:
