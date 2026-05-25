@@ -51,7 +51,7 @@ func _update_upgrade_button() -> void:
 	var validation = PlayerTool.can_upgrade_worker(current_worker)
 	if bool(validation.get("ok", false)):
 		upgrade_button.disabled = false
-		upgrade_button.text = 'Upgrade \n ($" + str(validation.get("cost", 0)) + ")'
+		upgrade_button.text = "Upgrade \n ($" + str(validation.get("cost", 0)) + ")"
 	else:
 		upgrade_button.disabled = true
 		if current_worker.rank >= 10:
