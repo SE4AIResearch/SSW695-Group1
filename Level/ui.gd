@@ -38,6 +38,8 @@ func _ready() -> void:
 		$PCButtons/ProjectPortfolioButton.material = $PCButtons/ProjectPortfolioButton.material.duplicate()
 	if $PCButtons/projectStartMenu.material:
 		$PCButtons/projectStartMenu.material = $PCButtons/projectStartMenu.material.duplicate()
+	if $PCButtons/PCPower.material:
+		$PCButtons/PCPower.material = $PCButtons/PCPower.material.duplicate()
 		
 	toggleProjectButtons()
 	PlayerTool.projectCompleted.connect(_on_project_completed)
@@ -53,6 +55,10 @@ func _apply_render_layers() -> void:
 	$PCScreen.z_index = PC_OVERLAY_Z_INDEX
 	$PCButtons.z_index = PC_BUTTONS_Z_INDEX
 	$NewMenu.z_index = MENU_Z_INDEX
+	if has_node("WorkerManagement"):
+		$WorkerManagement.z_index = MENU_Z_INDEX
+	if has_node("WorkerDetails"):
+		$WorkerDetails.z_index = MENU_Z_INDEX + 10
 	$BackButton.z_index = HUD_BUTTON_Z_INDEX
 	$PauseButton.z_index = HUD_BUTTON_Z_INDEX
 	$Pause.z_index = PAUSE_MENU_Z_INDEX
@@ -113,8 +119,9 @@ func endMenu():
 
 func newProject():
 	endMenu()
-	_on_pc_power_pressed()
-	createMenu(BacklogMenu.instantiate(),false)
+	update_shader_opacities()
+	if PlayerTool.project != null:
+		show_project_selected_tutorial()
 
 func _on_upgrades_button_pressed() -> void:
 	AudioManager.play_sfx("pc_click")
@@ -176,6 +183,7 @@ func _on_pc_pressed() -> void:
 	$PCScreenPanel.visible = true	
 	$PCButtons.visible = true
 	$PCButtons/ProjectPortfolioButton.disabled = false
+	update_shader_opacities()
 	match PlayerTool.project == null:
 		true:
 			$PCButtons/projectStartMenu/Label.text = "Start New Project"
@@ -200,6 +208,7 @@ func _on_pc_power_pressed() -> void:
 	$PCButtons/ProjectPortfolioButton.disabled = false
 	$PCButtons/projectStartMenu.disabled = false
 	if $NewMenu.get_children().size() > 0: $NewMenu.get_child(0).queue_free()
+	update_shader_opacities()
 	pass
 
 func toggleProjectButtons():
@@ -229,6 +238,13 @@ func update_shader_opacities():
 	var start_menu_opacity = 0.5 if PlayerTool.project == null else 0.0
 	if $PCButtons/projectStartMenu.material:
 		$PCButtons/projectStartMenu.material.set_shader_parameter("opacity", start_menu_opacity)
+
+	# PCPower Logic
+	var pc_power_opacity = 0.0
+	if PlayerTool.project != null and !PlayerTool.isWeekActive():
+		pc_power_opacity = 0.5
+	if $PCButtons/PCPower.material:
+		$PCButtons/PCPower.material.set_shader_parameter("opacity", pc_power_opacity)
 
 func startEvent() -> bool:
 	if PlayerTool.project == null or $NewMenu.get_child_count() != 0:
@@ -298,6 +314,13 @@ func show_office_intro_tutorial() -> void:
 		"office_intro",
 		"Welcome",
 		"Welcome to Software Development Tycoon. Here is your office! Click the computer to get started on your project management journey."
+	)
+
+func show_project_selected_tutorial() -> void:
+	_show_tutorial(
+		"project_selected_backlog_intro",
+		"Project Selected",
+		"You've selected your project! You can now close the PC screen and select the clipboard to open the backlog and continue the project, or you can explore the rest of the PC if you haven't done so already."
 	)
 
 func show_kanban_exit_tutorial() -> void:

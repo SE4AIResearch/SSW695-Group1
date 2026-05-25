@@ -641,7 +641,7 @@ vertical_alignment = 1
 
 [node name="NewMenu" type="Node2D" parent="UI" unique_id=1478451013]
 
-[node name="WorkerManagement" parent="UI/NewMenu" unique_id=429396847 instance=ExtResource("50_uibgn")]
+[node name="WorkerManagement" parent="UI" unique_id=429396847 instance=ExtResource("50_uibgn")]
 unique_name_in_owner = true
 visible = false
 
