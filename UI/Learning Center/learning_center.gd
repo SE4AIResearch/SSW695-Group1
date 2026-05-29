@@ -1,6 +1,6 @@
 extends Node2D
 
-signal close_requested
+signal close_requested(close_all: bool)
 #signal tutorials_reset_requested
 
 const BUTTON_TEXTURE_NORMAL = preload("res://UI/Theme/PCTheme/button/slimButton.png")
@@ -346,4 +346,4 @@ func _on_return_to_lc_menu_pressed() -> void:
 #	tutorials_reset_requested.emit()
 
 func _on_back_button_pressed() -> void:
-	close_requested.emit()
+	close_requested.emit(false)
