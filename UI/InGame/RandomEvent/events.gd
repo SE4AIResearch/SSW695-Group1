@@ -10,84 +10,108 @@ var general_events = [
 "name":"backendBug",
 "type":"BackEnd",
 "description":"A critical bug has been discovered in the backend API! Users are reporting failed transactions. How do you want to handle this?",
+"feedback_text":"When users are affected by a live incident, restore service first. Coordinate the team around one controlled fix before starting parallel work.",
 "choices":["Assign extra developers to fix it quickly","Apply a temporary hotfix","Ignore it for now and hope it resolves itself"],
+"choice_quality":["ok","good","bad"],
 "outcomes":[{"backEnd":2,"reliability":1},{"backEnd":1,"reliability":1},{"backEnd":-2,"reliability":0}]
 },
 {
 "name":"uiRedesignRequest",
 "type":"FrontEnd",
 "description":"The client has requested a redesign of the user interface. They feel the current layout is confusing for end users. What is your decision?",
+"feedback_text":"When a redesign is requested, treat it as a hypothesis. Prototype the change first so the team can learn before rewriting the product.",
 "choices":["Commit to a full UI redesign","Make minor adjustments to address key concerns","Decline the request and keep the current design"],
+"choice_quality":["bad","good","ok"],
 "outcomes":[{"frontEnd":1,"reliability":1},{"frontEnd":1,"reliability":1},{"frontEnd":-1,"reliability":0}]
 },
 {
 "name":"outdatedDocumentation",
 "type":"Documenting",
 "description":"Your team has noticed that the project documentation is severely outdated. New team members are struggling to onboard. How do you proceed?",
+"feedback_text":"When documentation falls behind, repair it as part of regular work. Living documentation teaches the team better than one large cleanup later.",
 "choices":["Dedicate time this sprint to fully update all docs","Update documentation incrementally alongside development","Skip it and focus on feature development"],
+"choice_quality":["ok","good","bad"],
 "outcomes":[{"documenting":3,"reliability":1},{"documenting":1,"reliability":1},{"documenting":-2,"reliability":0}]
 },
 {
 "name":"databasePerformance",
 "type":"BackEnd",
 "description":"Database queries are running significantly slower than expected, causing timeouts in production. What approach do you take?",
+"feedback_text":"When the database slows users down, look for waste in queries, indexes, and data design before buying more capacity.",
 "choices":["Optimize the database queries directly","Implement a caching layer to reduce database load","Scale up server resources to handle the load"],
+"choice_quality":["good","ok","bad"],
 "outcomes":[{"backEnd":2,"reliability":1},{"backEnd":3,"reliability":1},{"backEnd":-1,"reliability":0}]
 },
 {
 "name":"frontendFrameworkUpdate",
 "type":"FrontEnd",
 "description":"A major update for your frontend framework has been released with important security patches and new features. What do you do?",
+"feedback_text":"When a framework update matters for security, move quickly but test the path. Safe patching is different from jumping blindly to latest.",
 "choices":["Update immediately to the latest version","Schedule the update for the next sprint","Stay on the current version for stability"],
+"choice_quality":["ok","good","bad"],
 "outcomes":[{"frontEnd":3,"reliability":1},{"frontEnd":1,"reliability":1},{"frontEnd":-1,"reliability":0}]
 },
 {
 "name":"teamMemberSickLeave",
 "type":"BackEnd",
 "description":"One of your key developers has called in sick and will be out for the rest of the sprint. How do you adjust?",
+"feedback_text":"When capacity drops, replan the sprint honestly. Sustainable scope changes teach better project control than overtime pressure.",
 "choices":["Redistribute their tasks among the remaining team","Reduce the sprint scope to match reduced capacity","Push the team to work overtime to cover the gap"],
+"choice_quality":["ok","good","bad"],
 "outcomes":[{"backEnd":1,"reliability":1},{"reliability":1,"documenting":1},{"backEnd":-1,"reliability":0}]
 },
 {
 "name":"securityVulnerability",
 "type":"BackEnd",
 "description":"A security audit has revealed a vulnerability in your application. User data could be at risk if it is not addressed. What do you do?",
+"feedback_text":"When a vulnerability is known, treat it as active risk. Patch or mitigate it, understand the scope, and learn why it happened.",
 "choices":["Stop all development and fix the vulnerability immediately","Schedule a fix for the next sprint","Apply a temporary workaround and document it"],
+"choice_quality":["good","ok","ok"],
 "outcomes":[{"backEnd":3,"reliability":1},{"backEnd":-1,"reliability":0},{"backEnd":1,"documenting":1,"reliability":1}]
 },
 {
 "name":"clientFeedbackSession",
 "type":"FrontEnd",
 "description":"The client wants to schedule an unplanned feedback session to review the current state of the product. How do you respond?",
+"feedback_text":"When stakeholders offer feedback, use the moment to learn. A clear walkthrough is more valuable than over-polishing the demo.",
 "choices":["Prepare a full demo and present to the client","Show a quick informal walkthrough","Postpone the meeting until the next milestone"],
+"choice_quality":["ok","good","bad"],
 "outcomes":[{"frontEnd":2,"reliability":1},{"frontEnd":1,"reliability":1},{"frontEnd":-1,"reliability":0}]
 },
 {
 "name":"technicalDebtAccumulating",
 "type":"BackEnd",
 "description":"Your team reports that technical debt is piling up. Code quality is declining and new features are taking longer to build. What is your plan?",
+"feedback_text":"When technical debt slows the team, make repayment visible and recurring. Small steady fixes prevent a future crisis.",
 "choices":["Dedicate this sprint to refactoring","Allocate 20% of each sprint to address tech debt gradually","Ignore it and keep shipping features"],
+"choice_quality":["ok","good","bad"],
 "outcomes":[{"backEnd":3,"documenting":1,"reliability":1},{"backEnd":1,"documenting":1,"reliability":1},{"backEnd":-2,"reliability":0}]
 },
 {
 "name":"newTeamToolProposal",
 "type":"Documenting",
 "description":"A team member suggests adopting a new project management tool that could improve workflow efficiency but requires migration effort. What do you decide?",
+"feedback_text":"When a new tool sounds useful, pilot it first. A small trial teaches fit and risk before the whole team depends on it.",
 "choices":["Adopt the new tool immediately and migrate everything","Run a trial alongside the current tool this sprint","Stick with the current tool to avoid disruption"],
+"choice_quality":["bad","good","ok"],
 "outcomes":[{"documenting":2,"reliability":1},{"documenting":1,"reliability":1},{"documenting":-1,"reliability":0}]
 },
 {
 "name":"scaleDownProject",
 "type":"Stakeholder",
 "description":"The client is asking for the project to be scaled down!",
-"choices":["Propose a reason why it should stay?","Scale down project?"],
+"feedback_text":"When scope must shrink, protect quality first. Remove lower-priority work openly instead of hiding risk in testing or reliability.",
+"choices":["Defend the original scope","Scale down lower-priority scope while protecting quality"],
+"choice_quality":["ok","good"],
 "outcomes":[{"stakeholderSatisfaction":1,"reliability":1},{"stakeholderSatisfaction":-1,"reliability":0}]
 },
 {
 "name":"newBacklog1",
 "type":"Backlog",
 "description":"The client is asking for a mobile front end for the project!",
+"feedback_text":"When a good new feature appears, put it in the backlog and prioritize it. Valuable ideas still need a planned path.",
 "choices":["Propose that it is unfeasible","Add mobile front end to the backlog"],
+"choice_quality":["bad","good"],
 "outcomes":[{"stakeholderSatisfaction":-1,"reliability":0},["frontEnd","Mobile Front End",1]]
 }
 ]
@@ -98,21 +122,27 @@ var project_events = {
 "name":"deliveryDriverGPS",
 "type":"BackEnd",
 "description":"Delivery drivers are reporting inaccurate GPS tracking, causing late deliveries and customer complaints. How do you handle this?",
+"feedback_text":"When a feature is a common platform capability, reuse proven services first. Save custom engineering for what makes the product unique.",
 "choices":["Rebuild the location tracking module from scratch","Integrate a third-party GPS service","Add manual location correction for drivers"],
+"choice_quality":["bad","good","ok"],
 "outcomes":[{"backEnd":3,"reliability":1},{"backEnd":2,"reliability":1},{"backEnd":-1,"reliability":0}]
 },
 {
 "name":"paymentGatewayOutage",
 "type":"BackEnd",
 "description":"Your payment gateway provider is experiencing intermittent outages, blocking users from completing orders. What do you do?",
+"feedback_text":"When payments fail, protect users from confusion and duplicate charges. Graceful degradation and safe retries come before rushed integration.",
 "choices":["Integrate a backup payment provider immediately","Implement a retry mechanism with user notification","Wait for the provider to resolve the issue"],
+"choice_quality":["ok","good","bad"],
 "outcomes":[{"backEnd":3,"reliability":1},{"backEnd":2,"frontEnd":1,"reliability":1},{"backEnd":-2,"reliability":0}]
 },
 {
 "name":"restaurantOnboarding",
 "type":"FrontEnd",
 "description":"Restaurant partners are complaining that the onboarding process is too complicated and they are dropping out. What is your approach?",
+"feedback_text":"When users struggle to start, improve the workflow itself. Training materials help, but the path should be easier to follow.",
 "choices":["Redesign the entire restaurant registration flow","Add a step-by-step guided wizard","Provide video tutorials instead of changing the UI"],
+"choice_quality":["bad","good","ok"],
 "outcomes":[{"frontEnd":3,"reliability":1},{"frontEnd":2,"documenting":1,"reliability":1},{"documenting":-2,"reliability":0}],
 "learn_more_topic":"stakeholderManagement",
 "teaching_message":"This event is about feedback fit: the right choice is not universal, but volatile products reward teams that can adapt without losing control of scope.",
@@ -133,7 +163,9 @@ var project_events = {
 "name":"orderTrackingUX",
 "type":"FrontEnd",
 "description":"User feedback shows that the order tracking page is confusing. Customers cannot tell where their food is. How do you improve it?",
+"feedback_text":"When users cannot understand status, make the primary interface clearer first. Extra features should support clarity, not replace it.",
 "choices":["Add a real-time map with driver location","Simplify the status display with clear progress steps","Add push notifications for each delivery stage"],
+"choice_quality":["ok","good","bad"],
 "outcomes":[{"frontEnd":3,"reliability":1},{"frontEnd":2,"reliability":1},{"frontEnd":-1,"reliability":0}],
 "learn_more_topic":"agile",
 "teaching_message":"The player should see that visible user feedback is part of the job, not a warning message to avoid.",
@@ -154,7 +186,9 @@ var project_events = {
 "name":"deliveryAppSurge",
 "type":"BackEnd",
 "description":"A marketing campaign has gone viral and orders have tripled overnight! The system is struggling under the load. What do you do?",
+"feedback_text":"When demand surges, protect the core transaction path and scale deliberately. A good system absorbs success instead of turning it away.",
 "choices":["Scale infrastructure and optimize queries urgently","Implement rate limiting to control the load","Temporarily disable the promotion to stabilize"],
+"choice_quality":["good","ok","bad"],
 "outcomes":[{"backEnd":3,"reliability":1},{"backEnd":2,"reliability":1},{"backEnd":-1,"reliability":0}],
 "learn_more_topic":"riskManagement",
 "teaching_message":"This event is about just-in-time consequence feedback. The player should feel how ignored technical risk turns into user-facing pain.",
@@ -177,35 +211,45 @@ var project_events = {
 "name":"agentWorkflowChange",
 "type":"FrontEnd",
 "description":"After testing the prototype, support agents say the ticket workflow does not match how they actually work. They want major changes. What do you do?",
+"feedback_text":"When operational users say the workflow does not fit, study their real tasks and adjust the flow. The tool should support the work.",
 "choices":["Redesign the workflow based on agent feedback","Make targeted adjustments to the most painful steps","Explain the design rationale and keep the current flow"],
+"choice_quality":["ok","good","bad"],
 "outcomes":[{"frontEnd":3,"reliability":1},{"frontEnd":2,"reliability":1},{"frontEnd":-1,"reliability":0}]
 },
 {
 "name":"ticketSearchSlow",
 "type":"BackEnd",
 "description":"Agents report that searching for tickets is painfully slow, especially when filtering by tags and date ranges. How do you address this?",
+"feedback_text":"When search is broadly slow, fix indexing, fields, and query design first. Cache helps only after the search model is sound.",
 "choices":["Rebuild the search engine with proper indexing","Add caching for common search queries","Limit search results and add pagination"],
+"choice_quality":["good","ok","bad"],
 "outcomes":[{"backEnd":3,"reliability":1},{"backEnd":2,"reliability":1},{"frontEnd":-1,"reliability":0}]
 },
 {
 "name":"permissionConfusion",
 "type":"BackEnd",
 "description":"The IT team reports that the role-based permission system is allowing agents to see tickets they should not have access to. What do you do?",
+"feedback_text":"When permissions behave unexpectedly, inspect the authorization model. Access bugs are usually design problems, not isolated tickets.",
 "choices":["Audit and rebuild the entire permissions model","Add a quick fix for the specific access violations","Document the known issues and plan a fix next sprint"],
+"choice_quality":["good","ok","bad"],
 "outcomes":[{"backEnd":3,"reliability":1},{"backEnd":2,"reliability":1},{"backEnd":-1,"reliability":0}]
 },
 {
 "name":"customerPortalRequest",
 "type":"FrontEnd",
 "description":"The support manager wants a customer-facing portal so users can check ticket status themselves, reducing call volume. This was not originally scoped. How do you respond?",
+"feedback_text":"When new feature demand arrives mid-sprint, plan it through the backlog unless the sprint goal is renegotiated. Unplanned is not unimportant.",
 "choices":["Add it to the current sprint","Schedule it for the next sprint with proper planning","Decline and suggest it as a future enhancement"],
+"choice_quality":["bad","good","ok"],
 "outcomes":[{"frontEnd":3,"reliability":1},{"frontEnd":1,"reliability":1},{"frontEnd":-1,"reliability":0}]
 },
 {
 "name":"trainingGapDiscovered",
 "type":"Documenting",
 "description":"New agents are making frequent errors because there is no training documentation for the ticketing system. The training team is asking for help. What do you do?",
+"feedback_text":"When new users are stuck, teach the first mile first. A quick-start guide gives immediate help and can grow into living docs.",
 "choices":["Write comprehensive training docs this sprint","Create a quick-start guide covering the basics","Record a video walkthrough instead of written docs"],
+"choice_quality":["ok","good","bad"],
 "outcomes":[{"documenting":3,"reliability":1},{"documenting":2,"reliability":1},{"documenting":-1,"reliability":0}]
 }
 ],
@@ -214,35 +258,45 @@ var project_events = {
 "name":"complianceAuditSurprise",
 "type":"Documenting",
 "description":"The compliance team has scheduled an unplanned audit and needs full documentation of all requirements and design decisions immediately. How do you respond?",
+"feedback_text":"When an audit appears, assign ownership and gather evidence systematically. Compliance work needs traceability, not organizational panic.",
 "choices":["Halt development and prepare all audit documents","Assign a dedicated person to compile docs while others continue","Request a delay on the audit"],
+"choice_quality":["ok","good","bad"],
 "outcomes":[{"documenting":3,"reliability":1},{"documenting":2,"reliability":1},{"documenting":-1,"reliability":0}]
 },
 {
 "name":"taxCalculationError",
 "type":"BackEnd",
 "description":"Testers have discovered that the tax calculation engine produces incorrect results for certain edge cases involving multiple deductions. What do you do?",
+"feedback_text":"When financial logic gives a wrong answer, assume the bug may represent a class of failures. Fix the logic and cover it with tests.",
 "choices":["Rewrite the calculation logic with comprehensive test coverage","Fix only the identified edge cases","Add warnings for edge cases and document known limitations"],
+"choice_quality":["good","ok","bad"],
 "outcomes":[{"backEnd":3,"documenting":1,"reliability":1},{"backEnd":2,"reliability":1},{"backEnd":-1,"reliability":0}]
 },
 {
 "name":"identityVerificationFailure",
 "type":"BackEnd",
 "description":"The identity verification system is rejecting valid users at a high rate, blocking them from filing their taxes. What is your approach?",
+"feedback_text":"When valid users are rejected, add a review or redress path before weakening security. Access and protection must improve together.",
 "choices":["Overhaul the verification algorithm","Add a manual override process for rejected users","Adjust the sensitivity threshold to reduce false rejections"],
+"choice_quality":["ok","good","bad"],
 "outcomes":[{"backEnd":3,"reliability":1},{"backEnd":1,"frontEnd":2,"reliability":1},{"backEnd":-1,"reliability":0}]
 },
 {
 "name":"accessibilityRequirement",
 "type":"FrontEnd",
 "description":"A government accessibility review has flagged that the portal does not meet required accessibility standards. Changes are mandatory. What do you do?",
-"choices":["Conduct a full accessibility overhaul of all pages","Fix the critical accessibility issues first","Hire an accessibility consultant to guide the remediation"],
+"feedback_text":"When accessibility is required, treat conformance as a product requirement. Expertise can help, but the team must still fix and verify the system.",
+"choices":["Conduct a full accessibility overhaul of all pages","Fix only the critical accessibility issues","Hire an accessibility consultant to guide the remediation"],
+"choice_quality":["good","bad","ok"],
 "outcomes":[{"frontEnd":3,"reliability":1},{"frontEnd":-1,"reliability":0},{"frontEnd":2,"documenting":1,"reliability":1}]
 },
 {
 "name":"dataEncryptionUpgrade",
 "type":"BackEnd",
 "description":"The security team requires an upgrade to the data encryption standard before launch. This was not in the original plan. How do you proceed?",
+"feedback_text":"When security work is urgent, expedite the approved path. Regulated changes still need testing, approval, and traceability.",
 "choices":["Implement the new encryption standard immediately","Request a formal change approval and schedule it","Push back and propose the upgrade for the next release"],
+"choice_quality":["ok","good","bad"],
 "outcomes":[{"backEnd":3,"reliability":1},{"backEnd":1,"documenting":2,"reliability":1},{"backEnd":-1,"reliability":0}]
 }
 ],
@@ -251,35 +305,45 @@ var project_events = {
 "name":"sensorCalibrationDrift",
 "type":"BackEnd",
 "description":"Clinical testing reveals that sensor readings drift over time, producing inaccurate measurements. This is a safety-critical issue. What do you do?",
+"feedback_text":"When safety measurements drift, correct the design and revalidate it. A note in the manual is not enough for safety-critical behavior.",
 "choices":["Redesign the calibration algorithm with redundancy checks","Add periodic auto-recalibration routines","Document the drift range and add manual calibration instructions"],
+"choice_quality":["good","ok","bad"],
 "outcomes":[{"backEnd":3,"reliability":1},{"backEnd":2,"reliability":1},{"backEnd":-1,"reliability":0}]
 },
 {
 "name":"alarmFalsePositives",
 "type":"BackEnd",
 "description":"The alarm system is triggering too many false positives, causing alarm fatigue among clinical staff. How do you address this?",
+"feedback_text":"When alarms create too much noise, improve their accuracy at the source. A safe alarm system earns attention instead of demanding extra clicks.",
 "choices":["Retune the alarm thresholds based on clinical data","Implement a smart filtering algorithm to reduce noise","Add an alarm acknowledgment system to reduce disruption"],
+"choice_quality":["good","ok","bad"],
 "outcomes":[{"backEnd":3,"reliability":1},{"backEnd":2,"reliability":1},{"frontEnd":-1,"reliability":0}]
 },
 {
 "name":"regulatoryDocGap",
 "type":"Documenting",
 "description":"The regulatory team has identified gaps in your requirements traceability matrix. Submission cannot proceed without it. What do you do?",
+"feedback_text":"When traceability is required for submission, incomplete documentation blocks release. If reviewers cannot trace it, the work is not finished.",
 "choices":["Stop development and complete the traceability matrix","Assign a dedicated team member to work on it in parallel","Request an extension from the regulatory body"],
+"choice_quality":["good","ok","bad"],
 "outcomes":[{"documenting":3,"reliability":1},{"documenting":2,"reliability":1},{"documenting":-1,"reliability":0}]
 },
 {
 "name":"failsafeTestFailure",
 "type":"BackEnd",
 "description":"During verification testing, the failsafe recovery routine did not activate correctly under simulated power loss. What is your response?",
+"feedback_text":"When a failsafe fails, retest the safety story, not just one scenario. Safety mechanisms need broad verification after a defect.",
 "choices":["Redesign the failsafe mechanism and rerun all tests","Debug the specific failure scenario and patch it","Add redundant failsafe layers as a backup"],
+"choice_quality":["good","ok","bad"],
 "outcomes":[{"backEnd":3,"documenting":1,"reliability":1},{"backEnd":2,"reliability":1},{"backEnd":-1,"reliability":0}]
 },
 {
 "name":"clinicalTrialFeedback",
 "type":"FrontEnd",
 "description":"Feedback from a clinical trial indicates that the operator interface is difficult to read under bright operating room lights. What do you do?",
+"feedback_text":"When users cannot read the interface in the real environment, it is a human-factors defect. Validate readability where the product is used.",
 "choices":["Redesign the display with high-contrast medical-grade visuals","Add a brightness and contrast adjustment setting","Provide anti-glare screen covers as a hardware solution"],
+"choice_quality":["good","ok","bad"],
 "outcomes":[{"frontEnd":3,"reliability":1},{"frontEnd":2,"reliability":1},{"frontEnd":-1,"reliability":0}]
 }
 ],
@@ -288,35 +352,45 @@ var project_events = {
 "name":"patientDataValidation",
 "type":"BackEnd",
 "description":"Unit testing reveals that the patient data validation module accepts invalid date formats, which could corrupt medical records. What do you do?",
+"feedback_text":"When invalid data can enter the system, enforce validation at the trusted boundary. Input masks help users, but validation protects the record.",
 "choices":["Rewrite the validation logic with comprehensive test cases","Add input masks on the frontend to prevent invalid entries","Fix the specific failing test cases only"],
+"choice_quality":["good","ok","bad"],
 "outcomes":[{"backEnd":3,"documenting":1,"reliability":1},{"frontEnd":2,"backEnd":1,"reliability":1},{"backEnd":-1,"reliability":0}]
 },
 {
 "name":"schedulingConflict",
 "type":"BackEnd",
 "description":"Integration testing shows that the scheduling engine allows double-booking of doctors in certain edge cases. What is your approach?",
-"choices":["Redesign the booking algorithm with conflict detection","Add a validation check before confirming each appointment","Lock the time slot immediately when a booking starts"],
+"feedback_text":"When double-booking is possible, enforce the rule in the transaction. Scheduling integrity belongs in the data flow, not user luck.",
+"choices":["Redesign the booking algorithm with conflict detection","Add transaction-safe conflict validation before confirming","Lock the time slot immediately when a booking starts"],
+"choice_quality":["ok","good","bad"],
 "outcomes":[{"backEnd":3,"reliability":1},{"backEnd":2,"documenting":1,"reliability":1},{"backEnd":-1,"reliability":0}]
 },
 {
 "name":"receptionStaffUsability",
 "type":"FrontEnd",
 "description":"Reception staff report that the appointment management interface requires too many clicks to complete common tasks. What do you do?",
+"feedback_text":"When staff repeat a task all day, simplify the main path first. Do not document unnecessary clicks when you can remove them.",
 "choices":["Redesign the interface with fewer steps for common workflows","Add keyboard shortcuts for frequent actions","Create a quick-action toolbar for the most used functions"],
+"choice_quality":["good","ok","ok"],
 "outcomes":[{"frontEnd":3,"reliability":1},{"frontEnd":2,"reliability":1},{"frontEnd":-1,"reliability":0}]
 },
 {
 "name":"notificationDeliveryFailure",
 "type":"BackEnd",
 "description":"Acceptance testing reveals that appointment reminder notifications are not being delivered reliably. Some patients are missing their appointments. What do you do?",
+"feedback_text":"When reminders are unreliable, add confirmation, retries, and visibility into failures. Critical notifications need observability, not guesswork.",
 "choices":["Switch to a more reliable notification service provider","Implement a retry mechanism with delivery confirmation","Add SMS as a backup channel alongside email"],
+"choice_quality":["bad","good","ok"],
 "outcomes":[{"backEnd":3,"reliability":1},{"backEnd":2,"reliability":1},{"backEnd":-1,"reliability":0}]
 },
 {
 "name":"privacyComplianceGap",
 "type":"Documenting",
 "description":"A review reveals that the system's handling of patient data does not fully comply with healthcare privacy regulations. Documentation of data flows is incomplete. What do you do?",
-"choices":["Conduct a full privacy audit and update all documentation","Fix the critical compliance gaps and document them","Hire a compliance consultant to guide remediation"],
+"feedback_text":"When data flows are unclear, compliance work starts by mapping them. You cannot protect information you cannot trace.",
+"choices":["Conduct a full privacy audit and update all documentation","Fix the critical compliance gaps and document them","Rely on a consultant without mapping data flows internally"],
+"choice_quality":["good","ok","bad"],
 "outcomes":[{"documenting":3,"reliability":1},{"documenting":2,"backEnd":1,"reliability":1},{"documenting":-1,"reliability":0}]
 }
 ],
@@ -325,35 +399,45 @@ var project_events = {
 "name":"barcodeScanFailure",
 "type":"BackEnd",
 "description":"Testing reveals that the barcode scanner fails to read damaged or wrinkled barcodes, requiring manual entry for 15% of items. What do you do?",
+"feedback_text":"When scanning fails often, improve the scan path before adding manual work. Exceptions should be rare, not the normal checkout flow.",
 "choices":["Implement image recognition as a fallback for failed scans","Add a quick manual product search by name or category","Improve the scanning algorithm to handle damaged barcodes"],
+"choice_quality":["ok","bad","good"],
 "outcomes":[{"backEnd":3,"reliability":1},{"frontEnd":2,"backEnd":1,"reliability":1},{"backEnd":-1,"reliability":0}]
 },
 {
 "name":"paymentIntegrationError",
 "type":"BackEnd",
 "description":"During integration testing, the payment terminal intermittently fails to communicate with the checkout software, leaving transactions in a pending state. What is your plan?",
+"feedback_text":"When payment state is uncertain, recovery and idempotency are essential. A blind retry can create a duplicate-charge risk.",
 "choices":["Rebuild the hardware communication layer with better error handling","Implement a transaction recovery mechanism","Add a timeout with automatic retry logic"],
+"choice_quality":["ok","good","bad"],
 "outcomes":[{"backEnd":3,"reliability":1},{"backEnd":2,"reliability":1},{"backEnd":-1,"reliability":0}]
 },
 {
 "name":"customerConfusionAtCheckout",
 "type":"FrontEnd",
 "description":"Store managers report that customers frequently get stuck on the payment screen and need assistance. The checkout flow is not intuitive enough. What do you do?",
+"feedback_text":"When customers hesitate at checkout, simplify the screen itself. The best payment flow needs very little explanation.",
 "choices":["Redesign the payment flow with larger buttons and clearer instructions","Add animated step-by-step guidance on screen","Place a help button that summons a staff member"],
+"choice_quality":["good","ok","bad"],
 "outcomes":[{"frontEnd":3,"reliability":1},{"frontEnd":2,"documenting":1,"reliability":1},{"frontEnd":-1,"reliability":0}]
 },
 {
 "name":"receiptPrinterJam",
 "type":"BackEnd",
 "description":"The receipt printing module crashes when handling long receipts with many items, causing the entire checkout session to freeze. What do you do?",
+"feedback_text":"When a receipt printer fails, the checkout should still complete. Peripheral failures should not stop the core transaction.",
 "choices":["Fix the printer driver and add receipt length handling","Switch to digital receipts via email as the primary option","Add error recovery so checkout can complete even if printing fails"],
+"choice_quality":["ok","bad","good"],
 "outcomes":[{"backEnd":3,"reliability":1},{"frontEnd":2,"documenting":1,"reliability":1},{"backEnd":-1,"reliability":0}]
 },
 {
 "name":"inventoryMismatch",
 "type":"Documenting",
 "description":"Acceptance testing shows discrepancies between the checkout system's inventory counts and the actual warehouse stock. The traceability matrix for inventory updates is incomplete. What do you do?",
+"feedback_text":"When inventory counts disagree, find the pipeline defect that creates the mismatch. Detection helps, but reconciliation and root-cause repair teach control.",
 "choices":["Audit the entire inventory update pipeline and fix the data flow","Add real-time inventory sync verification after each transaction","Update the traceability matrix and document all inventory touchpoints"],
+"choice_quality":["good","ok","bad"],
 "outcomes":[{"backEnd":2,"documenting":1,"reliability":1},{"backEnd":3,"reliability":1},{"documenting":-1,"reliability":0}]
 }
 ],
@@ -362,35 +446,45 @@ var project_events = {
 "name":"newThreatVector",
 "type":"BackEnd",
 "description":"A previously unknown attack vector has been discovered in the wild. Your current detection algorithms do not cover it. What do you do?",
+"feedback_text":"When a new threat appears, close the immediate detection gap first. Future architecture matters, but coverage cannot wait.",
 "choices":["Develop a new detection module specifically for this threat","Update existing algorithms to include patterns from this attack","Add the threat to the monitoring watchlist and analyze in the next cycle"],
+"choice_quality":["ok","good","bad"],
 "outcomes":[{"backEnd":3,"reliability":1},{"backEnd":2,"reliability":1},{"documenting":-1,"reliability":0}]
 },
 {
 "name":"falsePositiveOverload",
 "type":"BackEnd",
 "description":"Security analysts are overwhelmed by false positive alerts. The anomaly detection algorithm is flagging normal traffic as suspicious. How do you adjust?",
+"feedback_text":"When alerts overwhelm analysts, improve signal quality. Prioritization helps, but the best lesson is to reduce non-actionable noise.",
 "choices":["Retrain the detection model with better baseline data","Implement a confidence scoring system to prioritize alerts","Add analyst feedback loops to improve detection over time"],
+"choice_quality":["good","ok","bad"],
 "outcomes":[{"backEnd":3,"reliability":1},{"backEnd":2,"frontEnd":1,"reliability":1},{"backEnd":-1,"reliability":0}]
 },
 {
 "name":"monitoringIntegrationIssue",
 "type":"BackEnd",
 "description":"Integration with the existing security monitoring systems is producing data format mismatches, causing some events to be dropped. What is your approach?",
+"feedback_text":"When telemetry formats do not match, normalize data at the boundary. Observability depends on shared meaning before shared dashboards.",
 "choices":["Build a data normalization layer between systems","Work with the existing system team to align data formats","Log dropped events and process them in batch later"],
+"choice_quality":["good","ok","bad"],
 "outcomes":[{"backEnd":3,"reliability":1},{"backEnd":2,"reliability":1},{"backEnd":-1,"reliability":0}]
 },
 {
 "name":"riskAssessmentUpdate",
 "type":"Documenting",
 "description":"The latest prototype cycle has revealed new risks that were not accounted for in the original risk assessment. The compliance team needs an updated report. What do you do?",
+"feedback_text":"When new evidence changes the risk picture, update the threat model, not just the register. Risk assessment should guide action.",
 "choices":["Conduct a comprehensive risk reassessment for the entire platform","Update the risk report with only the newly discovered risks","Schedule a risk review workshop with all stakeholders"],
+"choice_quality":["good","ok","bad"],
 "outcomes":[{"documenting":3,"reliability":1},{"documenting":2,"reliability":1},{"documenting":-1,"reliability":0}]
 },
 {
 "name":"algorithmPerformanceDrop",
 "type":"BackEnd",
 "description":"After the latest iteration, the threat detection algorithm's accuracy has dropped significantly when processing high-volume network traffic. What do you do?",
+"feedback_text":"When a new model version harms production quality, recover first and investigate cleanly. Rollback speed is part of reliable ML delivery.",
 "choices":["Roll back to the previous version and investigate the regression","Optimize the algorithm for high-volume scenarios specifically","Scale up processing infrastructure to handle the load"],
+"choice_quality":["good","ok","bad"],
 "outcomes":[{"backEnd":2,"reliability":1},{"backEnd":3,"reliability":1},{"backEnd":-1,"reliability":0}]
 }
 ],
@@ -399,35 +493,45 @@ var project_events = {
 "name":"sensorDataInconsistency",
 "type":"BackEnd",
 "description":"Real-time traffic sensors at several intersections are sending inconsistent data, causing the prediction model to generate unreliable forecasts. What do you do?",
+"feedback_text":"When sensor data is inconsistent, validate it where it enters the system. Reliable predictions begin with reliable inputs.",
 "choices":["Add data validation and anomaly filtering at the ingestion layer","Recalibrate the sensors and establish baseline readings","Build a fallback model that works with incomplete data"],
+"choice_quality":["good","ok","bad"],
 "outcomes":[{"backEnd":3,"reliability":1},{"backEnd":2,"reliability":1},{"backEnd":-1,"reliability":0}]
 },
 {
 "name":"predictionModelBias",
 "type":"BackEnd",
 "description":"Testing reveals that the traffic prediction model performs well in urban areas but poorly in suburban zones due to different traffic patterns. How do you address this?",
+"feedback_text":"When a model performs unevenly across groups, measure and improve each slice. Average accuracy can hide real harm.",
 "choices":["Train separate models for urban and suburban areas","Collect more suburban data and retrain the unified model","Add manual override capabilities for suburban predictions"],
+"choice_quality":["ok","good","bad"],
 "outcomes":[{"backEnd":3,"reliability":1},{"backEnd":2,"documenting":1,"reliability":1},{"frontEnd":-1,"reliability":0}]
 },
 {
 "name":"publicSafetyConflict",
 "type":"FrontEnd",
 "description":"The public safety department wants emergency vehicle priority controls added to the signal management dashboard, but this was not in the current cycle's scope. What do you do?",
+"feedback_text":"When a safety feature is urgent, accelerate validation instead of bypassing it. Prototype and simulate before live release.",
 "choices":["Add it to the current cycle given its safety importance","Prototype it in this cycle and implement fully in the next","Document the requirement and schedule it for the next cycle"],
+"choice_quality":["ok","good","bad"],
 "outcomes":[{"frontEnd":3,"reliability":1},{"frontEnd":2,"backEnd":1,"reliability":1},{"frontEnd":-1,"reliability":0}]
 },
 {
 "name":"deploymentRiskEscalation",
 "type":"Documenting",
 "description":"A risk assessment during the current spiral reveals that deploying signal timing changes to a busy district without testing could cause gridlock. What is your approach?",
+"feedback_text":"When deployment could affect public traffic, model the impact before going live. Rollback plans reduce harm but do not replace prevention.",
 "choices":["Deploy to a low-traffic test zone first and measure impact","Run a simulation before any live deployment","Proceed with deployment but have a rapid rollback plan ready"],
+"choice_quality":["ok","good","bad"],
 "outcomes":[{"documenting":2,"reliability":1},{"documenting":3,"reliability":1},{"documenting":-1,"reliability":0}]
 },
 {
 "name":"cameraIntegrationDelay",
 "type":"BackEnd",
 "description":"The IoT camera vendor is behind schedule on delivering the API for camera integration. Your current cycle depends on camera data for testing the analytics module. What do you do?",
+"feedback_text":"When a vendor blocks testing, emulate the dependency if you can. Simulators keep learning moving while the real integration catches up.",
 "choices":["Build a camera data simulator to unblock testing","Shift focus to other modules and revisit cameras next cycle","Negotiate with the vendor to deliver a partial API sooner"],
+"choice_quality":["good","bad","ok"],
 "outcomes":[{"backEnd":2,"documenting":1,"reliability":1},{"backEnd":1,"frontEnd":2,"reliability":1},{"backEnd":-1,"reliability":0}]
 }
 ]

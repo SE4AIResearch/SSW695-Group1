@@ -48,16 +48,31 @@ func buildFeedbackUI():
 	metricsLabel.name = "MetricsLabel"
 	metricsLabel.bbcode_enabled = true
 	metricsLabel.fit_content = true
-	metricsLabel.set_position(Vector2(300, 200))
-	metricsLabel.set_size(Vector2(552, 280))
+	metricsLabel.set_position(Vector2(300, 185))
+	metricsLabel.set_size(Vector2(552, 135))
 	metricsLabel.add_theme_font_override("normal_font", handwrittenFont)
 	metricsLabel.add_theme_font_size_override("normal_font_size", 40)
 	metricsLabel.add_theme_color_override("default_color", Color.BLACK)
 	metricsLabel.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	feedbackContainer.add_child(metricsLabel)
 
+	var decisionFeedbackLabel = RichTextLabel.new()
+	decisionFeedbackLabel.name = "DecisionFeedbackLabel"
+	decisionFeedbackLabel.bbcode_enabled = false
+	decisionFeedbackLabel.fit_content = false
+	decisionFeedbackLabel.set_position(Vector2(176, 320))
+	decisionFeedbackLabel.set_size(Vector2(800, 110))
+	decisionFeedbackLabel.add_theme_font_override("normal_font", handwrittenFont)
+	decisionFeedbackLabel.add_theme_font_size_override("normal_font_size", 30)
+	decisionFeedbackLabel.add_theme_color_override("default_color", Color.BLACK)
+	decisionFeedbackLabel.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+	decisionFeedbackLabel.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	decisionFeedbackLabel.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
+	decisionFeedbackLabel.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	feedbackContainer.add_child(decisionFeedbackLabel)
+
 	continueBtn = Button.new()
-	continueBtn.set_position(Vector2(481, 435))
+	continueBtn.set_position(Vector2(481, 455))
 	continueBtn.set_size(Vector2(190, 190))
 	continueBtn.connect("pressed", _on_continue_pressed)
 	setButtonVisual(continueBtn)
@@ -211,6 +226,12 @@ func _apply_metric_deltas(metricDeltas) -> void:
 		PlayerTool.changeMetricByName(str(metricKey), int(metricDeltas.get(metricKey, 0)))
 
 func evaluateChoice(choiceIndex: int) -> String:
+	var choiceQuality: Array = chosenEvent.get("choice_quality", [])
+	if choiceIndex >= 0 and choiceIndex < choiceQuality.size():
+		var explicitQuality := str(choiceQuality[choiceIndex])
+		if explicitQuality == "good" or explicitQuality == "ok" or explicitQuality == "bad":
+			return explicitQuality
+
 	var chosenOutcome = choiceOutcomes[choiceIndex]
 	if chosenOutcome is Dictionary and chosenOutcome.has("reliability"):
 		var rel = int(chosenOutcome["reliability"])
@@ -256,6 +277,7 @@ func showFeedback(outcome, quality: String, eventType: String):
 
 	var iconLabel = feedbackContainer.get_node("IconLabel")
 	var metricsLabel = feedbackContainer.get_node("MetricsLabel")
+	var decisionFeedbackLabel = feedbackContainer.get_node("DecisionFeedbackLabel")
 
 	match quality:
 		"good":
@@ -291,6 +313,7 @@ func showFeedback(outcome, quality: String, eventType: String):
 		text += "No effect"
 	text += "[/center]"
 	metricsLabel.text = text
+	decisionFeedbackLabel.text = str(chosenEvent.get("feedback_text", "placeholder text"))
 
 	feedbackContainer.visible = true
 
